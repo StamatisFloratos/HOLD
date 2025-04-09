@@ -44,6 +44,14 @@
 		76711AFD2D8CD62500FFEE50 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76711AFC2D8CD62500FFEE50 /* ContentView.swift */; };
 		76711AFF2D8CD62700FFEE50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76711AFE2D8CD62700FFEE50 /* Assets.xcassets */; };
 		76711B022D8CD62700FFEE50 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76711B012D8CD62700FFEE50 /* Preview Assets.xcassets */; };
+		7CA106B32DA564A6000950FC /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106B22DA564A6000950FC /* Font+Extension.swift */; };
+		7CA106B52DA564B4000950FC /* CustomFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106B42DA564B4000950FC /* CustomFont.swift */; };
+		7CA106B92DA57F4D000950FC /* NavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106B82DA57F4D000950FC /* NavigationManager.swift */; };
+		7CA106BB2DA58119000950FC /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106BA2DA58119000950FC /* SplashView.swift */; };
+		7CA106BF2DA58565000950FC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106BE2DA58565000950FC /* AppDelegate.swift */; };
+		7CA106C12DA5BA35000950FC /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106C02DA5BA35000950FC /* View+Extension.swift */; };
+		7CA106C32DA5C89D000950FC /* MeasurementActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106C22DA5C896000950FC /* MeasurementActivityView.swift */; };
+		7CA106C62DA6D1E4000950FC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106C42DA6D1E4000950FC /* ColorExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -85,6 +93,14 @@
 		76711AFC2D8CD62500FFEE50 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		76711AFE2D8CD62700FFEE50 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		76711B012D8CD62700FFEE50 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		7CA106B22DA564A6000950FC /* Font+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Font+Extension.swift"; path = "../../../TempMail/TempMail/Utilities/Font+Extension.swift"; sourceTree = "<group>"; };
+		7CA106B42DA564B4000950FC /* CustomFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomFont.swift; path = ../../../TempMail/TempMail/Utilities/CustomFont.swift; sourceTree = "<group>"; };
+		7CA106B82DA57F4D000950FC /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
+		7CA106BA2DA58119000950FC /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		7CA106BE2DA58565000950FC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		7CA106C02DA5BA35000950FC /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
+		7CA106C22DA5C896000950FC /* MeasurementActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementActivityView.swift; sourceTree = "<group>"; };
+		7CA106C42DA6D1E4000950FC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +167,7 @@
 		762FEBD12D8CEC3E0058F107 /* Progress */ = {
 			isa = PBXGroup;
 			children = (
+				7CA106C22DA5C896000950FC /* MeasurementActivityView.swift */,
 				762FEBD22D8CECF70058F107 /* ProgressView.swift */,
 				762FEBD42D8CED070058F107 /* ProgressGraphView.swift */,
 				762FEBD62D8CED980058F107 /* MeasurementSheetView.swift */,
@@ -182,13 +199,6 @@
 			path = Knowledge;
 			sourceTree = "<group>";
 		};
-		762FEBF02D8CEF7E0058F107 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 		762FEBF12D8CEF9E0058F107 /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -217,8 +227,10 @@
 		76711AF92D8CD62500FFEE50 /* HOLD */ = {
 			isa = PBXGroup;
 			children = (
+				7CA106C52DA6D1E4000950FC /* Extensions */,
+				7CA106B72DA57F49000950FC /* Manager */,
+				7CA106B62DA56510000950FC /* Utilities */,
 				762FEBF12D8CEF9E0058F107 /* Services */,
-				762FEBF02D8CEF7E0058F107 /* Resources */,
 				762FEBC52D8CEA6E0058F107 /* Views */,
 				762FEBB82D8CE97F0058F107 /* ViewModels */,
 				762FEBAB2D8CE8B80058F107 /* Models */,
@@ -236,6 +248,34 @@
 				76711B012D8CD62700FFEE50 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		7CA106B62DA56510000950FC /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				7CA106C02DA5BA35000950FC /* View+Extension.swift */,
+				7CA106BE2DA58565000950FC /* AppDelegate.swift */,
+				7CA106B42DA564B4000950FC /* CustomFont.swift */,
+				7CA106B22DA564A6000950FC /* Font+Extension.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		7CA106B72DA57F49000950FC /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				7CA106BA2DA58119000950FC /* SplashView.swift */,
+				7CA106B82DA57F4D000950FC /* NavigationManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		7CA106C52DA6D1E4000950FC /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				7CA106C42DA6D1E4000950FC /* ColorExtension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -316,12 +356,18 @@
 				762FEBD52D8CED070058F107 /* ProgressGraphView.swift in Sources */,
 				762FEBB52D8CE9500058F107 /* UserProfile.swift in Sources */,
 				762FEBC02D8CE9B90058F107 /* WorkoutViewModel.swift in Sources */,
+				7CA106BF2DA58565000950FC /* AppDelegate.swift in Sources */,
+				7CA106C62DA6D1E4000950FC /* ColorExtension.swift in Sources */,
+				7CA106BB2DA58119000950FC /* SplashView.swift in Sources */,
+				7CA106B52DA564B4000950FC /* CustomFont.swift in Sources */,
 				762FEBAF2D8CE8DE0058F107 /* ChallengeResult.swift in Sources */,
 				762FEBED2D8CEF5C0058F107 /* KnowledgeView.swift in Sources */,
 				762FEBC42D8CE9D50058F107 /* ProfileViewModel.swift in Sources */,
 				762FEBE62D8CEEE30058F107 /* WorkoutFinishView.swift in Sources */,
 				762FEBEF2D8CEF6F0058F107 /* KnowledgeDetailView.swift in Sources */,
 				762FEBD92D8CEDB20058F107 /* ChallengeSheetView.swift in Sources */,
+				7CA106B32DA564A6000950FC /* Font+Extension.swift in Sources */,
+				7CA106C12DA5BA35000950FC /* View+Extension.swift in Sources */,
 				762FEBEA2D8CEF0F0058F107 /* StreakWeekViewModel.swift in Sources */,
 				762FEBCA2D8CEBE50058F107 /* ProgressTabView.swift in Sources */,
 				762FEBB12D8CE91F0058F107 /* Workout.swift in Sources */,
@@ -333,8 +379,10 @@
 				762FEBC22D8CE9C70058F107 /* KnowledgeViewModel.swift in Sources */,
 				762FEBCE2D8CEC240058F107 /* KnowledgeTabView.swift in Sources */,
 				762FEBB32D8CE9430058F107 /* Exercise.swift in Sources */,
+				7CA106C32DA5C89D000950FC /* MeasurementActivityView.swift in Sources */,
 				762FEBBC2D8CE9A10058F107 /* MeasurementViewModel.swift in Sources */,
 				762FEBBE2D8CE9AD0058F107 /* ChallengeViewModel.swift in Sources */,
+				7CA106B92DA57F4D000950FC /* NavigationManager.swift in Sources */,
 				762FEBE82D8CEF000058F107 /* StreakWeekView.swift in Sources */,
 				762FEBD32D8CECF70058F107 /* ProgressView.swift in Sources */,
 				762FEBE22D8CEEA50058F107 /* ExerciseRingView.swift in Sources */,
@@ -476,7 +524,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HOLD/Preview Content\"";
-				DEVELOPMENT_TEAM = HXU7ACHQ5T;
+				DEVELOPMENT_TEAM = W88HKJMKS7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -505,7 +553,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HOLD/Preview Content\"";
-				DEVELOPMENT_TEAM = HXU7ACHQ5T;
+				DEVELOPMENT_TEAM = W88HKJMKS7;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
