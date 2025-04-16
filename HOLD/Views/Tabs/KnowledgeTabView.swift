@@ -44,11 +44,6 @@ struct KnowledgeTabView: View {
                             .foregroundColor(.white)
                         Spacer()
                     }
-                    // Sections
-                    //                    KnowledgeSectionView(title: "Nutrition")
-                    //                    KnowledgeSectionView(title: "Body Practices")
-                    //                    KnowledgeSectionView(title: "Enhance Sex Life")
-                    // Sections using the grouped data
                     ForEach(viewModel.sortedCategories, id: \.self) { category in
                         KnowledgeSectionView(title: category, items: viewModel.groupedKnowledgeData[category] ?? [])
                     }
@@ -83,7 +78,6 @@ struct KnowledgeSectionView: View {
                     .font(.system(size: 16, weight: .bold))
                 Spacer()
             }
-            .padding(.horizontal) // Add padding to the title HStack
 
             // Horizontal ScrollView for Cards
             ScrollView(.horizontal, showsIndicators: false) {
@@ -92,7 +86,6 @@ struct KnowledgeSectionView: View {
                         KnowledgeCardView(imageName: "knowledgePlaceholder", title: item.title)
                     }
                 }
-                .padding(.horizontal) // Add horizontal padding to the card content
                 .padding(.vertical, 5) // Add small vertical padding
             }
         }
