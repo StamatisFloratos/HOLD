@@ -10,7 +10,6 @@ import SwiftUI
 struct ProgressTabView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     @EnvironmentObject var tabManager: TabManager
-
     @State private var navigateToMeasurement = false
 
     var body: some View {
@@ -27,7 +26,6 @@ struct ProgressTabView: View {
             
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    // Logo at the top
                     HStack {
                         Spacer()
                         Image("holdIcon")
@@ -35,7 +33,6 @@ struct ProgressTabView: View {
                     }
                     .padding(.top, 20)
                     
-                    // Welcome back message
                     HStack {
                         Text("Welcome back")
                             .font(.system(size: 24, weight: .bold))
@@ -102,9 +99,7 @@ struct ProgressTabView: View {
                                 .font(.subheadline)
                         }
                     }
-                    .padding(.horizontal)
-                    .padding(.top, 20)
-                    
+                    .padding(.horizontal)                    
                     Spacer(minLength: 80) // Space for tab bar
                 }
             }

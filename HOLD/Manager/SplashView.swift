@@ -31,8 +31,12 @@ struct SplashView: View {
                         MeasurementActivityView()
                     case .workoutView:
                         WorkoutTabView()
-                    case .knowledgeView:
+                    case .knowledgeTabView:
                         KnowledgeTabView()
+                    case .knowledgeView(categoryTitle: let categoryTitle, items: let items):
+                        KnowledgeView(categoryTitle: categoryTitle, items: items)
+                    case .knowledgeDetailView(item: let item):
+                        KnowledgeDetailView(item: item)
                     }
                 }
             )

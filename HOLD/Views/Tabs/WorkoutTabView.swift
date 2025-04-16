@@ -24,8 +24,7 @@ struct WorkoutTabView: View {
             .ignoresSafeArea()
             
             ScrollView {
-                VStack(spacing: 20) {
-                    // Logo at the top
+                VStack(alignment: .leading, spacing: 20) {
                     HStack {
                         Spacer()
                         Image("holdIcon")
@@ -33,21 +32,16 @@ struct WorkoutTabView: View {
                     }
                     .padding(.top, 20)
                     
-                    HStack {
-                        Text("Today's Workout")
-                            .font(.system(size: 24, weight: .bold))
-                            .foregroundColor(.white)
-                        Spacer()
-                    }
+                    Text("Today's Workout")
+                        .font(.system(size: 24, weight: .bold))
+                        .foregroundColor(.white)
                     
                     workoutView
                     streakView
                     
                     
                 }
-                .padding(.horizontal)
-                .padding(.top, 20)
-                
+                .padding(.horizontal)                
                 Spacer(minLength: 80) // Space for tab bar
             }
         }

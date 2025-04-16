@@ -10,12 +10,8 @@ import SwiftUI
 struct KnowledgeTabView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     @EnvironmentObject var tabManager: TabManager
-    
-    // --- Data Loading and Grouping ---
     @StateObject private var viewModel = KnowledgeViewModel()
-    
-   
-    
+
     var body: some View {
         ZStack {
             LinearGradient(
@@ -29,8 +25,7 @@ struct KnowledgeTabView: View {
             .ignoresSafeArea()
             
             ScrollView {
-                VStack(spacing: 20) {
-                    // Logo at the top
+                VStack(alignment: .leading, spacing: 20) {
                     HStack {
                         Spacer()
                         Image("holdIcon")
@@ -38,22 +33,15 @@ struct KnowledgeTabView: View {
                     }
                     .padding(.top, 20)
                     
-                    HStack {
-                        Text("Knowledge")
-                            .font(.system(size: 24, weight: .bold))
-                            .foregroundColor(.white)
-                        Spacer()
-                    }
+                    Text("Knowledge")
+                        .font(.system(size: 24, weight: .bold))
+                        .foregroundColor(.white)
                     ForEach(viewModel.sortedCategories, id: \.self) { category in
                         KnowledgeSectionView(title: category, items: viewModel.groupedKnowledgeData[category] ?? [])
                     }
-                    
-                    
                 }
                 .padding(.horizontal)
-                .padding(.top, 20)
-                
-                Spacer(minLength: 80) // Space for tab bar
+                Spacer(minLength: 80)
             }
         }
         .navigationBarHidden(true)
@@ -62,31 +50,39 @@ struct KnowledgeTabView: View {
 
 // Reusable view for a knowledge section
 struct KnowledgeSectionView: View {
+    @EnvironmentObject var navigationManager: NavigationManager
     let title: String
-    // Placeholder: You'll pass actual items here later
     let items: [KnowledgeItem]
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            // Section Title with Chevron
-            HStack {
-                Text(title)
-                    .font(.system(size: 20, weight: .bold))
-                    .foregroundColor(.white)
-                Image(systemName: "chevron.right")
-                    .foregroundColor(.white)
-                    .font(.system(size: 16, weight: .bold))
-                Spacer()
+            Button {
+                navigationManager.push(to: .knowledgeView(categoryTitle: title, items: items))
+            } label: {
+                HStack {
+                    Text(title)
+                        .font(.system(size: 20, weight: .bold))
+                        .foregroundColor(.white)
+                    Image(systemName: "chevron.right")
+                        .foregroundColor(.white)
+                        .font(.system(size: 16, weight: .bold))
+                    Spacer()
+                }
             }
 
-            // Horizontal ScrollView for Cards
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 15) {
                     ForEach(items, id: \.self) { item in
-                        KnowledgeCardView(imageName: "knowledgePlaceholder", title: item.title)
+                        Button {
+                            navigationManager.push(to: .knowledgeDetailView(item: item))
+                        } label: {
+                            KnowledgeCardView(imageName: "knowledgePlaceholder", title: item.title)
+                        }
+
+                       
                     }
                 }
-                .padding(.vertical, 5) // Add small vertical padding
+                .padding(.vertical, 5)
             }
         }
     }
@@ -94,35 +90,31 @@ struct KnowledgeSectionView: View {
 
 // Reusable view for the knowledge cards
 struct KnowledgeCardView: View {
-    // Placeholder properties - replace with your actual data model later
-    let imageName: String// <<< MUST HAVE THIS IMAGE IN ASSETS
-    let title: String// Example title
+    let imageName: String
+    let title: String
 
     var body: some View {
         ZStack(alignment: .bottomLeading) {
-            // Placeholder image - replace with actual image loading
-            Image(imageName) // Make sure you have an image named "placeholder_couple" in your assets
+            Image(imageName)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(width: 150, height: 200) // Adjust size as needed
-                .clipped() // Clip the image to the frame bounds
+                .frame(width: 150, height: 200)
+                .clipped()
 
-            // Gradient overlay for text readability
             LinearGradient(
                 gradient: Gradient(colors: [Color.black.opacity(0.9), Color.clear]),
                 startPoint: .bottom,
                 endPoint: .center
             )
 
-            // Text title
             Text(title)
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(.white)
-                .padding(10) // Padding for the text inside the card
+                .padding(10)
         }
-        .frame(width: 150, height: 200) // Match the image frame
+        .frame(width: 150, height: 200)
         .cornerRadius(15)
-        // .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 2) // Optional subtle shadow
+//         .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 2) // Optional subtle shadow
     }
 }
 
