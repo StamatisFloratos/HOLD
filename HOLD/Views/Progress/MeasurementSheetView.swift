@@ -15,8 +15,8 @@ struct MeasurementSheetView: View {
             // Background gradient with specified hex colors
             LinearGradient(
                 colors: [
-                    Color(red: 16/255, green: 23/255, blue: 31/255),  // #10171F
-                    Color(red: 70/255, green: 96/255, blue: 133/255)  // #466085
+                    Color(hex:"#10171F"),
+                    Color(hex:"#466085")
                 ],
                 startPoint: .top,
                 endPoint: .bottom
@@ -94,8 +94,7 @@ struct MeasurementSheetView: View {
                         .font(.system(size: 16, weight: .semibold))
                         .padding()
                         .frame(maxWidth: .infinity,maxHeight: 47)
-                        .background(Color.red)
-                        .foregroundColor(.white)
+                        .background(Color(hex: "#FF1919"))                        .foregroundColor(.white)
                         .cornerRadius(30)
                 }
                 .padding(.horizontal, 50)

@@ -9,16 +9,16 @@ import SwiftUI
 
 struct ProgressTabView: View {
     @EnvironmentObject var navigationManager: NavigationManager
+    @EnvironmentObject var tabManager: TabManager
 
     @State private var navigateToMeasurement = false
 
     var body: some View {
         ZStack {
-            // Background gradient with specified hex colors
             LinearGradient(
                 colors: [
-                    Color(red: 16/255, green: 23/255, blue: 31/255),  // #10171F
-                    Color(red: 70/255, green: 96/255, blue: 133/255)  // #466085
+                    Color(hex:"#10171F"),
+                    Color(hex:"#466085")
                 ],
                 startPoint: .top,
                 endPoint: .bottom
@@ -107,10 +107,6 @@ struct ProgressTabView: View {
                     
                     Spacer(minLength: 80) // Space for tab bar
                 }
-            }
-            
-            NavigationLink(destination: MeasurementSheetView(), isActive: $navigateToMeasurement) {
-                EmptyView()
             }
         }
         .navigationBarHidden(true)
@@ -208,7 +204,7 @@ struct ProgressTabView: View {
                         }
                         .padding()
                         .frame(maxWidth: .infinity,maxHeight: 47)
-                        .background(Color.red)
+                        .background(Color(hex: "#FF1919"))
                         .foregroundColor(.white)
                         .cornerRadius(30)
                     }
@@ -248,4 +244,5 @@ struct Bar: View {
 
 #Preview {
     ProgressTabView()
+        .environmentObject(TabManager())
 }

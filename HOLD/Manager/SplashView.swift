@@ -29,6 +29,10 @@ struct SplashView: View {
                         MainTabView()
                     case .measurementActivityView:
                         MeasurementActivityView()
+                    case .workoutView:
+                        WorkoutTabView()
+                    case .knowledgeView:
+                        KnowledgeTabView()
                     }
                 }
             )
@@ -38,11 +42,10 @@ struct SplashView: View {
     //MARK: - UI Components
     private var splash: some View {
         ZStack {
-            // Background gradient with specified hex colors
             LinearGradient(
                 colors: [
-                    Color(red: 16/255, green: 23/255, blue: 31/255),  // #10171F
-                    Color(red: 70/255, green: 96/255, blue: 133/255)  // #466085
+                    Color(hex:"#10171F"),
+                    Color(hex:"#466085")
                 ],
                 startPoint: .top,
                 endPoint: .bottom

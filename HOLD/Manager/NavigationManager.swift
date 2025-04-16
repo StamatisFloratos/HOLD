@@ -45,5 +45,7 @@ extension NavigationManager {
         case measurementView
         case measurementActivityView
         case progressView
+        case workoutView
+        case knowledgeView
     }
 }

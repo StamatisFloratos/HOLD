@@ -20,8 +20,8 @@ struct MeasurementActivityView: View {
             // Background gradient with specified hex colors
             LinearGradient(
                 colors: [
-                    Color(red: 16/255, green: 23/255, blue: 31/255),  // #10171F
-                    Color(red: 70/255, green: 96/255, blue: 133/255)  // #466085
+                    Color(hex:"#10171F"),
+                    Color(hex:"#466085")
                 ],
                 startPoint: .top,
                 endPoint: .bottom
@@ -53,18 +53,28 @@ struct MeasurementActivityView: View {
                     
                     Spacer()
                     
-                    Button(action: {}) {
-                        ZStack {
-                            Circle()
-                                .fill(Color.red)
-                                .frame(height: 170)
-                            Text("Press &\nHOLD")
-                                .font(.system(size: 24, weight: .semibold))
-                                .foregroundColor(.white)
-                                .multilineTextAlignment(.center)
-                        }
+                    ZStack {
+                        Circle()
+                            .fill(
+                                RadialGradient(
+                                    gradient: Gradient(colors: hold
+                                        ? [Color(hex: "#990F0F"), Color(hex: "#FF1919")]
+                                        : [Color(hex: "#FF1919"), Color(hex: "#990F0F")]
+                                    ),
+                                    center: .center,
+                                    startRadius: 10,
+                                    endRadius: 85
+                                )
+                            )
+                            .frame(height: 170)
+                            .animation(.easeInOut(duration: 0.3), value: hold)
+
+                        Text("Press &\nHOLD")
+                            .font(.system(size: 24, weight: .semibold))
+                            .foregroundColor(.white)
+                            .multilineTextAlignment(.center)
                     }
-                    .simultaneousGesture(
+                    .gesture(
                         DragGesture(minimumDistance: 0)
                             .onChanged { _ in
                                 if !hold {
@@ -106,7 +116,7 @@ struct MeasurementActivityView: View {
                             .font(.system(size: 16, weight: .semibold))
                             .padding()
                             .frame(maxWidth: .infinity,maxHeight: 47)
-                            .background(Color.red)
+                            .background(Color(hex: "#FF1919"))
                             .foregroundColor(.white)
                             .cornerRadius(30)
                     }

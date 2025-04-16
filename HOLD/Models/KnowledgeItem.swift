@@ -8,6 +8,11 @@
 import Foundation
 import SwiftUI
 
+struct KnowledgeWrapper: Codable {
+    let category: String
+    let item: KnowledgeItem
+}
+
 struct KnowledgeItem: Identifiable, Codable, Hashable {
     let id: UUID
     let title: String

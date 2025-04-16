@@ -13,12 +13,13 @@ import SwiftData
 struct HOLDApp: App {
     @Environment(\.scenePhase) var scenePhase
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-
+    @StateObject private var tabManager = TabManager()
     @StateObject private var navigationManager = NavigationManager()
     var body: some Scene {
         WindowGroup {
             SplashView()
                 .environmentObject(navigationManager)
+                .environmentObject(tabManager)
                 .onAppear {
                     appDelegate.applicationDidBecomeActive()
                 }

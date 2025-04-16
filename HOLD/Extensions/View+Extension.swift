@@ -28,6 +28,12 @@ extension View {
     
 }
 
+extension View {
+    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+        clipShape(RoundedCorner(radius: radius, corners: corners))
+    }
+}
+
 private struct EmbedNavigationViewModifier: ViewModifier {
     let view: AnyView
     

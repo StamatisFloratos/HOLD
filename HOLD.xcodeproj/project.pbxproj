@@ -41,9 +41,9 @@
 		762FEBF32D8CEFAD0058F107 /* NotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762FEBF22D8CEFAD0058F107 /* NotificationsManager.swift */; };
 		762FEBF52D8CEFB80058F107 /* SubscriptionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762FEBF42D8CEFB80058F107 /* SubscriptionsManager.swift */; };
 		76711AFB2D8CD62500FFEE50 /* HOLDApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76711AFA2D8CD62500FFEE50 /* HOLDApp.swift */; };
-		76711AFD2D8CD62500FFEE50 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76711AFC2D8CD62500FFEE50 /* ContentView.swift */; };
 		76711AFF2D8CD62700FFEE50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76711AFE2D8CD62700FFEE50 /* Assets.xcassets */; };
 		76711B022D8CD62700FFEE50 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76711B012D8CD62700FFEE50 /* Preview Assets.xcassets */; };
+		7C91AB2F2DAED90F00976240 /* knowledge_sample.json in Resources */ = {isa = PBXBuildFile; fileRef = 7C91AB2E2DAED90F00976240 /* knowledge_sample.json */; };
 		7CA106B32DA564A6000950FC /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106B22DA564A6000950FC /* Font+Extension.swift */; };
 		7CA106B52DA564B4000950FC /* CustomFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106B42DA564B4000950FC /* CustomFont.swift */; };
 		7CA106B92DA57F4D000950FC /* NavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106B82DA57F4D000950FC /* NavigationManager.swift */; };
@@ -51,7 +51,7 @@
 		7CA106BF2DA58565000950FC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106BE2DA58565000950FC /* AppDelegate.swift */; };
 		7CA106C12DA5BA35000950FC /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106C02DA5BA35000950FC /* View+Extension.swift */; };
 		7CA106C32DA5C89D000950FC /* MeasurementActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106C22DA5C896000950FC /* MeasurementActivityView.swift */; };
-		7CA106C62DA6D1E4000950FC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106C42DA6D1E4000950FC /* ColorExtension.swift */; };
+		7CA106C82DA6D467000950FC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106C72DA6D45F000950FC /* ColorExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -90,9 +90,9 @@
 		762FEBF42D8CEFB80058F107 /* SubscriptionsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionsManager.swift; sourceTree = "<group>"; };
 		76711AF72D8CD62500FFEE50 /* HOLD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HOLD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		76711AFA2D8CD62500FFEE50 /* HOLDApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HOLDApp.swift; sourceTree = "<group>"; };
-		76711AFC2D8CD62500FFEE50 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		76711AFE2D8CD62700FFEE50 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		76711B012D8CD62700FFEE50 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		7C91AB2E2DAED90F00976240 /* knowledge_sample.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = knowledge_sample.json; sourceTree = "<group>"; };
 		7CA106B22DA564A6000950FC /* Font+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Font+Extension.swift"; path = "../../../TempMail/TempMail/Utilities/Font+Extension.swift"; sourceTree = "<group>"; };
 		7CA106B42DA564B4000950FC /* CustomFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomFont.swift; path = ../../../TempMail/TempMail/Utilities/CustomFont.swift; sourceTree = "<group>"; };
 		7CA106B82DA57F4D000950FC /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
@@ -100,7 +100,7 @@
 		7CA106BE2DA58565000950FC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7CA106C02DA5BA35000950FC /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		7CA106C22DA5C896000950FC /* MeasurementActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementActivityView.swift; sourceTree = "<group>"; };
-		7CA106C42DA6D1E4000950FC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
+		7CA106C72DA6D45F000950FC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -235,7 +235,6 @@
 				762FEBB82D8CE97F0058F107 /* ViewModels */,
 				762FEBAB2D8CE8B80058F107 /* Models */,
 				76711AFA2D8CD62500FFEE50 /* HOLDApp.swift */,
-				76711AFC2D8CD62500FFEE50 /* ContentView.swift */,
 				76711AFE2D8CD62700FFEE50 /* Assets.xcassets */,
 				76711B002D8CD62700FFEE50 /* Preview Content */,
 			);
@@ -253,10 +252,9 @@
 		7CA106B62DA56510000950FC /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				7CA106C02DA5BA35000950FC /* View+Extension.swift */,
+				7C91AB2E2DAED90F00976240 /* knowledge_sample.json */,
 				7CA106BE2DA58565000950FC /* AppDelegate.swift */,
 				7CA106B42DA564B4000950FC /* CustomFont.swift */,
-				7CA106B22DA564A6000950FC /* Font+Extension.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -273,7 +271,9 @@
 		7CA106C52DA6D1E4000950FC /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				7CA106C42DA6D1E4000950FC /* ColorExtension.swift */,
+				7CA106C72DA6D45F000950FC /* ColorExtension.swift */,
+				7CA106C02DA5BA35000950FC /* View+Extension.swift */,
+				7CA106B22DA564A6000950FC /* Font+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -338,6 +338,7 @@
 			files = (
 				76711B022D8CD62700FFEE50 /* Preview Assets.xcassets in Resources */,
 				76711AFF2D8CD62700FFEE50 /* Assets.xcassets in Resources */,
+				7C91AB2F2DAED90F00976240 /* knowledge_sample.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,13 +352,12 @@
 				762FEBBA2D8CE9910058F107 /* ProgressViewModel.swift in Sources */,
 				762FEBE02D8CEE720058F107 /* WorkoutDetailView.swift in Sources */,
 				762FEBCC2D8CEC160058F107 /* WorkoutTabView.swift in Sources */,
-				76711AFD2D8CD62500FFEE50 /* ContentView.swift in Sources */,
 				76711AFB2D8CD62500FFEE50 /* HOLDApp.swift in Sources */,
 				762FEBD52D8CED070058F107 /* ProgressGraphView.swift in Sources */,
 				762FEBB52D8CE9500058F107 /* UserProfile.swift in Sources */,
 				762FEBC02D8CE9B90058F107 /* WorkoutViewModel.swift in Sources */,
 				7CA106BF2DA58565000950FC /* AppDelegate.swift in Sources */,
-				7CA106C62DA6D1E4000950FC /* ColorExtension.swift in Sources */,
+				7CA106C82DA6D467000950FC /* ColorExtension.swift in Sources */,
 				7CA106BB2DA58119000950FC /* SplashView.swift in Sources */,
 				7CA106B52DA564B4000950FC /* CustomFont.swift in Sources */,
 				762FEBAF2D8CE8DE0058F107 /* ChallengeResult.swift in Sources */,
