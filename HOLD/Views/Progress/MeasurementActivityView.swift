@@ -13,6 +13,8 @@ struct MeasurementActivityView: View {
     @State private var holdTime: Int = 0
     @State private var timer: Timer? = nil
     @EnvironmentObject var navigationManager: NavigationManager
+    @EnvironmentObject var viewModel: ProgressViewModel
+    @Environment(\.presentationMode) var presentationMode
 
     
     var body: some View {
@@ -88,6 +90,7 @@ struct MeasurementActivityView: View {
                                 hold = false
                                 finish = true
                                 stopTimer()
+                                viewModel.measurementDidFinish(duration: Double(holdTime))
                             }
                     )
                     
@@ -110,7 +113,9 @@ struct MeasurementActivityView: View {
                     Spacer()
                     Button(action: {
                         // Handle measurement action
-                        navigationManager.pop(to: .progressView)
+//                        navigationManager.pop(to: .progressView)
+                        presentationMode.wrappedValue.dismiss()
+//                        navigationManager.pop(to: .progressView)
                     }) {
                         Text("Continue")
                             .font(.system(size: 16, weight: .semibold))

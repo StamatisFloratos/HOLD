@@ -11,6 +11,13 @@ struct KnowledgeTabView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     @EnvironmentObject var tabManager: TabManager
     @StateObject private var viewModel = KnowledgeViewModel()
+    
+    @State var isClickedOnDetail = false
+    // Define grid layout: 2 columns, adaptive spacing
+    let columns: [GridItem] = [
+        GridItem(.flexible(), spacing: 16),
+        GridItem(.flexible(), spacing: 16)
+    ]
 
     var body: some View {
         ZStack {
@@ -33,11 +40,18 @@ struct KnowledgeTabView: View {
                     }
                     .padding(.top, 20)
                     
-                    Text("Knowledge")
-                        .font(.system(size: 24, weight: .bold))
-                        .foregroundColor(.white)
-                    ForEach(viewModel.sortedCategories, id: \.self) { category in
-                        KnowledgeSectionView(title: category, items: viewModel.groupedKnowledgeData[category] ?? [])
+                    if !isClickedOnDetail {
+                        
+                        Text("Knowledge")
+                            .font(.system(size: 24, weight: .bold))
+                            .foregroundColor(.white)
+                        ForEach(viewModel.sortedCategories, id: \.self) { category in
+                            KnowledgeSectionView(title: category, items: viewModel.groupedKnowledgeData[category] ?? [])
+                        }
+                    }
+                    else {
+                        //
+                        
                     }
                 }
                 .padding(.horizontal)

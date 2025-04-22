@@ -9,6 +9,11 @@ import SwiftUI
 
 struct MeasurementSheetView: View {
     @EnvironmentObject var navigationManager: NavigationManager
+    @State private var showingActivityView = false
+    @EnvironmentObject var viewModel: ProgressViewModel
+    @Environment(\.presentationMode) var presentationMode // For dismissing this sheet
+
+
 
     var body: some View {
         ZStack {
@@ -56,39 +61,18 @@ struct MeasurementSheetView: View {
                         .foregroundColor(.white)
                         .padding(.bottom,18)
                     
-                    HStack(alignment:.top) {
-                        Text("•")
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(.white)
-                        Text("Start contract your pelvic floor muscle and press the button at the same time.")
-                            .font(.system(size: 16, weight: .regular))
-                            .foregroundColor(.white)
-                    }
-                    
-                    HStack(alignment:.top) {
-                        Text("•")
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(.white)
-                        Text("Hold as long as you can.")
-                            .font(.system(size: 16, weight: .regular))
-                            .foregroundColor(.white)
-                    }
-                    
-                    HStack(alignment:.top) {
-                        Text("•")
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(.white)
-                        Text("Let go of the button when you can’t hold any more.")
-                            .font(.system(size: 16, weight: .regular))
-                            .foregroundColor(.white)
-                    }
+                    BulletTextView(text: "Start contract your pelvic floor muscle and press the button at the same time.")
+                    BulletTextView(text: "Hold as long as you can.")
+                    BulletTextView(text: "Let go of the button when you can’t hold any more.")
+                   
                 }
                 .padding(.horizontal)
                 
                 Spacer()
                 Button(action: {
                     // Handle measurement action
-                    navigationManager.push(to: .measurementActivityView)
+//                    navigationManager.push(to: .measurementActivityView)
+                    showingActivityView = true
                 }) {
                     Text("Start Measurement")
                         .font(.system(size: 16, weight: .semibold))
@@ -102,6 +86,16 @@ struct MeasurementSheetView: View {
             }
         }
         .navigationBarHidden(true)
+        .fullScreenCover(isPresented: $showingActivityView,
+                         onDismiss: {
+                                         // This code runs *after* MeasurementActivityView is dismissed
+                                         print("MeasurementActivityView dismissed, now dismissing MeasurementSheetView.")
+                                         // Dismiss MeasurementSheetView itself
+                                         self.presentationMode.wrappedValue.dismiss()
+                                     }) {
+                     MeasurementActivityView()
+                         .environmentObject(viewModel) // <<< PASS ViewModel ALONG to the next view's environment
+                }
     }
 }
 

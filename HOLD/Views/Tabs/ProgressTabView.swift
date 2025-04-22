@@ -6,12 +6,18 @@
 //
 
 import SwiftUI
+import Charts
 
 struct ProgressTabView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     @EnvironmentObject var tabManager: TabManager
     @State private var navigateToMeasurement = false
+    
+    @StateObject private var viewModel = ProgressViewModel()
+    @State private var showingMeasurementSheet = false
+    @State private var showingChallengeSheet = false
 
+    
     var body: some View {
         ZStack {
             LinearGradient(
@@ -42,71 +48,85 @@ struct ProgressTabView: View {
                     }
                     .padding(.horizontal)
                     
-                    // Training Progress Section
-                    progressChart
                     
-                    // Progress indicator
-                    VStack(spacing: 10) {
-                        HStack {
-                            Spacer()
-                            Text("You")
-                                .foregroundColor(.white)
-                            Spacer()
-                        }
-                        
-                        // Triangle indicator
-                        HStack {
-                            Spacer()
-                            Image(systemName: "triangle.fill")
-                                .foregroundColor(.white)
-                                .rotationEffect(.degrees(180))
-                            Spacer()
-                        }
-                        
-                        // Progress slider visualization
-                        ZStack(alignment: .leading) {
-                            LinearGradient(
-                                colors: [.orange, .yellow, .green],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
-                            .frame(height: 25)
-                            .cornerRadius(12)
-                        }
-                        
-                        // Time indicators
-                        HStack {
-                            Text("3 sec")
-                                .foregroundColor(.white)
-                                .font(.caption)
-                            
-                            Spacer()
-                            
-                            Text("300 sec")
-                                .foregroundColor(.white)
-                                .font(.caption)
-                        }
-                        
-                        // Challenge section
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text("The Challenge")
-                                .font(.title2)
-                                .foregroundColor(.white)
-                                .padding(.top, 20)
-                            
-                            Text("Last Attempt: May 18, 2025")
-                                .foregroundColor(.gray)
-                                .font(.subheadline)
-                        }
-                    }
-                    .padding(.horizontal)                    
-                    Spacer(minLength: 80) // Space for tab bar
+                    progressChart
+                    progressIndicator
+                    challengeView
+                    
+                    Spacer(minLength: 80)
                 }
             }
         }
         .navigationBarHidden(true)
+        .fullScreenCover(isPresented: $showingMeasurementSheet) {
+            MeasurementSheetView()
+                .environmentObject(viewModel)
+        }
+        .fullScreenCover(isPresented: $showingChallengeSheet) {
+            ChallengeSheetView()
+                .environmentObject(viewModel)
+        }
         
     }
+    
+    var progressIndicator: some View {
+        VStack(spacing: 10) {
+            HStack {
+                Spacer()
+                Text("You")
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundColor(.white)
+                Spacer()
+            }
+            
+            // Triangle indicator
+            HStack {
+                Spacer()
+                Image(systemName: "triangle.fill")
+                    .foregroundColor(.white)
+                    .rotationEffect(.degrees(180))
+                Spacer()
+            }
+            
+            // Progress slider visualization
+            ZStack {
+                LinearGradient(
+                    colors: [Color(hex: "FF0000"), Color(hex: "FFC800"), Color(hex: "00FF09")],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+                .frame(height: 33)
+                .cornerRadius(20)
+                
+                HStack{
+                    Text("😭")
+                        .font(.title)
+                    Spacer()
+                    Text("😩")
+                        .font(.title)
+                }
+            }
+            
+            // Time indicators
+            HStack {
+                Text("3 sec")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(.white)
+                
+                Spacer()
+                
+                Text("300 sec")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(.white)
+            }
+            
+            
+        }
+        .padding(.horizontal)
+        .padding(.top, 20)
+        
+    }
+    
     
     var progressChart: some View {
         VStack(alignment: .leading, spacing: 15) {
@@ -116,100 +136,189 @@ struct ProgressTabView: View {
                 .padding(.horizontal)
             
             HStack {
-                Text("All Time Best: 23 sec")
-                    .font(.system(size: 16, weight: .medium))
+                Text("All Time Best: \(formatDuration(viewModel.allTimeBest))")
+                    .font(.system(size: 15, weight: .medium))
                     .foregroundColor(.gray)
-                
                 Spacer()
-                
-                Text("Weekly Best: 20 sec")
-                    .font(.system(size: 16, weight: .medium))
+                Text("Weekly Best: \(formatDuration(viewModel.weeklyBest))")
+                    .font(.system(size: 15, weight: .medium))
                     .foregroundColor(.gray)
             }
             .padding(.horizontal)
             
-            // Progress Chart
-            ZStack {
-                RoundedRectangle(cornerRadius: 15)
-                    .fill(Color(red: 0.1, green: 0.12, blue: 0.2))
-                
-                VStack(spacing: 10) {
-                    Text("17 Mar - 23 Mar 2025")
+            // Progress Chart Container
+            
+            
+            VStack(spacing: 30) {
+                HStack{
+                    Text(viewModel.weekDateRange)
                         .foregroundColor(.white)
                         .font(.callout)
                         .padding(.top, 10)
-                    
-                    // Line markers with labels
-                    ZStack(alignment: .leading) {
-                        VStack(alignment: .trailing, spacing: 30) {
-                            HStack {
-                                Spacer()
-                                Text("24 sec")
-                                    .font(.caption)
-                                    .foregroundColor(.gray)
-                            }
-                            
-                            HStack {
-                                Spacer()
-                                Text("16 sec")
-                                    .font(.caption)
-                                    .foregroundColor(.gray)
-                            }
-                            
-                            HStack {
-                                Spacer()
-                                Text("8 sec")
-                                    .font(.caption)
-                                    .foregroundColor(.gray)
-                            }
-                            
-                            HStack {
-                                Spacer()
-                                Text("0 sec")
-                                    .font(.caption)
-                                    .foregroundColor(.gray)
-                            }
-                        }
-                        
-                        // Chart bars
-                        HStack(alignment: .bottom, spacing: 15) {
-                            Bar(height: 0.65, day: "Mon")
-                            Bar(height: 0.5, day: "Tue")
-                            Bar(height: 0.8, day: "Wed")
-                            Bar(height: 0.0, day: "Thu")
-                            Bar(height: 0.0, day: "Fri")
-                            Bar(height: 0.0, day: "Sat")
-                            Bar(height: 0.0, day: "Sun")
-                        }
-                        .padding(.horizontal, 20)
-                        .padding(.top, 20)
-                    }
-                    .frame(height: 150)
-                    .padding(.horizontal)
-                    
-                    // Take Measurement Button
-                    Button(action: {
-                        // Handle measurement action
-                        navigationManager.push(to: .measurementView)
-                    }) {
-                        HStack {
-                            Image(systemName: "plus.circle")
-                            Text("Take Measurement")
-                                .font(.system(size: 16, weight: .semibold))
-                        }
-                        .padding()
-                        .frame(maxWidth: .infinity,maxHeight: 47)
-                        .background(Color(hex: "#FF1919"))
-                        .foregroundColor(.white)
-                        .cornerRadius(30)
-                    }
-                    .padding(.horizontal, 50)
-                    .padding(.bottom, 15)
+                        .padding(.horizontal)
+                    Spacer()
                 }
+                
+                Chart {
+                    ForEach(viewModel.chartDisplayData) { dailyData in
+                        BarMark(
+                            x: .value("Day", dailyData.day),
+                            y: .value("Duration", dailyData.duration ?? 0.0)
+                        )
+                        .foregroundStyle(Color(hex:"#FF1919")) // red for bars
+                        .cornerRadius(5, style: .continuous)
+                        
+                    }
+                }
+                .chartXAxis {
+                    AxisMarks { value in
+                        AxisGridLine()
+                            .foregroundStyle(.clear)
+                        AxisTick()
+                        AxisValueLabel()
+                            .foregroundStyle(.white)
+                            .font(.system(size: 12, weight: .regular))
+                    }
+                }
+                .chartYAxis {
+                    AxisMarks { value in
+                        AxisGridLine()
+                            .foregroundStyle(.white)
+                        AxisTick()
+                        AxisValueLabel {
+                            if let val = value.as(Double.self) {
+                                Text("\(Int(val)) sec")
+                                    .foregroundStyle(.white)
+                            }
+                        }
+                        .font(.system(size: 10, weight: .regular))
+                    }
+                }
+                .foregroundStyle(Color.white)
+                .frame(height: 150) // Adjust height as needed
+                .padding(.horizontal)
+                
+                
+                // Take Measurement Button
+                Button {
+                    showingMeasurementSheet = true
+                } label: {
+                    HStack {
+                        Image(systemName: "plus.circle")
+                        Text("Take Measurement")
+                            .font(.system(size: 16, weight: .medium))
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color(hex:"#FF1919"))
+                    .foregroundColor(.white)
+                    .cornerRadius(25)
+                }
+                .padding(.horizontal, 50)
+                .padding(.bottom, 24)
+                .padding(.top,42)
             }
+            .background(Color(hex: "#000000").opacity(0.4))
+            .cornerRadius(20)
+            .overlay(
+                RoundedRectangle(cornerRadius: 20)
+                    .stroke(Color.white.opacity(0.4), lineWidth: 1)
+                    .cornerRadius(12)
+            )
             .padding(.vertical, 5)
             .padding(.horizontal)
         }
+        
+    }
+    
+    var challengeView: some View {
+        // Challenge section
+        VStack {
+            HStack{
+                VStack(alignment: .leading, spacing: 30) {
+                    Text("The Challenge")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(.white)
+                    
+                    Text("Last Attempt: May 18, 2025")
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundColor(.white).opacity(0.4)
+                }
+                Spacer()
+            }
+            .padding(.horizontal,30)
+            
+            
+            // Progress Chart Container
+            
+            VStack(spacing: 10) {
+                Text("You Are in The Top:")
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundColor(.white)
+                    .padding(.top)
+                
+                Text("5.7%")
+                    .font(.system(size: 64, weight: .semibold))
+                    .foregroundColor(.white)
+                    .padding(.top,19)
+                
+                Text("of Men Globally")
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundColor(.white)
+                //                        .padding(.top,6)
+                Text("You lasted for 25m 43s")
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundColor(.white)
+                    .padding(.top,6)
+                Text("😧 That’s really impressive! ")
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundColor(.white)
+                    .padding(.top,6)
+                
+                
+                // Start Challenge Button
+                Button {
+                    showingChallengeSheet = true
+                } label: {
+                    HStack {
+                        Text("Start Challenge")
+                            .font(.system(size: 16, weight: .medium))
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color(hex:"#FF5E00"))
+                    .foregroundColor(.white)
+                    .cornerRadius(25)
+                }
+                .padding(.horizontal, 50)
+                
+                Text("This challenge tests your stamina and discipline by practicing different rhythmic patterns on your own so that you're ready when it matters the most.")
+                    .font(.system(size: 12, weight: .regular))
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+                    .padding()
+            }
+            .background(.black.opacity(0.4))
+            .cornerRadius(20)
+            .overlay(
+                RoundedRectangle(cornerRadius: 20)
+                    .stroke(Color.white.opacity(0.4), lineWidth: 1)
+                    .cornerRadius(12)
+            )
+            .padding(.vertical, 5)
+            .padding(.horizontal)
+            
+        }
+    }
+    
+    private func formatDuration(_ duration: Double?) -> String {
+        guard let duration = duration, duration > 0 else { return "- sec" }
+        return String(format: "%.0f sec", duration)
+    }
+    
+    private func calculateHeightPercent(duration: Double?, maxDuration: Double) -> Double {
+        guard let duration = duration, duration > 0, maxDuration > 0 else { return 0.0 }
+        return min(1.0, duration / maxDuration)
     }
 }
 
@@ -226,13 +335,13 @@ struct Bar: View {
                     .frame(width: 25, height: 100)
                 
                 Rectangle()
-                    .foregroundColor(.red)
+                    .foregroundColor(Color(hex:"#FF1919"))
                     .frame(width: 25, height: height * 100)
             }
             
             Text(day)
-                .foregroundColor(.gray)
-                .font(.caption)
+                .font(.system(size: 12, weight: .regular))
+                .foregroundColor(.white)
         }
     }
 }

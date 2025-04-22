@@ -10,11 +10,11 @@ import Foundation
 struct Measurement: Codable, Identifiable {
     let id: UUID
     let date: Date
-    let duration: TimeInterval
+    var durationSeconds: Double
     
-    init(date: Date = Date(), duration: TimeInterval) {
-        self.id = UUID()
-        self.date = date
-        self.duration = duration
+    init(id: UUID, date: Date, durationSeconds: Double) {
+        self.id = id
+        self.date = Calendar.current.startOfDay(for: date)
+        self.durationSeconds = durationSeconds
     }
 }
