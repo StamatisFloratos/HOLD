@@ -219,5 +219,55 @@ class ProgressViewModel: ObservableObject {
     }
     // --- End Persistence Helpers ---
     
-    
+    func challengeDidFinish(duration: TimeInterval) {
+        print("ViewModel received finished challenge: \(duration) seconds.")
+        
+        // Create a new challenge result with the duration
+        let newResult = ChallengeResult(duration: duration)
+        
+        // Save the challenge result
+        saveChallengeResult(newResult)
+    }
+
+    private var challengeResultsFileURL: URL {
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        return documentsDirectory.appendingPathComponent("challenge_results.json")
+    }
+
+    private func saveChallengeResult(_ result: ChallengeResult) {
+        var allResults = loadChallengeResults()
+        allResults.append(result)
+        saveChallengeResultsToFile(allResults)
+    }
+
+    private func saveChallengeResultsToFile(_ results: [ChallengeResult]) {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        
+        do {
+            let data = try encoder.encode(results)
+            try data.write(to: challengeResultsFileURL, options: [.atomicWrite])
+            print("Successfully saved \(results.count) challenge results")
+        } catch {
+            print("Error saving challenge results: \(error)")
+        }
+    }
+
+    private func loadChallengeResults() -> [ChallengeResult] {
+        guard FileManager.default.fileExists(atPath: challengeResultsFileURL.path) else {
+            print("Challenge results file not found, starting fresh.")
+            return []
+        }
+        
+        do {
+            let data = try Data(contentsOf: challengeResultsFileURL)
+            let decoder = JSONDecoder()
+            let results = try decoder.decode([ChallengeResult].self, from: data)
+            print("Successfully loaded \(results.count) challenge results")
+            return results
+        } catch {
+            print("Error loading or decoding challenge results: \(error)")
+            return []
+        }
+    }
 }

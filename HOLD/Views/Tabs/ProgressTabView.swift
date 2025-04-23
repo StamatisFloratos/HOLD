@@ -259,7 +259,14 @@ struct ProgressTabView: View {
                 
                 Text("5.7%")
                     .font(.system(size: 64, weight: .semibold))
-                    .foregroundColor(.white)
+                    .foregroundStyle(LinearGradient(
+                        colors: [
+                            Color(hex:"#16D700"),
+                            Color(hex:"#0B7100")
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    ))
                     .padding(.top,19)
                 
                 Text("of Men Globally")

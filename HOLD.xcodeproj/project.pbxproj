@@ -44,6 +44,7 @@
 		76711AFF2D8CD62700FFEE50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76711AFE2D8CD62700FFEE50 /* Assets.xcassets */; };
 		76711B022D8CD62700FFEE50 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76711B012D8CD62700FFEE50 /* Preview Assets.xcassets */; };
 		7C149D612DB837A6003C0297 /* ChallengeActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C149D602DB837A6003C0297 /* ChallengeActivityView.swift */; };
+		7C149D632DB99B99003C0297 /* ChallengeRankView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C149D622DB99B99003C0297 /* ChallengeRankView.swift */; };
 		7C91AB2F2DAED90F00976240 /* knowledge_sample.json in Resources */ = {isa = PBXBuildFile; fileRef = 7C91AB2E2DAED90F00976240 /* knowledge_sample.json */; };
 		7CA106B32DA564A6000950FC /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106B22DA564A6000950FC /* Font+Extension.swift */; };
 		7CA106B52DA564B4000950FC /* CustomFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106B42DA564B4000950FC /* CustomFont.swift */; };
@@ -94,6 +95,7 @@
 		76711AFE2D8CD62700FFEE50 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		76711B012D8CD62700FFEE50 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		7C149D602DB837A6003C0297 /* ChallengeActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeActivityView.swift; sourceTree = "<group>"; };
+		7C149D622DB99B99003C0297 /* ChallengeRankView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeRankView.swift; sourceTree = "<group>"; };
 		7C91AB2E2DAED90F00976240 /* knowledge_sample.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = knowledge_sample.json; sourceTree = "<group>"; };
 		7CA106B22DA564A6000950FC /* Font+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Font+Extension.swift"; path = "../../../TempMail/TempMail/Utilities/Font+Extension.swift"; sourceTree = "<group>"; };
 		7CA106B42DA564B4000950FC /* CustomFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomFont.swift; path = ../../../TempMail/TempMail/Utilities/CustomFont.swift; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				762FEBD82D8CEDB20058F107 /* ChallengeSheetView.swift */,
 				762FEBDA2D8CEDD50058F107 /* ProgressBarView.swift */,
 				7C149D602DB837A6003C0297 /* ChallengeActivityView.swift */,
+				7C149D622DB99B99003C0297 /* ChallengeRankView.swift */,
 			);
 			path = Progress;
 			sourceTree = "<group>";
@@ -368,6 +371,7 @@
 				762FEBC42D8CE9D50058F107 /* ProfileViewModel.swift in Sources */,
 				762FEBE62D8CEEE30058F107 /* WorkoutFinishView.swift in Sources */,
 				762FEBEF2D8CEF6F0058F107 /* KnowledgeDetailView.swift in Sources */,
+				7C149D632DB99B99003C0297 /* ChallengeRankView.swift in Sources */,
 				762FEBD92D8CEDB20058F107 /* ChallengeSheetView.swift in Sources */,
 				7CA106B32DA564A6000950FC /* Font+Extension.swift in Sources */,
 				7CA106C12DA5BA35000950FC /* View+Extension.swift in Sources */,

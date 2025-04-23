@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct ChallengeResult: Codable, Identifiable {
     let id: UUID
@@ -14,7 +15,7 @@ struct ChallengeResult: Codable, Identifiable {
     
     init(date: Date = Date(), duration: TimeInterval) {
         self.id = UUID()
-        self.date = date
+        self.date = Calendar.current.startOfDay(for: date)
         self.duration = duration
     }
     
@@ -61,16 +62,138 @@ struct ChallengeResult: Codable, Identifiable {
     // Format the percentile for display
     var percentileDisplay: String {
         if percentile < 0.11 {
-            return "Top 0.1%"
+            return "0.1%"
         } else {
-            return "Top \(String(format: "%.1f", percentile))%"
+            return "\(String(format: "%.1f", percentile))%"
         }
     }
     
     // Format duration for display
     var durationDisplay: String {
+        timeDisplay(duration: duration.self)
+    }
+    
+    // Rank based on duration
+    enum Rank: String, Codable {
+        case simp = "Simp"
+        case npc = "NPC"
+        case huzzer = "Huzzer"
+        case rizz = "Rizz"
+        case minChad = "MinChad"
+        case gigaChad = "GigaChad"
+        
+        // For UI display - could add emoji or custom descriptions
+        var displayName: String {
+            return self.rawValue
+        }
+    }
+
+    // Calculate rank based on duration
+    var rank: Rank {
+        let seconds = duration
+        
+        switch seconds {
+        case 0..<60: // 0 seconds to 1 minute
+            return .simp
+        case 60..<180: // 1 minute to 3 minutes
+            return .npc
+        case 180..<300: // 3 minutes to 5 minutes
+            return .huzzer
+        case 300..<900: // 5 minutes to 15 minutes
+            return .rizz
+        case 900..<2400: // 15 minutes to 40 minutes
+            return .minChad
+        default: // 40+ minutes (2400+ seconds)
+            return .gigaChad
+        }
+    }
+
+    // Format for display
+    var rankDisplay: String {
+        return rank.displayName
+    }
+    
+    var rankImage: String {
+        switch rank {
+        case .simp:
+            return "simp-rank"
+        case .npc:
+            return "moderator-rank"
+        case .huzzer:
+            return "happy-wojak-rank"
+        case .rizz:
+            return "rizz-rank"
+        case .minChad:
+            return "minichad-rank"
+        case .gigaChad:
+            return "giga-chad-rank"
+        }
+    }
+    
+    var backgroundColor: [Color] {
+        switch rank {
+            
+        case .simp:
+            return [
+                Color(hex:"#FFFFFF"),
+                Color(hex:"#D7D6D6")
+            ]
+        case .npc:
+            return [
+                Color(hex:"#FFFFFF"),
+                Color(hex:"#D7D6D6")
+            ]
+        case .huzzer:
+            return [
+                Color(hex:"#D92D43"),
+                Color(hex:"#FFC602")
+            ]
+        case .rizz:
+            return [
+                Color(hex:"#AA6A13"),
+                Color(hex:"#F3CE6B")
+            ]
+        case .minChad:
+            return [
+                Color(hex:"#4499DA"),
+                Color(hex:"#102B47")
+            ]
+        case .gigaChad:
+            return [
+                Color(hex:"#0C0E21"),
+                Color(hex:"#0D47AE")
+            ]
+        }
+    }
+    
+    var nextRankValue: TimeInterval {
+        switch duration {
+        case 0..<60: // 0 seconds to 1 minute
+            return 60
+        case 60..<180: // 1 minute to 3 minutes
+            return 180
+        case 180..<300: // 3 minutes to 5 minutes
+            return 300
+        case 300..<900: // 5 minutes to 15 minutes
+            return 900
+        case 900..<2400: // 15 minutes to 40 minutes
+            return 2400
+        default:
+            return 2500
+        }
+    }
+    
+    func timeDisplay(duration: TimeInterval) -> String {
         let minutes = Int(duration) / 60
-        let seconds = Int(duration) % 60
-        return "\(minutes)m \(seconds)s"
+        let remainingSeconds = Int(duration) % 60
+
+        if minutes > 0 && remainingSeconds > 0 {
+            return "\(minutes)m \(remainingSeconds)s"
+        } else if minutes > 0 && remainingSeconds == 0 {
+            return "\(minutes)m"
+        }
+        else {
+            return "\(remainingSeconds)s"
+        }
     }
 }

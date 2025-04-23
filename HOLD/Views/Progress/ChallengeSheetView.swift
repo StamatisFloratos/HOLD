@@ -36,7 +36,7 @@ struct ChallengeSheetView: View {
                     
                     Image("challengeIcon")
                         .padding(.vertical,45)
-                    Text("You’re about to start\n“The Challenge”")
+                    Text("You're about to start\nThe Challenge")
                         .font(.system(size: 24, weight: .semibold))
                         .foregroundColor(.white)
                         .fixedSize(horizontal: false, vertical: true)
@@ -54,9 +54,9 @@ struct ChallengeSheetView: View {
                         .padding(.bottom,18)
                     
                     BulletTextView(text: "You have complete privacy.")
-                    BulletTextView(text: "Turned on “Do Not Disturb”")
+                    BulletTextView(text: "Turned on Do Not Disturb")
                     BulletTextView(text: "You follow the rhythm at all times, when you finish, you need to press stop.")
-                    BulletTextView(text: "Once “The Challenge” starts it cannot be paused.")
+                    BulletTextView(text: "Once The Challenge starts it cannot be paused.")
                 }
                 .padding(.horizontal)
                 
@@ -82,8 +82,11 @@ struct ChallengeSheetView: View {
             print("ChallengeActivityView dismissed, now dismissing ChallengeSheetView.")
             self.presentationMode.wrappedValue.dismiss()
         }) {
-            ChallengeActivityView()
-                .environmentObject(viewModel)
+            ChallengeActivityView { elapsedTime in
+                // Save the challenge result
+                print("Challenge completed with total time: \(elapsedTime)")
+                viewModel.challengeDidFinish(duration: elapsedTime)
+            }
         }
     }
     
