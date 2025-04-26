@@ -12,6 +12,8 @@ import Photos
 
 struct SplashView: View {
     @EnvironmentObject var navigationManager: NavigationManager
+    @EnvironmentObject var workoutViewModel: WorkoutViewModel
+
 
     var body: some View {
         splash
@@ -25,11 +27,11 @@ struct SplashView: View {
                     switch destination {
                     case .measurementView:
                         MeasurementSheetView()
-                    case .progressView:
+                    case .mainTabView:
                         MainTabView()
                     case .measurementActivityView:
                         MeasurementActivityView()
-                    case .workoutView:
+                    case .workoutTabView:
                         WorkoutTabView()
                     case .knowledgeTabView:
                         KnowledgeTabView()
@@ -37,6 +39,12 @@ struct SplashView: View {
                         KnowledgeView(categoryTitle: categoryTitle, items: items)
                     case .knowledgeDetailView(item: let item):
                         KnowledgeDetailView(item: item)
+                    case .workoutView:
+                        WorkoutView().environmentObject(workoutViewModel)
+                    case .workoutFinishView:
+                        WorkoutFinishView()
+                    case .workoutDetailView(selectedWorkout: let selectedWorkout):
+                        WorkoutDetailView(selectedWorkout: selectedWorkout)
                     }
                 }
             )
@@ -65,7 +73,7 @@ struct SplashView: View {
 //        if !UserStorage.isOnboardingDone {
 //            navigationManager.push(to: .onboarding)
 //        } else {
-        navigationManager.push(to: .progressView)
+        navigationManager.push(to: .mainTabView)
 //        }
     }
 }

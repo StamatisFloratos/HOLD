@@ -9,7 +9,8 @@ import SwiftUI
 
 struct WorkoutTabView: View {
     @EnvironmentObject var navigationManager: NavigationManager
-    @EnvironmentObject var tabManager: TabManager
+    @EnvironmentObject var workoutViewModel: WorkoutViewModel
+    @State private var selectedWorkoutIndex = 0
     
     var body: some View {
         ZStack {
@@ -32,58 +33,89 @@ struct WorkoutTabView: View {
                     }
                     .padding(.top, 20)
                     
-                    Text("Today's Workout")
-                        .font(.system(size: 24, weight: .bold))
+                    Text("Workouts")
+                        .font(.system(size: 24, weight: .semibold))
                         .foregroundColor(.white)
                     
-                    workoutView
-                    streakView
+                    if !workoutViewModel.workouts.isEmpty {
+                        TabView(selection: $selectedWorkoutIndex) {
+                            ForEach(0..<workoutViewModel.workouts.count, id: \.self) { index in
+                                workoutCard(workout: workoutViewModel.workouts[index])
+                                    .tag(index)
+                            }
+                        }
+                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
+                        .frame(height: 500)
+                    } else {
+                        Text("No workouts available")
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color(hex: "#161616").opacity(0.4))
+                            .cornerRadius(20)
+                    }
                     
+                    streakView
                     
                 }
                 .padding(.horizontal)                
                 Spacer(minLength: 80) // Space for tab bar
             }
+            .onAppear {
+                workoutViewModel.loadWorkoutsFromJSON()
+            }
         }
         .navigationBarHidden(true)
     }
     
-    var workoutView: some View {
+    func workoutCard(workout: Workout) -> some View {
         VStack(spacing: 36) {
             VStack(spacing: 20) {
-                Text("Workout Name")
+                Text(workout.name)
                     .font(.system(size: 20, weight: .semibold))
                     .foregroundColor(.white)
-                Circle()
-                    .frame(height: 88)
                 
-                Text("Status: Not Completed")
+                Circle()
+                    .fill(difficultyColor(workout.difficulty))
+                    .frame(height: 88)
+                    .overlay(
+                        Image(systemName: difficultyIcon(workout.difficulty))
+                            .font(.system(size: 40))
+                            .foregroundColor(.white)
+                    )
+                
+                Text(workoutViewModel.isWorkoutCompletedToday(workout) ? 
+                     "Status: Completed Today" : "Status: Not Completed")
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(.white)
-                
             }
+            
             VStack(alignment: .leading, spacing: 10) {
-                Text("**Difficulty:** Easy")
+                Text("**Difficulty:** \(workout.difficulty.description)")
                     .font(.system(size: 16, weight: .regular))
                     .foregroundColor(.white)
-                Text("**Duration:** 20 seconds")
+                
+                Text("**Duration:** \(workout.durationMinutes) minutes")
                     .font(.system(size: 16, weight: .regular))
                     .foregroundColor(.white)
-                Text("**Description:** These beginner level exercises will help you strengthen your pelvic muscles")
+                
+                Text("**Description:** \(workout.description)")
                     .font(.system(size: 16, weight: .regular))
                     .foregroundColor(.white)
+               
             }
             .padding(.horizontal)
             
             Button(action: {
-                // Handle measurement action
-                navigationManager.push(to: .measurementActivityView)
+                workoutViewModel.selectWorkout(workout)
+                navigationManager.push(to: .workoutView)
+//                flowManager.isShowingWorkoutView = true
             }) {
                 Text("Start Workout")
                     .font(.system(size: 16, weight: .semibold))
                     .padding()
-                    .frame(maxWidth: .infinity,maxHeight: 47)
-                    .background(Color(hex: "#FF1919"))                        .foregroundColor(.white)
+                    .frame(maxWidth: .infinity, maxHeight: 47)
+                    .background(Color(hex: "#FF1919"))
+                    .foregroundColor(.white)
                     .cornerRadius(30)
             }
             .padding(.horizontal, 50)
@@ -92,13 +124,28 @@ struct WorkoutTabView: View {
         .padding(.vertical)
         .background(Color(hex: "#161616").opacity(0.4))
         .cornerRadius(20)
-        .overlay(
-            RoundedRectangle(cornerRadius: 20) // Custom background with border
-                .stroke(Color.gray, lineWidth: 1) // Custom border
-                .cornerRadius(12)
-        )
-        
-
+    }
+    
+    func difficultyColor(_ difficulty: WorkoutDifficulty) -> Color {
+        switch difficulty {
+        case .easy:
+            return Color.green
+        case .medium:
+            return Color.orange
+        case .hard:
+            return Color.red
+        }
+    }
+    
+    func difficultyIcon(_ difficulty: WorkoutDifficulty) -> String {
+        switch difficulty {
+        case .easy:
+            return "figure.walk"
+        case .medium:
+            return "figure.run"
+        case .hard:
+            return "flame.fill"
+        }
     }
     
     var streakView: some View {
@@ -108,7 +155,7 @@ struct WorkoutTabView: View {
                     .font(.system(size: 20, weight: .semibold))
                     .foregroundColor(.white)
                 
-                Text("You’re on a 12-day streak!")
+                Text("You're on a 12-day streak!")
                     .font(.system(size: 14, weight: .regular))
                     .foregroundColor(.white)
                 

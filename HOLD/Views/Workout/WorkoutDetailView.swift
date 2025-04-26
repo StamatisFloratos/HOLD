@@ -5,4 +5,390 @@
 //  Created by Stamatis Floratos on 21/3/25.
 //
 
-import Foundation
+import SwiftUI
+
+struct WorkoutDetailView: View {
+    @EnvironmentObject var navigationManager: NavigationManager
+
+    @State private var isPaused: Bool = false
+    var selectedWorkout: Workout
+    @State private var selectedExerciseIndex: Int = 0
+    // Progress animation
+    @State private var progress: CGFloat = 0
+    @State private var timers: [Timer] = []
+    @State private var totalTimeRemaining: Double = 0 // Time in seconds
+    @State private var remainingValue: Int = 0
+    @State private var scrollViewProxy: ScrollViewProxy? = nil
+    
+    var body: some View {
+        ZStack {
+            LinearGradient(
+                colors: [
+                    Color(hex:"#10171F"),
+                    Color(hex:"#466085")
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .ignoresSafeArea()
+            
+            VStack {
+                VStack(spacing: 20) {
+                    // Logo at the top
+                    HStack {
+                        Spacer()
+                        Image("holdIcon")
+                        Spacer()
+                    }
+                    .padding(.top,20)
+                    Spacer()
+                    // Progress circle with counter
+                    ZStack {
+                        // Outer glow circle
+                        if workoutWithRests.exercises[selectedExerciseIndex].name != "Rest" {
+                            Circle()
+                                .fill(
+                                    RadialGradient(
+                                        gradient: Gradient(colors: [Color(hex: "#990F0F"),Color(hex: "#FF0000")]),
+                                        center: .center,
+                                        startRadius: 81,
+                                        endRadius: 114
+                                    )
+                                )
+                                .frame(height: 228)
+                        }
+                        
+                        // Inner dark circle
+                        Circle()
+                            .fill(Color(hex: "#111720"))
+                            .frame(width: 152, height: 152)
+                        
+                        // Progress arc (white line)
+                        Circle()
+                            .trim(from: 0, to: progress)
+                            .stroke(Color.white, style: StrokeStyle(lineWidth: 2, lineCap: .round))
+                            .frame(width: 152, height: 152)
+                            .rotationEffect(.degrees(-90))
+                        //                        
+                        // Counter and text
+                        VStack(spacing: 5) {
+                            Text("\(Int(totalTimeRemaining))")
+                                .font(.system(size: 32, weight: .semibold))
+                                .foregroundColor(.white)
+                            
+                            Text(workoutWithRests.exercises[selectedExerciseIndex].name != "Rest" ? "Contract & Let Go" : "Rest")
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundColor(.white)
+                        }
+                    }
+                    
+                    Spacer()
+                    
+                    // Exercise tabs - horizontal scrolling view
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        ScrollViewReader { proxy in
+                            HStack(spacing: 30) {
+                                Spacer().frame(width: UIScreen.main.bounds.width/2)
+                                ForEach(0..<workoutWithRests.exercises.count, id: \.self) { index in
+                                    let exercise = workoutWithRests.exercises[index]
+                                    exerciseTab(
+                                        name: exercise.name,
+                                        isSelected: index == selectedExerciseIndex
+                                    )
+                                    .id(index)
+                                }
+                            }
+                            .padding(.horizontal, 20)
+                            .onAppear {
+                                scrollViewProxy = proxy
+                                centerSelectedExercise()
+                            }
+                            .onChange(of: selectedExerciseIndex) { _ in
+                                centerSelectedExercise()
+                            }
+                        }
+                    }
+                    .padding(.bottom, 20)
+                    
+                    // Pause button
+                    Button(action: {
+                        isPaused.toggle()
+                        isPaused == true ? stopTimer() : startTimer()
+                        
+                    }) {
+                        HStack {
+                            Image(systemName: isPaused == false ? "pause.fill" : "play.fill")
+                                .font(.system(size: 20))
+                            Text(isPaused == false ? "Pause" : "Continue")
+                                .font(.system(size: 18, weight: .semibold))
+                        }
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(width: 300, height: 50)
+                        .background(Color(hex: "#2C2C2C"))
+                        .cornerRadius(25)
+                    }
+                    .padding(.bottom, 40)
+                }
+                
+            }
+        }
+        .navigationBarHidden(true)
+        .onAppear {
+            initializeExercise()
+            startTimer()
+        }
+        
+    }
+    
+    // Helper function to create exercise tabs
+    func exerciseTab(name: String, isSelected: Bool = false) -> some View {
+        VStack(spacing: 5) {
+            Text(name)
+                .font(.system(size: 20, weight: isSelected ? .semibold : .regular))
+                .foregroundColor(.white)
+            
+            Rectangle()
+                .fill(isSelected ? Color.white : Color.clear)
+                .frame(height: 4)
+                .frame(width: 60)
+        }
+    }
+    
+    // Add this with your other helper functions
+    func formatTime(_ seconds: Double) -> String {
+        let minutes = Int(seconds) / 60
+        let secs = Int(seconds) % 60
+        return String(format: "%d:%02d", minutes, secs)
+    }
+    
+    // Get the current exercise from the workout
+    var currentExercise: Exercise {
+        return workoutWithRests.exercises[selectedExerciseIndex]
+    }
+    
+    // Update progress based on current exercise
+    func updateProgress() {
+        let exercise = currentExercise
+        
+        // Calculate progress based on exercise type
+        switch exercise.type {
+        case .hold:
+            if let seconds = exercise.seconds, seconds > 0 {
+                progress = 1.0 - (CGFloat(remainingValue) / CGFloat(seconds))
+            }
+        case .clamp, .rapidFire, .flash:
+            if let reps = exercise.reps, reps > 0 {
+                progress = 1.0 - (CGFloat(remainingValue) / CGFloat(reps))
+            }
+        case .rest:
+            if let seconds = exercise.seconds, seconds > 0 {
+                progress = 1.0 - (CGFloat(remainingValue) / CGFloat(seconds))
+            }
+        }
+    }
+    
+    // Handle exercise completion
+    func exerciseCompleted() {
+        stopTimer()
+        
+        if selectedExerciseIndex < workoutWithRests.exercises.count - 1 {
+            // Move to the next exercise (which could be a rest period)
+            selectedExerciseIndex += 1
+            
+            // Small delay before starting the next
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.initializeExercise()
+                self.startTimer()
+            }
+        } else {
+            // Workout completed
+            navigationManager.push(to: .workoutFinishView)
+        }
+    }
+    
+    // Initialize the current exercise
+    func initializeExercise() {
+        let exercise = currentExercise
+        
+        // Reset progress
+        progress = 0.0
+        
+        // Set instruction text and counter based on exercise type
+        switch exercise.type {
+        case .hold:
+            if let seconds = exercise.seconds {
+                remainingValue = seconds
+                totalTimeRemaining = Double(seconds)
+            }
+        case .clamp:
+            if let reps = exercise.reps {
+                remainingValue = reps
+                let rhythm = exercise.getRhythmParameters()
+                totalTimeRemaining = Double(reps) * rhythm.duration
+            }
+        case .rapidFire:
+            if let reps = exercise.reps {
+                remainingValue = reps
+                let rhythm = exercise.getRhythmParameters()
+                totalTimeRemaining = Double(reps) * rhythm.duration
+            }
+        case .flash:
+            if let reps = exercise.reps {
+                remainingValue = reps
+                let rhythm = exercise.getRhythmParameters()
+                totalTimeRemaining = Double(reps) * rhythm.duration
+            }
+        case .rest:
+            if let seconds = exercise.seconds {
+                remainingValue = seconds
+                totalTimeRemaining = Double(seconds)
+            }
+        }
+    }
+    
+    func startTimer() {
+        let exercise = workoutWithRests.exercises[selectedExerciseIndex]
+        
+        stopTimer()
+        
+        // Get rhythm parameters
+        let rhythm = exercise.getRhythmParameters()
+        
+        // Timer for updating the overall time remaining (runs every 0.1 seconds)
+        let timeTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+            if self.totalTimeRemaining > 0 {
+                self.totalTimeRemaining -= 0.1
+                
+                // Update the progress based on time remaining
+                switch exercise.type {
+                case .hold:
+                    if let seconds = exercise.seconds, seconds > 0 {
+                        // Progress increases as time decreases
+                        // At 5 seconds left out of 10: 1-(5/10) = 0.5 (half done)
+                        // At 2.5 seconds left out of 10: 1-(2.5/10) = 0.75 (75% done)
+                        self.progress = 1.0 - (self.totalTimeRemaining / Double(seconds))
+                    }
+                case .clamp, .rapidFire, .flash:
+                    if let reps = exercise.reps {
+                        let totalDuration = Double(reps) * rhythm.duration
+                        // Same formula for rep exercises
+                        self.progress = 1.0 - (self.totalTimeRemaining / totalDuration)
+                    }
+                case .rest:
+                    if let seconds = exercise.seconds, seconds > 0 {
+                        // Progress increases as time decreases
+                        // At 5 seconds left out of 10: 1-(5/10) = 0.5 (half done)
+                        // At 2.5 seconds left out of 10: 1-(2.5/10) = 0.75 (75% done)
+                        self.progress = 1.0 - (self.totalTimeRemaining / Double(seconds))
+                    }
+                }
+                
+                // If time is up, complete exercise
+                if self.totalTimeRemaining <= 0 {
+                    self.exerciseCompleted()
+                }
+            }
+        }
+        
+        // Timer for updating the exercise count (based on exercise type)
+        let countTimer: Timer
+        
+        switch exercise.type {
+        case .hold:
+            // For hold exercises, count down seconds
+            countTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+                if self.remainingValue > 0 {
+                    self.remainingValue -= 1
+                    self.updateProgress()
+                } else {
+                    self.exerciseCompleted()
+                }
+            }
+        case .clamp, .rapidFire, .flash:
+            // For rep exercises, use the rhythm duration parameter
+            countTimer = Timer.scheduledTimer(withTimeInterval: rhythm.duration, repeats: true) { _ in
+                if self.remainingValue > 0 {
+                    self.remainingValue -= 1
+                    self.updateProgress()
+                } else {
+                    self.exerciseCompleted()
+                }
+            }
+        case .rest:
+            countTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+                if self.remainingValue > 0 {
+                    self.remainingValue -= 1
+                    self.updateProgress()
+                } else {
+                    self.exerciseCompleted()
+                }
+            }
+        }
+        
+        // Store both timers
+        timers = [timeTimer, countTimer]
+    }
+    
+    func stopTimer() {
+        for timer in timers {
+            timer.invalidate()
+        }
+        timers.removeAll()
+    }
+    
+    func centerSelectedExercise() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            withAnimation {
+                scrollViewProxy?.scrollTo(selectedExerciseIndex, anchor: .center)
+            }
+        }
+    }
+    
+    // 1. Add a computed property to create the expanded workout with rest periods
+    var workoutWithRests: Workout {
+        // Create a placeholder for the new exercises array with rests
+        var exercisesWithRests: [Exercise] = []
+        
+        // Insert rest periods between exercises
+        for (index, exercise) in selectedWorkout.exercises.enumerated() {
+            // Add the actual exercise
+            exercisesWithRests.append(exercise)
+            
+            // Add a rest period after each exercise (except the last one)
+            if index < selectedWorkout.exercises.count - 1 {
+                let restExercise = Exercise.rest(seconds: 1)
+                exercisesWithRests.append(restExercise)
+            }
+        }
+        
+        // Create a new workout with the expanded exercises array
+        return Workout(
+            id: selectedWorkout.id,
+            name: selectedWorkout.name,
+            difficulty: selectedWorkout.difficulty,
+            durationMinutes: selectedWorkout.durationMinutes,
+            description: selectedWorkout.description,
+            exercises: exercisesWithRests,
+            restSeconds: selectedWorkout.restSeconds
+        )
+    }
+}
+
+#Preview {
+    let workout = Workout(
+        name: "Daily Maintenance",
+        difficulty: .medium,
+        durationMinutes: 10,
+        description: "Regular practice to maintain pelvic floor strength",
+        exercises: [
+            Exercise.clamp(reps: 5),
+            Exercise.rapidFire(reps: 5),
+            Exercise.hold(seconds: 5),
+            Exercise.flash(reps: 5)
+        ]
+    )
+    WorkoutDetailView(selectedWorkout: workout)
+        .environmentObject(NavigationManager())
+        .environmentObject(WorkoutViewModel())
+}

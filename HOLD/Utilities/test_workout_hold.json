@@ -1,0 +1,43 @@
+[{
+    "id": "9F06B889-A1E0-4B72-B54F-2C91A843D6E0",
+    "name": "Daily Maintenance",
+    "difficulty": "medium",
+    "durationMinutes": 10,
+    "description": "Regular practice to maintain pelvic floor strength",
+    "restSeconds": 30,
+    "exercises": [
+        {
+            "id": "A67E559C-4F35-4AA1-A3D6-21E7DA52C2F0",
+            "name": "Clamp",
+            "type": "clamp",
+            "description": "Slow and controlled contractions",
+            "reps": 1,
+            "seconds": null
+        },
+        {
+            "id": "6C5B9A9E-61BD-47DA-8B92-45788C5740A1",
+            "name": "Rapid Fire",
+            "type": "rapidFire",
+            "description": "Quick, rhythmic contractions",
+            "reps": 1,
+            "seconds": null
+        },
+        {
+            "id": "7DE73527-33B2-4F16-91C3-E05F23F32FA6",
+            "name": "Hold",
+            "type": "hold",
+            "description": "Sustained contraction",
+            "reps": null,
+            "seconds": 1
+        },
+        {
+            "id": "F2281F3E-C4AB-498D-A6D4-EF4701E10E6A",
+            "name": "Flash",
+            "type": "flash",
+            "description": "Sharp, distinct contractions",
+            "reps": 1,
+            "seconds": null
+        }
+    ]
+}
+]

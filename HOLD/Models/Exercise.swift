@@ -12,6 +12,7 @@ enum ExerciseType: String, Codable, CaseIterable {
     case rapidFire
     case flash
     case hold
+    case rest
 }
 
 struct Exercise: Identifiable, Codable, Hashable {
@@ -32,6 +33,8 @@ struct Exercise: Identifiable, Codable, Hashable {
             return reps != nil && reps! > 0
         case .hold:
             return seconds != nil && seconds! > 0
+        case .rest:
+            return seconds != nil && seconds! > 0
         }
     }
     
@@ -49,6 +52,9 @@ struct Exercise: Identifiable, Codable, Hashable {
         case .hold:
             self.reps = nil
             self.seconds = seconds
+        case .rest:
+            self.reps = nil
+            self.seconds = seconds
         }
     }
     
@@ -63,6 +69,8 @@ struct Exercise: Identifiable, Codable, Hashable {
             return (duration: 2.0, intensity: 0.9)  // Abrupt, medium-speed pulsating
         case .hold:
             return (duration: 0.5, intensity: 1.0)  // Steady state for holding
+        case .rest:
+            return (duration: 0.5, intensity: 1.0)
         }
     }
     
@@ -80,6 +88,9 @@ struct Exercise: Identifiable, Codable, Hashable {
     }
     
     static func hold(name: String = "Hold", seconds: Int = 10, description: String = "Sustained contraction") -> Exercise {
+        Exercise(name: name, type: .hold, description: description, seconds: seconds)
+    }
+    static func rest(name: String = "Rest", seconds: Int = 10, description: String = "Rest") -> Exercise {
         Exercise(name: name, type: .hold, description: description, seconds: seconds)
     }
     
@@ -101,4 +112,20 @@ struct Exercise: Identifiable, Codable, Hashable {
         flash(reps: 15),
         hold(seconds: 10)
     ]
+    
+    var textForScreen: String {
+        switch type {
+            
+        case .clamp:
+            return "Contract & Let Go"
+        case .rapidFire:
+            return "Contract & Let Go"
+        case .flash:
+            return "Contract & Let Go"
+        case .hold:
+            return "Contract & Hold"
+        case .rest:
+            return "Rest"
+        }
+    }
 }

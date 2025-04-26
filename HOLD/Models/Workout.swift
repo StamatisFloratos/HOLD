@@ -40,6 +40,8 @@ struct Workout: Identifiable, Codable, Hashable {
                 // Estimate time based on reps and rhythm parameters
                 let rhythm = exercise.getRhythmParameters()
                 return total + Int((Double(exercise.reps ?? 0) * rhythm.duration))
+            case .rest:
+                return total + (exercise.seconds ?? 0)
             }
         }
         

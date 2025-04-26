@@ -44,8 +44,13 @@ extension NavigationManager {
     enum Route: Codable, Hashable {
         case measurementView
         case measurementActivityView
-        case progressView
+        case mainTabView
+        
+        case workoutTabView
         case workoutView
+        case workoutDetailView(selectedWorkout:Workout)
+        case workoutFinishView
+        
         case knowledgeTabView
         case knowledgeView(categoryTitle:String, items:[KnowledgeItem])
         case knowledgeDetailView(item:KnowledgeItem)

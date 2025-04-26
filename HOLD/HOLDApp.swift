@@ -15,11 +15,17 @@ struct HOLDApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var tabManager = TabManager()
     @StateObject private var navigationManager = NavigationManager()
+    @StateObject private var workoutViewModel = WorkoutViewModel()
+    @StateObject private var progressViewModel = ProgressViewModel()
+
+    
     var body: some Scene {
         WindowGroup {
             SplashView()
                 .environmentObject(navigationManager)
                 .environmentObject(tabManager)
+                .environmentObject(workoutViewModel)
+                .environmentObject(progressViewModel)
                 .onAppear {
                     appDelegate.applicationDidBecomeActive()
                 }
@@ -29,7 +35,7 @@ struct HOLDApp: App {
                     } else if newPhase == .active {
                         if navigationManager.routes.isEmpty {
                             //                        let nextRoute: NavigationManager.Route = UserStorage.isOnboardingDone ? .dashboardView : .onboarding
-                            navigationManager.push(to: .progressView)
+                            navigationManager.push(to: .mainTabView)
                         }
                     }
                 }
