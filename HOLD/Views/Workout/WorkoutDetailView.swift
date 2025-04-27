@@ -14,12 +14,13 @@ struct WorkoutDetailView: View {
     @State private var isPaused: Bool = false
     var selectedWorkout: Workout
     @State private var selectedExerciseIndex: Int = 0
+    
     // Progress animation
     @State private var progress: CGFloat = 0
-    @State private var timers: [Timer] = []
+    @State private var timer: Timer = Timer()
     @State private var totalTimeRemaining: Double = 0 // Time in seconds
-    @State private var remainingValue: Int = 0
     @State private var scrollViewProxy: ScrollViewProxy? = nil
+    @State private var pulsate = false // <- Add this inside your View
     
     var body: some View {
         ZStack {
@@ -47,16 +48,33 @@ struct WorkoutDetailView: View {
                     ZStack {
                         // Outer glow circle
                         if workoutWithRests.exercises[selectedExerciseIndex].name != "Rest" {
+                            let rhythm = workoutWithRests.exercises[selectedExerciseIndex].getRhythmParameters()
+                            
                             Circle()
                                 .fill(
                                     RadialGradient(
-                                        gradient: Gradient(colors: [Color(hex: "#990F0F"),Color(hex: "#FF0000")]),
+                                        gradient: Gradient(colors: [Color(hex: "#990F0F"), Color(hex: "#FF0000")]),
                                         center: .center,
                                         startRadius: 81,
                                         endRadius: 114
                                     )
                                 )
                                 .frame(height: 228)
+                                .scaleEffect(pulsate ? 1.2:1) // Scaling based on intensity
+                                .opacity(pulsate ? 0.5:1)      // Optional: opacity changes a bit
+                                .animation(
+                                    Animation.easeInOut(duration: rhythm.duration)
+                                        .repeatForever(autoreverses: true)
+                                        .speed(rhythm.intensity)
+                                )
+                                .onAppear {
+                                    DispatchQueue.main.async {
+                                        pulsate.toggle() // Start pulsating after layout is set
+                                    }
+                                }
+                                .onChange(of: pulsate, {
+                                    triggerHaptic()
+                                })
                         }
                         
                         // Inner dark circle
@@ -168,26 +186,6 @@ struct WorkoutDetailView: View {
         return workoutWithRests.exercises[selectedExerciseIndex]
     }
     
-    // Update progress based on current exercise
-    func updateProgress() {
-        let exercise = currentExercise
-        
-        // Calculate progress based on exercise type
-        switch exercise.type {
-        case .hold:
-            if let seconds = exercise.seconds, seconds > 0 {
-                progress = 1.0 - (CGFloat(remainingValue) / CGFloat(seconds))
-            }
-        case .clamp, .rapidFire, .flash:
-            if let reps = exercise.reps, reps > 0 {
-                progress = 1.0 - (CGFloat(remainingValue) / CGFloat(reps))
-            }
-        case .rest:
-            if let seconds = exercise.seconds, seconds > 0 {
-                progress = 1.0 - (CGFloat(remainingValue) / CGFloat(seconds))
-            }
-        }
-    }
     
     // Handle exercise completion
     func exerciseCompleted() {
@@ -204,7 +202,7 @@ struct WorkoutDetailView: View {
             }
         } else {
             // Workout completed
-            WorkoutCompletionManager.saveCompletion(WorkoutCompletion(workoutId: selectedWorkout.id))
+            WorkoutCompletionManager.saveCompletion(WorkoutCompletion(workoutName: selectedWorkout.name))
             workoutViewModel.updateStreakAfterWorkout()
             navigationManager.push(to: .workoutFinishView)
         }
@@ -219,33 +217,14 @@ struct WorkoutDetailView: View {
         
         // Set instruction text and counter based on exercise type
         switch exercise.type {
-        case .hold:
+        case .hold, .rest:
             if let seconds = exercise.seconds {
-                remainingValue = seconds
                 totalTimeRemaining = Double(seconds)
             }
-        case .clamp:
+        case .clamp, .rapidFire, .flash:
             if let reps = exercise.reps {
-                remainingValue = reps
                 let rhythm = exercise.getRhythmParameters()
                 totalTimeRemaining = Double(reps) * rhythm.duration
-            }
-        case .rapidFire:
-            if let reps = exercise.reps {
-                remainingValue = reps
-                let rhythm = exercise.getRhythmParameters()
-                totalTimeRemaining = Double(reps) * rhythm.duration
-            }
-        case .flash:
-            if let reps = exercise.reps {
-                remainingValue = reps
-                let rhythm = exercise.getRhythmParameters()
-                totalTimeRemaining = Double(reps) * rhythm.duration
-            }
-        case .rest:
-            if let seconds = exercise.seconds {
-                remainingValue = seconds
-                totalTimeRemaining = Double(seconds)
             }
         }
     }
@@ -265,7 +244,7 @@ struct WorkoutDetailView: View {
                 
                 // Update the progress based on time remaining
                 switch exercise.type {
-                case .hold:
+                case .hold, .rest:
                     if let seconds = exercise.seconds, seconds > 0 {
                         // Progress increases as time decreases
                         // At 5 seconds left out of 10: 1-(5/10) = 0.5 (half done)
@@ -278,66 +257,22 @@ struct WorkoutDetailView: View {
                         // Same formula for rep exercises
                         self.progress = 1.0 - (self.totalTimeRemaining / totalDuration)
                     }
-                case .rest:
-                    if let seconds = exercise.seconds, seconds > 0 {
-                        // Progress increases as time decreases
-                        // At 5 seconds left out of 10: 1-(5/10) = 0.5 (half done)
-                        // At 2.5 seconds left out of 10: 1-(2.5/10) = 0.75 (75% done)
-                        self.progress = 1.0 - (self.totalTimeRemaining / Double(seconds))
-                    }
                 }
                 
                 // If time is up, complete exercise
                 if self.totalTimeRemaining <= 0 {
+                    self.totalTimeRemaining = 0
                     self.exerciseCompleted()
                 }
             }
         }
         
-        // Timer for updating the exercise count (based on exercise type)
-        let countTimer: Timer
-        
-        switch exercise.type {
-        case .hold:
-            // For hold exercises, count down seconds
-            countTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-                if self.remainingValue > 0 {
-                    self.remainingValue -= 1
-                    self.updateProgress()
-                } else {
-                    self.exerciseCompleted()
-                }
-            }
-        case .clamp, .rapidFire, .flash:
-            // For rep exercises, use the rhythm duration parameter
-            countTimer = Timer.scheduledTimer(withTimeInterval: rhythm.duration, repeats: true) { _ in
-                if self.remainingValue > 0 {
-                    self.remainingValue -= 1
-                    self.updateProgress()
-                } else {
-                    self.exerciseCompleted()
-                }
-            }
-        case .rest:
-            countTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-                if self.remainingValue > 0 {
-                    self.remainingValue -= 1
-                    self.updateProgress()
-                } else {
-                    self.exerciseCompleted()
-                }
-            }
-        }
-        
-        // Store both timers
-        timers = [timeTimer, countTimer]
+        timer = timeTimer
     }
     
     func stopTimer() {
-        for timer in timers {
-            timer.invalidate()
-        }
-        timers.removeAll()
+        timer.invalidate()
+//        timer.removeAll()
     }
     
     func centerSelectedExercise() {
@@ -360,7 +295,7 @@ struct WorkoutDetailView: View {
             
             // Add a rest period after each exercise (except the last one)
             if index < selectedWorkout.exercises.count - 1 {
-                let restExercise = Exercise.rest(seconds: 1)
+                let restExercise = Exercise.rest(seconds: selectedWorkout.restSeconds)
                 exercisesWithRests.append(restExercise)
             }
         }
@@ -376,6 +311,12 @@ struct WorkoutDetailView: View {
             restSeconds: selectedWorkout.restSeconds
         )
     }
+    
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .heavy)
+        generator.prepare()
+        generator.impactOccurred()
+    }
 }
 
 #Preview {
@@ -385,6 +326,7 @@ struct WorkoutDetailView: View {
         durationMinutes: 10,
         description: "Regular practice to maintain pelvic floor strength",
         exercises: [
+            Exercise.hold(seconds: 15),
             Exercise.clamp(reps: 5),
             Exercise.rapidFire(reps: 5),
             Exercise.hold(seconds: 5),

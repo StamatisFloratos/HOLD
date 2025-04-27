@@ -81,13 +81,13 @@ struct Workout: Identifiable, Codable, Hashable {
 // Separate struct to track workout completion status
 struct WorkoutCompletion: Codable, Identifiable {
     let id: UUID
-    let workoutId: UUID
+    let workoutName: String
     let date: Date
     let completed: Bool
     
-    init(id: UUID = UUID(), workoutId: UUID, date: Date = Date(), completed: Bool = true) {
+    init(id: UUID = UUID(), workoutName: String, date: Date = Date(), completed: Bool = true) {
         self.id = id
-        self.workoutId = workoutId
+        self.workoutName = workoutName
         self.date = date
         self.completed = completed
     }
@@ -121,11 +121,11 @@ class WorkoutCompletionManager {
     }
     
     // Check if a workout was completed today
-    static func isWorkoutCompletedToday(workoutId: UUID) -> Bool {
+    static func isWorkoutCompletedToday(workoutName: String) -> Bool {
         let today = Calendar.current.startOfDay(for: Date())
         
         return getCompletions().contains(where: { completion in
-            completion.workoutId == workoutId &&
+            completion.workoutName == workoutName &&
             completion.completed &&
             Calendar.current.isDate(completion.date, inSameDayAs: today)
         })

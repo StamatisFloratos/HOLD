@@ -66,9 +66,9 @@ struct Exercise: Identifiable, Codable, Hashable {
         case .rapidFire:
             return (duration: 1.0, intensity: 0.7)  // Fast pulsating
         case .flash:
-            return (duration: 2.0, intensity: 0.9)  // Abrupt, medium-speed pulsating
+            return (duration: 2.0, intensity: 0.8)  // Abrupt, medium-speed pulsating
         case .hold:
-            return (duration: 0.5, intensity: 1.0)  // Steady state for holding
+            return (duration: 0.5, intensity: 0.2)  // Steady state for holding
         case .rest:
             return (duration: 0.5, intensity: 1.0)
         }

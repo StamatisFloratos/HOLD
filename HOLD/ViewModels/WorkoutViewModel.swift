@@ -243,7 +243,7 @@ class WorkoutViewModel: ObservableObject {
         guard let workout = todaysWorkout else { return }
         
         // Save workout completion
-        let completion = WorkoutCompletion(workoutId: workout.id)
+        let completion = WorkoutCompletion(workoutName: workout.name)
         WorkoutCompletionManager.saveCompletion(completion)
         
         // Update streak
@@ -262,7 +262,7 @@ class WorkoutViewModel: ObservableObject {
     // MARK: - Workout Status
     
     func isWorkoutCompletedToday(_ workout: Workout) -> Bool {
-        return WorkoutCompletionManager.isWorkoutCompletedToday(workoutId: workout.id)
+        return WorkoutCompletionManager.isWorkoutCompletedToday(workoutName: workout.name)
     }
     
     // MARK: - Current Exercise Information

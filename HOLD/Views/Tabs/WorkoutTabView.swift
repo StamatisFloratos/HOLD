@@ -133,8 +133,13 @@ struct WorkoutTabView: View {
             .padding(.bottom, 15)
         }
         .padding(.vertical)
-        .background(Color(hex: "#161616").opacity(0.4))
+        .background(Color(hex: "#000000").opacity(0.4))
         .cornerRadius(20)
+        .overlay(
+            RoundedRectangle(cornerRadius: 20)
+                .stroke(Color.white.opacity(0.4), lineWidth: 1)
+                .cornerRadius(12)
+        )
     }
     
     var streakView: some View {
