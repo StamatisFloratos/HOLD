@@ -131,6 +131,9 @@ struct ChallengeActivityView: View {
                             .offset(y: isBallUp ? -(barHeight / 2) + (ballDiameter / 2) : (barHeight / 2) - (ballDiameter / 2))
                         // Animate position change with currentToggleInterval
                             .animation(.easeInOut(duration: currentToggleInterval), value: isBallUp)
+                            .onChange(of: isBallUp, {
+                                triggerHaptic()
+                            })
                         
                     } // End ZStack for Animation
                     .frame(height: barHeight)
@@ -331,6 +334,12 @@ struct ChallengeActivityView: View {
         currentPhaseIndex = nextPhaseIndex
         print("Advancing to Phase \(currentPhaseIndex + 1)")
         startTimersForCurrentPhase() // Start timers for the new/looped phase
+    }
+    
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .heavy)
+        generator.prepare()
+        generator.impactOccurred()
     }
 }
 

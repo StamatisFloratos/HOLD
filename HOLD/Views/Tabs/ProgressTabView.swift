@@ -59,61 +59,72 @@ struct ProgressTabView: View {
     }
     
     var progressIndicator: some View {
-        VStack(spacing: 10) {
+        let minValue = 3.0
+        let maxValue = 300.0
+        let currentValue = progressViewModel.allTimeBest ?? 0.0 // All time best
+        let progress = (currentValue - minValue) / (maxValue - minValue)
+
+        return VStack(spacing: 10) {
             HStack {
-                Text("You")
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.white)
-                Spacer()
-            }
-            
-            // Triangle indicator
-            HStack {
-                Spacer()
-                Image(systemName: "triangle.fill")
-                    .foregroundColor(.white)
-                    .rotationEffect(.degrees(180))
-                Spacer()
-            }
-            
-            // Progress slider visualization
-            ZStack {
-                LinearGradient(
-                    colors: [Color(hex: "FF0000"), Color(hex: "FFC800"), Color(hex: "00FF09")],
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-                .frame(height: 33)
-                .cornerRadius(20)
                 
-                HStack{
-                    Text("😭")
-                        .font(.title)
-                    Spacer()
-                    Text("😩")
-                        .font(.title)
+                Spacer()
+            }
+
+            // Progress slider visualization with moving triangle
+            VStack(spacing:0) {
+                // Moving triangle
+                GeometryReader { geo in
+                    VStack {
+                        Text("You")
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundColor(.white)
+                        Image(systemName: "triangle.fill")
+                            .foregroundColor(.white)
+                            .rotationEffect(.degrees(180))
+                    }
+                    .offset(x: progress * (geo.size.width - 20))                              // 20 is to avoid going out of bounds
+                }.frame(height: 33)
+                
+                ZStack {
+                    LinearGradient(
+                        colors: [Color(hex: "FF0000"), Color(hex: "FFC800"), Color(hex: "00FF09")],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                    .frame(height: 33)
+                    .cornerRadius(20)
+                    
+                    
+                    // Emoji ends
+                    HStack {
+                        Text("😭")
+                            .font(.title)
+                        Spacer()
+                        Text("😩")
+                            .font(.title)
+                    }
+                    
                 }
+
+                
             }
             
-            // Time indicators
             HStack {
-                Text("3 sec")
+                Text("\(Int(minValue)) sec")
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(.white)
-                
+
                 Spacer()
-                
-                Text("300 sec")
+
+                Text("\(Int(maxValue)) sec")
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundColor(.white)
             }
-            
-            
         }
         .padding(.horizontal)
         .padding(.top, 20)
-        
     }
+
     
     
     var progressChart: some View {
@@ -344,4 +355,6 @@ struct Bar: View {
 #Preview {
     ProgressTabView()
         .environmentObject(TabManager())
+        .environmentObject(ProgressViewModel())
+        .environmentObject(ChallengeViewModel())
 }
