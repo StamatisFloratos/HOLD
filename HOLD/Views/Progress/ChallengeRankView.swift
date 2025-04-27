@@ -126,7 +126,7 @@ struct ChallengeRankView: View {
                 
             }.frame(height: 144)
         }
-        .frame(width: 289)
+        .frame(width: UIScreen.main.bounds.width - 32)
         .cornerRadius(25)
     }
 }
