@@ -24,13 +24,14 @@ struct ChallengeRankView: View {
             .ignoresSafeArea()
             
             VStack {
-                VStack(spacing: 20) {
+                VStack {
                     // Logo at the top
                     HStack {
                         Spacer()
                         Image("holdIcon")
                         Spacer()
                     }
+                    .padding(.top, 20)
                     Spacer()
                     
                     Text("Your Rank is:")
@@ -70,7 +71,6 @@ struct ChallengeRankView: View {
                         }
                     }
                     .padding()
-                    Spacer()
                 }
                 .padding(.top, 20)
                 .padding(.horizontal)
@@ -114,7 +114,6 @@ struct ChallengeRankView: View {
                     Text(challengeViewModel.latestChallengeResult!.durationDisplay)
                         .font(.system(size: 20, weight: .regular))
                         .foregroundColor((challengeViewModel.latestChallengeResult!.rank == .npc || challengeViewModel.latestChallengeResult!.rank == .simp) ? .black : .white)
-                    Spacer().frame(height: 19)
                     Text("Rank")
                         .font(.system(size: 20, weight: .semibold))
                         .foregroundColor((challengeViewModel.latestChallengeResult!.rank == .npc || challengeViewModel.latestChallengeResult!.rank == .simp) ? .black : .white)
@@ -125,7 +124,7 @@ struct ChallengeRankView: View {
                         
                 }
                 
-            }.frame(height: 164)
+            }.frame(height: 144)
         }
         .frame(width: 289)
         .cornerRadius(25)
@@ -134,4 +133,5 @@ struct ChallengeRankView: View {
 
 #Preview {
     ChallengeRankView()
+        .environmentObject(ChallengeViewModel())
 }

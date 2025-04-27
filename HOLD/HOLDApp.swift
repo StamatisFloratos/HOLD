@@ -37,7 +37,6 @@ struct HOLDApp: App {
                         navigationManager.reset()
                     } else if newPhase == .active {
                         if navigationManager.routes.isEmpty {
-                            //                        let nextRoute: NavigationManager.Route = UserStorage.isOnboardingDone ? .dashboardView : .onboarding
                             navigationManager.push(to: .mainTabView)
                         }
                     }

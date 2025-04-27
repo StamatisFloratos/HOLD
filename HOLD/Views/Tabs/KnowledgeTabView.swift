@@ -90,7 +90,7 @@ struct KnowledgeSectionView: View {
                         Button {
                             navigationManager.push(to: .knowledgeDetailView(item: item))
                         } label: {
-                            KnowledgeCardView(imageName: item.imageName, title: item.title)
+                            KnowledgeCardView(imageName: item.imageName, title: item.title, width: 150, height: 200)
                         }
                     }
                 }
@@ -105,13 +105,15 @@ struct KnowledgeSectionView: View {
 struct KnowledgeCardView: View {
     let imageName: String
     let title: String
+    let width: CGFloat
+    let height: CGFloat
 
     var body: some View {
         ZStack(alignment: .bottomLeading) {
             Image(imageName)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .frame(width: 150, height: 200)
+                .frame(width: width, height: height)
                 .clipped()
 
             LinearGradient(
@@ -126,7 +128,7 @@ struct KnowledgeCardView: View {
                 .multilineTextAlignment(.leading)
                 .padding(10)
         }
-        .frame(width: 150, height: 200)
+        .frame(width: width, height: height)
         .cornerRadius(15)
     }
 }

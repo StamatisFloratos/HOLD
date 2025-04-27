@@ -17,7 +17,7 @@ struct WorkoutDetailView: View {
     
     // Progress animation
     @State private var progress: CGFloat = 0
-    @State private var timer: Timer = Timer()
+    @State private var timers: [Timer] = []
     @State private var totalTimeRemaining: Double = 0 // Time in seconds
     @State private var scrollViewProxy: ScrollViewProxy? = nil
     @State private var pulsate = false // <- Add this inside your View
@@ -59,7 +59,7 @@ struct WorkoutDetailView: View {
                                         endRadius: 114
                                     )
                                 )
-                                .frame(height: 228)
+                                .frame(width: 228, height: 228)
                                 .scaleEffect(pulsate ? 1.2:1) // Scaling based on intensity
                                 .opacity(pulsate ? 0.5:1)      // Optional: opacity changes a bit
                                 .animation(
@@ -67,11 +67,6 @@ struct WorkoutDetailView: View {
                                         .repeatForever(autoreverses: true)
                                         .speed(rhythm.intensity)
                                 )
-                                .onAppear {
-                                    DispatchQueue.main.async {
-                                        pulsate.toggle() // Start pulsating after layout is set
-                                    }
-                                }
                                 .onChange(of: pulsate, {
                                     triggerHaptic()
                                 })
@@ -154,6 +149,7 @@ struct WorkoutDetailView: View {
         }
         .navigationBarHidden(true)
         .onAppear {
+            pulsate.toggle()
             initializeExercise()
             startTimer()
         }
@@ -267,12 +263,14 @@ struct WorkoutDetailView: View {
             }
         }
         
-        timer = timeTimer
+        timers = [timeTimer]
     }
     
     func stopTimer() {
-        timer.invalidate()
-//        timer.removeAll()
+        for timer in timers {
+            timer.invalidate()
+        }
+        timers.removeAll()
     }
     
     func centerSelectedExercise() {

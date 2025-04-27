@@ -16,8 +16,6 @@ struct SplashView: View {
     @EnvironmentObject var progressViewModel: ProgressViewModel
     @EnvironmentObject var challengeViewModel: ChallengeViewModel
 
-
-
     var body: some View {
         splash
             .onAppear {
@@ -50,7 +48,7 @@ struct SplashView: View {
                     case .workoutFinishView:
                         WorkoutFinishView()
                     case .workoutDetailView(selectedWorkout: let selectedWorkout):
-                        WorkoutDetailView(selectedWorkout: selectedWorkout)
+                        WorkoutDetailView(selectedWorkout: selectedWorkout).environmentObject(workoutViewModel)
                         
                     case .challengeSheetView:
                         ChallengeSheetView()

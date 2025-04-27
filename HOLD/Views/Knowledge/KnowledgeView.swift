@@ -66,7 +66,8 @@ struct KnowledgeView: View {
                             Button {
                                 navigationManager.push(to: .knowledgeDetailView(item: item))
                             } label: {
-                                KnowledgeCardView(imageName: item.imageName, title: item.title)
+                                KnowledgeCardView(imageName: item.imageName, title: item.title, width: (UIScreen.main.bounds.width/2)-32, height: UIScreen.main.bounds.height/3 )
+                            
                             }
                         }
                     }
