@@ -11,11 +11,9 @@ import Charts
 struct ProgressTabView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     @EnvironmentObject var tabManager: TabManager
-    @State private var navigateToMeasurement = false
-    
-    @StateObject private var viewModel = ProgressViewModel()
-    @State private var showingMeasurementSheet = false
-    @State private var showingChallengeSheet = false
+    @EnvironmentObject var progressViewModel: ProgressViewModel
+    @EnvironmentObject var challengeViewModel: ChallengeViewModel
+
 
     
     var body: some View {
@@ -58,21 +56,11 @@ struct ProgressTabView: View {
             }
         }
         .navigationBarHidden(true)
-        .fullScreenCover(isPresented: $showingMeasurementSheet) {
-            MeasurementSheetView()
-                .environmentObject(viewModel)
-        }
-        .fullScreenCover(isPresented: $showingChallengeSheet) {
-            ChallengeSheetView()
-                .environmentObject(viewModel)
-        }
-        
     }
     
     var progressIndicator: some View {
         VStack(spacing: 10) {
             HStack {
-                Spacer()
                 Text("You")
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(.white)
@@ -136,11 +124,11 @@ struct ProgressTabView: View {
                 .padding(.horizontal)
             
             HStack {
-                Text("All Time Best: \(formatDuration(viewModel.allTimeBest))")
+                Text("All Time Best: \(formatDuration(progressViewModel.allTimeBest))")
                     .font(.system(size: 15, weight: .medium))
                     .foregroundColor(.gray)
                 Spacer()
-                Text("Weekly Best: \(formatDuration(viewModel.weeklyBest))")
+                Text("Weekly Best: \(formatDuration(progressViewModel.weeklyBest))")
                     .font(.system(size: 15, weight: .medium))
                     .foregroundColor(.gray)
             }
@@ -151,7 +139,7 @@ struct ProgressTabView: View {
             
             VStack(spacing: 30) {
                 HStack{
-                    Text(viewModel.weekDateRange)
+                    Text(progressViewModel.weekDateRange)
                         .foregroundColor(.white)
                         .font(.callout)
                         .padding(.top, 10)
@@ -160,7 +148,7 @@ struct ProgressTabView: View {
                 }
                 
                 Chart {
-                    ForEach(viewModel.chartDisplayData) { dailyData in
+                    ForEach(progressViewModel.chartDisplayData) { dailyData in
                         BarMark(
                             x: .value("Day", dailyData.day),
                             y: .value("Duration", dailyData.duration ?? 0.0)
@@ -183,7 +171,7 @@ struct ProgressTabView: View {
                 .chartYAxis {
                     AxisMarks { value in
                         AxisGridLine()
-                            .foregroundStyle(.white)
+                            .foregroundStyle(.clear)
                         AxisTick()
                         AxisValueLabel {
                             if let val = value.as(Double.self) {
@@ -201,7 +189,7 @@ struct ProgressTabView: View {
                 
                 // Take Measurement Button
                 Button {
-                    showingMeasurementSheet = true
+                    navigationManager.push(to: .measurementView)
                 } label: {
                     HStack {
                         Image(systemName: "plus.circle")
@@ -240,7 +228,7 @@ struct ProgressTabView: View {
                         .font(.system(size: 20, weight: .semibold))
                         .foregroundColor(.white)
                     
-                    Text("Last Attempt: May 18, 2025")
+                    Text("Last Attempt: \(challengeViewModel.latestChallengeResult?.dateOfChallenge() ?? "-")")
                         .font(.system(size: 15, weight: .semibold))
                         .foregroundColor(.white).opacity(0.4)
                 }
@@ -257,7 +245,7 @@ struct ProgressTabView: View {
                     .foregroundColor(.white)
                     .padding(.top)
                 
-                Text("5.7%")
+                Text(challengeViewModel.latestChallengeResult?.percentileDisplay ?? "-")
                     .font(.system(size: 64, weight: .semibold))
                     .foregroundStyle(LinearGradient(
                         colors: [
@@ -273,7 +261,7 @@ struct ProgressTabView: View {
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(.white)
                 //                        .padding(.top,6)
-                Text("You lasted for 25m 43s")
+                Text("You lasted for \(String(describing: challengeViewModel.latestChallengeResult?.durationDisplay ?? "-"))")
                     .font(.system(size: 20, weight: .semibold))
                     .foregroundColor(.white)
                     .padding(.top,6)
@@ -285,7 +273,7 @@ struct ProgressTabView: View {
                 
                 // Start Challenge Button
                 Button {
-                    showingChallengeSheet = true
+                    navigationManager.push(to: .challengeSheetView)
                 } label: {
                     HStack {
                         Text("Start Challenge")

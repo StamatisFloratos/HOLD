@@ -66,7 +66,7 @@ struct KnowledgeView: View {
                             Button {
                                 navigationManager.push(to: .knowledgeDetailView(item: item))
                             } label: {
-                                KnowledgeCardView(imageName: "knowledgePlaceholder", title: item.title)
+                                KnowledgeCardView(imageName: item.imageName, title: item.title)
                             }
                         }
                     }
@@ -80,15 +80,11 @@ struct KnowledgeView: View {
 }
 
 #Preview {
-    // Example items for previewing the "Nutrition" category
-    let previewItems = [
-        KnowledgeItem(title: "Hydration and Pelvic Health", imageName: "hydration_pelvic", shortDescription: "Desc 1", longText: "Long text 1"),
-        KnowledgeItem(title: "Placeholder Nutrition 1", imageName: "placeholder_couple", shortDescription: "Desc 2", longText: "Long text 2"),
-        KnowledgeItem(title: "Placeholder Nutrition 2", imageName: "placeholder_couple", shortDescription: "Desc 3", longText: "Long text 3"),
-        KnowledgeItem(title: "Placeholder Nutrition 4", imageName: "placeholder_couple", shortDescription: "Desc 4", longText: "Long text 4")
-    ]
-
-    return KnowledgeView(categoryTitle: "Nutrition", items: previewItems)
-        .environmentObject(NavigationManager()) // Provide dummy manager for preview
-        .preferredColorScheme(.dark)
+  
+    let knowledgeViewModel = KnowledgeViewModel()
+    if let items = knowledgeViewModel.groupedKnowledgeData["Nutrition"]  {
+        KnowledgeView(categoryTitle: "Nutrition", items: items)
+            .environmentObject(NavigationManager()) // Provide dummy manager for preview
+            .environmentObject(KnowledgeViewModel())
+    }
 }

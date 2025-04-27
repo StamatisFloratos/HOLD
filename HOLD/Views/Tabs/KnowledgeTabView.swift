@@ -10,8 +10,8 @@ import SwiftUI
 struct KnowledgeTabView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     @EnvironmentObject var tabManager: TabManager
-    @StateObject private var viewModel = KnowledgeViewModel()
-    
+    @EnvironmentObject var knowledgeViewModel : KnowledgeViewModel
+
     @State var isClickedOnDetail = false
     // Define grid layout: 2 columns, adaptive spacing
     let columns: [GridItem] = [
@@ -45,8 +45,8 @@ struct KnowledgeTabView: View {
                         Text("Knowledge")
                             .font(.system(size: 24, weight: .bold))
                             .foregroundColor(.white)
-                        ForEach(viewModel.sortedCategories, id: \.self) { category in
-                            KnowledgeSectionView(title: category, items: viewModel.groupedKnowledgeData[category] ?? [])
+                        ForEach(knowledgeViewModel.sortedCategories, id: \.self) { category in
+                            KnowledgeSectionView(title: category, items: knowledgeViewModel.groupedKnowledgeData[category] ?? [])
                         }
                     }
                     else {
@@ -86,14 +86,12 @@ struct KnowledgeSectionView: View {
 
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 15) {
-                    ForEach(items, id: \.self) { item in
+                    ForEach(items, id: \.id) { item in
                         Button {
                             navigationManager.push(to: .knowledgeDetailView(item: item))
                         } label: {
-                            KnowledgeCardView(imageName: "knowledgePlaceholder", title: item.title)
+                            KnowledgeCardView(imageName: item.imageName, title: item.title)
                         }
-
-                       
                     }
                 }
                 .padding(.vertical, 5)
@@ -101,6 +99,7 @@ struct KnowledgeSectionView: View {
         }
     }
 }
+
 
 // Reusable view for the knowledge cards
 struct KnowledgeCardView: View {
@@ -116,22 +115,23 @@ struct KnowledgeCardView: View {
                 .clipped()
 
             LinearGradient(
-                gradient: Gradient(colors: [Color.black.opacity(0.9), Color.clear]),
-                startPoint: .bottom,
-                endPoint: .center
+                gradient: Gradient(colors: [Color(hex: "#666666").opacity(0.1), Color.black]),
+                startPoint: .top,
+                endPoint: .bottom
             )
 
             Text(title)
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(.white)
+                .multilineTextAlignment(.leading)
                 .padding(10)
         }
         .frame(width: 150, height: 200)
         .cornerRadius(15)
-//         .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 2) // Optional subtle shadow
     }
 }
 
 #Preview {
     KnowledgeTabView()
+        .environmentObject(KnowledgeViewModel())
 }

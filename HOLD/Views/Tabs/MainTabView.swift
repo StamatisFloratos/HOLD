@@ -12,14 +12,12 @@ class TabManager: ObservableObject {
 }
 
 struct MainTabView: View {
-    
-//    @EnvironmentObject var onboardingData: OnboardingData
     @EnvironmentObject var navigationManager: NavigationManager
-//    @State private var isNavigateToPremium = false
-//    @State private var isFromOnboarding = false
-//    @State private var isUserFirstTimeHere = true
     @State private var selectedTab = 0
     @EnvironmentObject var tabManager: TabManager
+    @EnvironmentObject var progressViewModel: ProgressViewModel
+    @EnvironmentObject var challengeViewModel: ChallengeViewModel
+
 
     init() {
         UITabBar.appearance().isHidden = true // Hide the default tab bar
@@ -29,6 +27,8 @@ struct MainTabView: View {
             TabView(selection: $tabManager.selectedTab) {
                 ProgressTabView()
                     .tag(0)
+                    .environmentObject(challengeViewModel)
+                    .environmentObject(progressViewModel)
                 WorkoutTabView()
                     .tag(1)
                 KnowledgeTabView()
@@ -102,5 +102,8 @@ struct RoundedCorner: Shape {
 
 
 #Preview {
-    MainTabView().environmentObject(TabManager())
+    MainTabView()
+        .environmentObject(TabManager())
+        .environmentObject(ChallengeViewModel())
+        .environmentObject(ProgressViewModel())
 }

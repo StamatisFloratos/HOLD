@@ -62,7 +62,7 @@ struct WorkoutView: View {
                 
                 Spacer()
                 Button(action: {                
-                    if let selectedWorkout = workoutViewModel.selectedWorkout {
+                    if let selectedWorkout = workoutViewModel.todaysWorkout {
                         navigationManager.push(to: .workoutDetailView(selectedWorkout: selectedWorkout))
                     }
                     

@@ -46,13 +46,15 @@ extension NavigationManager {
         case measurementActivityView
         case mainTabView
         
-        case workoutTabView
         case workoutView
         case workoutDetailView(selectedWorkout:Workout)
         case workoutFinishView
         
-        case knowledgeTabView
         case knowledgeView(categoryTitle:String, items:[KnowledgeItem])
         case knowledgeDetailView(item:KnowledgeItem)
+        
+        case challengeSheetView
+        case challengeActivityView
+        case challengeRankView
     }
 }

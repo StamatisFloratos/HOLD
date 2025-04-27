@@ -8,18 +8,14 @@
 import SwiftUI
 
 struct KnowledgeDetailView: View {
-    let item: KnowledgeItem
-
-    // Environment variable to dismiss the view (common for modals/sheets)
-    @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var navigationManager: NavigationManager
-
+    let item: KnowledgeItem
     
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
                 ZStack {
-                    Image("knowledgePlaceholder")
+                    Image(item.imageName)
                         .resizable()
                         .scaledToFill()
                         .frame(maxWidth: .infinity)
@@ -29,11 +25,11 @@ struct KnowledgeDetailView: View {
                         HStack{
                             Spacer()
                             Button {
-                                presentationMode.wrappedValue.dismiss()
+                                navigationManager.goBack()
                             } label: {
                                 Image(systemName: "xmark.circle.fill")
                                     .font(.system(size: 30))
-                                    .foregroundColor(.black.opacity(0.3))
+                                    .foregroundColor(.gray)
                                     .padding()
                             }
                         }
@@ -56,7 +52,7 @@ struct KnowledgeDetailView: View {
                             .font(.system(size: 20, weight: .semibold))
                             .foregroundColor(.white)
                             .padding(.top, 20)
-                        Text(item.longText)
+                        Text(item.article)
                             .font(.system(size: 16, weight: .regular))
                             .foregroundColor(.white)
                             .lineSpacing(5)
@@ -77,6 +73,6 @@ struct KnowledgeDetailView: View {
 }
 
 #Preview {
-    KnowledgeDetailView(item: KnowledgeItem(title: "Hydration and Pelvic Health", imageName: "hydration_pelvic", shortDescription: "Desc 1", longText: "Long text 1"))
+    KnowledgeDetailView(item: KnowledgeItem(id: "abc", title: "Hydration and Pelvic Health", imageName: "hydration_pelvic", article: "Hydration and Pelvic Health"))
         
 }

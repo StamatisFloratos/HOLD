@@ -13,6 +13,9 @@ import Photos
 struct SplashView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     @EnvironmentObject var workoutViewModel: WorkoutViewModel
+    @EnvironmentObject var progressViewModel: ProgressViewModel
+    @EnvironmentObject var challengeViewModel: ChallengeViewModel
+
 
 
     var body: some View {
@@ -27,24 +30,36 @@ struct SplashView: View {
                     switch destination {
                     case .measurementView:
                         MeasurementSheetView()
+                            .environmentObject(progressViewModel)
                     case .mainTabView:
                         MainTabView()
+                            .environmentObject(progressViewModel)
+                            .environmentObject(challengeViewModel)
+                        
                     case .measurementActivityView:
                         MeasurementActivityView()
-                    case .workoutTabView:
-                        WorkoutTabView()
-                    case .knowledgeTabView:
-                        KnowledgeTabView()
+                            .environmentObject(progressViewModel)
+                    
                     case .knowledgeView(categoryTitle: let categoryTitle, items: let items):
                         KnowledgeView(categoryTitle: categoryTitle, items: items)
                     case .knowledgeDetailView(item: let item):
                         KnowledgeDetailView(item: item)
+                        
                     case .workoutView:
                         WorkoutView().environmentObject(workoutViewModel)
                     case .workoutFinishView:
                         WorkoutFinishView()
                     case .workoutDetailView(selectedWorkout: let selectedWorkout):
                         WorkoutDetailView(selectedWorkout: selectedWorkout)
+                        
+                    case .challengeSheetView:
+                        ChallengeSheetView()
+                    case .challengeActivityView:
+                        ChallengeActivityView()
+                        .environmentObject(challengeViewModel)
+                    case .challengeRankView:
+                        ChallengeRankView()
+                            .environmentObject(challengeViewModel)
                     }
                 }
             )

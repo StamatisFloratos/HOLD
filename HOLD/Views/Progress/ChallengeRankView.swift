@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct ChallengeRankView: View {
-    @Environment(\.presentationMode) var presentationMode
-    var challengeResult: ChallengeResult
-    
+    @EnvironmentObject var navigationManager: NavigationManager
+    @EnvironmentObject var challengeViewModel: ChallengeViewModel
+
     var body: some View {
         ZStack {
             LinearGradient(
@@ -52,7 +52,7 @@ struct ChallengeRankView: View {
                                 .fill(Color.gray.opacity(0.3))
                                 .frame(height: 10)
 
-                            ProgressView(value: challengeResult.duration / Double(challengeResult.nextRankValue))
+                            ProgressView(value: challengeViewModel.latestChallengeResult!.duration / Double(challengeViewModel.latestChallengeResult!.nextRankValue))
                                 .progressViewStyle(LinearProgressViewStyle())
                                 .accentColor(Color(hex: "#0CFF00"))
                                 .scaleEffect(x: 1, y: 2, anchor: .center) // adjust height multiplier
@@ -60,11 +60,11 @@ struct ChallengeRankView: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 6))
                         }
                         HStack{
-                            Text(challengeResult.durationDisplay)
+                            Text(challengeViewModel.latestChallengeResult!.durationDisplay)
                                 .font(.system(size: 20, weight: .semibold))
                                 .foregroundColor(.white)
                             Spacer()
-                            Text(challengeResult.timeDisplay(duration: challengeResult.nextRankValue))
+                            Text(challengeViewModel.latestChallengeResult!.timeDisplay(duration: challengeViewModel.latestChallengeResult!.nextRankValue))
                                 .font(.system(size: 20, weight: .semibold))
                                 .foregroundColor(.white)
                         }
@@ -78,7 +78,7 @@ struct ChallengeRankView: View {
                 
                 
                 Button(action: {
-                    self.presentationMode.wrappedValue.dismiss()
+                    navigationManager.pop(to: .mainTabView)
                 }) {
                     Text("Done")
                         .font(.system(size: 16, weight: .semibold))
@@ -97,31 +97,31 @@ struct ChallengeRankView: View {
     
     var rankView: some View {
         VStack(spacing:0) {
-            Image(challengeResult.rankImage)
+            Image(challengeViewModel.latestChallengeResult!.rankImage)
                 .resizable()
                 .scaledToFill()
 //                .frame(width: 289)
             ZStack {
                 LinearGradient(
-                    colors: challengeResult.backgroundColor,
+                    colors: challengeViewModel.latestChallengeResult!.backgroundColor,
                     startPoint: .top,
                     endPoint: .bottom
                 )
                 VStack{
                     Text("Duration")
                         .font(.system(size: 20, weight: .semibold))
-                        .foregroundColor((challengeResult.rank == .npc || challengeResult.rank == .simp) ? .black : .white)
-                    Text(challengeResult.durationDisplay)
+                        .foregroundColor((challengeViewModel.latestChallengeResult!.rank == .npc || challengeViewModel.latestChallengeResult!.rank == .simp) ? .black : .white)
+                    Text(challengeViewModel.latestChallengeResult!.durationDisplay)
                         .font(.system(size: 20, weight: .regular))
-                        .foregroundColor((challengeResult.rank == .npc || challengeResult.rank == .simp) ? .black : .white)
+                        .foregroundColor((challengeViewModel.latestChallengeResult!.rank == .npc || challengeViewModel.latestChallengeResult!.rank == .simp) ? .black : .white)
                     Spacer().frame(height: 19)
                     Text("Rank")
                         .font(.system(size: 20, weight: .semibold))
-                        .foregroundColor((challengeResult.rank == .npc || challengeResult.rank == .simp) ? .black : .white)
-                    Text(challengeResult.rankDisplay.uppercased())
+                        .foregroundColor((challengeViewModel.latestChallengeResult!.rank == .npc || challengeViewModel.latestChallengeResult!.rank == .simp) ? .black : .white)
+                    Text(challengeViewModel.latestChallengeResult!.rankDisplay.uppercased())
                         .italic()
                         .font(.system(size: 36, weight: .semibold))
-                        .foregroundColor((challengeResult.rank == .npc || challengeResult.rank == .simp) ? .black : .white)
+                        .foregroundColor((challengeViewModel.latestChallengeResult!.rank == .npc || challengeViewModel.latestChallengeResult!.rank == .simp) ? .black : .white)
                         
                 }
                 
@@ -133,5 +133,5 @@ struct ChallengeRankView: View {
 }
 
 #Preview {
-    ChallengeRankView(challengeResult: ChallengeResult(duration: 2400))
+    ChallengeRankView()
 }

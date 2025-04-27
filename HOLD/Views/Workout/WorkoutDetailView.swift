@@ -9,6 +9,7 @@ import SwiftUI
 
 struct WorkoutDetailView: View {
     @EnvironmentObject var navigationManager: NavigationManager
+    @EnvironmentObject var workoutViewModel: WorkoutViewModel
 
     @State private var isPaused: Bool = false
     var selectedWorkout: Workout
@@ -203,6 +204,8 @@ struct WorkoutDetailView: View {
             }
         } else {
             // Workout completed
+            WorkoutCompletionManager.saveCompletion(WorkoutCompletion(workoutId: selectedWorkout.id))
+            workoutViewModel.updateStreakAfterWorkout()
             navigationManager.push(to: .workoutFinishView)
         }
     }

@@ -9,11 +9,7 @@ import SwiftUI
 
 struct MeasurementSheetView: View {
     @EnvironmentObject var navigationManager: NavigationManager
-    @State private var showingActivityView = false
-    @EnvironmentObject var viewModel: ProgressViewModel
-    @Environment(\.presentationMode) var presentationMode // For dismissing this sheet
-
-
+    @EnvironmentObject var progressViewModel: ProgressViewModel
 
     var body: some View {
         ZStack {
@@ -40,18 +36,14 @@ struct MeasurementSheetView: View {
                     Image("measurementIcon")
                         .padding(.vertical,45)
                     Text("You’re about to start a\nmeasurement.")
-                    //
                         .font(.system(size: 24, weight: .semibold))
                         .foregroundColor(.white)
                         .fixedSize(horizontal: false, vertical: true)
                         .multilineTextAlignment(.center)
                     
-                    
-                    
-                    
-                    
-                }.padding(.top, 20)
-                    .padding(.horizontal)
+                }
+                .padding(.top, 20)
+                .padding(.horizontal)
                 
                 Spacer()
                 
@@ -70,15 +62,14 @@ struct MeasurementSheetView: View {
                 
                 Spacer()
                 Button(action: {
-                    // Handle measurement action
-//                    navigationManager.push(to: .measurementActivityView)
-                    showingActivityView = true
+                    navigationManager.push(to: .measurementActivityView)
                 }) {
                     Text("Start Measurement")
                         .font(.system(size: 16, weight: .semibold))
                         .padding()
                         .frame(maxWidth: .infinity,maxHeight: 47)
-                        .background(Color(hex: "#FF1919"))                        .foregroundColor(.white)
+                        .background(Color(hex: "#FF1919"))
+                        .foregroundColor(.white)
                         .cornerRadius(30)
                 }
                 .padding(.horizontal, 50)
@@ -86,20 +77,11 @@ struct MeasurementSheetView: View {
             }
         }
         .navigationBarHidden(true)
-        .fullScreenCover(isPresented: $showingActivityView,
-                         onDismiss: {
-                                         // This code runs *after* MeasurementActivityView is dismissed
-                                         print("MeasurementActivityView dismissed, now dismissing MeasurementSheetView.")
-                                         // Dismiss MeasurementSheetView itself
-                                         self.presentationMode.wrappedValue.dismiss()
-                                     }) {
-                     MeasurementActivityView()
-                         .environmentObject(viewModel) // <<< PASS ViewModel ALONG to the next view's environment
-                }
+        
     }
 }
 
 #Preview {
-    MeasurementSheetView()
+    MeasurementSheetView().environmentObject(ProgressViewModel())
 }
 

@@ -9,9 +9,6 @@ import SwiftUI
 
 struct ChallengeSheetView: View {
     @EnvironmentObject var navigationManager: NavigationManager
-    @State private var showingChallengeActivityView = false
-    @EnvironmentObject var viewModel: ProgressViewModel
-    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         ZStack {
@@ -62,7 +59,7 @@ struct ChallengeSheetView: View {
                 
                 Spacer()
                 Button(action: {
-                    showingChallengeActivityView = true
+                    navigationManager.push(to: .challengeActivityView)
                 }) {
                     Text("Start The Challenge")
                         .font(.system(size: 16, weight: .semibold))
@@ -77,17 +74,17 @@ struct ChallengeSheetView: View {
             }
         }
         .navigationBarHidden(true)
-        .fullScreenCover(isPresented: $showingChallengeActivityView,
-                         onDismiss: {
-            print("ChallengeActivityView dismissed, now dismissing ChallengeSheetView.")
-            self.presentationMode.wrappedValue.dismiss()
-        }) {
-            ChallengeActivityView { elapsedTime in
-                // Save the challenge result
-                print("Challenge completed with total time: \(elapsedTime)")
-                viewModel.challengeDidFinish(duration: elapsedTime)
-            }
-        }
+//        .fullScreenCover(isPresented: $showingChallengeActivityView,
+//                         onDismiss: {
+//            print("ChallengeActivityView dismissed, now dismissing ChallengeSheetView.")
+//            self.presentationMode.wrappedValue.dismiss()
+//        }) {
+//            ChallengeActivityView { elapsedTime in
+//                // Save the challenge result
+//                print("Challenge completed with total time: \(elapsedTime)")
+//                viewModel.challengeDidFinish(duration: elapsedTime)
+//            }
+//        }
     }
     
     

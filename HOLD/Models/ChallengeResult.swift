@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-struct ChallengeResult: Codable, Identifiable {
+struct ChallengeResult: Identifiable, Codable, Hashable  {
     let id: UUID
     let date: Date
     let duration: TimeInterval
@@ -195,5 +195,13 @@ struct ChallengeResult: Codable, Identifiable {
         else {
             return "\(remainingSeconds)s"
         }
+    }
+    
+    func dateOfChallenge() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM d, yyyy"
+        let dateString = formatter.string(from: date)
+
+        return dateString // → "May 18, 2025"
     }
 }

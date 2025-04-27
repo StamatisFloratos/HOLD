@@ -37,15 +37,9 @@ struct WorkoutTabView: View {
                         .font(.system(size: 24, weight: .semibold))
                         .foregroundColor(.white)
                     
-                    if !workoutViewModel.workouts.isEmpty {
-                        TabView(selection: $selectedWorkoutIndex) {
-                            ForEach(0..<workoutViewModel.workouts.count, id: \.self) { index in
-                                workoutCard(workout: workoutViewModel.workouts[index])
-                                    .tag(index)
-                            }
-                        }
-                        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
-                        .frame(height: 500)
+                    if let todaysWorkout = workoutViewModel.todaysWorkout {
+                        workoutCard(workout: todaysWorkout)
+                            .frame(height: 500)
                     } else {
                         Text("No workouts available")
                             .foregroundColor(.white)
@@ -60,9 +54,6 @@ struct WorkoutTabView: View {
                 .padding(.horizontal)                
                 Spacer(minLength: 80) // Space for tab bar
             }
-            .onAppear {
-                workoutViewModel.loadWorkoutsFromJSON()
-            }
         }
         .navigationBarHidden(true)
     }
@@ -74,25 +65,47 @@ struct WorkoutTabView: View {
                     .font(.system(size: 20, weight: .semibold))
                     .foregroundColor(.white)
                 
-                Circle()
-                    .fill(difficultyColor(workout.difficulty))
-                    .frame(height: 88)
-                    .overlay(
-                        Image(systemName: difficultyIcon(workout.difficulty))
-                            .font(.system(size: 40))
-                            .foregroundColor(.white)
-                    )
+                if workoutViewModel.isWorkoutCompletedToday(workout) {
+                    Image(systemName: "checkmark.circle.fill") // Using a checkmark icon
+                        .resizable()
+                        .frame(width: 88, height: 88)
+                        .foregroundStyle(LinearGradient(
+                            colors: [
+                                Color(hex:"#FF1919"),
+                                Color(hex:"#990F0F")
+                            ],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        ))
+                } else {
+                    Circle()
+                        .stroke(Color.white, lineWidth: 3)
+                        .frame(width: 88,height: 88)
+                }
                 
-                Text(workoutViewModel.isWorkoutCompletedToday(workout) ? 
+                
+                Text(workoutViewModel.isWorkoutCompletedToday(workout) ?
                      "Status: Completed Today" : "Status: Not Completed")
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.white)
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundColor(.white)
             }
             
             VStack(alignment: .leading, spacing: 10) {
-                Text("**Difficulty:** \(workout.difficulty.description)")
-                    .font(.system(size: 16, weight: .regular))
-                    .foregroundColor(.white)
+                HStack {
+                    Text("**Difficulty:**")
+                        .font(.system(size: 16, weight: .regular))
+                        .foregroundColor(.white)
+                    Text("\(workout.difficulty.description)")
+                        .font(.system(size: 16, weight: .regular))
+                        .foregroundStyle(LinearGradient(
+                            colors: [
+                                Color(hex:"#14C101"),
+                                Color(hex:"#0E8601")
+                            ],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        ))
+                }
                 
                 Text("**Duration:** \(workout.durationMinutes) minutes")
                     .font(.system(size: 16, weight: .regular))
@@ -101,14 +114,12 @@ struct WorkoutTabView: View {
                 Text("**Description:** \(workout.description)")
                     .font(.system(size: 16, weight: .regular))
                     .foregroundColor(.white)
-               
+                
             }
             .padding(.horizontal)
             
             Button(action: {
-                workoutViewModel.selectWorkout(workout)
                 navigationManager.push(to: .workoutView)
-//                flowManager.isShowingWorkoutView = true
             }) {
                 Text("Start Workout")
                     .font(.system(size: 16, weight: .semibold))
@@ -126,28 +137,6 @@ struct WorkoutTabView: View {
         .cornerRadius(20)
     }
     
-    func difficultyColor(_ difficulty: WorkoutDifficulty) -> Color {
-        switch difficulty {
-        case .easy:
-            return Color.green
-        case .medium:
-            return Color.orange
-        case .hard:
-            return Color.red
-        }
-    }
-    
-    func difficultyIcon(_ difficulty: WorkoutDifficulty) -> String {
-        switch difficulty {
-        case .easy:
-            return "figure.walk"
-        case .medium:
-            return "figure.run"
-        case .hard:
-            return "flame.fill"
-        }
-    }
-    
     var streakView: some View {
         VStack(alignment:.leading, spacing: 23) {
             VStack(alignment:.leading, spacing: 0) {
@@ -155,7 +144,7 @@ struct WorkoutTabView: View {
                     .font(.system(size: 20, weight: .semibold))
                     .foregroundColor(.white)
                 
-                Text("You're on a 12-day streak!")
+                Text("You're on a \(workoutViewModel.longestStreak) day streak!")
                     .font(.system(size: 14, weight: .regular))
                     .foregroundColor(.white)
                 
@@ -165,14 +154,14 @@ struct WorkoutTabView: View {
             // Week Streak View
             HStack() {
                 Spacer()
-                let completedDays = [true, false, true, false, true, false, false]
-                let daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sut"]
-                
                 ForEach(0..<7) { index in
-                    DayCircleView(day: daysOfWeek[index], isCompleted: completedDays[index])
+                    let date = getWeekday(for: index)
+                    let isToday = isDateToday(date)
+                    let hasWorkout = hasWorkoutOnDate(date)
+                    DayCircleView(day: getDayShortName(for: index), isCompleted: hasWorkout)
                     Spacer()
+                    
                 }
-
             }
         }
         .padding(.vertical)
@@ -183,8 +172,42 @@ struct WorkoutTabView: View {
                 .stroke(Color.gray, lineWidth: 1)
                 .cornerRadius(12)
         )
+    }
+    
+    // Helper functions for the weekly streak view
+    private func getWeekday(for index: Int) -> Date {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let weekday = calendar.component(.weekday, from: today)
         
+        // Calculate the date for Monday (assuming Monday is the first day of the week)
+        let daysToMonday = (weekday + 5) % 7 // Convert to 0-indexed where Monday is 0
+        let mondayDate = calendar.date(byAdding: .day, value: -daysToMonday, to: today)!
         
+        // Get the date for the requested day of the week
+        return calendar.date(byAdding: .day, value: index, to: mondayDate)!
+    }
+
+    private func getDayShortName(for index: Int) -> String {
+        let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        return days[index]
+    }
+
+    private func getDateNumber(for date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "d"
+        return formatter.string(from: date)
+    }
+
+    private func isDateToday(_ date: Date) -> Bool {
+        Calendar.current.isDateInToday(date)
+    }
+
+    private func hasWorkoutOnDate(_ date: Date) -> Bool {
+        // Check if the date is in the viewModel's streakDates array
+        return workoutViewModel.streakDates.contains { streakDate in
+            Calendar.current.isDate(streakDate, inSameDayAs: date)
+        }
     }
 }
 
@@ -194,24 +217,26 @@ struct DayCircleView: View {
 
     var body: some View {
         VStack(spacing: 5) {
-            
-
             if isCompleted {
-                // Filled circle/icon for completed days
-                Image(systemName: "checkmark.circle.fill") // Using a checkmark icon
+                Image(systemName: "checkmark.circle.fill")
                     .resizable()
                     .frame(width: 30, height: 30)
-                    .foregroundColor(Color(hex: "#FF1919")) // Your accent color
+                    .foregroundStyle(LinearGradient(
+                        colors: [
+                            Color(hex:"#FF1919"),
+                            Color(hex:"#990F0F")
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    ))
             } else {
-                // Outline circle for incomplete days
                 Circle()
-//                    .strokeBorder(Color.gray, lineWidth: 1.5)
-                    .foregroundStyle(Color(hex: "#606060")) // Ensure transparent background
+                    .foregroundStyle(Color(hex: "#606060"))
                     .frame(width: 30, height: 30)
             }
             Text(day)
                 .font(.system(size: 12, weight: .medium))
-                .foregroundColor(.gray)
+                .foregroundColor(.white)
         }
     }
 }
@@ -219,4 +244,5 @@ struct DayCircleView: View {
 #Preview {
     WorkoutTabView()
         .environmentObject(TabManager())
+        .environmentObject(WorkoutViewModel())
 }

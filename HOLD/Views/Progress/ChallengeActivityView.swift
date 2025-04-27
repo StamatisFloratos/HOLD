@@ -21,9 +21,7 @@ struct ChallengeActivityView: View {
     @State private var holdTime: Int = 0
     @State private var timer: Timer? = nil
     @EnvironmentObject var navigationManager: NavigationManager
-    @EnvironmentObject var viewModel: ProgressViewModel
-    @Environment(\.presentationMode) var presentationMode
-    @State private var showingChallengeResultView = false
+    @EnvironmentObject var challengeViewModel: ChallengeViewModel
 
     
     // State for the animation
@@ -198,7 +196,8 @@ struct ChallengeActivityView: View {
                             .padding(.top,6)
                         Spacer()
                         Button(action: {
-                            showingChallengeResultView = true
+                            challengeViewModel.challengeDidFinish(duration: totalElapsedTime)
+                            navigationManager.push(to: .challengeRankView)
                         }) {
                             Text("Continue")
                                 .font(.system(size: 16, weight: .semibold))
@@ -219,13 +218,6 @@ struct ChallengeActivityView: View {
         .navigationBarHidden(true)
         .onAppear(perform: startChallenge) // Start the sequence on appear
         .onDisappear(perform: stopChallenge) // Clean up timers on disappear
-        .fullScreenCover(isPresented: $showingChallengeResultView,
-                         onDismiss: {
-            print("ChallengeActivityView dismissed, now dismissing ChallengeSheetView.")
-            self.presentationMode.wrappedValue.dismiss()
-        }) {
-            ChallengeRankView(challengeResult: ChallengeResult(duration: totalElapsedTime))
-        }
     }
     
     private func startAnimationTimer() {

@@ -17,7 +17,8 @@ struct HOLDApp: App {
     @StateObject private var navigationManager = NavigationManager()
     @StateObject private var workoutViewModel = WorkoutViewModel()
     @StateObject private var progressViewModel = ProgressViewModel()
-
+    @StateObject private var challengeViewModel = ChallengeViewModel()
+    @StateObject private var knowledgeViewModel = KnowledgeViewModel()
     
     var body: some Scene {
         WindowGroup {
@@ -26,6 +27,8 @@ struct HOLDApp: App {
                 .environmentObject(tabManager)
                 .environmentObject(workoutViewModel)
                 .environmentObject(progressViewModel)
+                .environmentObject(challengeViewModel)
+                .environmentObject(knowledgeViewModel)
                 .onAppear {
                     appDelegate.applicationDidBecomeActive()
                 }
