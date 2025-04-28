@@ -52,7 +52,6 @@ struct MeasurementActivityView: View {
                         .multilineTextAlignment(.center)
                         .frame(height: 100)
                     
-                    Spacer()
                     
                     ZStack {
                         Circle()
@@ -72,7 +71,7 @@ struct MeasurementActivityView: View {
 
                         Text("Press &\nHOLD")
                             .font(.system(size: 24, weight: .semibold))
-                            .foregroundColor(.white)
+                            .foregroundColor(hold == true ?.white.opacity(0.8) : .white)
                             .multilineTextAlignment(.center)
                     }
                     .gesture(
@@ -92,6 +91,7 @@ struct MeasurementActivityView: View {
                                 progressViewModel.measurementDidFinish(duration: Double(holdTime))
                             }
                     )
+                    .padding(.top,106)
                     
                     Spacer()
                     

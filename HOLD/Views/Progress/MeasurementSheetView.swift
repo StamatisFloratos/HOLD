@@ -45,7 +45,6 @@ struct MeasurementSheetView: View {
                 .padding(.top, 20)
                 .padding(.horizontal)
                 
-                Spacer()
                 
                 VStack(alignment: .leading){
                     Text("Make sure that:")
@@ -58,7 +57,8 @@ struct MeasurementSheetView: View {
                     BulletTextView(text: "Let go of the button when you can’t hold any more.")
                    
                 }
-                .padding(.horizontal)
+                .padding(.horizontal,38)
+                .padding(.top,71)
                 
                 Spacer()
                 Button(action: {
@@ -72,7 +72,7 @@ struct MeasurementSheetView: View {
                         .foregroundColor(.white)
                         .cornerRadius(30)
                 }
-                .padding(.horizontal, 50)
+                .padding(.horizontal, 56)
                 .padding(.bottom, 15)
             }
         }
