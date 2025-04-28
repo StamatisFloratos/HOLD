@@ -59,15 +59,12 @@ struct ProgressTabView: View {
             }
         }
         .navigationBarHidden(true)
-        .onAppear{
-            progressViewModel.measurementDidFinish(duration: 10)
-        }
     }
     
     var progressIndicator: some View {
         let minValue = 3.0
         let maxValue = 300.0
-        let currentValue = progressViewModel.allTimeBest ?? 0.0 // All time best
+        let currentValue = progressViewModel.mostRecentMeaurementTime // most recent
         let progress = (currentValue - minValue) / (maxValue - minValue)
 
         return VStack(spacing: 6) {

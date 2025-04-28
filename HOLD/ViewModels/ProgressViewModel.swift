@@ -46,6 +46,10 @@ class ProgressViewModel: ObservableObject {
         let day: String // Mon, Tue, etc.
         let duration: Double? // Keep it optional
     }
+    
+    var mostRecentMeaurementTime: Double {
+        return allMeasurements.last?.durationSeconds ?? 0
+    }
 
     // Computed property to transform data for the chart view
     var chartDisplayData: [DailyDuration] {
