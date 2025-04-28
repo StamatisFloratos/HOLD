@@ -29,7 +29,7 @@ struct ProgressTabView: View {
             .ignoresSafeArea()
             
             ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
+                VStack(alignment: .leading) {
                     HStack {
                         Spacer()
                         Image("holdIcon")
@@ -44,7 +44,10 @@ struct ProgressTabView: View {
                         Text("💪")
                             .font(.title)
                     }
-                    .padding(.horizontal)
+                    .padding(.horizontal,39)
+                    .padding(.bottom,39)
+                    .padding(.top,20)
+
                     
                     
                     progressChart
@@ -56,6 +59,9 @@ struct ProgressTabView: View {
             }
         }
         .navigationBarHidden(true)
+        .onAppear{
+            progressViewModel.measurementDidFinish(duration: 10)
+        }
     }
     
     var progressIndicator: some View {
@@ -64,17 +70,12 @@ struct ProgressTabView: View {
         let currentValue = progressViewModel.allTimeBest ?? 0.0 // All time best
         let progress = (currentValue - minValue) / (maxValue - minValue)
 
-        return VStack(spacing: 10) {
-            HStack {
-                
-                Spacer()
-            }
-
+        return VStack(spacing: 6) {
             // Progress slider visualization with moving triangle
-            VStack(spacing:0) {
+            VStack(spacing:1) {
                 // Moving triangle
                 GeometryReader { geo in
-                    VStack {
+                    VStack(spacing:2) {
                         Text("You")
                             .font(.system(size: 16, weight: .semibold))
                             .foregroundColor(.white)
@@ -93,8 +94,6 @@ struct ProgressTabView: View {
                     )
                     .frame(height: 33)
                     .cornerRadius(20)
-                    
-                    
                     // Emoji ends
                     HStack {
                         Text("😭")
@@ -103,10 +102,7 @@ struct ProgressTabView: View {
                         Text("😩")
                             .font(.title)
                     }
-                    
                 }
-
-                
             }
             
             HStack {
@@ -121,18 +117,21 @@ struct ProgressTabView: View {
                     .foregroundColor(.white)
             }
         }
-        .padding(.horizontal)
-        .padding(.top, 20)
+        .padding(.horizontal,28)
+        .padding(.top, 16)
+        .padding(.bottom, 31)
+
     }
 
     
     
     var progressChart: some View {
-        VStack(alignment: .leading, spacing: 15) {
+        VStack(alignment: .leading) {
             Text("Training Progress")
                 .font(.system(size: 20, weight: .semibold))
                 .foregroundColor(.white)
-                .padding(.horizontal)
+                .padding(.horizontal,39)
+                .padding(.bottom,19)
             
             HStack {
                 Text("All Time Best: \(formatDuration(progressViewModel.allTimeBest))")
@@ -143,20 +142,21 @@ struct ProgressTabView: View {
                     .font(.system(size: 15, weight: .medium))
                     .foregroundColor(.gray)
             }
-            .padding(.horizontal)
+            .padding(.horizontal,39)
+            .padding(.bottom,7)
             
             // Progress Chart Container
             
             
-            VStack(spacing: 30) {
+            VStack {
                 HStack{
                     Text(progressViewModel.weekDateRange)
+                        .font(.system(size: 16, weight: .medium))
                         .foregroundColor(.white)
-                        .font(.callout)
-                        .padding(.top, 10)
-                        .padding(.horizontal)
                     Spacer()
                 }
+                .padding(.top,16)
+                .padding(.horizontal,21)
                 
                 Chart {
                     ForEach(progressViewModel.chartDisplayData) { dailyData in
@@ -174,6 +174,7 @@ struct ProgressTabView: View {
                         AxisGridLine()
                             .foregroundStyle(.clear)
                         AxisTick()
+                            .foregroundStyle(.clear)
                         AxisValueLabel()
                             .foregroundStyle(.white)
                             .font(.system(size: 12, weight: .regular))
@@ -182,8 +183,9 @@ struct ProgressTabView: View {
                 .chartYAxis {
                     AxisMarks { value in
                         AxisGridLine()
-                            .foregroundStyle(.clear)
+                            .foregroundStyle(.white.opacity(0.5))
                         AxisTick()
+                            .foregroundStyle(.clear)
                         AxisValueLabel {
                             if let val = value.as(Double.self) {
                                 Text("\(Int(val)) sec")
@@ -211,9 +213,9 @@ struct ProgressTabView: View {
                     .frame(maxWidth: .infinity)
                     .background(Color(hex:"#FF1919"))
                     .foregroundColor(.white)
-                    .cornerRadius(25)
+                    .cornerRadius(30)
                 }
-                .padding(.horizontal, 50)
+                .frame(width: 214, height: 47)
                 .padding(.bottom, 24)
                 .padding(.top,42)
             }
@@ -224,8 +226,7 @@ struct ProgressTabView: View {
                     .stroke(Color.white.opacity(0.4), lineWidth: 1)
                     .cornerRadius(12)
             )
-            .padding(.vertical, 5)
-            .padding(.horizontal)
+            .padding(.horizontal,28)
         }
         
     }
@@ -234,7 +235,7 @@ struct ProgressTabView: View {
         // Challenge section
         VStack {
             HStack{
-                VStack(alignment: .leading, spacing: 30) {
+                VStack(alignment: .leading, spacing: 26) {
                     Text("The Challenge")
                         .font(.system(size: 20, weight: .semibold))
                         .foregroundColor(.white)
@@ -245,7 +246,7 @@ struct ProgressTabView: View {
                 }
                 Spacer()
             }
-            .padding(.horizontal,30)
+            .padding(.horizontal,39)
             
             
             // Progress Chart Container
@@ -311,8 +312,8 @@ struct ProgressTabView: View {
                     .stroke(Color.white.opacity(0.4), lineWidth: 1)
                     .cornerRadius(12)
             )
-            .padding(.vertical, 5)
-            .padding(.horizontal)
+            .padding(.top, 9)
+            .padding(.horizontal,28)
             
         }
     }
