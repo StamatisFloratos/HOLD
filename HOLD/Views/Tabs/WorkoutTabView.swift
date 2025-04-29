@@ -24,46 +24,52 @@ struct WorkoutTabView: View {
             )
             .ignoresSafeArea()
             
-            ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    HStack {
-                        Spacer()
-                        Image("holdIcon")
-                        Spacer()
-                    }
-                    .padding(.top, 20)
-                    
-                    Text("Workouts")
-                        .font(.system(size: 24, weight: .semibold))
-                        .foregroundColor(.white)
-                    
-                    if let todaysWorkout = workoutViewModel.todaysWorkout {
-                        workoutCard(workout: todaysWorkout)
-                            .frame(height: 500)
-                    } else {
-                        Text("No workouts available")
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(Color(hex: "#161616").opacity(0.4))
-                            .cornerRadius(20)
-                    }
-                    
-                    streakView
-                    
+            VStack{
+                HStack {
+                    Spacer()
+                    Image("holdIcon")
+                    Spacer()
                 }
-                .padding(.horizontal)                
-                Spacer(minLength: 80) // Space for tab bar
+                .padding(.top, 24)
+                .padding(.bottom, 14)
+                ScrollView(showsIndicators: false) {
+                    VStack(alignment: .leading, spacing: 0) {
+                        Text("Today’s Workout")
+                            .font(.system(size: 24, weight: .semibold))
+                            .foregroundColor(.white)
+                            .padding(.top,39)
+                            .padding(.leading,10)
+                        
+                        if let todaysWorkout = workoutViewModel.todaysWorkout {
+                            workoutCard(workout: todaysWorkout)
+                                .padding(.top,17)
+                        } else {
+                            Text("No workouts available")
+                                .foregroundColor(.white)
+                                .padding()
+                                .background(Color(hex: "#161616").opacity(0.4))
+                                .cornerRadius(20)
+                        }
+                        streakView
+                            .padding(.top,17)
+                        Spacer(minLength: 14)
+                    }
+                }
+                
             }
+            .padding(.horizontal,28)
+            
         }
         .navigationBarHidden(true)
     }
     
     func workoutCard(workout: Workout) -> some View {
-        VStack(spacing: 36) {
-            VStack(spacing: 20) {
+        VStack(spacing: 0) {
+            VStack(spacing: 0) {
                 Text(workout.name)
                     .font(.system(size: 20, weight: .semibold))
                     .foregroundColor(.white)
+                    .padding(.top,19)
                 
                 if workoutViewModel.isWorkoutCompletedToday(workout) {
                     Image(systemName: "checkmark.circle.fill") // Using a checkmark icon
@@ -77,10 +83,12 @@ struct WorkoutTabView: View {
                             startPoint: .top,
                             endPoint: .bottom
                         ))
+                        .padding(.vertical,14)
                 } else {
                     Circle()
                         .stroke(Color.white, lineWidth: 3)
                         .frame(width: 88,height: 88)
+                        .padding(.vertical,21)
                 }
                 
                 
@@ -88,6 +96,8 @@ struct WorkoutTabView: View {
                      "Status: Completed Today" : "Status: Not Completed")
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(.white)
+                .padding(.bottom,36)
+                .padding(.top,14)
             }
             
             VStack(alignment: .leading, spacing: 10) {
@@ -116,23 +126,25 @@ struct WorkoutTabView: View {
                     .foregroundColor(.white)
                 
             }
-            .padding(.horizontal)
+            .padding(.horizontal,10)
+            
             
             Button(action: {
                 navigationManager.push(to: .workoutView)
             }) {
                 Text("Start Workout")
                     .font(.system(size: 16, weight: .semibold))
-                    .padding()
+                    .frame(width: 214, height: 47)
                     .frame(maxWidth: .infinity, maxHeight: 47)
                     .background(Color(hex: "#FF1919"))
                     .foregroundColor(.white)
                     .cornerRadius(30)
             }
-            .padding(.horizontal, 50)
-            .padding(.bottom, 15)
+            .padding(.horizontal, 60)
+            .padding(.bottom, 18)
+            .padding(.top, 40)
+
         }
-        .padding(.vertical)
         .background(Color(hex: "#000000").opacity(0.4))
         .cornerRadius(20)
         .overlay(
@@ -155,6 +167,7 @@ struct WorkoutTabView: View {
                 
             }
             .padding(.leading)
+
             
             // Week Streak View
             HStack() {

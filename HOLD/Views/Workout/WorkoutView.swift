@@ -46,19 +46,19 @@ struct WorkoutView: View {
                 .padding(.top, 20)
                 .padding(.horizontal)
                 
-                Spacer()
                 
                 VStack(alignment: .leading) {
                     Text("Make sure that:")
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(.white)
-                        .padding(.bottom,18)
+                        .padding(.bottom,19)
                     
                     BulletTextView(text: "You are in a quiet place where you can focus")
                     BulletTextView(text: "You turned on “Do Not Disturb” on your phone")
                     BulletTextView(text: "You have at least 5 minutes")
                 }
-                .padding(.horizontal)
+                .padding(.horizontal,0)
+                .padding(.top,71)
                 
                 Spacer()
                 Button(action: {                
