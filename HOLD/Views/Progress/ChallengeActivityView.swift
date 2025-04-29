@@ -23,25 +23,24 @@ struct ChallengeActivityView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     @EnvironmentObject var challengeViewModel: ChallengeViewModel
 
-    
-    // State for the animation
-    @State private var isBallUp = false
+    // Animation states from RhythmicBallView
+    @State private var ballPosition: CGFloat = 0
+    @State private var previousPositions: [CGFloat] = []
     @State private var animationTimer: Timer? = nil
-    // Define the gradient colors
-        let lightGreen = Color(hex: "#7FFF00") // Bright green
-        let trailEndColor = Color.clear       // Fade trail to transparent
     
-    // Constants for styling/layout
-    let barWidth: CGFloat = 40
+    // Animation settings
+    let ballSize: CGFloat = 60
+    let barWidth: CGFloat = 60
     let barHeight: CGFloat = 250
-    let ballDiameter: CGFloat = 40 // Should match barWidth for cylinder top
-    let animationDuration: TimeInterval = 0.8
+    let animationSpeed: Double = 0.01
+    let trailLength: Int = 20
+    let trailFadeRate: Double = 0.85
     
     // --- Phase Configuration ---
     // Durations for the FIRST loop only
-    let phaseTotalDurations: [TimeInterval] = [5, 7, 7, 7]
+    let phaseTotalDurations: [TimeInterval] = [5, 10, 3, 7]
     // Toggle interval (speed) for each phase (used in ALL loops)
-    let phaseToggleIntervals: [TimeInterval] = [1.7, 1.3, 0.8, 0.5]
+    let phaseToggleIntervals: [TimeInterval] = [3.0, 2.3, 1.8, 1.0]
     // Color for each phase (used in ALL loops)
     let phaseColors: [Color] = [
         Color(hex: "#95FF00"), // Phase 1 (Bright Green)
@@ -53,10 +52,12 @@ struct ChallengeActivityView: View {
     // --- State Variables ---
     @State private var currentPhaseIndex = 0
     @State private var phaseTimer: Timer? = nil // Times the duration of the current phase
-    @State private var toggleTimer: Timer? = nil // Toggles the ball up/down
+    @State private var toggleTimer: Timer? = nil // Toggles the ball direction
     @State private var isFirstLoop = true          // Tracks if it's the initial loop
-    @State private var totalElapsedTime: TimeInterval = 0.0 // <<< Add state for total time
-    @State private var challengeTimer: Timer? = nil // <<< Add timer for total time
+    @State private var totalElapsedTime: TimeInterval = 0.0 // Total time
+    @State private var challengeTimer: Timer? = nil // Timer for total time
+    @State private var direction: CGFloat = 1 // Direction for the sine wave animation
+    @State private var time: CGFloat = 0 // Time parameter for the sine wave
     
     // --- Computed Properties for Current Phase ---
     private var currentPhaseColor: Color {
@@ -89,7 +90,6 @@ struct ChallengeActivityView: View {
             )
             .ignoresSafeArea()
             
-            
             VStack(spacing: 0) {
                 // Logo at the top
                 HStack {
@@ -108,37 +108,41 @@ struct ChallengeActivityView: View {
                         .fixedSize(horizontal: false, vertical: true)
                         .multilineTextAlignment(.center)
                         .frame(height: 100)
-                        .padding(.bottom, 60)
                     
-                    // --- Animation Element ---
-                    ZStack {
-                        // --- Trail Gradient - Uses currentPhaseColor ---
-                        LinearGradient(
-                            gradient: Gradient(colors: [currentPhaseColor, trailEndColor]), // Dynamic color
-                            startPoint: isBallUp ? .top : .bottom,
-                            endPoint: isBallUp ? .bottom : .top
-                        )
-                        .clipShape(Capsule())
+                    Spacer()
+                    
+                    // --- New Rhythmic Ball Animation centered on screen ---
+                    HStack {
+                        Spacer() // Push animation to center
+                        
+                        ZStack {
+                            // Container for visualization
+                            Rectangle()
+                                .fill(Color.clear)
+                                .frame(width: barWidth, height: barHeight)
+                            
+                            // Trail segments - using previous positions for trail effect
+                            ForEach(0..<min(previousPositions.count, trailLength), id: \.self) { index in
+                                let opacity = 0.2 * pow(trailFadeRate, Double(index))
+                                let size = ballSize * CGFloat(1.0 - (Double(index) / Double(trailLength)) * 0.5)
+                                
+                                Capsule()
+                                    .fill(currentPhaseColor.opacity(opacity))
+                                    .frame(width: barWidth, height: size)
+                                    .position(x: barWidth/2, y: previousPositions[index])
+                            }
+                            
+                            // Main ball
+                            Circle()
+                                .fill(currentPhaseColor)
+                                .frame(width: ballSize, height: ballSize)
+                                .position(x: barWidth/2, y: ballPosition)
+                        }
                         .frame(width: barWidth, height: barHeight)
-                        // Animate gradient change with currentToggleInterval
-                        .animation(.easeInOut(duration: currentToggleInterval), value: isBallUp)
+                        .clipped()
                         
-                        
-                        // --- Moving Ball - Uses currentPhaseColor ---
-                        Circle()
-                            .fill(currentPhaseColor) // Dynamic color
-                            .frame(width: ballDiameter, height: ballDiameter)
-                            .offset(y: isBallUp ? -(barHeight / 2) + (ballDiameter / 2) : (barHeight / 2) - (ballDiameter / 2))
-                        // Animate position change with currentToggleInterval
-                            .animation(.easeInOut(duration: currentToggleInterval), value: isBallUp)
-                            .onChange(of: isBallUp, {
-                                triggerHaptic()
-                            })
-                        
-                    } // End ZStack for Animation
-                    .frame(height: barHeight)
-                    .padding(.bottom, 60)
-                    // --- End Animation Element ---
+                        Spacer() // Push animation to center
+                    }
                     
                     Spacer()
                     
@@ -215,30 +219,78 @@ struct ChallengeActivityView: View {
                     }
                 }
             }
-            
-            
         }
         .navigationBarHidden(true)
         .onAppear(perform: startChallenge) // Start the sequence on appear
         .onDisappear(perform: stopChallenge) // Clean up timers on disappear
     }
     
-    private func startAnimationTimer() {
-        stopAnimationTimer()
-        animationTimer = Timer.scheduledTimer(withTimeInterval: animationDuration, repeats: true) { _ in
-            self.isBallUp.toggle()
+    // --- Animation Functions from RhythmicBallView ---
+    
+    private func startBallAnimation(preservePosition: Bool = false) {
+        // Stop existing animation timer if any
+        stopBallAnimation()
+        
+        // Initialize position only if not preserving
+        if !preservePosition {
+            // Initial position in the middle of the container
+            ballPosition = barHeight / 2
+            time = 0
+            direction = 1
+            previousPositions = [] // Clear previous positions
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            if animationTimer != nil {
-                self.isBallUp.toggle()
+        
+        let amplitude: CGFloat = barHeight / 2 - ballSize / 2
+        
+        // Create timer for smooth animation with current phase's speed
+        let adjustedSpeed = animationSpeed // Base animation speed
+        
+        animationTimer = Timer.scheduledTimer(withTimeInterval: adjustedSpeed, repeats: true) { _ in
+            // Store previous position for trail effect
+            previousPositions.insert(ballPosition, at: 0)
+            if previousPositions.count > trailLength {
+                previousPositions.removeLast()
+            }
+            
+            // Calculate new position with sine wave
+            let newPosition = barHeight / 2 - amplitude * sin(time)
+            
+            // Only trigger haptic if we're near end points (bouncing)
+            let positionThreshold: CGFloat = 5.0
+            let oldPosition = ballPosition
+            ballPosition = newPosition
+            
+            // Check if we've crossed a threshold for haptic feedback
+            if (oldPosition < barHeight / 2 - amplitude + positionThreshold && newPosition >= barHeight / 2 - amplitude + positionThreshold) ||
+               (oldPosition > barHeight / 2 + amplitude - positionThreshold && newPosition <= barHeight / 2 + amplitude - positionThreshold) {
+                triggerHaptic()
+            }
+            
+            // Update time for next frame - adjusted by current phase speed
+            let speedMultiplier = getSpeedMultiplierForCurrentPhase()
+            time += 0.05 * direction * speedMultiplier
+            
+            // Check for direction change based on actual position
+            if newPosition <= ballSize / 2 || newPosition >= barHeight - ballSize / 2 {
+                direction *= -1
             }
         }
     }
     
-    private func stopAnimationTimer() {
+    private func stopBallAnimation() {
         animationTimer?.invalidate()
         animationTimer = nil
-        print("Animation timer stopped.")
+    }
+    
+    // Helper function to adjust animation speed based on current phase
+    private func getSpeedMultiplierForCurrentPhase() -> CGFloat {
+        // Convert toggle interval to speed multiplier - faster toggle interval means higher speed
+        // Base speed (1.7s) = 1.0x multiplier
+        let baseInterval: CGFloat = 1.7
+        let currentInterval = CGFloat(phaseToggleIntervals[safe: currentPhaseIndex] ?? baseInterval)
+        
+        // Invert the relationship - smaller interval = faster animation
+        return baseInterval / currentInterval // e.g. 1.7/0.5 = 3.4x faster
     }
 
     // --- Timer Management Functions ---
@@ -246,16 +298,15 @@ struct ChallengeActivityView: View {
     private func startChallenge() {
         // Reset state fully
         currentPhaseIndex = 0
-        isBallUp = false
         isFirstLoop = true
-        totalElapsedTime = 0.0 // <<< Reset elapsed time
+        totalElapsedTime = 0.0 // Reset elapsed time
+        previousPositions = [] // Clear previous positions
 
-        // --- Start the Challenge Timer (Total Time) ---
+        // Start the Challenge Timer (Total Time)
         challengeTimer?.invalidate() // Ensure previous is stopped
         challengeTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
             totalElapsedTime += 0.1
         }
-        // --- End Start Challenge Timer ---
 
         print("Starting Challenge, Total Timer Running, First Loop, Phase \(currentPhaseIndex + 1)")
         startTimersForCurrentPhase()
@@ -266,20 +317,19 @@ struct ChallengeActivityView: View {
         // Stop all timers
         challengeTimer?.invalidate()
         phaseTimer?.invalidate()
-        toggleTimer?.invalidate()
+        stopBallAnimation() // Stop the animation timer too
+        
         challengeTimer = nil
         phaseTimer = nil
-        toggleTimer = nil
-
+        
         // Call completion handler with the final time
-        onComplete?(totalElapsedTime) // <<< This passes the time back
+        onComplete?(totalElapsedTime)
     }
-
+    
     private func startTimersForCurrentPhase() {
-        // Stop existing timers before starting new ones
+        // Stop only the phase timer but not the animation timer
         phaseTimer?.invalidate()
-        toggleTimer?.invalidate()
-
+        
         // Safely get config for current phase
         guard let toggleInterval = phaseToggleIntervals[safe: currentPhaseIndex],
               let firstLoopDuration = phaseTotalDurations[safe: currentPhaseIndex] else {
@@ -287,7 +337,7 @@ struct ChallengeActivityView: View {
             stopChallenge()
             return
         }
-
+        
         // Determine Phase Duration
         let phaseDuration: TimeInterval
         if isFirstLoop {
@@ -297,19 +347,14 @@ struct ChallengeActivityView: View {
             phaseDuration = TimeInterval.random(in: 5...10) // Random duration for subsequent loops
             print("Phase \(currentPhaseIndex + 1) (Loop >1): Toggle=\(toggleInterval)s, Duration=\(phaseDuration)s (Random)")
         }
-
-        // 1. Start the Toggle Timer (Repeats to move ball)
-        toggleTimer = Timer.scheduledTimer(withTimeInterval: toggleInterval, repeats: true) { _ in
-            self.isBallUp.toggle()
+        
+        // If animation timer is nil (first run), start the animation
+        // Otherwise, the animation continues with new color
+        if animationTimer == nil {
+            startBallAnimation(preservePosition: false)
         }
-        // Perform initial toggle slightly delayed
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-             if toggleTimer != nil { // Ensure timer actually started
-                 self.isBallUp.toggle()
-             }
-        }
-
-        // 2. Start the Phase Timer (Fires once when phase duration is up)
+        
+        // Start the Phase Timer (Fires once when phase duration is up)
         phaseTimer = Timer.scheduledTimer(withTimeInterval: phaseDuration, repeats: false) { _ in
             print("Phase \(self.currentPhaseIndex + 1) finished (Duration: \(phaseDuration)s).")
             self.advanceToNextPhase()
@@ -317,23 +362,19 @@ struct ChallengeActivityView: View {
     }
 
     private func advanceToNextPhase() {
-        // Stop the toggle timer for the completed phase
-        toggleTimer?.invalidate()
-        toggleTimer = nil
-
         var nextPhaseIndex = currentPhaseIndex + 1
-
+        
         // Check if loop completed
         if nextPhaseIndex >= phaseColors.count { // Use count of colors/speeds
             print("Loop completed. Starting next loop.")
             nextPhaseIndex = 0     // Reset index to loop
             isFirstLoop = false  // Mark subsequent loops as not the first
         }
-
+        
         // Move to next phase
         currentPhaseIndex = nextPhaseIndex
         print("Advancing to Phase \(currentPhaseIndex + 1)")
-        startTimersForCurrentPhase() // Start timers for the new/looped phase
+        startTimersForCurrentPhase() // Start timers for the new/looped phase without stopping animation
     }
     
     func triggerHaptic() {

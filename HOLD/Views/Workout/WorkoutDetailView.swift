@@ -45,54 +45,65 @@ struct WorkoutDetailView: View {
                     .padding(.top,20)
                     Spacer()
                     // Progress circle with counter
-                    ZStack {
-                        // Outer glow circle
-                        if workoutWithRests.exercises[selectedExerciseIndex].name != "Rest" {
-                            let rhythm = workoutWithRests.exercises[selectedExerciseIndex].getRhythmParameters()
+                    GeometryReader { geometry in
+                        ZStack(alignment: .center) {
+                            // Center point for reference
+                            let centerX = geometry.size.width / 2
+                            let centerY = geometry.size.height / 2
                             
-                            Circle()
-                                .fill(
-                                    RadialGradient(
-                                        gradient: Gradient(colors: [Color(hex: "#990F0F"), Color(hex: "#FF0000")]),
-                                        center: .center,
-                                        startRadius: 81,
-                                        endRadius: 114
+                            // Outer glow circle
+                            if workoutWithRests.exercises[selectedExerciseIndex].name != "Rest" {
+                                let rhythm = workoutWithRests.exercises[selectedExerciseIndex].getRhythmParameters()
+                                
+                                Circle()
+                                    .fill(
+                                        RadialGradient(
+                                            gradient: Gradient(colors: [Color(hex: "#990F0F"), Color(hex: "#FF0000")]),
+                                            center: .center,
+                                            startRadius: 81,
+                                            endRadius: 114
+                                        )
                                     )
-                                )
-                                .frame(width: 228, height: 228)
-                                .scaleEffect(pulsate ? 1.2:1) // Scaling based on intensity
-                                .opacity(pulsate ? 0.5:1)      // Optional: opacity changes a bit
-                                .animation(
-                                    Animation.easeInOut(duration: rhythm.duration)
-                                        .repeatForever(autoreverses: true)
-                                        .speed(rhythm.intensity)
-                                )
-                                .onChange(of: pulsate, {
-                                    triggerHaptic()
-                                })
-                        }
-                        
-                        // Inner dark circle
-                        Circle()
-                            .fill(Color(hex: "#111720"))
-                            .frame(width: 152, height: 152)
-                        
-                        // Progress arc (white line)
-                        Circle()
-                            .trim(from: 0, to: progress)
-                            .stroke(Color.white, style: StrokeStyle(lineWidth: 2, lineCap: .round))
-                            .frame(width: 152, height: 152)
-                            .rotationEffect(.degrees(-90))
-                        //                        
-                        // Counter and text
-                        VStack(spacing: 5) {
-                            Text("\(Int(totalTimeRemaining))")
-                                .font(.system(size: 32, weight: .semibold))
-                                .foregroundColor(.white)
+                                    .frame(width: 228, height: 228)
+                                    .position(x: centerX, y: centerY)
+                                    .scaleEffect(pulsate ? 1.2 : 1)
+                                    .opacity(pulsate ? 0.5 : 1)
+                                    .animation(
+                                        Animation.easeInOut(duration: rhythm.duration)
+                                            .repeatForever(autoreverses: true)
+                                            .speed(rhythm.intensity),
+                                        value: pulsate
+                                    )
+                                    .onChange(of: pulsate) { _ in
+                                        triggerHaptic()
+                                    }
+                            }
                             
-                            Text(workoutWithRests.exercises[selectedExerciseIndex].name != "Rest" ? "Contract & Let Go" : "Rest")
-                                .font(.system(size: 16, weight: .semibold))
-                                .foregroundColor(.white)
+                            // Inner dark circle - explicitly positioned
+                            Circle()
+                                .fill(Color(hex: "#111720"))
+                                .frame(width: 152, height: 152)
+                                .position(x: centerX, y: centerY)
+                            
+                            // Progress arc - explicitly positioned
+                            Circle()
+                                .trim(from: 0, to: progress)
+                                .stroke(Color.white, style: StrokeStyle(lineWidth: 2, lineCap: .round))
+                                .frame(width: 152, height: 152)
+                                .rotationEffect(.degrees(-90))
+                                .position(x: centerX, y: centerY)
+                            
+                            // Counter and text - explicitly positioned
+                            VStack(spacing: 5) {
+                                Text("\(Int(totalTimeRemaining))")
+                                    .font(.system(size: 32, weight: .semibold))
+                                    .foregroundColor(.white)
+                                
+                                Text(workoutWithRests.exercises[selectedExerciseIndex].name != "Rest" ? "Contract & Let Go" : "Rest")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .foregroundColor(.white)
+                            }
+                            .position(x: centerX, y: centerY)
                         }
                     }
                     
