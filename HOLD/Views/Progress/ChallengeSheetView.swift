@@ -23,13 +23,15 @@ struct ChallengeSheetView: View {
             .ignoresSafeArea()
             
             VStack {
-                VStack(spacing: 20) {
+                VStack(spacing: 0) {
                     // Logo at the top
                     HStack {
                         Spacer()
                         Image("holdIcon")
                         Spacer()
                     }
+                    .padding(.top, 24)
+                    .padding(.bottom, 14)
                     
                     Image("challengeIcon")
                         .padding(.vertical,45)

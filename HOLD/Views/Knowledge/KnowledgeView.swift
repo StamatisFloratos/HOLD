@@ -31,14 +31,14 @@ struct KnowledgeView: View {
             .ignoresSafeArea()
 
             VStack {
-                VStack(spacing: 20) {
-                    HStack {
-                        Spacer()
-                        Image("holdIcon")
-                        Spacer()
-                    }
-                    .padding(.top, 20)
+                HStack {
+                    Spacer()
+                    Image("holdIcon")
+                    Spacer()
                 }
+                .padding(.top, 24)
+                .padding(.bottom, 14)
+                
                 HStack {
                     Button {
                         navigationManager.goBack()

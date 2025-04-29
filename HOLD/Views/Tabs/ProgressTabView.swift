@@ -44,6 +44,7 @@ struct ProgressTabView: View {
                             .foregroundColor(.white)
                         Text("💪")
                             .font(.title)
+                        Spacer()
                     }
                     .padding(.horizontal,39)
                     .padding(.bottom,39)
@@ -239,7 +240,7 @@ struct ProgressTabView: View {
                         .font(.system(size: 20, weight: .semibold))
                         .foregroundColor(.white)
                     
-                    Text("Last Attempt: \(challengeViewModel.latestChallengeResult?.dateOfChallenge() ?? "-")")
+                    Text("Last Attempt: \(challengeViewModel.latestChallengeResult.dateOfChallenge())")
                         .font(.system(size: 15, weight: .semibold))
                         .foregroundColor(.white).opacity(0.4)
                 }
@@ -256,7 +257,7 @@ struct ProgressTabView: View {
                     .foregroundColor(.white)
                     .padding(.top)
                 
-                Text(challengeViewModel.latestChallengeResult?.percentileDisplay ?? "-")
+                Text(challengeViewModel.latestChallengeResult.percentileDisplay)
                     .font(.system(size: 64, weight: .semibold))
                     .foregroundStyle(LinearGradient(
                         colors: [
@@ -272,7 +273,7 @@ struct ProgressTabView: View {
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(.white)
                 //                        .padding(.top,6)
-                Text("You lasted for \(String(describing: challengeViewModel.latestChallengeResult?.durationDisplay ?? "-"))")
+                Text("You lasted for \(String(describing: challengeViewModel.latestChallengeResult.durationDisplay))")
                     .font(.system(size: 20, weight: .semibold))
                     .foregroundColor(.white)
                     .padding(.top,6)

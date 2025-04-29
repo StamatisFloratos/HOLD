@@ -17,6 +17,10 @@ struct MainTabView: View {
     @EnvironmentObject var tabManager: TabManager
     @EnvironmentObject var progressViewModel: ProgressViewModel
     @EnvironmentObject var challengeViewModel: ChallengeViewModel
+    @EnvironmentObject var workoutViewModel: WorkoutViewModel
+    @EnvironmentObject var knowledgeViewModel: KnowledgeViewModel
+
+
 
 
     init() {
@@ -31,6 +35,7 @@ struct MainTabView: View {
                     .environmentObject(progressViewModel)
                 WorkoutTabView()
                     .tag(1)
+                    .environmentObject(workoutViewModel)
                 KnowledgeTabView()
                     .tag(2)
                 ProfileTabView()
@@ -38,7 +43,7 @@ struct MainTabView: View {
             }
             .edgesIgnoringSafeArea(.top)
             // Custom tab bar
-            HStack {
+            HStack(spacing: 0) {
                 TabBarButton(imageName: "progressIcon", isSelected: tabManager.selectedTab == 0, selectedTab: 0)
                     .onTapGesture { tabManager.selectedTab = 0 }
                 
@@ -57,8 +62,7 @@ struct MainTabView: View {
                 TabBarButton(imageName: "profileIcon", isSelected: tabManager.selectedTab == 3, selectedTab: 3)
                     .onTapGesture { tabManager.selectedTab = 3 }
             }
-            .frame(height: 76)
-            .padding(.top, 10)
+            .padding(.horizontal,5)
             .background(Color(hex: "#111720"))
         }
     }
@@ -70,18 +74,32 @@ struct TabBarButton: View {
     var selectedTab: Int
     
     var body: some View {
-        VStack {
-            Image(imageName)
-                .renderingMode(.template)
+        VStack(spacing:3) {
+            if selectedTab == 3 {
+                Image(systemName: "person.fill")
+                    .renderingMode(.template)
                     .resizable()
-                    .frame(width:32,height: 32)
+                    .scaledToFit()
+                    .frame(height: 30 )
                     .foregroundColor(isSelected ? .white : .gray)
+            }
+            else {
+                Image(imageName)
+                    .renderingMode(.template)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 30)
+                    .foregroundColor(isSelected ? .white : .gray)
+            }
+                    
             Text(
                 selectedTab == 0 ? "Progress" : (selectedTab == 1 ? "Workout" : (selectedTab == 2 ? "Knowledge" : "Profile") )
             )
             .foregroundColor(isSelected ? .white : .gray)
         }
         .frame(maxWidth: .infinity)
+        .padding(.top, 15)
+
     }
 }
 
@@ -106,4 +124,6 @@ struct RoundedCorner: Shape {
         .environmentObject(TabManager())
         .environmentObject(ChallengeViewModel())
         .environmentObject(ProgressViewModel())
+        .environmentObject(WorkoutViewModel())
+        .environmentObject(KnowledgeViewModel())
 }

@@ -31,16 +31,13 @@ struct MeasurementActivityView: View {
             
             
             VStack {
-                VStack(spacing: 20) {
-                    // Logo at the top
-                    HStack {
-                        Spacer()
-                        Image("holdIcon")
-                        Spacer()
-                    }
-                    
-                }.padding(.top, 20)
-                    .padding(.horizontal)
+                HStack {
+                    Spacer()
+                    Image("holdIcon")
+                    Spacer()
+                }
+                .padding(.top, 24)
+                .padding(.bottom, 14)
                 
                 Spacer().frame(height: 117)
                 

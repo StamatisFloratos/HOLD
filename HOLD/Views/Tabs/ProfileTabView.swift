@@ -23,19 +23,22 @@ struct ProfileTabView: View {
                 endPoint: .bottom
             )
             .ignoresSafeArea()
-            
-            ScrollView(showsIndicators: false) {
-                VStack(alignment: .leading, spacing: 20) {
-                    HStack {
-                        Spacer()
-                        Image("holdIcon")
-                        Spacer()
-                    }
-                    .padding(.top, 20)
+            VStack(spacing:0) {
+                HStack {
+                    Spacer()
+                    Image("holdIcon")
+                    Spacer()
                 }
-                .padding(.horizontal)
-                Spacer(minLength: 80)
+                .padding(.top, 24)
+                .padding(.bottom, 14)
+                
+                ScrollView(showsIndicators: false) {
+                    
+                    Spacer(minLength: 80)
+                }
             }
+            
+            
         }
         .navigationBarHidden(true)
     }

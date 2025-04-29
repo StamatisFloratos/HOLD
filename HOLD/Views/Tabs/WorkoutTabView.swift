@@ -32,6 +32,7 @@ struct WorkoutTabView: View {
                 }
                 .padding(.top, 24)
                 .padding(.bottom, 14)
+                
                 ScrollView(showsIndicators: false) {
                     VStack(alignment: .leading, spacing: 0) {
                         Text("Today’s Workout")

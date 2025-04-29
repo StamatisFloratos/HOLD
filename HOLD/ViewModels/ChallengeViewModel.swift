@@ -10,8 +10,8 @@ import SwiftUI
 
 class ChallengeViewModel: ObservableObject {
     @Published var allChallengeResults: [ChallengeResult] = []
-    @Published var bestChallengeResult: ChallengeResult!
-    @Published var latestChallengeResult: ChallengeResult!
+    @Published var bestChallengeResult: ChallengeResult = ChallengeResult(duration: 0)
+    @Published var latestChallengeResult: ChallengeResult = ChallengeResult(duration: 0)
     
     init() {
         loadChallengeResults()
@@ -30,7 +30,7 @@ class ChallengeViewModel: ObservableObject {
         
         // Update latest and best results
         latestChallengeResult = newResult
-        if bestChallengeResult == nil || duration > bestChallengeResult!.duration {
+        if bestChallengeResult.duration == 0 || duration > bestChallengeResult.duration {
             bestChallengeResult = newResult
         }
         
@@ -72,8 +72,8 @@ class ChallengeViewModel: ObservableObject {
             allChallengeResults = try decoder.decode([ChallengeResult].self, from: data)
             
             // Set latest and best results
-            latestChallengeResult = allChallengeResults.last
-            bestChallengeResult = allChallengeResults.max(by: { $0.duration < $1.duration })
+            latestChallengeResult = allChallengeResults.last ?? ChallengeResult(duration: 0)
+            bestChallengeResult = allChallengeResults.max(by: { $0.duration < $1.duration }) ?? ChallengeResult(duration: 0)
             
             print("Successfully loaded \(allChallengeResults.count) challenge results")
         } catch {
@@ -88,10 +88,10 @@ class ChallengeViewModel: ObservableObject {
     }
     
     var bestRank: String {
-        return bestChallengeResult?.rankDisplay ?? "No Challenge Data"
+        return bestChallengeResult.rankDisplay
     }
     
     var bestDuration: String {
-        return bestChallengeResult?.durationDisplay ?? "0s"
+        return bestChallengeResult.durationDisplay
     }
 }

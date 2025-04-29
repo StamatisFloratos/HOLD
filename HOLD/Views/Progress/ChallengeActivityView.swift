@@ -97,7 +97,8 @@ struct ChallengeActivityView: View {
                     Image("holdIcon")
                     Spacer()
                 }
-                .padding(.top, 40)
+                .padding(.top, 24)
+                .padding(.bottom, 14)
                 
                 Spacer()
                 

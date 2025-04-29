@@ -40,6 +40,7 @@ struct KnowledgeTabView: View {
                 }
                 .padding(.top, 24)
                 .padding(.bottom, 14)
+                
                 ScrollView(showsIndicators: false) {
                     
                     HStack {

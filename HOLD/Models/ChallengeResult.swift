@@ -197,6 +197,20 @@ struct ChallengeResult: Identifiable, Codable, Hashable  {
         }
     }
     
+    func timeDisplayForProgress(duration: TimeInterval) -> String {
+        let minutes = Int(duration) / 60
+        let remainingSeconds = Int(duration) % 60
+
+        if minutes > 0 && remainingSeconds > 0 {
+            return "\(minutes) mins \(remainingSeconds) sec"
+        } else if minutes > 0 && remainingSeconds == 0 {
+            return "\(minutes) mins"
+        }
+        else {
+            return "\(remainingSeconds) sec"
+        }
+    }
+    
     func dateOfChallenge() -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM d, yyyy"
