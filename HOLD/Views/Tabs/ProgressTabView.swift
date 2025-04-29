@@ -28,15 +28,16 @@ struct ProgressTabView: View {
             )
             .ignoresSafeArea()
             
-            ScrollView {
-                VStack(alignment: .leading) {
-                    HStack {
-                        Spacer()
-                        Image("holdIcon")
-                        Spacer()
-                    }
-                    .padding(.top, 20)
-                    
+            VStack(alignment: .leading) {
+                HStack {
+                    Spacer()
+                    Image("holdIcon")
+                    Spacer()
+                }
+                .padding(.top, 24)
+                .padding(.bottom, 14)
+                
+                ScrollView(showsIndicators: false) {
                     HStack {
                         Text("Welcome back")
                             .font(.system(size: 24, weight: .bold))
@@ -47,7 +48,7 @@ struct ProgressTabView: View {
                     .padding(.horizontal,39)
                     .padding(.bottom,39)
                     .padding(.top,20)
-
+                    
                     
                     
                     progressChart
@@ -56,6 +57,7 @@ struct ProgressTabView: View {
                     
                     Spacer(minLength: 80)
                 }
+                
             }
         }
         .navigationBarHidden(true)

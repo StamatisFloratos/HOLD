@@ -24,7 +24,7 @@ struct ProfileTabView: View {
             )
             .ignoresSafeArea()
             
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 20) {
                     HStack {
                         Spacer()

@@ -30,7 +30,7 @@ struct KnowledgeView: View {
             )
             .ignoresSafeArea()
 
-            ScrollView {
+            VStack {
                 VStack(spacing: 20) {
                     HStack {
                         Spacer()
@@ -54,24 +54,24 @@ struct KnowledgeView: View {
                     Spacer()
                                     
                 }
-                .padding(.horizontal)
+                .padding(.horizontal,13)
                 .padding(.top, 10)
                 .padding(.bottom, 15)
                 
                 // --- Grid Content ---
-                ScrollView {
-                    LazyVGrid(columns: columns, spacing: 20) { // Spacing between rows
+                ScrollView(showsIndicators: false) {
+                    LazyVGrid(columns: columns, spacing: 54) { // Spacing between rows
                         ForEach(items) { item in
                             // Use the existing card view
                             Button {
                                 navigationManager.push(to: .knowledgeDetailView(item: item))
                             } label: {
-                                KnowledgeCardView(imageName: item.imageName, title: item.title, width: (UIScreen.main.bounds.width/2)-32, height: UIScreen.main.bounds.height/3 )
+                                KnowledgeCardView(imageName: item.imageName, title: item.title, width: 139, height: 185 )
                             
                             }
                         }
                     }
-                    .padding(.horizontal)
+                    .padding(.horizontal,35)
                     .padding(.top, 10)
                 }
             }

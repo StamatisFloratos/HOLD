@@ -25,13 +25,15 @@ struct MeasurementSheetView: View {
             .ignoresSafeArea()
             
             VStack {
-                VStack(spacing: 20) {
+                VStack {
                     // Logo at the top
                     HStack {
                         Spacer()
                         Image("holdIcon")
                         Spacer()
                     }
+                    .padding(.top, 24)
+                    .padding(.bottom, 14)
                     
                     Image("measurementIcon")
                         .padding(.vertical,45)
@@ -42,8 +44,7 @@ struct MeasurementSheetView: View {
                         .multilineTextAlignment(.center)
                     
                 }
-                .padding(.top, 20)
-                .padding(.horizontal)
+                
                 
                 
                 VStack(alignment: .leading){

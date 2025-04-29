@@ -31,32 +31,32 @@ struct KnowledgeTabView: View {
             )
             .ignoresSafeArea()
             
-            ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    HStack {
-                        Spacer()
-                        Image("holdIcon")
-                        Spacer()
-                    }
-                    .padding(.top, 20)
+            
+            VStack(alignment: .leading) {
+                HStack {
+                    Spacer()
+                    Image("holdIcon")
+                    Spacer()
+                }
+                .padding(.top, 24)
+                .padding(.bottom, 14)
+                ScrollView(showsIndicators: false) {
                     
-                    if !isClickedOnDetail {
-                        
+                    HStack {
                         Text("Knowledge")
                             .font(.system(size: 24, weight: .bold))
                             .foregroundColor(.white)
-                        ForEach(knowledgeViewModel.sortedCategories, id: \.self) { category in
-                            KnowledgeSectionView(title: category, items: knowledgeViewModel.groupedKnowledgeData[category] ?? [])
-                        }
+                        Spacer()
                     }
-                    else {
-                        //
-                        
+                    .padding(.bottom,62)
+                    
+                    ForEach(knowledgeViewModel.sortedCategories, id: \.self) { category in
+                        KnowledgeSectionView(title: category, items: knowledgeViewModel.groupedKnowledgeData[category] ?? [])
                     }
                 }
-                .padding(.horizontal)
-                Spacer(minLength: 80)
             }
+            .padding(.leading,14)
+            .padding(.trailing,0)
         }
         .navigationBarHidden(true)
     }
@@ -69,7 +69,7 @@ struct KnowledgeSectionView: View {
     let items: [KnowledgeItem]
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading) {
             Button {
                 navigationManager.push(to: .knowledgeView(categoryTitle: title, items: items))
             } label: {
@@ -82,6 +82,7 @@ struct KnowledgeSectionView: View {
                         .font(.system(size: 16, weight: .bold))
                     Spacer()
                 }
+                .padding(.bottom,20)
             }
 
             ScrollView(.horizontal, showsIndicators: false) {
@@ -90,11 +91,11 @@ struct KnowledgeSectionView: View {
                         Button {
                             navigationManager.push(to: .knowledgeDetailView(item: item))
                         } label: {
-                            KnowledgeCardView(imageName: item.imageName, title: item.title, width: 150, height: 200)
+                            KnowledgeCardView(imageName: item.imageName, title: item.title, width: 139, height: 185)
+                                .padding(.bottom,17)
                         }
                     }
                 }
-                .padding(.vertical, 5)
             }
         }
     }
@@ -126,7 +127,7 @@ struct KnowledgeCardView: View {
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.leading)
-                .padding(10)
+                .padding(8)
         }
         .frame(width: width, height: height)
         .cornerRadius(15)
