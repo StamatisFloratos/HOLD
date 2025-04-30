@@ -45,26 +45,40 @@ struct MainTabView: View {
             // Custom tab bar
             HStack(spacing: 0) {
                 TabBarButton(imageName: "progressIcon", isSelected: tabManager.selectedTab == 0, selectedTab: 0)
-                    .onTapGesture { tabManager.selectedTab = 0 }
+                    .onTapGesture {
+                        triggerHaptic()
+                        tabManager.selectedTab = 0 }
                 
                 Spacer()
                 
                 TabBarButton(imageName: "workoutIcon", isSelected: tabManager.selectedTab == 1, selectedTab: 1)
-                    .onTapGesture { tabManager.selectedTab = 1 }
+                    .onTapGesture {
+                        triggerHaptic()
+                        tabManager.selectedTab = 1 }
                 
                 Spacer()
                 
                 TabBarButton(imageName: "knowledgeIcon", isSelected: tabManager.selectedTab == 2, selectedTab: 2)
-                    .onTapGesture { tabManager.selectedTab = 2 }
+                    .onTapGesture {
+                        triggerHaptic()
+                        tabManager.selectedTab = 2 }
                 
                 Spacer()
                 
                 TabBarButton(imageName: "profileIcon", isSelected: tabManager.selectedTab == 3, selectedTab: 3)
-                    .onTapGesture { tabManager.selectedTab = 3 }
+                    .onTapGesture {
+                        triggerHaptic()
+                        tabManager.selectedTab = 3 }
             }
             .padding(.horizontal,5)
             .background(Color(hex: "#111720"))
         }
+    }
+    
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .heavy)
+        generator.prepare()
+        generator.impactOccurred()
     }
 }
 

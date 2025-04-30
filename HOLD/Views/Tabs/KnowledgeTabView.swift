@@ -21,18 +21,10 @@ struct KnowledgeTabView: View {
 
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [
-                    Color(hex:"#10171F"),
-                    Color(hex:"#466085")
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
+            AppBackground()
             
             
-            VStack(alignment: .leading) {
+            VStack(spacing:0) {
                 HStack {
                     Spacer()
                     Image("holdIcon")
@@ -55,9 +47,10 @@ struct KnowledgeTabView: View {
                         KnowledgeSectionView(title: category, items: knowledgeViewModel.groupedKnowledgeData[category] ?? [])
                     }
                 }
+                .padding(.leading,14)
+                .padding(.trailing,0)
             }
-            .padding(.leading,14)
-            .padding(.trailing,0)
+            
         }
         .navigationBarHidden(true)
     }

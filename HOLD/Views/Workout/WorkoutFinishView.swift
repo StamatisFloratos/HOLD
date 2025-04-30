@@ -13,15 +13,7 @@ struct WorkoutFinishView: View {
 
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [
-                    Color(hex:"#10171F"),
-                    Color(hex:"#466085")
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
+            AppBackground()
             VStack{
                 HStack {
                     Spacer()
