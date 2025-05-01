@@ -8,12 +8,12 @@
 import SwiftUI
 
 class TabManager: ObservableObject {
-    @Published var selectedTab: Int = 0
+    @Published var selectedTab: Int = 1
 }
 
 struct MainTabView: View {
     @EnvironmentObject var navigationManager: NavigationManager
-    @State private var selectedTab = 0
+    @State private var selectedTab = 1
     @EnvironmentObject var tabManager: TabManager
     @EnvironmentObject var progressViewModel: ProgressViewModel
     @EnvironmentObject var challengeViewModel: ChallengeViewModel
@@ -76,7 +76,7 @@ struct MainTabView: View {
     }
     
     func triggerHaptic() {
-        let generator = UIImpactFeedbackGenerator(style: .heavy)
+        let generator = UIImpactFeedbackGenerator(style: .light)
         generator.prepare()
         generator.impactOccurred()
     }
