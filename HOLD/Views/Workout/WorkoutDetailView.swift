@@ -131,6 +131,7 @@ struct WorkoutDetailView: View {
                     
                     // Pause button
                     Button(action: {
+                        triggerHapticOnButton()
                         isPaused.toggle()
                         isPaused == true ? stopTimer() : startTimer()
                         
@@ -317,6 +318,11 @@ struct WorkoutDetailView: View {
     
     func triggerHaptic() {
         let generator = UIImpactFeedbackGenerator(style: .heavy)
+        generator.prepare()
+        generator.impactOccurred()
+    }
+    func triggerHapticOnButton() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
         generator.prepare()
         generator.impactOccurred()
     }

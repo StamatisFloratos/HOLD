@@ -55,6 +55,7 @@ struct MeasurementSheetView: View {
                 
                 Spacer()
                 Button(action: {
+                    triggerHaptic()
                     navigationManager.push(to: .measurementActivityView)
                 }) {
                     Text("Start Measurement")
@@ -71,6 +72,12 @@ struct MeasurementSheetView: View {
         }
         .navigationBarHidden(true)
         
+    }
+    
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.prepare()
+        generator.impactOccurred()
     }
 }
 

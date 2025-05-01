@@ -123,6 +123,7 @@ struct WorkoutTabView: View {
             
             
             Button(action: {
+                triggerHaptic()
                 navigationManager.push(to: .workoutView)
             }) {
                 Text("Start Workout")
@@ -219,6 +220,11 @@ struct WorkoutTabView: View {
         return workoutViewModel.streakDates.contains { streakDate in
             Calendar.current.isDate(streakDate, inSameDayAs: date)
         }
+    }
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.prepare()
+        generator.impactOccurred()
     }
 }
 

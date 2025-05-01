@@ -194,6 +194,7 @@ struct ProgressTabView: View {
                 
                 // Take Measurement Button
                 Button {
+                    triggerHaptic()
                     navigationManager.push(to: .measurementView)
                 } label: {
                     HStack {
@@ -277,6 +278,7 @@ struct ProgressTabView: View {
                 
                 // Start Challenge Button
                 Button {
+                    triggerHaptic()
                     navigationManager.push(to: .challengeSheetView)
                 } label: {
                     HStack {
@@ -318,6 +320,12 @@ struct ProgressTabView: View {
     private func calculateHeightPercent(duration: Double?, maxDuration: Double) -> Double {
         guard let duration = duration, duration > 0, maxDuration > 0 else { return 0.0 }
         return min(1.0, duration / maxDuration)
+    }
+    
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.prepare()
+        generator.impactOccurred()
     }
 }
 

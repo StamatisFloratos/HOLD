@@ -13,7 +13,8 @@ struct MeasurementActivityView: View {
     @State private var hold = false
     @State private var finish = false
     @State private var holdTime: Int = 0
-    @State private var timer: Timer? = nil
+    @State private var hapticTimer: Timer? = nil
+
    
     
     var body: some View {
@@ -69,14 +70,13 @@ struct MeasurementActivityView: View {
                                 if !hold {
                                     hold = true
                                     holdTime = 0
-                                    startTimer()
-                                    triggerHaptic()
+                                    startHapticLoop() // Start continuous haptics
                                 }
                             }
                             .onEnded { _ in
                                 hold = false
                                 finish = true
-                                stopTimer()
+                                stopHapticLoop() // stop continous haptic
                                 progressViewModel.measurementDidFinish(duration: Double(holdTime))
                             }
                     )
@@ -100,6 +100,7 @@ struct MeasurementActivityView: View {
                     }
                     Spacer()
                     Button(action: {
+                        triggerHaptic()
                         navigationManager.pop(to: .mainTabView)
                     }) {
                         Text("Continue")
@@ -120,23 +121,29 @@ struct MeasurementActivityView: View {
         .navigationBarHidden(true)
     }
     
-    // MARK: - Timer Methods
-    func startTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            holdTime += 1
-        }
-    }
-    
-    func stopTimer() {
-        timer?.invalidate()
-        timer = nil
-    }
+    // MARK: - Haptic Feedback Methods
     
     func triggerHaptic() {
-        let generator = UIImpactFeedbackGenerator(style: .heavy)
+        let generator = UIImpactFeedbackGenerator(style: .light)
         generator.prepare()
         generator.impactOccurred()
     }
+    
+    func startHapticLoop() {
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.prepare()
+        
+        hapticTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            holdTime += 1
+            generator.impactOccurred()
+        }
+    }
+
+    func stopHapticLoop() {
+        hapticTimer?.invalidate()
+        hapticTimer = nil
+    }
+
 }
 
 #Preview {
