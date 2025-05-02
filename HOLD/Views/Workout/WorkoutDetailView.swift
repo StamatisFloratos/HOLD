@@ -21,6 +21,7 @@ struct WorkoutDetailView: View {
     @State private var totalTimeRemaining: Double = 0 // Time in seconds
     @State private var scrollViewProxy: ScrollViewProxy? = nil
     @State private var pulsate = false // <- Add this inside your View
+    @State private var finish = false
     
     var body: some View {
         ZStack {
@@ -37,121 +38,169 @@ struct WorkoutDetailView: View {
                     .padding(.top, 24)
                     .padding(.bottom, 14)
                     
-                    Spacer()
-                    // Progress circle with counter
-                    GeometryReader { geometry in
-                        ZStack(alignment: .center) {
-                            // Center point for reference
-                            let centerX = geometry.size.width / 2
-                            let centerY = geometry.size.height / 2
-                            
-                            // Outer glow circle
-                            if workoutWithRests.exercises[selectedExerciseIndex].name != "Rest" {
-                                let rhythm = workoutWithRests.exercises[selectedExerciseIndex].getRhythmParameters()
+//                    Spacer().frame(height: 122)
+                    
+                    if !finish {
+                        // Progress circle with counter
+                        GeometryReader { geometry in
+                            ZStack(alignment: .center) {
+                                // Center point for reference
+                                let centerX = geometry.size.width / 2
+                                let centerY = geometry.size.height / 2
                                 
-                                Circle()
-                                    .fill(
-                                        RadialGradient(
-                                            gradient: Gradient(colors: [Color(hex: "#990F0F"), Color(hex: "#FF0000")]),
-                                            center: .center,
-                                            startRadius: 81,
-                                            endRadius: 114
+                                // Outer glow circle
+                                if workoutWithRests.exercises[selectedExerciseIndex].name != "Rest" {
+                                    let rhythm = workoutWithRests.exercises[selectedExerciseIndex].getRhythmParameters()
+                                    
+                                    Circle()
+                                        .fill(
+                                            RadialGradient(
+                                                gradient: Gradient(colors: [Color(hex: "#990F0F"), Color(hex: "#FF0000")]),
+                                                center: .center,
+                                                startRadius: 81,
+                                                endRadius: 114
+                                            )
                                         )
-                                    )
-                                    .frame(width: 228, height: 228)
-                                    .position(x: centerX, y: centerY)
-                                    .scaleEffect(pulsate ? 1.2 : 1)
-                                    .opacity(pulsate ? 0.5 : 1)
-                                    .animation(
-                                        Animation.easeInOut(duration: rhythm.duration)
+                                        .frame(width: 228, height: 228)
+                                        .position(x: centerX, y: centerY)
+                                        .scaleEffect(pulsate ? 1.2 : 1)
+                                        .opacity(pulsate ? 0.5 : 1)
+                                        .animation(Animation.easeInOut(duration: rhythm.duration)
                                             .repeatForever(autoreverses: true)
                                             .speed(rhythm.intensity),
-                                        value: pulsate
-                                    )
-                                    .onChange(of: pulsate) { _ in
-                                        triggerHaptic()
-                                    }
-                            }
-                            
-                            // Inner dark circle - explicitly positioned
-                            Circle()
-                                .fill(Color(hex: "#111720"))
-                                .frame(width: 152, height: 152)
-                                .position(x: centerX, y: centerY)
-                            
-                            // Progress arc - explicitly positioned
-                            Circle()
-                                .trim(from: 0, to: progress)
-                                .stroke(Color.white, style: StrokeStyle(lineWidth: 2, lineCap: .round))
-                                .frame(width: 152, height: 152)
-                                .rotationEffect(.degrees(-90))
-                                .position(x: centerX, y: centerY)
-                            
-                            // Counter and text - explicitly positioned
-                            VStack(spacing: 5) {
-                                Text("\(Int(totalTimeRemaining))")
-                                    .font(.system(size: 32, weight: .semibold))
-                                    .foregroundColor(.white)
+                                                   value: pulsate)
+                                        .onChange(of: pulsate) { _ in
+                                            triggerHaptic()
+                                        }
+                                }
                                 
-                                Text(workoutWithRests.exercises[selectedExerciseIndex].name != "Rest" ? "Contract & Let Go" : "Rest")
-                                    .font(.system(size: 16, weight: .semibold))
-                                    .foregroundColor(.white)
+                                // Inner dark circle - explicitly positioned
+                                Circle()
+                                    .fill(workoutWithRests.exercises[selectedExerciseIndex].name != "Rest" ? Color(hex: "#111720") : Color.clear)
+                                    .frame(width: 152, height: 152)
+                                    .position(x: centerX, y: centerY)
+                                
+                                // Progress arc - explicitly positioned
+                                Circle()
+                                    .trim(from: 0, to: progress)
+                                    .stroke(Color.white, style: StrokeStyle(lineWidth: 2, lineCap: .round))
+                                    .frame(width: 152, height: 152)
+                                    .rotationEffect(.degrees(-90))
+                                    .position(x: centerX, y: centerY)
+                                
+                                // Counter and text - explicitly positioned
+                                VStack(spacing: 5) {
+                                    Text("\(Int(totalTimeRemaining))")
+                                        .font(.system(size: 32, weight: .semibold))
+                                        .foregroundColor(.white)
+                                    
+                                    Text(workoutWithRests.exercises[selectedExerciseIndex].name != "Rest" ? "Contract & Let Go" : "Rest")
+                                        .font(.system(size: 16, weight: .semibold))
+                                        .foregroundColor(.white)
+                                }
+                                .position(x: centerX, y: centerY)
                             }
-                            .position(x: centerX, y: centerY)
                         }
                     }
-                    
+                    else {
+                        WorkoutFinishView()
+                            .padding(.top,122)
+                    }
                     Spacer()
                     
                     // Exercise tabs - horizontal scrolling view
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        ScrollViewReader { proxy in
-                            HStack(spacing: 30) {
-                                Spacer().frame(width: UIScreen.main.bounds.width/2)
-                                ForEach(0..<workoutWithRests.exercises.count, id: \.self) { index in
-                                    let exercise = workoutWithRests.exercises[index]
+                    ZStack {
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            ScrollViewReader { proxy in
+                                HStack(spacing: 27) {
+                                    // Left spacer to center first item
+                                    Spacer().frame(width: UIScreen.main.bounds.width / 2 - 62 / 2)
+                                    
+                                    ForEach(0..<workoutWithRests.exercises.count, id: \.self) { index in
+                                        let exercise = workoutWithRests.exercises[index]
+                                        exerciseTab(
+                                            name: exercise.name,
+                                            isSelected: finish == true ? false : index == selectedExerciseIndex,
+                                            isColorWhite: !finish
+                                        )
+                                        .id(index)
+                                        .frame(width: 62) // <- Ensures centering math works
+                                        
+                                    }
                                     exerciseTab(
-                                        name: exercise.name,
-                                        isSelected: index == selectedExerciseIndex
+                                        name: "Finish",
+                                        isSelected: finish,
+                                        isColorWhite: true
                                     )
-                                    .id(index)
+                                    .frame(width: 62) // <- Ensures centering math works
+                                    .id(workoutWithRests.exercises.count)
+                                    
+                                    // Right spacer to center last item
+                                    Spacer().frame(width: UIScreen.main.bounds.width / 2 - 62 / 2)
+                                }
+                                .padding(.horizontal, 0)
+                                .onAppear {
+                                    scrollViewProxy = proxy
+                                    centerSelectedExercise()
+                                }
+                                .onChange(of: selectedExerciseIndex) { _ in
+                                    centerSelectedExercise()
                                 }
                             }
-                            .padding(.horizontal, 20)
-                            .onAppear {
-                                scrollViewProxy = proxy
-                                centerSelectedExercise()
-                            }
-                            .onChange(of: selectedExerciseIndex) { _ in
-                                centerSelectedExercise()
-                            }
                         }
+                        .scrollDisabled(true)
+                        
                     }
-                    .padding(.bottom, 20)
+                    .padding(.bottom, 61)
+                    .frame(height:10)
                     
                     // Pause button
                     Button(action: {
                         triggerHapticOnButton()
-                        isPaused.toggle()
-                        isPaused == true ? stopTimer() : startTimer()
+                        if !finish {
+                            isPaused.toggle()
+                            isPaused == true ? stopTimer() : startTimer()
+                            pulsate.toggle()
+                        } else {
+                            navigationManager.pop(to: .mainTabView)
+                        }
                         
                     }) {
                         HStack {
-                            Image(systemName: isPaused == false ? "pause.fill" : "play.fill")
-                                .font(.system(size: 20))
-                            Text(isPaused == false ? "Pause" : "Continue")
-                                .font(.system(size: 18, weight: .semibold))
+                            if !finish {
+                                Image(systemName: isPaused == false ? "pause.fill" : "play.fill")
+                                    .font(.system(size: 20))
+                                Text(isPaused == false ? "Pause" : "Continue")
+                                    .font(.system(size: 18, weight: .semibold))
+                            } else {
+                                Text("Continue")
+                                    .font(.system(size: 18, weight: .semibold))
+                            }
                         }
                         .foregroundColor(.white)
                         .padding()
                         .frame(width: 300, height: 50)
-                        .background(Color(hex: "#2C2C2C"))
+                        .background(finish == false ? Color(hex: "#2C2C2C") : Color(hex: "#FF1919"))
                         .cornerRadius(25)
                     }
                     .padding(.bottom, 40)
                 }
                 
             }
+            
+            LinearGradient(
+                gradient: Gradient(stops: [
+                    .init(color: Color(hex: "#10171F").opacity(0.3), location: 0),
+                    .init(color: Color.clear, location: 0.15),
+                    .init(color: Color.clear, location: 0.85),
+                    .init(color: Color(hex: "#10171F").opacity(0.3), location: 1)
+                ]),
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+            .allowsHitTesting(false)
+            .ignoresSafeArea()
+            
         }
         .navigationBarHidden(true)
         .onAppear {
@@ -160,19 +209,22 @@ struct WorkoutDetailView: View {
             startTimer()
         }
         
+        
+        
     }
     
     // Helper function to create exercise tabs
-    func exerciseTab(name: String, isSelected: Bool = false) -> some View {
+    func exerciseTab(name: String, isSelected: Bool = false, isColorWhite: Bool) -> some View {
         VStack(spacing: 5) {
             Text(name)
                 .font(.system(size: 20, weight: isSelected ? .semibold : .regular))
-                .foregroundColor(.white)
+                .foregroundColor(isColorWhite ? .white : .clear )
             
             Rectangle()
                 .fill(isSelected ? Color.white : Color.clear)
                 .frame(height: 4)
-                .frame(width: 60)
+                .frame(width: 42)
+                .cornerRadius(5)
         }
     }
     
@@ -206,6 +258,8 @@ struct WorkoutDetailView: View {
             // Workout completed
             WorkoutCompletionManager.saveCompletion(WorkoutCompletion(workoutName: selectedWorkout.name))
             workoutViewModel.updateStreakAfterWorkout()
+            finish = true
+            selectedExerciseIndex += 1 // 👈 Add this line
             navigationManager.push(to: .workoutFinishView)
         }
     }
@@ -335,8 +389,8 @@ struct WorkoutDetailView: View {
         durationMinutes: 10,
         description: "Regular practice to maintain pelvic floor strength",
         exercises: [
-            Exercise.hold(seconds: 15),
-            Exercise.clamp(reps: 5),
+            Exercise.hold(seconds: 1),
+            Exercise.clamp(reps: 1),
             Exercise.rapidFire(reps: 5),
             Exercise.hold(seconds: 5),
             Exercise.flash(reps: 5)
