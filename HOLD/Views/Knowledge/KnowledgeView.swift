@@ -20,25 +20,17 @@ struct KnowledgeView: View {
 
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [
-                    Color(hex:"#10171F"),
-                    Color(hex:"#466085")
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
+            AppBackground()
 
             VStack {
-                VStack(spacing: 20) {
-                    HStack {
-                        Spacer()
-                        Image("holdIcon")
-                        Spacer()
-                    }
-                    .padding(.top, 20)
+                HStack {
+                    Spacer()
+                    Image("holdIcon")
+                    Spacer()
                 }
+                .padding(.top, 24)
+                .padding(.bottom, 14)
+                
                 HStack {
                     Button {
                         navigationManager.goBack()

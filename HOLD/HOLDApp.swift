@@ -19,6 +19,8 @@ struct HOLDApp: App {
     @StateObject private var progressViewModel = ProgressViewModel()
     @StateObject private var challengeViewModel = ChallengeViewModel()
     @StateObject private var knowledgeViewModel = KnowledgeViewModel()
+    @StateObject private var keyboardResponder = KeyboardResponder()
+    @StateObject private var notificationsManager = NotificationsManager.shared
     
     var body: some Scene {
         WindowGroup {
@@ -29,12 +31,14 @@ struct HOLDApp: App {
                 .environmentObject(progressViewModel)
                 .environmentObject(challengeViewModel)
                 .environmentObject(knowledgeViewModel)
+                .environmentObject(keyboardResponder)
+                .environmentObject(notificationsManager)
                 .onAppear {
                     appDelegate.applicationDidBecomeActive()
                 }
-                .onChange(of: scenePhase) { newPhase in
+                .onChange(of: scenePhase) { _, newPhase in
                     if newPhase == .background {
-                        navigationManager.reset()
+//                        navigationManager.reset()
                     } else if newPhase == .active {
                         if navigationManager.routes.isEmpty {
                             navigationManager.push(to: .mainTabView)

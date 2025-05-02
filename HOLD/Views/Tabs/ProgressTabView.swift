@@ -18,15 +18,7 @@ struct ProgressTabView: View {
     
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [
-                    Color(hex:"#10171F"),
-                    Color(hex:"#466085")
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
+            AppBackground()
             
             VStack(alignment: .leading) {
                 HStack {
@@ -44,6 +36,7 @@ struct ProgressTabView: View {
                             .foregroundColor(.white)
                         Text("💪")
                             .font(.title)
+                        Spacer()
                     }
                     .padding(.horizontal,39)
                     .padding(.bottom,39)
@@ -201,6 +194,7 @@ struct ProgressTabView: View {
                 
                 // Take Measurement Button
                 Button {
+                    triggerHaptic()
                     navigationManager.push(to: .measurementView)
                 } label: {
                     HStack {
@@ -239,7 +233,7 @@ struct ProgressTabView: View {
                         .font(.system(size: 20, weight: .semibold))
                         .foregroundColor(.white)
                     
-                    Text("Last Attempt: \(challengeViewModel.latestChallengeResult?.dateOfChallenge() ?? "-")")
+                    Text("Last Attempt: \(challengeViewModel.latestChallengeResult.dateOfChallenge())")
                         .font(.system(size: 15, weight: .semibold))
                         .foregroundColor(.white).opacity(0.4)
                 }
@@ -256,7 +250,7 @@ struct ProgressTabView: View {
                     .foregroundColor(.white)
                     .padding(.top)
                 
-                Text(challengeViewModel.latestChallengeResult?.percentileDisplay ?? "-")
+                Text(challengeViewModel.latestChallengeResult.percentileDisplay)
                     .font(.system(size: 64, weight: .semibold))
                     .foregroundStyle(LinearGradient(
                         colors: [
@@ -272,7 +266,7 @@ struct ProgressTabView: View {
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(.white)
                 //                        .padding(.top,6)
-                Text("You lasted for \(String(describing: challengeViewModel.latestChallengeResult?.durationDisplay ?? "-"))")
+                Text("You lasted for \(String(describing: challengeViewModel.latestChallengeResult.durationDisplay))")
                     .font(.system(size: 20, weight: .semibold))
                     .foregroundColor(.white)
                     .padding(.top,6)
@@ -284,6 +278,7 @@ struct ProgressTabView: View {
                 
                 // Start Challenge Button
                 Button {
+                    triggerHaptic()
                     navigationManager.push(to: .challengeSheetView)
                 } label: {
                     HStack {
@@ -325,6 +320,12 @@ struct ProgressTabView: View {
     private func calculateHeightPercent(duration: Double?, maxDuration: Double) -> Double {
         guard let duration = duration, duration > 0, maxDuration > 0 else { return 0.0 }
         return min(1.0, duration / maxDuration)
+    }
+    
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.prepare()
+        generator.impactOccurred()
     }
 }
 

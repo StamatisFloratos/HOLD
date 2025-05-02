@@ -8,34 +8,18 @@
 import SwiftUI
 
 struct ProfileTabView: View {
+    @EnvironmentObject private var notificationsManager: NotificationsManager
     
     @State private var userProfile: UserProfile = UserProfile.load()
     @State private var isEditing: Bool = false
     @State private var showSubscriptionManagement: Bool = false
-    @EnvironmentObject private var notificationsManager: NotificationsManager
+    
+    @State private var showValidationAlert: Bool = false
+    @State private var validationMessage: String = ""
     
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [
-                    Color(hex:"#10171F"),
-                    Color(hex:"#466085")
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
-            
-            // Add protective layer for top safe area
-            VStack(spacing: 0) {
-                Rectangle()
-                    .fill(Color.clear)
-                    .frame(height: 60)
-                    .ignoresSafeArea(edges: .top)
-                
-                Spacer()
-            }
-            .zIndex(2) // Ensure this stays on top
+            AppBackground()
             
             // Main content
             if showSubscriptionManagement {
@@ -47,119 +31,135 @@ struct ProfileTabView: View {
                 .transition(.move(edge: .trailing))
                 .zIndex(1)
             } else {
-                ScrollView {
-                    VStack(spacing: 10) {
-                        // Add top padding to push content below the safe area protective layer
-                        Spacer().frame(height: 20)
-                        
-                        // User Profile Section
-                        SectionView(title: "Profile") {
-                            profileInfoView
-                        }
-                        
-                        // Subscription Section
-                        SectionView(title: "Subscription") {
-                            Button(action: {
-                                withAnimation {
-                                    showSubscriptionManagement = true
-                                }
-                            }) {
-                                HStack {
-                                    Text("Manage Subscription")
-                                        .foregroundColor(.white)
-                                    Spacer()
-                                    Image(systemName: "chevron.right")
-                                        .foregroundColor(.gray)
-                                }
-                                .padding()
-                                .background(Color.clear)
-                                .cornerRadius(8)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .stroke(Color.white.opacity(0.2), lineWidth: 1)
-                                )
-                            }
-                        }
-                        
-                        // Preferences Section
-                        SectionView(title: "Preferences") {
-                            VStack {
-                                Toggle(isOn: $notificationsManager.notificationsEnabled) {
-                                    Text("Notifications")
-                                        .foregroundColor(.white)
-                                }
-                                .padding()
-                                .background(Color.clear)
-                                .cornerRadius(8)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .stroke(Color.white.opacity(0.2), lineWidth: 1)
-                                )
-                                .toggleStyle(SwitchToggleStyle(tint: Color.green))
-                                .onChange(of: notificationsManager.notificationsEnabled) { oldValue, newValue in
-                                    if newValue {
-                                        notificationsManager.enableNotifications()
-                                    } else {
-                                        notificationsManager.disableNotifications()
-                                    }
-                                }
-                            }
-                        }
-                        
-                        // Support Section
-                        SectionView(title: "Support") {
-                            VStack(spacing: 0) {
-                                Link(destination: URL(string: "mailto:contact@gospelapp.io")!) {
-                                    HStack {
-                                        Text("Contact Us")
-                                            .foregroundColor(.white)
-                                        Spacer()
-                                        Image(systemName: "envelope")
-                                            .foregroundColor(.gray)
-                                    }
-                                    .padding()
-                                }
-                                
-                                Divider()
-                                    .background(Color.white.opacity(0.2))
-                                
-                                Link(destination: URL(string: "http://gospelapp.io/privacy")!) {
-                                    HStack {
-                                        Text("Privacy Policy")
-                                            .foregroundColor(.white)
-                                        Spacer()
-                                        Image(systemName: "arrow.up.right.square")
-                                            .foregroundColor(.gray)
-                                    }
-                                    .padding()
-                                }
-                                
-                                Divider()
-                                    .background(Color.white.opacity(0.2))
-                                
-                                Link(destination: URL(string: "http://gospelapp.io/terms")!) {
-                                    HStack {
-                                        Text("Terms of Service")
-                                            .foregroundColor(.white)
-                                        Spacer()
-                                        Image(systemName: "arrow.up.right.square")
-                                            .foregroundColor(.gray)
-                                    }
-                                    .padding()
-                                }
-                            }
-                            .background(Color.clear)
-                            .cornerRadius(8)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.white.opacity(0.2), lineWidth: 1)
-                            )
-                        }
+                VStack {
+                    HStack {
+                        Spacer()
+                        Image("holdIcon")
+                        Spacer()
                     }
-                    .padding(.vertical)
-                    .padding(.top, 60)
+                    .padding(.top, 24)
+                    .padding(.bottom, 14)
+                    
+                    ScrollView {
+                        VStack(spacing: 10) {
+                            // Add top padding to push content below the safe area protective layer
+                            Spacer().frame(height: 20)
+                            
+                            // User Profile Section
+                            SectionView(title: "Profile") {
+                                profileInfoView
+                            }
+                            
+                            // Subscription Section
+                            SectionView(title: "Subscription") {
+                                Button(action: {
+                                    withAnimation {
+                                        showSubscriptionManagement = true
+                                    }
+                                }) {
+                                    HStack {
+                                        Text("Manage Subscription")
+                                            .foregroundColor(.white)
+                                        Spacer()
+                                        Image(systemName: "chevron.right")
+                                            .foregroundColor(.gray)
+                                    }
+                                    .padding()
+                                    .background(Color.clear)
+                                    .cornerRadius(8)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                                    )
+                                }
+                            }
+                            
+                            // Preferences Section
+                            SectionView(title: "Preferences") {
+                                VStack {
+                                    Toggle(isOn: $notificationsManager.notificationsEnabled) {
+                                        Text("Notifications")
+                                            .foregroundColor(.white)
+                                    }
+                                    .padding()
+                                    .background(Color.clear)
+                                    .cornerRadius(8)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                                    )
+                                    .toggleStyle(SwitchToggleStyle(tint: Color.green))
+                                    .onChange(of: notificationsManager.notificationsEnabled) { oldValue, newValue in
+                                        if newValue {
+                                            notificationsManager.enableNotifications()
+                                        } else {
+                                            notificationsManager.disableNotifications()
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            // Support Section
+                            SectionView(title: "Support") {
+                                VStack(spacing: 0) {
+                                    Link(destination: URL(string: "mailto:contact@gospelapp.io")!) {
+                                        HStack {
+                                            Text("Contact Us")
+                                                .foregroundColor(.white)
+                                            Spacer()
+                                            Image(systemName: "envelope")
+                                                .foregroundColor(.gray)
+                                        }
+                                        .padding()
+                                    }
+                                    
+                                    Divider()
+                                        .background(Color.white.opacity(0.2))
+                                    
+                                    Link(destination: URL(string: "http://gospelapp.io/privacy")!) {
+                                        HStack {
+                                            Text("Privacy Policy")
+                                                .foregroundColor(.white)
+                                            Spacer()
+                                            Image(systemName: "arrow.up.right.square")
+                                                .foregroundColor(.gray)
+                                        }
+                                        .padding()
+                                    }
+                                    
+                                    Divider()
+                                        .background(Color.white.opacity(0.2))
+                                    
+                                    Link(destination: URL(string: "http://gospelapp.io/terms")!) {
+                                        HStack {
+                                            Text("Terms of Service")
+                                                .foregroundColor(.white)
+                                            Spacer()
+                                            Image(systemName: "arrow.up.right.square")
+                                                .foregroundColor(.gray)
+                                        }
+                                        .padding()
+                                    }
+                                }
+                                .background(Color.clear)
+                                .cornerRadius(8)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                                )
+                            }
+                        }
+                        .padding(.vertical)
+                    }
                 }
             }
+        }
+        .alert(isPresented: $showValidationAlert) {
+            Alert(
+                title: Text("Invalid Input"),
+                message: Text(validationMessage),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
     
@@ -254,6 +254,24 @@ struct ProfileTabView: View {
     }
     
     private func saveUserInfo() {
+        guard !userProfile.name.isEmpty else {
+            validationMessage = "Name cannot be empty."
+            showValidationAlert = true
+            return
+        }
+        
+        guard userProfile.name.count <= 30 else {
+            validationMessage = "Name cannot be more than 30 characters."
+            showValidationAlert = true
+            return
+        }
+        
+        guard (13...99).contains(userProfile.age) else {
+            validationMessage = "Age must be between 13 and 99."
+            showValidationAlert = true
+            return
+        }
+
         userProfile.save()
         isEditing = false
     }
@@ -288,28 +306,17 @@ struct SubscriptionManagementView: View {
     
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [
-                    Color(hex:"#10171F"),
-                    Color(hex:"#466085")
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
-            
-            // Add protective layer for top safe area
-            VStack(spacing: 0) {
-                Rectangle()
-                    .fill(Color.clear)
-                    .frame(height: 60)
-                    .ignoresSafeArea(edges: .top)
-                
-                Spacer()
-            }
-            .zIndex(2) // Ensure this stays on top
+            AppBackground()
             
             VStack(spacing: 20) {
+                HStack {
+                    Spacer()
+                    Image("holdIcon")
+                    Spacer()
+                }
+                .padding(.top, 24)
+                .padding(.bottom, 14)
+                
                 // Add top padding to push content below the safe area protective layer
                 Spacer().frame(height: 120)
                 

@@ -14,15 +14,7 @@ struct WorkoutTabView: View {
     
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [
-                    Color(hex:"#10171F"),
-                    Color(hex:"#466085")
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
+            AppBackground()
             
             VStack{
                 HStack {
@@ -32,6 +24,7 @@ struct WorkoutTabView: View {
                 }
                 .padding(.top, 24)
                 .padding(.bottom, 14)
+                
                 ScrollView(showsIndicators: false) {
                     VStack(alignment: .leading, spacing: 0) {
                         Text("Today’s Workout")
@@ -130,6 +123,7 @@ struct WorkoutTabView: View {
             
             
             Button(action: {
+                triggerHaptic()
                 navigationManager.push(to: .workoutView)
             }) {
                 Text("Start Workout")
@@ -226,6 +220,11 @@ struct WorkoutTabView: View {
         return workoutViewModel.streakDates.contains { streakDate in
             Calendar.current.isDate(streakDate, inSameDayAs: date)
         }
+    }
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.prepare()
+        generator.impactOccurred()
     }
 }
 

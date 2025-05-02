@@ -80,15 +80,7 @@ struct ChallengeActivityView: View {
     var body: some View {
         ZStack {
             // Background gradient with specified hex colors
-            LinearGradient(
-                colors: [
-                    Color(hex:"#10171F"),
-                    Color(hex:"#466085")
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
+            AppBackground()
             
             VStack(spacing: 0) {
                 // Logo at the top
@@ -97,7 +89,8 @@ struct ChallengeActivityView: View {
                     Image("holdIcon")
                     Spacer()
                 }
-                .padding(.top, 40)
+                .padding(.top, 24)
+                .padding(.bottom, 14)
                 
                 Spacer()
                 
@@ -203,6 +196,7 @@ struct ChallengeActivityView: View {
                             .padding(.top,6)
                         Spacer()
                         Button(action: {
+                            triggerHapticForButton()
                             challengeViewModel.challengeDidFinish(duration: totalElapsedTime)
                             navigationManager.push(to: .challengeRankView)
                         }) {
@@ -379,6 +373,12 @@ struct ChallengeActivityView: View {
     
     func triggerHaptic() {
         let generator = UIImpactFeedbackGenerator(style: .heavy)
+        generator.prepare()
+        generator.impactOccurred()
+    }
+    
+    func triggerHapticForButton() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
         generator.prepare()
         generator.impactOccurred()
     }

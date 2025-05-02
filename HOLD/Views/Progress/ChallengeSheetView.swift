@@ -12,24 +12,18 @@ struct ChallengeSheetView: View {
     
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [
-                    Color(hex:"#10171F"),
-                    Color(hex:"#466085")
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
+            AppBackground()
             
             VStack {
-                VStack(spacing: 20) {
+                VStack(spacing: 0) {
                     // Logo at the top
                     HStack {
                         Spacer()
                         Image("holdIcon")
                         Spacer()
                     }
+                    .padding(.top, 24)
+                    .padding(.bottom, 14)
                     
                     Image("challengeIcon")
                         .padding(.vertical,45)

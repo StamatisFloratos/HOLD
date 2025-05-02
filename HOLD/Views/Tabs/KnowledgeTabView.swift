@@ -12,27 +12,12 @@ struct KnowledgeTabView: View {
     @EnvironmentObject var tabManager: TabManager
     @EnvironmentObject var knowledgeViewModel : KnowledgeViewModel
 
-    @State var isClickedOnDetail = false
-    // Define grid layout: 2 columns, adaptive spacing
-    let columns: [GridItem] = [
-        GridItem(.flexible(), spacing: 16),
-        GridItem(.flexible(), spacing: 16)
-    ]
-
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [
-                    Color(hex:"#10171F"),
-                    Color(hex:"#466085")
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
+            AppBackground()
             
             
-            VStack(alignment: .leading) {
+            VStack(spacing:0) {
                 HStack {
                     Spacer()
                     Image("holdIcon")
@@ -40,6 +25,7 @@ struct KnowledgeTabView: View {
                 }
                 .padding(.top, 24)
                 .padding(.bottom, 14)
+                
                 ScrollView(showsIndicators: false) {
                     
                     HStack {
@@ -54,9 +40,10 @@ struct KnowledgeTabView: View {
                         KnowledgeSectionView(title: category, items: knowledgeViewModel.groupedKnowledgeData[category] ?? [])
                     }
                 }
+                .padding(.leading,14)
+                .padding(.trailing,0)
             }
-            .padding(.leading,14)
-            .padding(.trailing,0)
+            
         }
         .navigationBarHidden(true)
     }

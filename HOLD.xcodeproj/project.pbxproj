@@ -55,6 +55,8 @@
 		7CA106C32DA5C89D000950FC /* MeasurementActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106C22DA5C896000950FC /* MeasurementActivityView.swift */; };
 		7CA106C82DA6D467000950FC /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106C72DA6D45F000950FC /* ColorExtension.swift */; };
 		7CBB89D62DBAD1E300C8429E /* test_workout_hold.json in Resources */ = {isa = PBXBuildFile; fileRef = 7CBB89D52DBAD1E300C8429E /* test_workout_hold.json */; };
+		7CCDA3832DC19E7300C6A84A /* AppBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCDA3822DC19E7300C6A84A /* AppBackground.swift */; };
+		9CD9E0C32DC5719A00411006 /* KeyboardResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD9E0C22DC5719A00411006 /* KeyboardResponder.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -107,6 +109,8 @@
 		7CA106C22DA5C896000950FC /* MeasurementActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementActivityView.swift; sourceTree = "<group>"; };
 		7CA106C72DA6D45F000950FC /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		7CBB89D52DBAD1E300C8429E /* test_workout_hold.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = test_workout_hold.json; sourceTree = "<group>"; };
+		7CCDA3822DC19E7300C6A84A /* AppBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBackground.swift; sourceTree = "<group>"; };
+		9CD9E0C22DC5719A00411006 /* KeyboardResponder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardResponder.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +154,7 @@
 		762FEBC52D8CEA6E0058F107 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				7CCDA3822DC19E7300C6A84A /* AppBackground.swift */,
 				762FEBEB2D8CEF420058F107 /* Knowledge */,
 				762FEBDC2D8CEE2B0058F107 /* Workout */,
 				762FEBD12D8CEC3E0058F107 /* Progress */,
@@ -264,6 +269,7 @@
 				7C91AB2E2DAED90F00976240 /* knowledge_sample.json */,
 				7CA106BE2DA58565000950FC /* AppDelegate.swift */,
 				7CA106B42DA564B4000950FC /* CustomFont.swift */,
+				9CD9E0C22DC5719A00411006 /* KeyboardResponder.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -384,6 +390,7 @@
 				762FEBCA2D8CEBE50058F107 /* ProgressTabView.swift in Sources */,
 				762FEBB12D8CE91F0058F107 /* Workout.swift in Sources */,
 				762FEBB72D8CE95F0058F107 /* KnowledgeItem.swift in Sources */,
+				7CCDA3832DC19E7300C6A84A /* AppBackground.swift in Sources */,
 				762FEBDB2D8CEDD50058F107 /* ProgressBarView.swift in Sources */,
 				762FEBDE2D8CEE620058F107 /* WorkoutView.swift in Sources */,
 				762FEBE42D8CEEBB0058F107 /* WorkoutScrollerView.swift in Sources */,
@@ -391,6 +398,7 @@
 				762FEBC22D8CE9C70058F107 /* KnowledgeViewModel.swift in Sources */,
 				762FEBCE2D8CEC240058F107 /* KnowledgeTabView.swift in Sources */,
 				762FEBB32D8CE9430058F107 /* Exercise.swift in Sources */,
+				9CD9E0C32DC5719A00411006 /* KeyboardResponder.swift in Sources */,
 				7CA106C32DA5C89D000950FC /* MeasurementActivityView.swift in Sources */,
 				762FEBBC2D8CE9A10058F107 /* MeasurementViewModel.swift in Sources */,
 				762FEBBE2D8CE9AD0058F107 /* ChallengeViewModel.swift in Sources */,

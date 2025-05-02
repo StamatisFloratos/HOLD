@@ -14,24 +14,18 @@ struct WorkoutView: View {
 
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [
-                    Color(hex:"#10171F"),
-                    Color(hex:"#466085")
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
+            AppBackground()
             
             VStack {
-                VStack(spacing: 20) {
+                VStack(spacing: 0) {
                     // Logo at the top
                     HStack {
                         Spacer()
                         Image("holdIcon")
                         Spacer()
                     }
+                    .padding(.top, 24)
+                    .padding(.bottom, 14)
                     
                     Image("workoutIconLarge")
                         .resizable()
@@ -70,13 +64,13 @@ struct WorkoutView: View {
                     Text("Start Workout")
                         .font(.system(size: 16, weight: .semibold))
                         .padding()
-                        .frame(maxWidth: .infinity,maxHeight: 47)
+                        .frame(maxWidth: 282,maxHeight: 47)
                         .background(Color(hex: "#FF1919"))
                         .foregroundColor(.white)
                         .cornerRadius(30)
                 }
                 .padding(.horizontal, 50)
-                .padding(.bottom, 15)
+                .padding(.bottom, 40)
             }
         }
         .navigationBarHidden(true)

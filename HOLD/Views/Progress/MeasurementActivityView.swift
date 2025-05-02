@@ -13,34 +13,24 @@ struct MeasurementActivityView: View {
     @State private var hold = false
     @State private var finish = false
     @State private var holdTime: Int = 0
-    @State private var timer: Timer? = nil
+    @State private var hapticTimer: Timer? = nil
+
    
     
     var body: some View {
         ZStack {
             // Background gradient with specified hex colors
-            LinearGradient(
-                colors: [
-                    Color(hex:"#10171F"),
-                    Color(hex:"#466085")
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
+            AppBackground()
             
             
             VStack {
-                VStack(spacing: 20) {
-                    // Logo at the top
-                    HStack {
-                        Spacer()
-                        Image("holdIcon")
-                        Spacer()
-                    }
-                    
-                }.padding(.top, 20)
-                    .padding(.horizontal)
+                HStack {
+                    Spacer()
+                    Image("holdIcon")
+                    Spacer()
+                }
+                .padding(.top, 24)
+                .padding(.bottom, 14)
                 
                 Spacer().frame(height: 117)
                 
@@ -80,14 +70,13 @@ struct MeasurementActivityView: View {
                                 if !hold {
                                     hold = true
                                     holdTime = 0
-                                    startTimer()
-                                    triggerHaptic()
+                                    startHapticLoop() // Start continuous haptics
                                 }
                             }
                             .onEnded { _ in
                                 hold = false
                                 finish = true
-                                stopTimer()
+                                stopHapticLoop() // stop continous haptic
                                 progressViewModel.measurementDidFinish(duration: Double(holdTime))
                             }
                     )
@@ -111,6 +100,7 @@ struct MeasurementActivityView: View {
                     }
                     Spacer()
                     Button(action: {
+                        triggerHaptic()
                         navigationManager.pop(to: .mainTabView)
                     }) {
                         Text("Continue")
@@ -131,23 +121,29 @@ struct MeasurementActivityView: View {
         .navigationBarHidden(true)
     }
     
-    // MARK: - Timer Methods
-    func startTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            holdTime += 1
-        }
-    }
-    
-    func stopTimer() {
-        timer?.invalidate()
-        timer = nil
-    }
+    // MARK: - Haptic Feedback Methods
     
     func triggerHaptic() {
-        let generator = UIImpactFeedbackGenerator(style: .heavy)
+        let generator = UIImpactFeedbackGenerator(style: .light)
         generator.prepare()
         generator.impactOccurred()
     }
+    
+    func startHapticLoop() {
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.prepare()
+        
+        hapticTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+            holdTime += 1
+            generator.impactOccurred()
+        }
+    }
+
+    func stopHapticLoop() {
+        hapticTimer?.invalidate()
+        hapticTimer = nil
+    }
+
 }
 
 #Preview {

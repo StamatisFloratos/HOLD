@@ -77,8 +77,11 @@ class ProgressViewModel: ObservableObject {
             Calendar.current.isDate($0.date, inSameDayAs: today)
         }) {
             // Update the existing measurement's duration
-            allMeasurements[index].durationSeconds = duration
-            print("Updated existing measurement for today. New duration: \(allMeasurements[index].durationSeconds) seconds.")
+            
+            if allMeasurements[index].durationSeconds < duration {
+                allMeasurements[index].durationSeconds = duration
+                print("Updated existing measurement for today with the best duration. New duration: \(allMeasurements[index].durationSeconds) seconds.")
+            }
         } else {
             // Create new measurement if no entry exists for today
             let newMeasurement = Measurement(id: UUID(), date: today, durationSeconds: duration)

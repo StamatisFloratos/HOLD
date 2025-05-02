@@ -14,15 +14,7 @@ struct MeasurementSheetView: View {
     var body: some View {
         ZStack {
             // Background gradient with specified hex colors
-            LinearGradient(
-                colors: [
-                    Color(hex:"#10171F"),
-                    Color(hex:"#466085")
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
+            AppBackground()
             
             VStack {
                 VStack {
@@ -63,6 +55,7 @@ struct MeasurementSheetView: View {
                 
                 Spacer()
                 Button(action: {
+                    triggerHaptic()
                     navigationManager.push(to: .measurementActivityView)
                 }) {
                     Text("Start Measurement")
@@ -79,6 +72,12 @@ struct MeasurementSheetView: View {
         }
         .navigationBarHidden(true)
         
+    }
+    
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.prepare()
+        generator.impactOccurred()
     }
 }
 

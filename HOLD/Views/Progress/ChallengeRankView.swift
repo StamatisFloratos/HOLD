@@ -13,71 +13,75 @@ struct ChallengeRankView: View {
 
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [
-                    Color(hex:"#10171F"),
-                    Color(hex:"#466085")
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
+            AppBackground()
             
             VStack {
-                VStack {
+                VStack(spacing:0) {
                     // Logo at the top
                     HStack {
                         Spacer()
                         Image("holdIcon")
                         Spacer()
                     }
-                    .padding(.top, 20)
-                    Spacer()
+                    .padding(.top, 24)
+                    .padding(.bottom, 14)
                     
+
                     Text("Your Rank is:")
                         .font(.system(size: 20, weight: .semibold))
                         .foregroundColor(.white)
                         .fixedSize(horizontal: false, vertical: true)
                         .multilineTextAlignment(.center)
-                    Spacer()
+                        .padding(.bottom,42)
+                        .padding(.top,10)
+                    
+                    
                     rankView
-                        .padding(.horizontal)
-                    Spacer()
-                    Text("Progress Until Next Rank")
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundColor(.white)
-                    VStack{
-                        ZStack {
-                            // Background track with rounded corners
-                            RoundedRectangle(cornerRadius: 6)
-                                .fill(Color.gray.opacity(0.3))
-                                .frame(height: 10)
-
-                            ProgressView(value: challengeViewModel.latestChallengeResult!.duration / Double(challengeViewModel.latestChallengeResult!.nextRankValue))
-                                .progressViewStyle(LinearProgressViewStyle())
-                                .accentColor(Color(hex: "#0CFF00"))
-                                .scaleEffect(x: 1, y: 2, anchor: .center) // adjust height multiplier
-                                .frame(height: 10) // match height of background
-                                .clipShape(RoundedRectangle(cornerRadius: 6))
-                        }
-                        HStack{
-                            Text(challengeViewModel.latestChallengeResult!.durationDisplay)
-                                .font(.system(size: 20, weight: .semibold))
-                                .foregroundColor(.white)
-                            Spacer()
-                            Text(challengeViewModel.latestChallengeResult!.timeDisplay(duration: challengeViewModel.latestChallengeResult!.nextRankValue))
-                                .font(.system(size: 20, weight: .semibold))
-                                .foregroundColor(.white)
-                        }
+                    
+                    if challengeViewModel.latestChallengeResult.rank == .gigaChad {
+                        Spacer()
+                        Text("This is the top rank.\nYou’re in a league of your own.")
+                            .font(.system(size: 20, weight: .semibold))
+                            .foregroundColor(.white)
+                            .frame(height: 48)
+                            .multilineTextAlignment(.center)
+                            .padding(.top,40)
+                        Spacer()
                     }
-                    .padding()
+                    else {
+                        
+                        Text("Progress Until Next Rank")
+                            .font(.system(size: 20, weight: .semibold))
+                            .foregroundColor(.white)
+                            .padding(.top,20)
+                            .padding(.bottom,17)
+                        VStack(spacing:0) {
+                            ProgressBarView(value: challengeViewModel.latestChallengeResult.duration, total: Double(challengeViewModel.latestChallengeResult.nextRankValue))
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 12)
+                                .foregroundColor(Color(hex: "#0CFF00"))
+                            HStack{
+                                Text(challengeViewModel.latestChallengeResult.timeDisplayForProgress(duration: challengeViewModel.latestChallengeResult.duration))
+                                    .font(.system(size: 20, weight: .semibold))
+                                    .foregroundColor(.white)
+                                Spacer()
+                                Text(challengeViewModel.latestChallengeResult.timeDisplayForProgress(duration: challengeViewModel.latestChallengeResult.nextRankValue))
+                                    .font(.system(size: 20, weight: .semibold))
+                                    .foregroundColor(.white)
+                            }
+                            .padding(.top,17)
+                            .padding(.horizontal,20)
+                        }
+                        .padding(.horizontal,52)
+                    }
                 }
-                .padding(.top, 20)
-                .padding(.horizontal)
                 
                 
-                
+                Spacer()
+                    .frame(minWidth: 0, maxWidth: 44)
+
                 Button(action: {
+                    triggerHaptic()
                     navigationManager.pop(to: .mainTabView)
                 }) {
                     Text("Done")
@@ -88,46 +92,60 @@ struct ChallengeRankView: View {
                         .foregroundColor(.white)
                         .cornerRadius(30)
                 }
-                .padding(.horizontal, 50)
+                .padding(.horizontal, 55)
                 .padding(.bottom, 15)
             }
+        }
+        .onAppear{
+            challengeViewModel.challengeDidFinish(duration: 400)
         }
         .navigationBarHidden(true)
     }
     
     var rankView: some View {
         VStack(spacing:0) {
-            Image(challengeViewModel.latestChallengeResult!.rankImage)
+            Image(challengeViewModel.latestChallengeResult.rankImage)
                 .resizable()
                 .scaledToFill()
-//                .frame(width: 289)
+                .frame(height: 208)
             ZStack {
                 LinearGradient(
-                    colors: challengeViewModel.latestChallengeResult!.backgroundColor,
+                    colors: challengeViewModel.latestChallengeResult.backgroundColor,
                     startPoint: .top,
                     endPoint: .bottom
                 )
-                VStack{
+                VStack(spacing:0){
                     Text("Duration")
                         .font(.system(size: 20, weight: .semibold))
-                        .foregroundColor((challengeViewModel.latestChallengeResult!.rank == .npc || challengeViewModel.latestChallengeResult!.rank == .simp) ? .black : .white)
-                    Text(challengeViewModel.latestChallengeResult!.durationDisplay)
+                        .foregroundColor((challengeViewModel.latestChallengeResult.rank == .npc || challengeViewModel.latestChallengeResult.rank == .simp) ? .black : .white)
+                    
+                    Text(challengeViewModel.latestChallengeResult.durationDisplay)
                         .font(.system(size: 20, weight: .regular))
-                        .foregroundColor((challengeViewModel.latestChallengeResult!.rank == .npc || challengeViewModel.latestChallengeResult!.rank == .simp) ? .black : .white)
+                        .foregroundColor((challengeViewModel.latestChallengeResult.rank == .npc || challengeViewModel.latestChallengeResult.rank == .simp) ? .black : .white)
+                    
                     Text("Rank")
                         .font(.system(size: 20, weight: .semibold))
-                        .foregroundColor((challengeViewModel.latestChallengeResult!.rank == .npc || challengeViewModel.latestChallengeResult!.rank == .simp) ? .black : .white)
-                    Text(challengeViewModel.latestChallengeResult!.rankDisplay.uppercased())
+                        .foregroundColor((challengeViewModel.latestChallengeResult.rank == .npc || challengeViewModel.latestChallengeResult.rank == .simp) ? .black : .white)
+                        .padding(.top,19)
+                    
+                    Text(challengeViewModel.latestChallengeResult.rankDisplay.uppercased())
                         .italic()
                         .font(.system(size: 36, weight: .semibold))
-                        .foregroundColor((challengeViewModel.latestChallengeResult!.rank == .npc || challengeViewModel.latestChallengeResult!.rank == .simp) ? .black : .white)
+                        .foregroundColor((challengeViewModel.latestChallengeResult.rank == .npc || challengeViewModel.latestChallengeResult.rank == .simp) ? .black : .white)
+                        .padding(.top,0)
                         
                 }
                 
-            }.frame(height: 144)
+            }.frame(height: 164)
         }
-        .frame(width: UIScreen.main.bounds.width - 32)
+        .frame(width: 289)
         .cornerRadius(25)
+    }
+    
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.prepare()
+        generator.impactOccurred()
     }
 }
 
