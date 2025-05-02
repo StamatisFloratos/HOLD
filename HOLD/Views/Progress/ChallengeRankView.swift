@@ -81,6 +81,7 @@ struct ChallengeRankView: View {
                     .frame(minWidth: 0, maxWidth: 44)
 
                 Button(action: {
+                    triggerHaptic()
                     navigationManager.pop(to: .mainTabView)
                 }) {
                     Text("Done")
@@ -139,6 +140,12 @@ struct ChallengeRankView: View {
         }
         .frame(width: 289)
         .cornerRadius(25)
+    }
+    
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.prepare()
+        generator.impactOccurred()
     }
 }
 

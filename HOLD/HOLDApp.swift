@@ -34,7 +34,7 @@ struct HOLDApp: App {
                 }
                 .onChange(of: scenePhase) { newPhase in
                     if newPhase == .background {
-                        navigationManager.reset()
+//                        navigationManager.reset()
                     } else if newPhase == .active {
                         if navigationManager.routes.isEmpty {
                             navigationManager.push(to: .mainTabView)

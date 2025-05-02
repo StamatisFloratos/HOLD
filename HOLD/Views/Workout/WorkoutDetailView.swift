@@ -10,7 +10,8 @@ import SwiftUI
 struct WorkoutDetailView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     @EnvironmentObject var workoutViewModel: WorkoutViewModel
-
+    @Environment(\.scenePhase) var scenePhase
+    
     @State private var isPaused: Bool = false
     var selectedWorkout: Workout
     @State private var selectedExerciseIndex: Int = 0
@@ -109,50 +110,43 @@ struct WorkoutDetailView: View {
                     Spacer()
                     
                     // Exercise tabs - horizontal scrolling view
-                    ZStack {
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            ScrollViewReader { proxy in
-                                HStack(spacing: 27) {
-                                    // Left spacer to center first item
-                                    Spacer().frame(width: UIScreen.main.bounds.width / 2 - 62 / 2)
-                                    
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        ScrollViewReader { proxy in
+                            HStack(spacing: 0) {
+                                // Left spacer to center first item
+                                Spacer().frame(width: UIScreen.main.bounds.width / 2 - 92 / 2)
+                                
+                                if !finish {
                                     ForEach(0..<workoutWithRests.exercises.count, id: \.self) { index in
                                         let exercise = workoutWithRests.exercises[index]
-                                        exerciseTab(
-                                            name: exercise.name,
-                                            isSelected: finish == true ? false : index == selectedExerciseIndex,
-                                            isColorWhite: !finish
+                                        exerciseTab(name: exercise.name,
+                                                    isSelected: index == selectedExerciseIndex
                                         )
                                         .id(index)
-                                        .frame(width: 62) // <- Ensures centering math works
+                                        .frame(width: 92) // <- Ensures centering math works
                                         
                                     }
-                                    exerciseTab(
-                                        name: "Finish",
-                                        isSelected: finish,
-                                        isColorWhite: true
-                                    )
-                                    .frame(width: 62) // <- Ensures centering math works
-                                    .id(workoutWithRests.exercises.count)
-                                    
-                                    // Right spacer to center last item
-                                    Spacer().frame(width: UIScreen.main.bounds.width / 2 - 62 / 2)
                                 }
-                                .padding(.horizontal, 0)
-                                .onAppear {
-                                    scrollViewProxy = proxy
-                                    centerSelectedExercise()
-                                }
-                                .onChange(of: selectedExerciseIndex) { _ in
-                                    centerSelectedExercise()
-                                }
+                                exerciseTab(name: "Finish",isSelected: finish)
+                                .frame(width: 92) // <- Ensures centering math works
+                                .id(workoutWithRests.exercises.count)
+                                
+                                // Right spacer to center last item
+                                Spacer().frame(width: UIScreen.main.bounds.width / 2 - 92 / 2)
+                            }
+                            .padding(.horizontal, 0)
+                            .onAppear {
+                                scrollViewProxy = proxy
+                                centerSelectedExercise()
+                            }
+                            .onChange(of: selectedExerciseIndex) { _ in
+                                centerSelectedExercise()
                             }
                         }
-                        .scrollDisabled(true)
-                        
                     }
+                    .scrollDisabled(true)
                     .padding(.bottom, 61)
-                    .frame(height:10)
+                    
                     
                     // Pause button
                     Button(action: {
@@ -179,9 +173,9 @@ struct WorkoutDetailView: View {
                         }
                         .foregroundColor(.white)
                         .padding()
-                        .frame(width: 300, height: 50)
+                        .frame(maxWidth: 282,maxHeight: 47)
                         .background(finish == false ? Color(hex: "#2C2C2C") : Color(hex: "#FF1919"))
-                        .cornerRadius(25)
+                        .cornerRadius(30)
                     }
                     .padding(.bottom, 40)
                 }
@@ -208,17 +202,24 @@ struct WorkoutDetailView: View {
             initializeExercise()
             startTimer()
         }
+        .onChange(of: scenePhase) { newPhase in
+            if newPhase == .background {
+                isPaused = true
+                stopTimer()
+                pulsate = false
+            }
+        }
         
         
         
     }
     
     // Helper function to create exercise tabs
-    func exerciseTab(name: String, isSelected: Bool = false, isColorWhite: Bool) -> some View {
+    func exerciseTab(name: String, isSelected: Bool = false) -> some View {
         VStack(spacing: 5) {
             Text(name)
                 .font(.system(size: 20, weight: isSelected ? .semibold : .regular))
-                .foregroundColor(isColorWhite ? .white : .clear )
+                .foregroundColor(.white)
             
             Rectangle()
                 .fill(isSelected ? Color.white : Color.clear)
@@ -259,8 +260,7 @@ struct WorkoutDetailView: View {
             WorkoutCompletionManager.saveCompletion(WorkoutCompletion(workoutName: selectedWorkout.name))
             workoutViewModel.updateStreakAfterWorkout()
             finish = true
-            selectedExerciseIndex += 1 // 👈 Add this line
-            navigationManager.push(to: .workoutFinishView)
+//            selectedExerciseIndex += 1 // 👈 Add this line
         }
     }
     
@@ -390,7 +390,6 @@ struct WorkoutDetailView: View {
         description: "Regular practice to maintain pelvic floor strength",
         exercises: [
             Exercise.hold(seconds: 1),
-            Exercise.clamp(reps: 1),
             Exercise.rapidFire(reps: 5),
             Exercise.hold(seconds: 5),
             Exercise.flash(reps: 5)

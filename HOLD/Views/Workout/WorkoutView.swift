@@ -64,13 +64,13 @@ struct WorkoutView: View {
                     Text("Start Workout")
                         .font(.system(size: 16, weight: .semibold))
                         .padding()
-                        .frame(maxWidth: .infinity,maxHeight: 47)
+                        .frame(maxWidth: 282,maxHeight: 47)
                         .background(Color(hex: "#FF1919"))
                         .foregroundColor(.white)
                         .cornerRadius(30)
                 }
                 .padding(.horizontal, 50)
-                .padding(.bottom, 15)
+                .padding(.bottom, 40)
             }
         }
         .navigationBarHidden(true)
