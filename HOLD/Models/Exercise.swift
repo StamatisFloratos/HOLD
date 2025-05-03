@@ -49,10 +49,7 @@ struct Exercise: Identifiable, Codable, Hashable {
         case .clamp, .rapidFire, .flash:
             self.reps = reps
             self.seconds = nil
-        case .hold:
-            self.reps = nil
-            self.seconds = seconds
-        case .rest:
+        case .hold, .rest:
             self.reps = nil
             self.seconds = seconds
         }
@@ -91,7 +88,7 @@ struct Exercise: Identifiable, Codable, Hashable {
         Exercise(name: name, type: .hold, description: description, seconds: seconds)
     }
     static func rest(name: String = "Rest", seconds: Int = 10, description: String = "Rest") -> Exercise {
-        Exercise(name: name, type: .hold, description: description, seconds: seconds)
+        Exercise(name: name, type: .rest, description: description, seconds: seconds)
     }
     
     // MARK: - Hashable
