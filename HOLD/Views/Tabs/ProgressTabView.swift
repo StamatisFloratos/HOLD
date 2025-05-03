@@ -64,7 +64,7 @@ struct ProgressTabView: View {
 
         return VStack(spacing: 6) {
             // Progress slider visualization with moving triangle
-            VStack(spacing:1) {
+            VStack(spacing:0) {
                 // Moving triangle
                 GeometryReader { geo in
                     VStack(spacing:2) {
@@ -94,7 +94,7 @@ struct ProgressTabView: View {
                         Text("😩")
                             .font(.title)
                     }
-                }
+                }.padding(.top,2)
             }
             
             HStack {
