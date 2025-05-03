@@ -66,50 +66,6 @@
             endingLineNumber = "233"
             landmarkName = "startHoldAnimation()"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "B9816AF8-19E9-42A7-AD8B-3B38CF055FEA - 188872e85f04d9ea"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "HOLD.WorkoutDetailView.startHoldAnimation() -&gt; ()"
-                  moduleName = "HOLD.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/rabbiaijaz/Documents/Projects/HOLD/HOLD/Views/Workout/WorkoutDetailView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "233"
-                  endingLineNumber = "233">
-               </Location>
-               <Location
-                  uuid = "B9816AF8-19E9-42A7-AD8B-3B38CF055FEA - 5075143b03abefa3"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 @Sendable (__C.NSTimer) -&gt; () in HOLD.WorkoutDetailView.startHoldAnimation() -&gt; ()"
-                  moduleName = "HOLD.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/rabbiaijaz/Documents/Projects/HOLD/HOLD/Views/Workout/WorkoutDetailView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "235"
-                  endingLineNumber = "235">
-               </Location>
-               <Location
-                  uuid = "B9816AF8-19E9-42A7-AD8B-3B38CF055FEA - 5075143b03abef65"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 @Sendable (__C.NSTimer) -&gt; () in HOLD.WorkoutDetailView.startHoldAnimation() -&gt; ()"
-                  moduleName = "HOLD.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/rabbiaijaz/Documents/Projects/HOLD/HOLD/Views/Workout/WorkoutDetailView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "233"
-                  endingLineNumber = "233">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

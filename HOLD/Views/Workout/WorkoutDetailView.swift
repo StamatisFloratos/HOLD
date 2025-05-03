@@ -145,7 +145,7 @@ struct WorkoutDetailView: View {
             }
         })
         .onChange(of: isTrembling, {
-            if currentExercise.type == .hold {
+            if currentExercise.type == .hold && isTrembling {
                 triggerHaptic()
             }
         })
