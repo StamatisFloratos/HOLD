@@ -11,7 +11,7 @@ import SwiftUI
 class ChallengeViewModel: ObservableObject {
     @Published var allChallengeResults: [ChallengeResult] = []
     @Published var bestChallengeResult: ChallengeResult = ChallengeResult(duration: 0)
-    @Published var latestChallengeResult: ChallengeResult = ChallengeResult(duration: 0)
+    @Published var latestChallengeResult: ChallengeResult? = nil
     
     init() {
         loadChallengeResults()

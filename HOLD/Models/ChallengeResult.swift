@@ -183,6 +183,42 @@ struct ChallengeResult: Identifiable, Codable, Hashable  {
         }
     }
     
+    var challengeDescription: String {
+        switch percentile {
+        case 50..<100:
+            return "🤨 We got work to do."
+        case 20..<49.9:
+            return "🙂 We’re getting somewhere!"
+        case 0.01..<19.9:
+            return "😧 That’s really impressive!"
+        default:
+            return ""
+        }
+    }
+    
+    var challengeColor: [Color] {
+        switch percentile {
+        case 0.01..<19.9: return [
+            Color(hex:"#16D700"),
+            Color(hex:"#0B7100")
+        ]
+        case 20..<49.9: return [
+            Color(hex:"#D7B700"),
+            Color(hex:"#716000")
+        ]
+        
+        case 50..<100: return [
+            Color(hex:"#FF1919"),
+            Color(hex:"#990F0F")
+        ]
+        default:
+            return [
+                Color(hex:"#FF1919"),
+                Color(hex:"#990F0F")
+            ]
+        }
+    }
+    
     func timeDisplay(duration: TimeInterval) -> String {
         let minutes = Int(duration) / 60
         let remainingSeconds = Int(duration) % 60

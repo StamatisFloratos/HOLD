@@ -174,10 +174,7 @@ struct ChallengeActivityView: View {
                         Text(result.percentileDisplay)
                             .font(.system(size: 64, weight: .semibold))
                             .foregroundStyle(LinearGradient(
-                                colors: [
-                                    Color(hex:"#16D700"),
-                                    Color(hex:"#0B7100")
-                                ],
+                                colors: result.challengeColor,
                                 startPoint: .top,
                                 endPoint: .bottom
                             ))
@@ -188,7 +185,7 @@ struct ChallengeActivityView: View {
                             .foregroundColor(.white)
 
                         Spacer()
-                        Text("😧 That's really impressive! ")
+                        Text(result.challengeDescription)
                             .font(.system(size: 20, weight: .semibold))
                             .foregroundColor(.white)
                             .padding(.top,6)
