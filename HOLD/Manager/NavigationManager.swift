@@ -48,7 +48,7 @@ extension NavigationManager {
         
         case workoutView
         case workoutDetailView(selectedWorkout:Workout)
-        case workoutFinishView
+//        case workoutFinishView
         
         case knowledgeView(categoryTitle:String, items:[KnowledgeItem])
         case knowledgeDetailView(item:KnowledgeItem)

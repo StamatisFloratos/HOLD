@@ -47,11 +47,11 @@ struct Exercise: Identifiable, Codable, Hashable {
         // Set the appropriate parameter based on exercise type
         switch type {
         case .clamp, .rapidFire, .flash:
-            self.reps = 1 //reps
+            self.reps = reps
             self.seconds = nil
         case .hold:
             self.reps = nil
-            self.seconds = 5//seconds
+            self.seconds = seconds
         case .rest:
             self.reps = nil
             self.seconds = seconds

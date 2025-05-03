@@ -35,6 +35,8 @@ class ProgressViewModel: ObservableObject {
     @Published var weekDateRange: String = ""
     @Published var allTimeBest: Double? = nil
     @Published var weeklyBest: Double? = nil
+    @Published var mostRecent: Double? = nil
+    @Published var mostRecentMeaurementTime: Double = 3
 
     let daysOfWeekLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
@@ -47,10 +49,6 @@ class ProgressViewModel: ObservableObject {
         let duration: Double? // Keep it optional
     }
     
-    var mostRecentMeaurementTime: Double {
-        return allMeasurements.last?.durationSeconds ?? 0
-    }
-
     // Computed property to transform data for the chart view
     var chartDisplayData: [DailyDuration] {
         // Zip the labels and data together, handling potential mismatch
@@ -70,6 +68,7 @@ class ProgressViewModel: ObservableObject {
     func measurementDidFinish(duration: Double) {
         print("ViewModel received finished measurement: \(duration) seconds.")
 
+        mostRecentMeaurementTime = duration // updating the most recent
         let today = Calendar.current.startOfDay(for: Date())
 
         // Check if there's already a measurement for today

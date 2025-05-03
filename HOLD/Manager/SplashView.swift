@@ -45,8 +45,8 @@ struct SplashView: View {
                         
                     case .workoutView:
                         WorkoutView().environmentObject(workoutViewModel)
-                    case .workoutFinishView:
-                        WorkoutFinishView()
+//                    case .workoutFinishView:
+//                        WorkoutFinishView()
                     case .workoutDetailView(selectedWorkout: let selectedWorkout):
                         WorkoutDetailView(selectedWorkout: selectedWorkout).environmentObject(workoutViewModel)
                         
