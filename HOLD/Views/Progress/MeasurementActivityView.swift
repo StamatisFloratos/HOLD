@@ -103,7 +103,7 @@ struct MeasurementActivityView: View {
                         triggerHaptic()
                         navigationManager.pop(to: .mainTabView)
                     }) {
-                        Text("Continue")
+                        Text("Finish")
                             .font(.system(size: 16, weight: .semibold))
                             .padding()
                             .frame(maxWidth: .infinity,maxHeight: 47)
