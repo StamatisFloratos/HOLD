@@ -10,6 +10,7 @@ import SwiftUI
 struct ChallengeRankView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     @EnvironmentObject var challengeViewModel: ChallengeViewModel
+    @State private var animatedProgress: Double = 0.0
 
     var body: some View {
         ZStack {
@@ -49,17 +50,19 @@ struct ChallengeRankView: View {
                         Spacer()
                     }
                     else {
-                        
+                        Spacer()
                         Text("Progress Until Next Rank")
                             .font(.system(size: 20, weight: .semibold))
                             .foregroundColor(.white)
                             .padding(.top,20)
                             .padding(.bottom,17)
                         VStack(spacing:0) {
-                            ProgressBarView(value: challengeViewModel.latestChallengeResult.duration, total: Double(challengeViewModel.latestChallengeResult.nextRankValue))
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 12)
-                                .foregroundColor(Color(hex: "#0CFF00"))
+                            withAnimation(.easeInOut(duration: 0.1)) {
+                                ProgressBarView(value: animatedProgress, total: Double(challengeViewModel.latestChallengeResult.nextRankValue))
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 12)
+                                    .foregroundColor(Color(hex: "#0CFF00"))
+                            }
                             HStack{
                                 Text(challengeViewModel.latestChallengeResult.timeDisplayForProgress(duration: challengeViewModel.latestChallengeResult.duration))
                                     .font(.system(size: 20, weight: .semibold))
@@ -74,11 +77,11 @@ struct ChallengeRankView: View {
                         }
                         .padding(.horizontal,52)
                     }
+                    Spacer()
                 }
                 
                 
-                Spacer()
-                    .frame(minWidth: 0, maxWidth: 44)
+//                Spacer().frame(minWidth: 0, maxWidth: 44)
 
                 Button(action: {
                     triggerHaptic()
@@ -97,7 +100,9 @@ struct ChallengeRankView: View {
             }
         }
         .onAppear{
-            challengeViewModel.challengeDidFinish(duration: 400)
+            withAnimation(.easeInOut(duration: 1.5)) {
+                    animatedProgress = challengeViewModel.latestChallengeResult.duration
+                }
         }
         .navigationBarHidden(true)
     }
