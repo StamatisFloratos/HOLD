@@ -101,12 +101,9 @@ struct WorkoutTabView: View {
                     Text("\(workout.difficulty.description)")
                         .font(.system(size: 16, weight: .regular))
                         .foregroundStyle(LinearGradient(
-                            colors: [
-                                Color(hex:"#14C101"),
-                                Color(hex:"#0E8601")
-                            ],
-                            startPoint: .top,
-                            endPoint: .bottom
+                            colors: workout.difficulty.color,
+                            startPoint: .leading,
+                            endPoint: .trailing
                         ))
                 }
                 

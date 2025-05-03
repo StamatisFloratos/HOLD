@@ -169,13 +169,13 @@ struct WorkoutDetailView: View {
                             RadialGradient(
                                 gradient: Gradient(colors: [Color(hex: "#990F0F"), Color(hex: "#FF0000")]),
                                 center: .center,
-                                startRadius: 81,
-                                endRadius: 114
+                                startRadius: 50,
+                                endRadius: 70
                             )
                         )
-                        .frame(width: 228, height: 228)
+                        .frame(width: 152, height: 152)
                         .position(x: centerX, y: centerY)
-                        .scaleEffect(isStartExercise ? 1 : isExpanded ? 1.2 : 0)
+                        .scaleEffect(isStartExercise ? 1.7 : isExpanded ? 1.7 : 1)
                         .offset(x: isTrembling ? trembleOffset : 0)
                 }
                 
@@ -357,7 +357,7 @@ struct WorkoutDetailView: View {
         // Exercise tabs - horizontal scrolling view
         ScrollView(.horizontal, showsIndicators: false) {
             ScrollViewReader { proxy in
-                HStack(spacing: 0) {
+                HStack(spacing: 27) {
                     // Left spacer to center first item
                     Spacer().frame(width: UIScreen.main.bounds.width / 2 - 92 / 2)
                     
@@ -367,12 +367,12 @@ struct WorkoutDetailView: View {
                                     isSelected: index == selectedExerciseIndex
                         )
                         .id(index)
-                        .frame(width: 92) // <- Ensures centering math works
+//                        .frame(width: 92) // <- Ensures centering math works
                         
                     }
                     
                     exerciseTab(name: "Finish",isSelected: finish)
-                        .frame(width: 92) // <- Ensures centering math works
+//                        .frame(width: 92) // <- Ensures centering math works
                         .id(workoutWithRests.exercises.count)
                     
                     // Right spacer to center last item
@@ -474,7 +474,11 @@ struct WorkoutDetailView: View {
     // Initialize the current exercise
     func initializeExercise() {
         let exercise = currentExercise
-        isStartExercise = true
+        if currentExercise.type != .hold {
+            isStartExercise = true
+        } else {
+            isStartExercise = false
+        }
         
         // Reset progress
         progress = 0.0

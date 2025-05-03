@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUICore
 
 enum WorkoutDifficulty: String, Codable, CaseIterable {
     case easy
@@ -17,6 +18,23 @@ enum WorkoutDifficulty: String, Codable, CaseIterable {
         case .easy: return "Easy 🙂"
         case .medium: return "Medium 😭"
         case .hard: return "Hard 😩"
+        }
+    }
+    
+    var color: [Color] {
+        switch self {
+        case .easy: return [
+            Color(hex:"#16D700"),
+            Color(hex:"#0B7100")
+        ]
+        case .medium: return [
+            Color(hex:"#D7B700"),
+            Color(hex:"#716000")
+        ]
+        case .hard: return [
+            Color(hex:"#FF1919"),
+            Color(hex:"#990F0F")
+        ]
         }
     }
 }
