@@ -92,15 +92,13 @@ struct ChallengeActivityView: View {
                 .padding(.top, 24)
                 .padding(.bottom, 14)
                 
-                Spacer()
-                
                 if !finish {
                     Text("Follow the Rhythm")
                         .font(.system(size: 24, weight: .semibold))
                         .foregroundColor(.white)
                         .fixedSize(horizontal: false, vertical: true)
                         .multilineTextAlignment(.center)
-                        .frame(height: 100)
+                        .padding(.top, 100)
                     
                     Spacer()
                     
