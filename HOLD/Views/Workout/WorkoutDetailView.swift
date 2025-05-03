@@ -282,7 +282,7 @@ struct WorkoutDetailView: View {
             
             // Contract after
             DispatchQueue.main.asyncAfter(deadline: .now() + repDuration / 2) {
-                contractOrExpandText = "Let go"
+                contractOrExpandText = "Relax"
                 withAnimation(.easeInOut(duration: repDuration / 2)) {
                     isExpanded = false
                     
