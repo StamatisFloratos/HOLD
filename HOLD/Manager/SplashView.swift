@@ -30,6 +30,8 @@ struct SplashView: View {
                         MainTabView()
                             .environmentObject(progressViewModel)
                             .environmentObject(challengeViewModel)
+                    case .onboardingView:
+                        OnboardingView()
                     }
                 }
             )
@@ -50,7 +52,7 @@ struct SplashView: View {
 //        if !UserStorage.isOnboardingDone {
 //            navigationManager.push(to: .onboarding)
 //        } else {
-        navigationManager.push(to: .mainTabView)
+        navigationManager.push(to: .onboardingView)
 //        }
     }
 }

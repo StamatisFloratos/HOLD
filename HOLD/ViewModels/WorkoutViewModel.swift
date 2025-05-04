@@ -149,7 +149,7 @@ class WorkoutViewModel: ObservableObject {
                     switch tempExercise.name.lowercased() {
                     case "clamp":
                         exerciseType = .clamp
-                    case "rapidfire":
+                    case "rapid fire":
                         exerciseType = .rapidFire
                     case "flash":
                         exerciseType = .flash

@@ -45,6 +45,7 @@ extension NavigationManager {
 //        case measurementView
 //        case measurementActivityView
         case mainTabView
+        case onboardingView
         
 //        case workoutView
 //        case workoutDetailView(selectedWorkout:Workout)

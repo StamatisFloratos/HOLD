@@ -232,7 +232,7 @@ struct ProgressTabView: View {
             .overlay(
                 RoundedRectangle(cornerRadius: 20)
                     .stroke(Color.white.opacity(0.4), lineWidth: 1)
-                    .cornerRadius(12)
+                    .cornerRadius(20)
             )
             .padding(.horizontal,28)
         }
@@ -316,7 +316,7 @@ struct ProgressTabView: View {
                 .overlay(
                     RoundedRectangle(cornerRadius: 20)
                         .stroke(Color.white.opacity(0.4), lineWidth: 1)
-                        .cornerRadius(12)
+                        .cornerRadius(20)
                 )
                 .padding(.horizontal,28)
                 
@@ -380,7 +380,7 @@ struct ProgressTabView: View {
                 .overlay(
                     RoundedRectangle(cornerRadius: 20)
                         .stroke(Color.white.opacity(0.4), lineWidth: 1)
-                        .cornerRadius(12)
+                        .cornerRadius(20)
                 )
                 .padding(.horizontal,28)
             }

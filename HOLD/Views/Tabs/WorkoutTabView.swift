@@ -143,12 +143,12 @@ struct WorkoutTabView: View {
             .padding(.top, 40)
 
         }
-        .background(Color(hex: "#000000").opacity(0.4))
+        .background(Color(hex: "#161616").opacity(0.2))
         .cornerRadius(20)
         .overlay(
             RoundedRectangle(cornerRadius: 20)
                 .stroke(Color.white.opacity(0.4), lineWidth: 1)
-                .cornerRadius(12)
+                .cornerRadius(20)
         )
     }
     
@@ -181,12 +181,12 @@ struct WorkoutTabView: View {
             }
         }
         .padding(.vertical)
-        .background(Color(hex: "#161616").opacity(0.4))
+        .background(Color(hex: "#161616").opacity(0.2))
         .cornerRadius(20)
         .overlay(
             RoundedRectangle(cornerRadius: 20)
-                .stroke(Color.gray, lineWidth: 1)
-                .cornerRadius(12)
+                .stroke(Color.white.opacity(0.4), lineWidth: 1)
+                .cornerRadius(20)
         )
     }
     
