@@ -15,45 +15,32 @@ struct SplashView: View {
     @EnvironmentObject var workoutViewModel: WorkoutViewModel
     @EnvironmentObject var progressViewModel: ProgressViewModel
     @EnvironmentObject var challengeViewModel: ChallengeViewModel
+    
+    @State private var isOnboardingDone: Bool = false
+    @State private var showStartView = false
 
     var body: some View {
-        splash
-            .onAppear {
-                navigateView()
-            }
-            .navigationDestination(
-                for: NavigationManager.Route.self,
-                destination: {
-                    destination in
-                    switch destination {
-                    case .mainTabView:
-                        MainTabView()
-                            .environmentObject(progressViewModel)
-                            .environmentObject(challengeViewModel)
-                    case .onboardingView:
-                        OnboardingView()
-                    }
-                }
-            )
-            .embedNavigationStackWithPath(path: $navigationManager.routes)
-    }
-    
-    //MARK: - UI Components
-    private var splash: some View {
         ZStack {
-            AppBackground()
-            Image("holdIcon")
-                
+            if !showStartView {
+                // Splash content
+                ZStack {
+                    AppBackground()
+                    Image("holdIcon")
+                    
+                }
+            } else {
+                StartView()
+                    .transition(.move(edge: .trailing)) // or .opacity, .slide, etc.
+            }
         }
-    }
-    
-    //MARK: - Funcs
-    private func navigateView() {
-//        if !UserStorage.isOnboardingDone {
-//            navigationManager.push(to: .onboarding)
-//        } else {
-        navigationManager.push(to: .onboardingView)
-//        }
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                withAnimation(.easeInOut(duration: 0.5)) {
+                    showStartView = true
+                }
+            }
+        }
+        
     }
 }
 

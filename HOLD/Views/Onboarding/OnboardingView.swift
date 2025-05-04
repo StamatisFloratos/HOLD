@@ -7,95 +7,104 @@ struct OnboardingView: View {
     @State private var name: String = ""
     @State private var age: String = ""
     @EnvironmentObject var navigationManager: NavigationManager
-
+    @State private var showMainView = false
     
     private let questions = OnboardingQuestion.sampleScreens
     
     var body: some View {
         ZStack {
             AppBackground()
-            VStack(spacing: 0) {
-                HStack {
-                    Spacer()
-                    Image("holdIcon")
-                    Spacer()
-                }
-                .padding(.top, 24)
-
-                // Progress Bar
-                progressBar
-                    .padding(.top, 32)
-                    .padding(.bottom, 49)
-                
-                // Title & Subtitle
-                Text(questions[currentIndex].title)
-                    .font(.system(size: 20, weight: .bold))
-                    .foregroundColor(.white)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 24)
-                
-                if let subtitle = questions[currentIndex].subtitle {
-                    Text(subtitle)
-                        .font(.system(size: 16, weight: .regular))
+            if showMainView {
+                MainTabView()
+                    .transition(.asymmetric(
+                        insertion: .move(edge: .trailing),
+                        removal: .move(edge: .leading)
+                    ))
+                    .zIndex(1)
+            } else {
+                VStack(spacing: 0) {
+                    HStack {
+                        Spacer()
+                        Image("holdIcon")
+                        Spacer()
+                    }
+                    .padding(.top, 24)
+                    
+                    // Progress Bar
+                    progressBar
+                        .padding(.top, 32)
+                        .padding(.bottom, 49)
+                    
+                    // Title & Subtitle
+                    Text(questions[currentIndex].title)
+                        .font(.system(size: 20, weight: .bold))
                         .foregroundColor(.white)
                         .multilineTextAlignment(.center)
-                        .padding(.top, 30)
                         .padding(.horizontal, 24)
-                }
-                
-                // Image (if any)
-                if let imageName = questions[currentIndex].imageName {
-                    Image(imageName)
-                        .resizable()
-                        .scaledToFit()
-                        .padding(.horizontal,42)
-                        .padding(.top, 32)
-                }
-                
-//                Spacer()
-                
-                // Options, Text Fields, or Info
-                if currentIndex == questions.count - 1 {
-                    // Last question with text fields
-                    VStack(spacing: 20) {
-                        TextField("Name", text: $name)
-                            .textFieldStyle(CustomTextFieldStyle())
-                            .padding(.horizontal, 33)
-                            .foregroundColor(Color.white)
-                        
-                        TextField("Age", text: $age)
-                            .textFieldStyle(CustomTextFieldStyle())
-                            .keyboardType(.numberPad)
-                            .padding(.horizontal, 33)
-                    }
-                    .padding(.top, 30)
-                } else if !questions[currentIndex].options.isEmpty {
-                    optionsView(for: questions[currentIndex])
-                }
-                
-                Spacer()
-                
-                // Next Button - Only show on first question, questions with images, or last question
-                if currentIndex == 0 || questions[currentIndex].imageName != nil || currentIndex == questions.count - 1 {
-                    Button(action: {
-                        if currentIndex < questions.count - 1 {
-                            currentIndex += 1
-                        } else {
-                            // Handle completion (e.g., save answers, navigate away)
-                            navigationManager.push(to: .mainTabView)
-                        }
-                    }) {
-                        Text(currentIndex == questions.count - 1 ? "Make Personalized Plan" : "Next")
-                            .font(.system(size: 16, weight: .semibold))
-                            .frame(maxWidth: .infinity, maxHeight: 47)
-                            .background(currentIndex == questions.count - 1 && (name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
-                                                                                age.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) ? Color(hex: "#FF1919").opacity(0.7) :Color(hex: "#FF1919"))
+                    
+                    if let subtitle = questions[currentIndex].subtitle {
+                        Text(subtitle)
+                            .font(.system(size: 16, weight: .regular))
                             .foregroundColor(.white)
-                            .cornerRadius(30)
-                            .padding(.horizontal, 56)
+                            .multilineTextAlignment(.center)
+                            .padding(.top, 30)
+                            .padding(.horizontal, 24)
                     }
-                    .padding(.bottom, 32)
-                    .disabled(!canProceed(for: questions[currentIndex]))
+                    
+                    // Image (if any)
+                    if let imageName = questions[currentIndex].imageName {
+                        Image(imageName)
+                            .resizable()
+                            .scaledToFit()
+                            .padding(.horizontal,42)
+                            .padding(.top, 32)
+                    }
+                    
+                    //                Spacer()
+                    
+                    // Options, Text Fields, or Info
+                    if currentIndex == questions.count - 1 {
+                        // Last question with text fields
+                        VStack(spacing: 20) {
+                            TextField("Name", text: $name)
+                                .textFieldStyle(CustomTextFieldStyle())
+                                .padding(.horizontal, 33)
+                                .foregroundColor(Color.white)
+                            
+                            TextField("Age", text: $age)
+                                .textFieldStyle(CustomTextFieldStyle())
+                                .keyboardType(.numberPad)
+                                .padding(.horizontal, 33)
+                        }
+                        .padding(.top, 30)
+                    } else if !questions[currentIndex].options.isEmpty {
+                        optionsView(for: questions[currentIndex])
+                    }
+                    
+                    Spacer()
+                    
+                    // Next Button - Only show on first question, questions with images, or last question
+                    if currentIndex == 0 || questions[currentIndex].imageName != nil || currentIndex == questions.count - 1 {
+                        Button(action: {
+                            if currentIndex < questions.count - 1 {
+                                currentIndex += 1
+                            } else {
+                                // Handle completion (e.g., save answers, navigate away)
+                                showMainView = true
+                            }
+                        }) {
+                            Text(currentIndex == questions.count - 1 ? "Make Personalized Plan" : "Next")
+                                .font(.system(size: 16, weight: .semibold))
+                                .frame(maxWidth: .infinity, maxHeight: 47)
+                                .background(currentIndex == questions.count - 1 && (name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+                                                                                    age.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) ? Color(hex: "#FF1919").opacity(0.7) :Color(hex: "#FF1919"))
+                                .foregroundColor(.white)
+                                .cornerRadius(30)
+                                .padding(.horizontal, 56)
+                        }
+                        .padding(.bottom, 32)
+                        .disabled(!canProceed(for: questions[currentIndex]))
+                    }
                 }
             }
         }

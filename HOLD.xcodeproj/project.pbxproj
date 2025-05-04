@@ -45,6 +45,7 @@
 		76711B022D8CD62700FFEE50 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76711B012D8CD62700FFEE50 /* Preview Assets.xcassets */; };
 		7C149D612DB837A6003C0297 /* ChallengeActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C149D602DB837A6003C0297 /* ChallengeActivityView.swift */; };
 		7C149D632DB99B99003C0297 /* ChallengeRankView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C149D622DB99B99003C0297 /* ChallengeRankView.swift */; };
+		7C1FADBD2DC808D200F3EE18 /* StartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1FADBC2DC808D200F3EE18 /* StartView.swift */; };
 		7C22B9632DC797F1002C3A6E /* ChallengeCompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C22B9622DC797F1002C3A6E /* ChallengeCompletionView.swift */; };
 		7C22B9682DC7A05A002C3A6E /* MeasurementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C22B9672DC7A05A002C3A6E /* MeasurementView.swift */; };
 		7C22B9692DC7A05A002C3A6E /* MeasurementCompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C22B9662DC7A05A002C3A6E /* MeasurementCompletionView.swift */; };
@@ -109,6 +110,7 @@
 		76711B012D8CD62700FFEE50 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		7C149D602DB837A6003C0297 /* ChallengeActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeActivityView.swift; sourceTree = "<group>"; };
 		7C149D622DB99B99003C0297 /* ChallengeRankView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeRankView.swift; sourceTree = "<group>"; };
+		7C1FADBC2DC808D200F3EE18 /* StartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartView.swift; sourceTree = "<group>"; };
 		7C22B9622DC797F1002C3A6E /* ChallengeCompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeCompletionView.swift; sourceTree = "<group>"; };
 		7C22B9662DC7A05A002C3A6E /* MeasurementCompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementCompletionView.swift; sourceTree = "<group>"; };
 		7C22B9672DC7A05A002C3A6E /* MeasurementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementView.swift; sourceTree = "<group>"; };
@@ -343,6 +345,7 @@
 			isa = PBXGroup;
 			children = (
 				7CA82F372DC7E842001C0DFD /* OnboardingView.swift */,
+				7C1FADBC2DC808D200F3EE18 /* StartView.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -424,6 +427,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				762FEBBA2D8CE9910058F107 /* ProgressViewModel.swift in Sources */,
+				7C1FADBD2DC808D200F3EE18 /* StartView.swift in Sources */,
 				762FEBE02D8CEE720058F107 /* WorkoutDetailView.swift in Sources */,
 				762FEBCC2D8CEC160058F107 /* WorkoutTabView.swift in Sources */,
 				76711AFB2D8CD62500FFEE50 /* HOLDApp.swift in Sources */,
