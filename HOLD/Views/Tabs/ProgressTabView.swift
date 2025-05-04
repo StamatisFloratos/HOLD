@@ -15,6 +15,7 @@ struct ProgressTabView: View {
     @EnvironmentObject var challengeViewModel: ChallengeViewModel
 
     @State private var showChallengeView = false
+    @State private var showMeasurementView = false
     
 
     
@@ -61,6 +62,11 @@ struct ProgressTabView: View {
         .fullScreenCover(isPresented: $showChallengeView) {
             ChallengeView(onBack: {
                 showChallengeView = false
+            })
+        }
+        .fullScreenCover(isPresented: $showMeasurementView) {
+            MeasurementView(onBack: {
+                showMeasurementView = false
             })
         }
     }
@@ -204,7 +210,7 @@ struct ProgressTabView: View {
                 // Take Measurement Button
                 Button {
                     triggerHaptic()
-                    navigationManager.push(to: .measurementView)
+                    showMeasurementView = true
                 } label: {
                     HStack {
                         Image(systemName: "plus.circle")
@@ -221,7 +227,7 @@ struct ProgressTabView: View {
                 .padding(.bottom, 24)
                 .padding(.top,42)
             }
-            .background(Color(hex: "#000000").opacity(0.4))
+            .background(.black.opacity(0.2))
             .cornerRadius(20)
             .overlay(
                 RoundedRectangle(cornerRadius: 20)
@@ -364,12 +370,12 @@ struct ProgressTabView: View {
                         .frame(maxWidth: .infinity)
                         .background(Color(hex:"#FF5E00"))
                         .foregroundColor(.white)
-                        .cornerRadius(25)
+                        .cornerRadius(30)
                     }
-                    .padding(.horizontal, 50)
+                    .frame(width: 214, height: 47)
                     .padding(.bottom,36)
                 }
-                .background(.black.opacity(0.4))
+                .background(.black.opacity(0.2))
                 .cornerRadius(20)
                 .overlay(
                     RoundedRectangle(cornerRadius: 20)

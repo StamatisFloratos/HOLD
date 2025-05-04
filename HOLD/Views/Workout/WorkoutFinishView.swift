@@ -9,7 +9,6 @@ import Foundation
 import SwiftUI
 
 struct WorkoutFinishView: View {
-//    @EnvironmentObject var navigationManager: NavigationManager
     var onBack: () -> Void
     var body: some View {
         ZStack {
@@ -52,6 +51,7 @@ struct WorkoutFinishView: View {
                 Spacer().frame(height: 61)
                 
                 Button(action: {
+                    triggerHaptic()
                     onBack()
                 }) {
                     Text("Continue")
@@ -69,8 +69,14 @@ struct WorkoutFinishView: View {
         }
         .navigationBarHidden(true)
     }
+    
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.prepare()
+        generator.impactOccurred()
+    }
 }
 
 #Preview {
-//    WorkoutFinishView(onBack: /*print("pressed continue")*/)
+    WorkoutFinishView(onBack: {})
 }

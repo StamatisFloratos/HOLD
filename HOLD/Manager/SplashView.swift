@@ -26,40 +26,10 @@ struct SplashView: View {
                 destination: {
                     destination in
                     switch destination {
-                    case .measurementView:
-                        MeasurementSheetView()
-                            .environmentObject(progressViewModel)
                     case .mainTabView:
                         MainTabView()
                             .environmentObject(progressViewModel)
                             .environmentObject(challengeViewModel)
-                        
-                    case .measurementActivityView:
-                        MeasurementActivityView()
-                            .environmentObject(progressViewModel)
-                    
-//                    case .knowledgeView(categoryTitle: let categoryTitle, items: let items):
-//                        KnowledgeView(categoryTitle: categoryTitle, items: items)
-//                    case .knowledgeDetailView(item: let item):
-//                        KnowledgeDetailView(item: item)
-                        
-                    case .workoutView:
-                        WorkoutView().environmentObject(workoutViewModel)
-//                    case .workoutFinishView:
-//                        WorkoutFinishView()
-                    case .workoutDetailView(selectedWorkout: let selectedWorkout):
-                        WorkoutDetailView(selectedWorkout: selectedWorkout).environmentObject(workoutViewModel)
-                        
-//                    case .challengeSheetView:
-//                        ChallengeSheetView()
-//                    case .challengeActivityView:
-//                        ChallengeActivityView()
-//                        .environmentObject(challengeViewModel)
-//                    case .challengeRankView:
-//                        ChallengeRankView()
-//                            .environmentObject(challengeViewModel)
-//                    case .challengeView:
-//                        ChallengeView()
                     }
                 }
             )
