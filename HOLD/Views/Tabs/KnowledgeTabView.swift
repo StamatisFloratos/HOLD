@@ -11,39 +11,59 @@ struct KnowledgeTabView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     @EnvironmentObject var tabManager: TabManager
     @EnvironmentObject var knowledgeViewModel : KnowledgeViewModel
+    @State var selectedItem: KnowledgeItem?
+    @State var showKnowledgeCategory: Bool = false
+    @State var selectedItems: [KnowledgeItem]?
+    @State var selectedCategory: String?
 
     var body: some View {
         ZStack {
             AppBackground()
             
-            
-            VStack(spacing:0) {
-                HStack {
-                    Spacer()
-                    Image("holdIcon")
-                    Spacer()
+            if showKnowledgeCategory {
+                if let selectedItems = selectedItems, let category = selectedCategory {
+                    KnowledgeView(categoryTitle: category, items: selectedItems, onBack: {
+                        withAnimation {
+                            showKnowledgeCategory = false
+                        }
+                    }, selectedItem: $selectedItem)
+                    .transition(.move(edge: .trailing))
+                    .zIndex(1)
                 }
-                .padding(.top, 24)
-                .padding(.bottom, 14)
-                
-                ScrollView(showsIndicators: false) {
-                    
+            } else {
+                VStack(spacing:0) {
                     HStack {
-                        Text("Knowledge")
-                            .font(.system(size: 24, weight: .bold))
-                            .foregroundColor(.white)
+                        Spacer()
+                        Image("holdIcon")
                         Spacer()
                     }
-                    .padding(.bottom,62)
+                    .padding(.top, 24)
+                    .padding(.bottom, 14)
                     
-                    ForEach(knowledgeViewModel.sortedCategories, id: \.self) { category in
-                        KnowledgeSectionView(title: category, items: knowledgeViewModel.groupedKnowledgeData[category] ?? [])
+                    ScrollView(showsIndicators: false) {
+                        HStack {
+                            Text("Knowledge")
+                                .font(.system(size: 24, weight: .bold))
+                                .foregroundColor(.white)
+                            Spacer()
+                        }
+                        .padding(.bottom,62)
+                        
+                        ForEach(knowledgeViewModel.sortedCategories, id: \.self) { category in
+                            KnowledgeSectionView(
+                                title: category,
+                                items: knowledgeViewModel.groupedKnowledgeData[category] ?? [],
+                                selectedItem: $selectedItem,
+                                showKnowledgeCategory: $showKnowledgeCategory,
+                                selectedItems: $selectedItems,
+                                selectedCategory: $selectedCategory
+                            )
+                        }
                     }
+                    .padding(.leading,14)
+                    .padding(.trailing,0)
                 }
-                .padding(.leading,14)
-                .padding(.trailing,0)
             }
-            
         }
         .navigationBarHidden(true)
     }
@@ -54,11 +74,19 @@ struct KnowledgeSectionView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     let title: String
     let items: [KnowledgeItem]
+    
+    @Binding var selectedItem: KnowledgeItem?
+    @Binding var showKnowledgeCategory: Bool
+    @Binding var selectedItems: [KnowledgeItem]?
+    @Binding var selectedCategory: String?
+    @State var showKnowledgeDetailSheet = false
 
     var body: some View {
         VStack(alignment: .leading) {
             Button {
-                navigationManager.push(to: .knowledgeView(categoryTitle: title, items: items))
+                selectedItems = items
+                selectedCategory = title
+                showKnowledgeCategory = true
             } label: {
                 HStack {
                     Text(title)
@@ -71,18 +99,30 @@ struct KnowledgeSectionView: View {
                 }
                 .padding(.bottom,20)
             }
-
+            
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 15) {
                     ForEach(items, id: \.id) { item in
                         Button {
-                            navigationManager.push(to: .knowledgeDetailView(item: item))
+                            print("Selected item: \(item.title)") // Debug print
+                            selectedItem = item
+                            showKnowledgeDetailSheet = true
                         } label: {
                             KnowledgeCardView(imageName: item.imageName, title: item.title, width: 139, height: 185)
                                 .padding(.bottom,17)
                         }
                     }
                 }
+            }
+        }
+        .fullScreenCover(isPresented: $showKnowledgeDetailSheet) {
+            if let item = selectedItem {
+                KnowledgeDetailView(item: item, onBack: {
+                    withAnimation {
+                        showKnowledgeDetailSheet = false
+                        showKnowledgeCategory = false
+                    }
+                })
             }
         }
     }

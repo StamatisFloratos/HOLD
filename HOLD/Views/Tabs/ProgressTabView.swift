@@ -14,11 +14,14 @@ struct ProgressTabView: View {
     @EnvironmentObject var progressViewModel: ProgressViewModel
     @EnvironmentObject var challengeViewModel: ChallengeViewModel
 
+    @State private var showChallengeView = false
+    
 
     
     var body: some View {
         ZStack {
             AppBackground()
+            
             
             VStack(alignment: .leading) {
                 HStack {
@@ -52,8 +55,14 @@ struct ProgressTabView: View {
                 }
                 
             }
+            
         }
         .navigationBarHidden(true)
+        .fullScreenCover(isPresented: $showChallengeView) {
+            ChallengeView(onBack: {
+                showChallengeView = false
+            })
+        }
     }
     
     var progressIndicator: some View {
@@ -280,7 +289,7 @@ struct ProgressTabView: View {
                     // Start Challenge Button
                     Button {
                         triggerHaptic()
-                        navigationManager.push(to: .challengeActivityView)
+                        showChallengeView = true
                     } label: {
                         HStack {
                             Text("Start Challenge")
@@ -345,7 +354,7 @@ struct ProgressTabView: View {
                     // Start Challenge Button
                     Button {
                         triggerHaptic()
-                        navigationManager.push(to: .challengeSheetView)
+                        showChallengeView = true
                     } label: {
                         HStack {
                             Text("Start Challenge")

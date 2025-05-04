@@ -17,11 +17,11 @@ extension Collection {
 
 struct ChallengeActivityView: View {
     @State private var hold = false
-    @State private var finish = false
     @State private var holdTime: Int = 0
     @State private var timer: Timer? = nil
     @EnvironmentObject var navigationManager: NavigationManager
     @EnvironmentObject var challengeViewModel: ChallengeViewModel
+    var onBack: (TimeInterval) -> Void
 
     // Animation states from RhythmicBallView
     @State private var ballPosition: CGFloat = 0
@@ -92,121 +92,65 @@ struct ChallengeActivityView: View {
                 .padding(.top, 24)
                 .padding(.bottom, 14)
                 
-                if !finish {
-                    Text("Follow the Rhythm")
-                        .font(.system(size: 24, weight: .semibold))
+                Text("Follow the Rhythm")
+                    .font(.system(size: 24, weight: .semibold))
+                    .foregroundColor(.white)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .multilineTextAlignment(.center)
+                    .padding(.top, 100)
+                
+                Spacer()
+                
+                // --- New Rhythmic Ball Animation centered on screen ---
+                HStack {
+                    Spacer() // Push animation to center
+                    
+                    ZStack {
+                        // Container for visualization
+                        Rectangle()
+                            .fill(Color.clear)
+                            .frame(width: barWidth, height: barHeight)
+                        
+                        // Trail segments - using previous positions for trail effect
+                        ForEach(0..<min(previousPositions.count, trailLength), id: \.self) { index in
+                            let opacity = 0.2 * pow(trailFadeRate, Double(index))
+                            let size = ballSize * CGFloat(1.0 - (Double(index) / Double(trailLength)) * 0.5)
+                            
+                            Capsule()
+                                .fill(currentPhaseColor.opacity(opacity))
+                                .frame(width: barWidth, height: size)
+                                .position(x: barWidth/2, y: previousPositions[index])
+                        }
+                        
+                        // Main ball
+                        Circle()
+                            .fill(currentPhaseColor)
+                            .frame(width: ballSize, height: ballSize)
+                            .position(x: barWidth/2, y: ballPosition)
+                    }
+                    .frame(width: barWidth, height: barHeight)
+                    .clipped()
+                    
+                    Spacer() // Push animation to center
+                }
+                
+                Spacer()
+                
+                Button(action: {
+                    stopChallenge() // This now stops timers AND calls onComplete
+                    onBack(totalElapsedTime)
+                }) {
+                    Text("Stop")
+                        .font(.system(size: 16, weight: .semibold))
+                        .padding()
+                        .frame(maxWidth: .infinity,maxHeight: 47)
+                        .background(Color(hex: "#FF5E00"))
                         .foregroundColor(.white)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .multilineTextAlignment(.center)
-                        .padding(.top, 100)
-                    
-                    Spacer()
-                    
-                    // --- New Rhythmic Ball Animation centered on screen ---
-                    HStack {
-                        Spacer() // Push animation to center
-                        
-                        ZStack {
-                            // Container for visualization
-                            Rectangle()
-                                .fill(Color.clear)
-                                .frame(width: barWidth, height: barHeight)
-                            
-                            // Trail segments - using previous positions for trail effect
-                            ForEach(0..<min(previousPositions.count, trailLength), id: \.self) { index in
-                                let opacity = 0.2 * pow(trailFadeRate, Double(index))
-                                let size = ballSize * CGFloat(1.0 - (Double(index) / Double(trailLength)) * 0.5)
-                                
-                                Capsule()
-                                    .fill(currentPhaseColor.opacity(opacity))
-                                    .frame(width: barWidth, height: size)
-                                    .position(x: barWidth/2, y: previousPositions[index])
-                            }
-                            
-                            // Main ball
-                            Circle()
-                                .fill(currentPhaseColor)
-                                .frame(width: ballSize, height: ballSize)
-                                .position(x: barWidth/2, y: ballPosition)
-                        }
-                        .frame(width: barWidth, height: barHeight)
-                        .clipped()
-                        
-                        Spacer() // Push animation to center
-                    }
-                    
-                    Spacer()
-                    
-                    Button(action: {
-                        stopChallenge() // This now stops timers AND calls onComplete
-                        finish = true
-                    }) {
-                        Text("Stop")
-                            .font(.system(size: 16, weight: .semibold))
-                            .padding()
-                            .frame(maxWidth: .infinity,maxHeight: 47)
-                            .background(Color(hex: "#FF5E00"))
-                            .foregroundColor(.white)
-                            .cornerRadius(30)
-                    }
-                    .padding(.horizontal, 50)
-                    .padding(.bottom, 15)
+                        .cornerRadius(30)
                 }
-                else {
-                    VStack(spacing: 10) {
-                        Spacer()
-                        let result = ChallengeResult(duration: totalElapsedTime)
-                        Text("You lasted for:")
-                            .font(.system(size: 20, weight: .semibold))
-                            .foregroundColor(.white)
-                            .padding(.top,6)
-                        Text(result.durationDisplay)
-                            .font(.system(size: 40, weight: .semibold))
-                            .foregroundColor(.white)
-                            .padding(.top,6)
-                        Spacer()
-                        Text("You Are in The Top:")
-                            .font(.system(size: 20, weight: .semibold))
-                            .foregroundColor(.white)
-                            .padding(.top)
-                        
-                        
-                        Text(result.percentileDisplay)
-                            .font(.system(size: 64, weight: .semibold))
-                            .foregroundStyle(LinearGradient(
-                                colors: result.challengeColor,
-                                startPoint: .top,
-                                endPoint: .bottom
-                            ))
-                            .padding(.top,19)
-                        
-                        Text("of Men Globally")
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(.white)
-
-                        Spacer()
-                        Text(result.challengeDescription)
-                            .font(.system(size: 20, weight: .semibold))
-                            .foregroundColor(.white)
-                            .padding(.top,6)
-                        Spacer()
-                        Button(action: {
-                            triggerHapticForButton()
-                            challengeViewModel.challengeDidFinish(duration: totalElapsedTime)
-                            navigationManager.push(to: .challengeRankView)
-                        }) {
-                            Text("Continue")
-                                .font(.system(size: 16, weight: .semibold))
-                                .padding()
-                                .frame(maxWidth: .infinity,maxHeight: 47)
-                                .background(Color(hex: "#FF5E00"))
-                                .foregroundColor(.white)
-                                .cornerRadius(30)
-                        }
-                        .padding(.horizontal, 50)
-                        .padding(.bottom, 15)
-                    }
-                }
+                .padding(.horizontal, 50)
+                .padding(.bottom, 15)
+                
             }
         }
         .navigationBarHidden(true)
@@ -380,6 +324,8 @@ struct ChallengeActivityView: View {
 }
 
 #Preview {
-    ChallengeActivityView()
+    ChallengeActivityView(onBack: { _ in
+        //
+    })
 }
 

@@ -24,7 +24,7 @@
 		762FEBCC2D8CEC160058F107 /* WorkoutTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762FEBCB2D8CEC160058F107 /* WorkoutTabView.swift */; };
 		762FEBCE2D8CEC240058F107 /* KnowledgeTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762FEBCD2D8CEC240058F107 /* KnowledgeTabView.swift */; };
 		762FEBD02D8CEC320058F107 /* ProfileTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762FEBCF2D8CEC310058F107 /* ProfileTabView.swift */; };
-		762FEBD32D8CECF70058F107 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762FEBD22D8CECF70058F107 /* ProgressView.swift */; };
+		762FEBD32D8CECF70058F107 /* ChallengeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762FEBD22D8CECF70058F107 /* ChallengeView.swift */; };
 		762FEBD52D8CED070058F107 /* ProgressGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762FEBD42D8CED070058F107 /* ProgressGraphView.swift */; };
 		762FEBD72D8CED980058F107 /* MeasurementSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762FEBD62D8CED980058F107 /* MeasurementSheetView.swift */; };
 		762FEBD92D8CEDB20058F107 /* ChallengeSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762FEBD82D8CEDB20058F107 /* ChallengeSheetView.swift */; };
@@ -45,6 +45,7 @@
 		76711B022D8CD62700FFEE50 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76711B012D8CD62700FFEE50 /* Preview Assets.xcassets */; };
 		7C149D612DB837A6003C0297 /* ChallengeActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C149D602DB837A6003C0297 /* ChallengeActivityView.swift */; };
 		7C149D632DB99B99003C0297 /* ChallengeRankView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C149D622DB99B99003C0297 /* ChallengeRankView.swift */; };
+		7C22B9632DC797F1002C3A6E /* ChallengeCompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C22B9622DC797F1002C3A6E /* ChallengeCompletionView.swift */; };
 		7C91AB2F2DAED90F00976240 /* knowledge_sample.json in Resources */ = {isa = PBXBuildFile; fileRef = 7C91AB2E2DAED90F00976240 /* knowledge_sample.json */; };
 		7CA106B32DA564A6000950FC /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106B22DA564A6000950FC /* Font+Extension.swift */; };
 		7CA106B52DA564B4000950FC /* CustomFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106B42DA564B4000950FC /* CustomFont.swift */; };
@@ -77,7 +78,7 @@
 		762FEBCB2D8CEC160058F107 /* WorkoutTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTabView.swift; sourceTree = "<group>"; };
 		762FEBCD2D8CEC240058F107 /* KnowledgeTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KnowledgeTabView.swift; sourceTree = "<group>"; };
 		762FEBCF2D8CEC310058F107 /* ProfileTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTabView.swift; sourceTree = "<group>"; };
-		762FEBD22D8CECF70058F107 /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
+		762FEBD22D8CECF70058F107 /* ChallengeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeView.swift; sourceTree = "<group>"; };
 		762FEBD42D8CED070058F107 /* ProgressGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressGraphView.swift; sourceTree = "<group>"; };
 		762FEBD62D8CED980058F107 /* MeasurementSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementSheetView.swift; sourceTree = "<group>"; };
 		762FEBD82D8CEDB20058F107 /* ChallengeSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeSheetView.swift; sourceTree = "<group>"; };
@@ -99,6 +100,7 @@
 		76711B012D8CD62700FFEE50 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		7C149D602DB837A6003C0297 /* ChallengeActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeActivityView.swift; sourceTree = "<group>"; };
 		7C149D622DB99B99003C0297 /* ChallengeRankView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeRankView.swift; sourceTree = "<group>"; };
+		7C22B9622DC797F1002C3A6E /* ChallengeCompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeCompletionView.swift; sourceTree = "<group>"; };
 		7C91AB2E2DAED90F00976240 /* knowledge_sample.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = knowledge_sample.json; sourceTree = "<group>"; };
 		7CA106B22DA564A6000950FC /* Font+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Font+Extension.swift"; path = "../../../TempMail/TempMail/Utilities/Font+Extension.swift"; sourceTree = "<group>"; };
 		7CA106B42DA564B4000950FC /* CustomFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomFont.swift; path = ../../../TempMail/TempMail/Utilities/CustomFont.swift; sourceTree = "<group>"; };
@@ -178,8 +180,9 @@
 		762FEBD12D8CEC3E0058F107 /* Progress */ = {
 			isa = PBXGroup;
 			children = (
+				7C22B9622DC797F1002C3A6E /* ChallengeCompletionView.swift */,
 				7CA106C22DA5C896000950FC /* MeasurementActivityView.swift */,
-				762FEBD22D8CECF70058F107 /* ProgressView.swift */,
+				762FEBD22D8CECF70058F107 /* ChallengeView.swift */,
 				762FEBD42D8CED070058F107 /* ProgressGraphView.swift */,
 				762FEBD62D8CED980058F107 /* MeasurementSheetView.swift */,
 				762FEBD82D8CEDB20058F107 /* ChallengeSheetView.swift */,
@@ -378,6 +381,7 @@
 				7CA106B52DA564B4000950FC /* CustomFont.swift in Sources */,
 				762FEBAF2D8CE8DE0058F107 /* ChallengeResult.swift in Sources */,
 				762FEBED2D8CEF5C0058F107 /* KnowledgeView.swift in Sources */,
+				7C22B9632DC797F1002C3A6E /* ChallengeCompletionView.swift in Sources */,
 				762FEBC42D8CE9D50058F107 /* ProfileViewModel.swift in Sources */,
 				762FEBE62D8CEEE30058F107 /* WorkoutFinishView.swift in Sources */,
 				762FEBEF2D8CEF6F0058F107 /* KnowledgeDetailView.swift in Sources */,
@@ -404,7 +408,7 @@
 				762FEBBE2D8CE9AD0058F107 /* ChallengeViewModel.swift in Sources */,
 				7CA106B92DA57F4D000950FC /* NavigationManager.swift in Sources */,
 				762FEBE82D8CEF000058F107 /* StreakWeekView.swift in Sources */,
-				762FEBD32D8CECF70058F107 /* ProgressView.swift in Sources */,
+				762FEBD32D8CECF70058F107 /* ChallengeView.swift in Sources */,
 				762FEBE22D8CEEA50058F107 /* ExerciseRingView.swift in Sources */,
 				762FEBF32D8CEFAD0058F107 /* NotificationsManager.swift in Sources */,
 				762FEBC82D8CEA820058F107 /* MainTabView.swift in Sources */,

@@ -11,6 +11,9 @@ struct KnowledgeView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     let categoryTitle: String
     let items: [KnowledgeItem]
+    var onBack: () -> Void
+    @Binding var selectedItem: KnowledgeItem?
+    @State var showKnowledgeDetailSheet = false
 
     // Define grid layout: 2 columns, adaptive spacing
     let columns: [GridItem] = [
@@ -33,7 +36,7 @@ struct KnowledgeView: View {
                 
                 HStack {
                     Button {
-                        navigationManager.goBack()
+                        onBack()
                     } label: {
                         Image(systemName: "chevron.left")
                             .foregroundColor(.white)
@@ -44,7 +47,6 @@ struct KnowledgeView: View {
                     }
 
                     Spacer()
-                                    
                 }
                 .padding(.horizontal,13)
                 .padding(.top, 10)
@@ -52,14 +54,13 @@ struct KnowledgeView: View {
                 
                 // --- Grid Content ---
                 ScrollView(showsIndicators: false) {
-                    LazyVGrid(columns: columns, spacing: 54) { // Spacing between rows
+                    LazyVGrid(columns: columns, spacing: 54) {
                         ForEach(items) { item in
-                            // Use the existing card view
                             Button {
-                                navigationManager.push(to: .knowledgeDetailView(item: item))
+                                selectedItem = item
+                                showKnowledgeDetailSheet = true
                             } label: {
-                                KnowledgeCardView(imageName: item.imageName, title: item.title, width: 139, height: 185 )
-                            
+                                KnowledgeCardView(imageName: item.imageName, title: item.title, width: 139, height: 185)
                             }
                         }
                     }
@@ -69,15 +70,27 @@ struct KnowledgeView: View {
             }
         }
         .navigationBarHidden(true)
+        .fullScreenCover(isPresented: $showKnowledgeDetailSheet) {
+            if let item = selectedItem {
+                KnowledgeDetailView(item: item, onBack: {
+                    withAnimation {
+                        showKnowledgeDetailSheet = false
+                    }
+                })
+            }
+        }
     }
 }
 
 #Preview {
-  
-    let knowledgeViewModel = KnowledgeViewModel()
-    if let items = knowledgeViewModel.groupedKnowledgeData["Nutrition"]  {
-        KnowledgeView(categoryTitle: "Nutrition", items: items)
-            .environmentObject(NavigationManager()) // Provide dummy manager for preview
-            .environmentObject(KnowledgeViewModel())
-    }
+//    let knowledgeViewModel = KnowledgeViewModel()
+//    Group {
+//        if let items = knowledgeViewModel.groupedKnowledgeData["Nutrition"] {
+//            KnowledgeView(categoryTitle: "Nutrition", items: items, onBack: {}, selectedItem: $Knowledge)
+//                .environmentObject(NavigationManager())
+//                .environmentObject(knowledgeViewModel)
+//        } else {
+//            Text("Loading...")
+//        }
+//    }
 }

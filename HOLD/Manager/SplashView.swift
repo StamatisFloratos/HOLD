@@ -38,10 +38,10 @@ struct SplashView: View {
                         MeasurementActivityView()
                             .environmentObject(progressViewModel)
                     
-                    case .knowledgeView(categoryTitle: let categoryTitle, items: let items):
-                        KnowledgeView(categoryTitle: categoryTitle, items: items)
-                    case .knowledgeDetailView(item: let item):
-                        KnowledgeDetailView(item: item)
+//                    case .knowledgeView(categoryTitle: let categoryTitle, items: let items):
+//                        KnowledgeView(categoryTitle: categoryTitle, items: items)
+//                    case .knowledgeDetailView(item: let item):
+//                        KnowledgeDetailView(item: item)
                         
                     case .workoutView:
                         WorkoutView().environmentObject(workoutViewModel)
@@ -50,14 +50,16 @@ struct SplashView: View {
                     case .workoutDetailView(selectedWorkout: let selectedWorkout):
                         WorkoutDetailView(selectedWorkout: selectedWorkout).environmentObject(workoutViewModel)
                         
-                    case .challengeSheetView:
-                        ChallengeSheetView()
-                    case .challengeActivityView:
-                        ChallengeActivityView()
-                        .environmentObject(challengeViewModel)
-                    case .challengeRankView:
-                        ChallengeRankView()
-                            .environmentObject(challengeViewModel)
+//                    case .challengeSheetView:
+//                        ChallengeSheetView()
+//                    case .challengeActivityView:
+//                        ChallengeActivityView()
+//                        .environmentObject(challengeViewModel)
+//                    case .challengeRankView:
+//                        ChallengeRankView()
+//                            .environmentObject(challengeViewModel)
+//                    case .challengeView:
+//                        ChallengeView()
                     }
                 }
             )

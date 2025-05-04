@@ -10,7 +10,11 @@ import SwiftUI
 struct ChallengeRankView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     @EnvironmentObject var challengeViewModel: ChallengeViewModel
+    @Environment(\.dismiss) var dismiss
+
     @State private var animatedProgress: Double = 0.0
+    var onBack: () -> Void
+
 
     var body: some View {
         ZStack {
@@ -82,12 +86,9 @@ struct ChallengeRankView: View {
                         Spacer()
                     }
                     
-                    
-                    //                Spacer().frame(minWidth: 0, maxWidth: 44)
-                    
                     Button(action: {
                         triggerHaptic()
-                        navigationManager.pop(to: .mainTabView)
+                        onBack()
                     }) {
                         Text("Done")
                             .font(.system(size: 16, weight: .semibold))
@@ -107,7 +108,7 @@ struct ChallengeRankView: View {
                 if let latestChallengeResult = challengeViewModel.latestChallengeResult {
                     animatedProgress = latestChallengeResult.duration
                 }
-                }
+            }
         }
         .navigationBarHidden(true)
     }
@@ -162,6 +163,6 @@ struct ChallengeRankView: View {
 }
 
 #Preview {
-    ChallengeRankView()
+    ChallengeRankView(onBack: {})
         .environmentObject(ChallengeViewModel())
 }

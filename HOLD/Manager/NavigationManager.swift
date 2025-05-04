@@ -50,11 +50,11 @@ extension NavigationManager {
         case workoutDetailView(selectedWorkout:Workout)
 //        case workoutFinishView
         
-        case knowledgeView(categoryTitle:String, items:[KnowledgeItem])
-        case knowledgeDetailView(item:KnowledgeItem)
+//        case knowledgeView(categoryTitle:String, items:[KnowledgeItem])
+//        case knowledgeDetailView(item:KnowledgeItem)
         
-        case challengeSheetView
-        case challengeActivityView
-        case challengeRankView
+//        case challengeView
+//        case challengeActivityView
+//        case challengeRankView
     }
 }

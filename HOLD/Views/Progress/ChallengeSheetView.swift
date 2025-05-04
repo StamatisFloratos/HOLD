@@ -9,6 +9,10 @@ import SwiftUI
 
 struct ChallengeSheetView: View {
     @EnvironmentObject var navigationManager: NavigationManager
+    @Environment(\.dismiss) var dismiss
+    var onBack: () -> Void
+    @State private var showChallengeActivityView: Bool = false
+
     
     var body: some View {
         ZStack {
@@ -17,10 +21,27 @@ struct ChallengeSheetView: View {
             VStack {
                 VStack(spacing: 0) {
                     // Logo at the top
-                    HStack {
-                        Spacer()
-                        Image("holdIcon")
-                        Spacer()
+                    ZStack {
+                        HStack {
+                            Spacer()
+                            Image("holdIcon")
+                            Spacer()
+                        }
+                        
+                        
+                        HStack {
+                            Spacer()
+                            Button {
+                                dismiss()
+                            } label: {
+                                Image("crossIcon")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 21)
+                            }
+                            
+                        }
+                        
                     }
                     .padding(.top, 24)
                     .padding(.bottom, 14)
@@ -53,7 +74,7 @@ struct ChallengeSheetView: View {
                 
                 Spacer()
                 Button(action: {
-                    navigationManager.push(to: .challengeActivityView)
+                    onBack()
                 }) {
                     Text("Start The Challenge")
                         .font(.system(size: 16, weight: .semibold))
@@ -66,22 +87,10 @@ struct ChallengeSheetView: View {
                 .padding(.horizontal, 50)
                 .padding(.bottom, 15)
             }
+            
         }
         .navigationBarHidden(true)
-//        .fullScreenCover(isPresented: $showingChallengeActivityView,
-//                         onDismiss: {
-//            print("ChallengeActivityView dismissed, now dismissing ChallengeSheetView.")
-//            self.presentationMode.wrappedValue.dismiss()
-//        }) {
-//            ChallengeActivityView { elapsedTime in
-//                // Save the challenge result
-//                print("Challenge completed with total time: \(elapsedTime)")
-//                viewModel.challengeDidFinish(duration: elapsedTime)
-//            }
-//        }
     }
-    
-    
 }
 
 struct BulletTextView: View {
@@ -100,6 +109,8 @@ struct BulletTextView: View {
 }
 
 #Preview {
-    ChallengeSheetView()
+    ChallengeSheetView(onBack: {
+        //
+    })
 }
 
