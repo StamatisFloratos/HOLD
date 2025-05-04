@@ -58,6 +58,10 @@
 		7CBB89D62DBAD1E300C8429E /* test_workout_hold.json in Resources */ = {isa = PBXBuildFile; fileRef = 7CBB89D52DBAD1E300C8429E /* test_workout_hold.json */; };
 		7CCDA3832DC19E7300C6A84A /* AppBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCDA3822DC19E7300C6A84A /* AppBackground.swift */; };
 		9CD9E0C32DC5719A00411006 /* KeyboardResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD9E0C22DC5719A00411006 /* KeyboardResponder.swift */; };
+		9CD9E0CC2DC7AFF600411006 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD9E0CB2DC7AFF600411006 /* HapticManager.swift */; };
+		9CD9E0CF2DC7B54E00411006 /* AppsFlyerLib in Frameworks */ = {isa = PBXBuildFile; productRef = 9CD9E0CE2DC7B54E00411006 /* AppsFlyerLib */; };
+		9CD9E0D22DC7B62C00411006 /* SuperwallKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9CD9E0D12DC7B62C00411006 /* SuperwallKit */; };
+		9CD9E0D42DC7B6B200411006 /* AppsFlyerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD9E0D32DC7B6B200411006 /* AppsFlyerManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -113,6 +117,8 @@
 		7CBB89D52DBAD1E300C8429E /* test_workout_hold.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = test_workout_hold.json; sourceTree = "<group>"; };
 		7CCDA3822DC19E7300C6A84A /* AppBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBackground.swift; sourceTree = "<group>"; };
 		9CD9E0C22DC5719A00411006 /* KeyboardResponder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardResponder.swift; sourceTree = "<group>"; };
+		9CD9E0CB2DC7AFF600411006 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
+		9CD9E0D32DC7B6B200411006 /* AppsFlyerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppsFlyerManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +126,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9CD9E0CF2DC7B54E00411006 /* AppsFlyerLib in Frameworks */,
+				9CD9E0D22DC7B62C00411006 /* SuperwallKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -220,6 +228,8 @@
 			children = (
 				762FEBF22D8CEFAD0058F107 /* NotificationsManager.swift */,
 				762FEBF42D8CEFB80058F107 /* SubscriptionsManager.swift */,
+				9CD9E0CB2DC7AFF600411006 /* HapticManager.swift */,
+				9CD9E0D32DC7B6B200411006 /* AppsFlyerManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -340,6 +350,10 @@
 				Base,
 			);
 			mainGroup = 76711AEE2D8CD62500FFEE50;
+			packageReferences = (
+				9CD9E0CD2DC7B54E00411006 /* XCRemoteSwiftPackageReference "AppsFlyerFramework" */,
+				9CD9E0D02DC7B62C00411006 /* XCRemoteSwiftPackageReference "Superwall-iOS" */,
+			);
 			productRefGroup = 76711AF82D8CD62500FFEE50 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -402,6 +416,8 @@
 				762FEBC22D8CE9C70058F107 /* KnowledgeViewModel.swift in Sources */,
 				762FEBCE2D8CEC240058F107 /* KnowledgeTabView.swift in Sources */,
 				762FEBB32D8CE9430058F107 /* Exercise.swift in Sources */,
+				9CD9E0D42DC7B6B200411006 /* AppsFlyerManager.swift in Sources */,
+				9CD9E0CC2DC7AFF600411006 /* HapticManager.swift in Sources */,
 				9CD9E0C32DC5719A00411006 /* KeyboardResponder.swift in Sources */,
 				7CA106C32DA5C89D000950FC /* MeasurementActivityView.swift in Sources */,
 				762FEBBC2D8CE9A10058F107 /* MeasurementViewModel.swift in Sources */,
@@ -622,6 +638,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9CD9E0CD2DC7B54E00411006 /* XCRemoteSwiftPackageReference "AppsFlyerFramework" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AppsFlyerSDK/AppsFlyerFramework.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.17.0;
+			};
+		};
+		9CD9E0D02DC7B62C00411006 /* XCRemoteSwiftPackageReference "Superwall-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/superwall/Superwall-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.3.5;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9CD9E0CE2DC7B54E00411006 /* AppsFlyerLib */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9CD9E0CD2DC7B54E00411006 /* XCRemoteSwiftPackageReference "AppsFlyerFramework" */;
+			productName = AppsFlyerLib;
+		};
+		9CD9E0D12DC7B62C00411006 /* SuperwallKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9CD9E0D02DC7B62C00411006 /* XCRemoteSwiftPackageReference "Superwall-iOS" */;
+			productName = SuperwallKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 76711AEF2D8CD62500FFEE50 /* Project object */;
 }

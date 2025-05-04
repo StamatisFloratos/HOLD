@@ -22,7 +22,7 @@ struct UserProfile: Codable {
     
     // Default user for testing and initial app state
     static let defaultUser = UserProfile(
-        name: "Test User",
+        name: "Guest",
         age: 30,
         id: UUID(uuidString: "00000000-0000-0000-0000-000000000000") ?? UUID()
     )

@@ -338,6 +338,7 @@ struct SubscriptionManagementView: View {
                 // White back button - moved directly below the text
                 Button(action: {
                     // Trigger the onBack action
+                    triggerHaptic()
                     onBack()
                 }) {
                     HStack{
@@ -355,12 +356,17 @@ struct SubscriptionManagementView: View {
                     
                 }
                 .padding(.top, 30) // Add padding between text and button
-                .sensoryFeedback(.impact(weight: .light), trigger: true)
                 
                 Spacer() // This spacer will push content up rather than pushing the button down
             }
         }
         .navigationBarHidden(true) // Hide navigation bar since we're using a custom back button
+    }
+    
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.prepare()
+        generator.impactOccurred()
     }
 }
 

@@ -43,6 +43,7 @@ struct WorkoutDetailView: View {
     @State private var contractOrExpandText = "Contract"
     @State private var isStartExercise = true
     
+    let haptics = HapticManager()
     
     var body: some View {
         ZStack {
@@ -139,11 +140,6 @@ struct WorkoutDetailView: View {
                 }
             }
         }
-        .onChange(of: isExpanded, {
-            if currentExercise.type != .rest {
-                triggerHaptic()
-            }
-        })
         .onChange(of: isTrembling, {
             if currentExercise.type == .hold && isTrembling {
                 triggerHaptic()
@@ -278,6 +274,7 @@ struct WorkoutDetailView: View {
             withAnimation(.easeInOut(duration: repDuration / 2)) {
                 isExpanded = true
                 isStartExercise = false
+                haptics.playRampUpHaptic(duration: repDuration / 2)
             }
             
             // Contract after
@@ -285,7 +282,6 @@ struct WorkoutDetailView: View {
                 contractOrExpandText = "Relax"
                 withAnimation(.easeInOut(duration: repDuration / 2)) {
                     isExpanded = false
-                    
                 }
                 
             }

@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import SwiftData
+import SuperwallKit
 
 @main
 struct HOLDApp: App {
@@ -20,7 +21,16 @@ struct HOLDApp: App {
     @StateObject private var challengeViewModel = ChallengeViewModel()
     @StateObject private var knowledgeViewModel = KnowledgeViewModel()
     @StateObject private var keyboardResponder = KeyboardResponder()
+    
     @StateObject private var notificationsManager = NotificationsManager.shared
+    @StateObject private var subscriptionManager = SubscriptionManager.shared
+    
+    @AppStorage("isPremium") var isPremium: Bool = false
+    
+    init() {
+        Superwall.configure(apiKey: "pk_3250452d883111f9496cbba98c6fb4fb7250b12e524fbaa6")
+        AppsFlyerManager.initialize()
+    }
     
     var body: some Scene {
         WindowGroup {
@@ -33,8 +43,12 @@ struct HOLDApp: App {
                 .environmentObject(knowledgeViewModel)
                 .environmentObject(keyboardResponder)
                 .environmentObject(notificationsManager)
+                .environmentObject(subscriptionManager)
                 .onAppear {
                     appDelegate.applicationDidBecomeActive()
+                    
+                    AppsFlyerManager.checkAndRequestATT()
+                    subscriptionManager.checkSubscriptionStatus()
                 }
                 .onChange(of: scenePhase) { _, newPhase in
                     if newPhase == .background {

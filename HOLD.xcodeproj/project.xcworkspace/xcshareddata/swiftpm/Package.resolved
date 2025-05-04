@@ -1,0 +1,33 @@
+{
+  "originHash" : "6f6b5912c3408d576037671f0a62f6b00b07892cc2dbdf5812315a614e1c3318",
+  "pins" : [
+    {
+      "identity" : "appsflyerframework",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/AppsFlyerSDK/AppsFlyerFramework.git",
+      "state" : {
+        "revision" : "88269d96aed888416e5fabbe983f769aa9013d5c",
+        "version" : "6.17.0"
+      }
+    },
+    {
+      "identity" : "superscript-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/superwall/Superscript-iOS",
+      "state" : {
+        "revision" : "384c66775f5fdde3b27858d016eb285fae6b1d7d",
+        "version" : "0.2.4"
+      }
+    },
+    {
+      "identity" : "superwall-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/superwall/Superwall-iOS",
+      "state" : {
+        "revision" : "6800bd09032323135ae4d3ea4401cb429dc5990a",
+        "version" : "4.3.5"
+      }
+    }
+  ],
+  "version" : 3
+}
