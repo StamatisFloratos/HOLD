@@ -185,6 +185,8 @@ struct ChallengeResult: Identifiable, Codable, Hashable  {
     
     var challengeDescription: String {
         switch percentile {
+        case 100:
+            return "🤨 We got work to do."
         case 50..<100:
             return "🤨 We got work to do."
         case 20..<49.9:

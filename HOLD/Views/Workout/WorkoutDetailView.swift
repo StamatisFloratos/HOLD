@@ -42,6 +42,8 @@ struct WorkoutDetailView: View {
 
     @State private var contractOrExpandText = "Contract"
     @State private var isStartExercise = true
+    var onBack: () -> Void
+
     
     let haptics = HapticManager()
     
@@ -49,72 +51,62 @@ struct WorkoutDetailView: View {
         ZStack {
             AppBackground()
             
-            if finish {
-                WorkoutFinishView(onBack: {
-                    withAnimation {
-                        navigationManager.pop(to: .mainTabView)
-                    }
-                })
-                .transition(.move(edge: .trailing))
-                .zIndex(1)
-            }
-            else {
-                VStack(spacing:0) {
-                    // Logo at the top
-                    HStack {
-                        Spacer()
-                        Image("holdIcon")
-                        Spacer()
-                    }
-                    .padding(.top, 24)
-                    .padding(.bottom, 14)
-                                        
-                    progressCircle
-                    
+            VStack(spacing:0) {
+                // Logo at the top
+                HStack {
                     Spacer()
-                    
-                    exerciseTabs
-                    
-                    
-                    // Pause button
-                    Button(action: {
-                        triggerHapticOnButton()
-                        isPaused.toggle()
-                        isPaused == true ? stopTimer() : startTimer()
-                        if currentExercise.type == .hold {
-                            isPaused == true ? stopHoldTimer() : startHoldAnimation()
-                        } else {
-                            isPaused == true ? stopRepTimer() : startRepetitionAnimation()
-                        }
-                    }) {
-                        HStack {
-                            Image(systemName: isPaused == false ? "pause.fill" : "play.fill")
-                                .font(.system(size: 20))
-                            Text(isPaused == false ? "Pause" : "Continue")
-                                .font(.system(size: 18, weight: .semibold))
-                        }
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(maxWidth: 282,maxHeight: 47)
-                        .background(Color(hex: "#2C2C2C"))
-                        .cornerRadius(30)
-                    }
-                    .padding(.bottom, 40)
+                    Image("holdIcon")
+                    Spacer()
                 }
+                .padding(.top, 24)
+                .padding(.bottom, 14)
                 
-                LinearGradient(
-                    gradient: Gradient(stops: [
-                        .init(color: Color(hex: "#10171F").opacity(0.3), location: 0),
-                        .init(color: Color.clear, location: 0.15),
-                        .init(color: Color.clear, location: 0.85),
-                        .init(color: Color(hex: "#10171F").opacity(0.3), location: 1)
-                    ]),
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-                .allowsHitTesting(false)
-                .ignoresSafeArea()
+                progressCircle
+                
+                Spacer()
+                
+                exerciseTabs
+                
+                
+                // Pause button
+                Button(action: {
+                    triggerHapticOnButton()
+                    isPaused.toggle()
+                    isPaused == true ? stopTimer() : startTimer()
+                    if currentExercise.type == .hold {
+                        isPaused == true ? stopHoldTimer() : startHoldAnimation()
+                    } else {
+                        isPaused == true ? stopRepTimer() : startRepetitionAnimation()
+                    }
+                }) {
+                    HStack {
+                        Image(systemName: isPaused == false ? "pause.fill" : "play.fill")
+                            .font(.system(size: 20))
+                        Text(isPaused == false ? "Pause" : "Continue")
+                            .font(.system(size: 18, weight: .semibold))
+                    }
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: 282,maxHeight: 47)
+                    .background(Color(hex: "#2C2C2C"))
+                    .cornerRadius(30)
+                }
+                .padding(.bottom, 40)
             }
+            
+            LinearGradient(
+                gradient: Gradient(stops: [
+                    .init(color: Color(hex: "#10171F").opacity(0.3), location: 0),
+                    .init(color: Color.clear, location: 0.15),
+                    .init(color: Color.clear, location: 0.85),
+                    .init(color: Color(hex: "#10171F").opacity(0.3), location: 1)
+                ]),
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+            .allowsHitTesting(false)
+            .ignoresSafeArea()
+            
             
         }
         .navigationBarHidden(true)
@@ -143,6 +135,11 @@ struct WorkoutDetailView: View {
         .onChange(of: isTrembling, {
             if currentExercise.type == .hold && isTrembling {
                 triggerHaptic()
+            }
+        })
+        .onChange(of: finish, {
+            if finish {
+                onBack()
             }
         })
     }
@@ -535,7 +532,7 @@ struct WorkoutDetailView: View {
             Exercise.flash(reps: 2)
         ]
     )
-    WorkoutDetailView(selectedWorkout: workout)
+    WorkoutDetailView(selectedWorkout: workout, onBack: {})
         .environmentObject(NavigationManager())
         .environmentObject(WorkoutViewModel())
 }

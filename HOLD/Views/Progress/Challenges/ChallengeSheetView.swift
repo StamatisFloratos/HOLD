@@ -18,62 +18,69 @@ struct ChallengeSheetView: View {
         ZStack {
             AppBackground()
             
-            VStack {
-                VStack(spacing: 0) {
-                    // Logo at the top
-                    ZStack {
-                        HStack {
-                            Spacer()
-                            Image("holdIcon")
-                            Spacer()
+            VStack(spacing: 0) {
+                // Logo at the top
+                ZStack {
+                    HStack {
+                        Spacer()
+                        Image("holdIcon")
+                        Spacer()
+                    }
+                    
+                    
+                    HStack {
+                        Spacer()
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image("crossIcon")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 21)
                         }
-                        
-                        
-                        HStack {
-                            Spacer()
-                            Button {
-                                dismiss()
-                            } label: {
-                                Image("crossIcon")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 21)
-                            }
-                            
-                        }
+                        .padding(.trailing,26)
                         
                     }
-                    .padding(.top, 24)
-                    .padding(.bottom, 14)
                     
+                }
+                .padding(.top, 24)
+                .padding(.bottom, 14)
+                
+                VStack(spacing: 0) {
                     Image("challengeIcon")
-                        .padding(.vertical,45)
-                    Text("You're about to start\nThe Challenge")
+                        .resizable()
+                        .frame(width: 64, height: 64)
+                        .padding(.top,113)
+                    Text("You’re about to start\n“The Challenge”")
                         .font(.system(size: 24, weight: .semibold))
                         .foregroundColor(.white)
                         .fixedSize(horizontal: false, vertical: true)
                         .multilineTextAlignment(.center)
+                        .padding(.top,37)
+                    Text("Tests your stamina by practicing different rhythmic patterns on your own so that you're ready when it matters the most.")
+                        .font(.system(size: 16, weight: .regular))
+                        .foregroundColor(.white)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .multilineTextAlignment(.center)
+                        .padding(.top,36)
+                        .padding(.horizontal,45)
                 }
-                .padding(.top, 20)
-                .padding(.horizontal)
-                
-                Spacer()
-                
-                VStack(alignment: .leading) {
+
+                VStack(alignment: .leading,spacing: 0) {
                     Text("Make sure that:")
                         .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(.white)
                         .padding(.bottom,18)
                     
                     BulletTextView(text: "You have complete privacy.")
-                    BulletTextView(text: "Turned on Do Not Disturb")
                     BulletTextView(text: "You follow the rhythm at all times, when you finish, you need to press stop.")
-                    BulletTextView(text: "Once The Challenge starts it cannot be paused.")
                 }
-                .padding(.horizontal)
+                .padding(.horizontal,38)
+                .padding(.top,48)
                 
                 Spacer()
                 Button(action: {
+                    triggerHaptic()
                     onBack()
                 }) {
                     Text("Start The Challenge")
@@ -87,9 +94,14 @@ struct ChallengeSheetView: View {
                 .padding(.horizontal, 50)
                 .padding(.bottom, 15)
             }
-            
         }
         .navigationBarHidden(true)
+    }
+    
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.prepare()
+        generator.impactOccurred()
     }
 }
 
@@ -97,7 +109,7 @@ struct BulletTextView: View {
     let text: String
     
     var body: some View {
-        HStack(alignment:.top) {
+        HStack(alignment:.top,spacing: 5) {
             Text("•")
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(.white)

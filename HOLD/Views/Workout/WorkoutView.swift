@@ -1,87 +1,67 @@
-//
-//  WorkoutView.swift
-//  HOLD
-//
-//  Created by Stamatis Floratos on 21/3/25.
-//
-
-import Foundation
 import SwiftUI
 
 struct WorkoutView: View {
+    @State private var showWorkoutDetail = false
+    @State private var showWorkoutFinish = false
     @EnvironmentObject var navigationManager: NavigationManager
     @EnvironmentObject var workoutViewModel: WorkoutViewModel
-
+    @State private var showWorkoutSheet: Bool = true
+    
+    var onBack: () -> Void
+    
     var body: some View {
         ZStack {
             AppBackground()
             
-            VStack {
-                VStack(spacing: 0) {
-                    // Logo at the top
-                    HStack {
-                        Spacer()
-                        Image("holdIcon")
-                        Spacer()
+            if showWorkoutSheet {
+                WorkoutSheetView(onBack: {
+                    withAnimation {
+                        showWorkoutSheet = false
+                        showWorkoutDetail = true
                     }
-                    .padding(.top, 24)
-                    .padding(.bottom, 14)
-                    
-                    Image("workoutIconLarge")
-                        .resizable()
-                        .frame(width: 77, height: 77)
-                        .padding(.vertical,45)
-                    Text("You’re about to start\na workout.")
-                        .font(.system(size: 24, weight: .semibold))
-                        .foregroundColor(.white)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .multilineTextAlignment(.center)
+                })
+                .transition(.asymmetric(
+                    insertion: .move(edge: .trailing),
+                    removal: .move(edge: .leading)
+                ))
+                .zIndex(0)
+            }
+            
+            if showWorkoutDetail {
+                if let selectedWorkout = workoutViewModel.todaysWorkout {
+                    WorkoutDetailView(selectedWorkout: selectedWorkout, onBack: {
+                        withAnimation {
+                            showWorkoutDetail = false
+                            showWorkoutFinish = true
+                        }
+                    })
+                    .transition(.asymmetric(
+                        insertion: .move(edge: .trailing),
+                        removal: .move(edge: .leading)
+                    ))
+                    .zIndex(1)
                 }
-                .padding(.top, 20)
-                .padding(.horizontal)
-                
-                
-                VStack(alignment: .leading) {
-                    Text("Make sure that:")
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(.white)
-                        .padding(.bottom,19)
-                    
-                    BulletTextView(text: "You are in a quiet place where you can focus")
-                    BulletTextView(text: "You turned on “Do Not Disturb” on your phone")
-                    BulletTextView(text: "You have at least 5 minutes")
-                }
-                .padding(.horizontal,0)
-                .padding(.top,71)
-                
-                Spacer()
-                Button(action: {                
-                    if let selectedWorkout = workoutViewModel.todaysWorkout {
-                        navigationManager.push(to: .workoutDetailView(selectedWorkout: selectedWorkout))
+            }
+            
+            if showWorkoutFinish {
+                WorkoutFinishView(onBack: {
+                    withAnimation {
+                        showWorkoutFinish = false
+                        onBack()
                     }
-                    
-                }) {
-                    Text("Start Workout")
-                        .font(.system(size: 16, weight: .semibold))
-                        .padding()
-                        .frame(maxWidth: 282,maxHeight: 47)
-                        .background(Color(hex: "#FF1919"))
-                        .foregroundColor(.white)
-                        .cornerRadius(30)
-                }
-                .padding(.horizontal, 50)
-                .padding(.bottom, 40)
+                })
+                .transition(.asymmetric(
+                    insertion: .move(edge: .trailing),
+                    removal: .move(edge: .leading)
+                ))
+                .zIndex(2)
             }
         }
         .navigationBarHidden(true)
-        
     }
-    
-    
 }
-
 
 #Preview {
-    WorkoutView()
-}
-
+    WorkoutView(onBack: {})
+        .environmentObject(ProgressViewModel())
+} 

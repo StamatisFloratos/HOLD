@@ -42,12 +42,12 @@ class NavigationManager: ObservableObject {
 
 extension NavigationManager {
     enum Route: Codable, Hashable {
-        case measurementView
-        case measurementActivityView
+//        case measurementView
+//        case measurementActivityView
         case mainTabView
         
-        case workoutView
-        case workoutDetailView(selectedWorkout:Workout)
+//        case workoutView
+//        case workoutDetailView(selectedWorkout:Workout)
 //        case workoutFinishView
         
 //        case knowledgeView(categoryTitle:String, items:[KnowledgeItem])

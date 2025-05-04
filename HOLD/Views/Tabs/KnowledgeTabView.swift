@@ -27,7 +27,10 @@ struct KnowledgeTabView: View {
                             showKnowledgeCategory = false
                         }
                     }, selectedItem: $selectedItem)
-                    .transition(.move(edge: .trailing))
+                    .transition(.asymmetric(
+                        insertion: .move(edge: .trailing),
+                        removal: .move(edge: .leading)
+                    ))
                     .zIndex(1)
                 }
             } else {

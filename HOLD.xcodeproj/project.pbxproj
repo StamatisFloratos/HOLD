@@ -29,7 +29,7 @@
 		762FEBD72D8CED980058F107 /* MeasurementSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762FEBD62D8CED980058F107 /* MeasurementSheetView.swift */; };
 		762FEBD92D8CEDB20058F107 /* ChallengeSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762FEBD82D8CEDB20058F107 /* ChallengeSheetView.swift */; };
 		762FEBDB2D8CEDD50058F107 /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762FEBDA2D8CEDD50058F107 /* ProgressBarView.swift */; };
-		762FEBDE2D8CEE620058F107 /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762FEBDD2D8CEE620058F107 /* WorkoutView.swift */; };
+		762FEBDE2D8CEE620058F107 /* WorkoutSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762FEBDD2D8CEE620058F107 /* WorkoutSheetView.swift */; };
 		762FEBE02D8CEE720058F107 /* WorkoutDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762FEBDF2D8CEE720058F107 /* WorkoutDetailView.swift */; };
 		762FEBE22D8CEEA50058F107 /* ExerciseRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762FEBE12D8CEEA50058F107 /* ExerciseRingView.swift */; };
 		762FEBE42D8CEEBB0058F107 /* WorkoutScrollerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762FEBE32D8CEEBB0058F107 /* WorkoutScrollerView.swift */; };
@@ -46,6 +46,9 @@
 		7C149D612DB837A6003C0297 /* ChallengeActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C149D602DB837A6003C0297 /* ChallengeActivityView.swift */; };
 		7C149D632DB99B99003C0297 /* ChallengeRankView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C149D622DB99B99003C0297 /* ChallengeRankView.swift */; };
 		7C22B9632DC797F1002C3A6E /* ChallengeCompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C22B9622DC797F1002C3A6E /* ChallengeCompletionView.swift */; };
+		7C22B9682DC7A05A002C3A6E /* MeasurementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C22B9672DC7A05A002C3A6E /* MeasurementView.swift */; };
+		7C22B9692DC7A05A002C3A6E /* MeasurementCompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C22B9662DC7A05A002C3A6E /* MeasurementCompletionView.swift */; };
+		7C22B96E2DC7B768002C3A6E /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C22B96D2DC7B768002C3A6E /* WorkoutView.swift */; };
 		7C91AB2F2DAED90F00976240 /* knowledge_sample.json in Resources */ = {isa = PBXBuildFile; fileRef = 7C91AB2E2DAED90F00976240 /* knowledge_sample.json */; };
 		7CA106B32DA564A6000950FC /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106B22DA564A6000950FC /* Font+Extension.swift */; };
 		7CA106B52DA564B4000950FC /* CustomFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106B42DA564B4000950FC /* CustomFont.swift */; };
@@ -87,7 +90,7 @@
 		762FEBD62D8CED980058F107 /* MeasurementSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementSheetView.swift; sourceTree = "<group>"; };
 		762FEBD82D8CEDB20058F107 /* ChallengeSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeSheetView.swift; sourceTree = "<group>"; };
 		762FEBDA2D8CEDD50058F107 /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
-		762FEBDD2D8CEE620058F107 /* WorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutView.swift; sourceTree = "<group>"; };
+		762FEBDD2D8CEE620058F107 /* WorkoutSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSheetView.swift; sourceTree = "<group>"; };
 		762FEBDF2D8CEE720058F107 /* WorkoutDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutDetailView.swift; sourceTree = "<group>"; };
 		762FEBE12D8CEEA50058F107 /* ExerciseRingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseRingView.swift; sourceTree = "<group>"; };
 		762FEBE32D8CEEBB0058F107 /* WorkoutScrollerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutScrollerView.swift; sourceTree = "<group>"; };
@@ -105,6 +108,9 @@
 		7C149D602DB837A6003C0297 /* ChallengeActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeActivityView.swift; sourceTree = "<group>"; };
 		7C149D622DB99B99003C0297 /* ChallengeRankView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeRankView.swift; sourceTree = "<group>"; };
 		7C22B9622DC797F1002C3A6E /* ChallengeCompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeCompletionView.swift; sourceTree = "<group>"; };
+		7C22B9662DC7A05A002C3A6E /* MeasurementCompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementCompletionView.swift; sourceTree = "<group>"; };
+		7C22B9672DC7A05A002C3A6E /* MeasurementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementView.swift; sourceTree = "<group>"; };
+		7C22B96D2DC7B768002C3A6E /* WorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutView.swift; sourceTree = "<group>"; };
 		7C91AB2E2DAED90F00976240 /* knowledge_sample.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = knowledge_sample.json; sourceTree = "<group>"; };
 		7CA106B22DA564A6000950FC /* Font+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Font+Extension.swift"; path = "../../../TempMail/TempMail/Utilities/Font+Extension.swift"; sourceTree = "<group>"; };
 		7CA106B42DA564B4000950FC /* CustomFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomFont.swift; path = ../../../TempMail/TempMail/Utilities/CustomFont.swift; sourceTree = "<group>"; };
@@ -119,6 +125,7 @@
 		9CD9E0C22DC5719A00411006 /* KeyboardResponder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardResponder.swift; sourceTree = "<group>"; };
 		9CD9E0CB2DC7AFF600411006 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		9CD9E0D32DC7B6B200411006 /* AppsFlyerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppsFlyerManager.swift; sourceTree = "<group>"; };
+		9CD9E0D52DC7C28C00411006 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,15 +195,10 @@
 		762FEBD12D8CEC3E0058F107 /* Progress */ = {
 			isa = PBXGroup;
 			children = (
-				7C22B9622DC797F1002C3A6E /* ChallengeCompletionView.swift */,
-				7CA106C22DA5C896000950FC /* MeasurementActivityView.swift */,
-				762FEBD22D8CECF70058F107 /* ChallengeView.swift */,
+				7C22B96A2DC7A063002C3A6E /* Measurement */,
+				7C22B9652DC79F14002C3A6E /* Challenges */,
 				762FEBD42D8CED070058F107 /* ProgressGraphView.swift */,
-				762FEBD62D8CED980058F107 /* MeasurementSheetView.swift */,
-				762FEBD82D8CEDB20058F107 /* ChallengeSheetView.swift */,
 				762FEBDA2D8CEDD50058F107 /* ProgressBarView.swift */,
-				7C149D602DB837A6003C0297 /* ChallengeActivityView.swift */,
-				7C149D622DB99B99003C0297 /* ChallengeRankView.swift */,
 			);
 			path = Progress;
 			sourceTree = "<group>";
@@ -204,11 +206,12 @@
 		762FEBDC2D8CEE2B0058F107 /* Workout */ = {
 			isa = PBXGroup;
 			children = (
-				762FEBDD2D8CEE620058F107 /* WorkoutView.swift */,
+				7C22B96D2DC7B768002C3A6E /* WorkoutView.swift */,
+				762FEBDD2D8CEE620058F107 /* WorkoutSheetView.swift */,
 				762FEBDF2D8CEE720058F107 /* WorkoutDetailView.swift */,
+				762FEBE52D8CEEE30058F107 /* WorkoutFinishView.swift */,
 				762FEBE12D8CEEA50058F107 /* ExerciseRingView.swift */,
 				762FEBE32D8CEEBB0058F107 /* WorkoutScrollerView.swift */,
-				762FEBE52D8CEEE30058F107 /* WorkoutFinishView.swift */,
 				762FEBE72D8CEF000058F107 /* StreakWeekView.swift */,
 			);
 			path = Workout;
@@ -253,6 +256,7 @@
 		76711AF92D8CD62500FFEE50 /* HOLD */ = {
 			isa = PBXGroup;
 			children = (
+				9CD9E0D52DC7C28C00411006 /* Info.plist */,
 				7CA106C52DA6D1E4000950FC /* Extensions */,
 				7CA106B72DA57F49000950FC /* Manager */,
 				7CA106B62DA56510000950FC /* Utilities */,
@@ -273,6 +277,29 @@
 				76711B012D8CD62700FFEE50 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		7C22B9652DC79F14002C3A6E /* Challenges */ = {
+			isa = PBXGroup;
+			children = (
+				7C22B9622DC797F1002C3A6E /* ChallengeCompletionView.swift */,
+				762FEBD22D8CECF70058F107 /* ChallengeView.swift */,
+				762FEBD82D8CEDB20058F107 /* ChallengeSheetView.swift */,
+				7C149D602DB837A6003C0297 /* ChallengeActivityView.swift */,
+				7C149D622DB99B99003C0297 /* ChallengeRankView.swift */,
+			);
+			path = Challenges;
+			sourceTree = "<group>";
+		};
+		7C22B96A2DC7A063002C3A6E /* Measurement */ = {
+			isa = PBXGroup;
+			children = (
+				7C22B9662DC7A05A002C3A6E /* MeasurementCompletionView.swift */,
+				7C22B9672DC7A05A002C3A6E /* MeasurementView.swift */,
+				7CA106C22DA5C896000950FC /* MeasurementActivityView.swift */,
+				762FEBD62D8CED980058F107 /* MeasurementSheetView.swift */,
+			);
+			path = Measurement;
 			sourceTree = "<group>";
 		};
 		7CA106B62DA56510000950FC /* Utilities */ = {
@@ -388,12 +415,15 @@
 				76711AFB2D8CD62500FFEE50 /* HOLDApp.swift in Sources */,
 				762FEBD52D8CED070058F107 /* ProgressGraphView.swift in Sources */,
 				762FEBB52D8CE9500058F107 /* UserProfile.swift in Sources */,
+				7C22B9682DC7A05A002C3A6E /* MeasurementView.swift in Sources */,
+				7C22B9692DC7A05A002C3A6E /* MeasurementCompletionView.swift in Sources */,
 				762FEBC02D8CE9B90058F107 /* WorkoutViewModel.swift in Sources */,
 				7CA106BF2DA58565000950FC /* AppDelegate.swift in Sources */,
 				7CA106C82DA6D467000950FC /* ColorExtension.swift in Sources */,
 				7CA106BB2DA58119000950FC /* SplashView.swift in Sources */,
 				7CA106B52DA564B4000950FC /* CustomFont.swift in Sources */,
 				762FEBAF2D8CE8DE0058F107 /* ChallengeResult.swift in Sources */,
+				7C22B96E2DC7B768002C3A6E /* WorkoutView.swift in Sources */,
 				762FEBED2D8CEF5C0058F107 /* KnowledgeView.swift in Sources */,
 				7C22B9632DC797F1002C3A6E /* ChallengeCompletionView.swift in Sources */,
 				762FEBC42D8CE9D50058F107 /* ProfileViewModel.swift in Sources */,
@@ -410,7 +440,7 @@
 				762FEBB72D8CE95F0058F107 /* KnowledgeItem.swift in Sources */,
 				7CCDA3832DC19E7300C6A84A /* AppBackground.swift in Sources */,
 				762FEBDB2D8CEDD50058F107 /* ProgressBarView.swift in Sources */,
-				762FEBDE2D8CEE620058F107 /* WorkoutView.swift in Sources */,
+				762FEBDE2D8CEE620058F107 /* WorkoutSheetView.swift in Sources */,
 				762FEBE42D8CEEBB0058F107 /* WorkoutScrollerView.swift in Sources */,
 				762FEBAD2D8CE8CF0058F107 /* Measurement.swift in Sources */,
 				762FEBC22D8CE9C70058F107 /* KnowledgeViewModel.swift in Sources */,
@@ -567,7 +597,9 @@
 				DEVELOPMENT_TEAM = HXU7ACHQ5T;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HOLD/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = HOLD;
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "We use this data to improve app performance and understand how new users discover us.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -597,7 +629,9 @@
 				DEVELOPMENT_TEAM = HXU7ACHQ5T;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = HOLD/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = HOLD;
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "We use this data to improve app performance and understand how new users discover us.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

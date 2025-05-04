@@ -11,6 +11,8 @@ struct WorkoutTabView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     @EnvironmentObject var workoutViewModel: WorkoutViewModel
     @State private var selectedWorkoutIndex = 0
+    @State private var showWorkoutView = false
+
     
     var body: some View {
         ZStack {
@@ -54,6 +56,11 @@ struct WorkoutTabView: View {
             
         }
         .navigationBarHidden(true)
+        .fullScreenCover(isPresented: $showWorkoutView) {
+            WorkoutView(onBack: {
+                showWorkoutView = false
+            })
+        }
     }
     
     func workoutCard(workout: Workout) -> some View {
@@ -121,7 +128,7 @@ struct WorkoutTabView: View {
             
             Button(action: {
                 triggerHaptic()
-                navigationManager.push(to: .workoutView)
+                showWorkoutView = true
             }) {
                 Text("Start Workout")
                     .font(.system(size: 16, weight: .semibold))

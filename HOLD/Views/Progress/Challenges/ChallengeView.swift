@@ -29,7 +29,10 @@ struct ChallengeView: View {
                         showChallengeActivity = true
                     }
                 })
-                .transition(.move(edge: .trailing))
+                .transition(.asymmetric(
+                    insertion: .move(edge: .trailing),
+                    removal: .move(edge: .leading)
+                ))
                 .zIndex(0)
             }
             if showChallengeActivity {
@@ -40,7 +43,10 @@ struct ChallengeView: View {
                         showChallengeCompleteView = true
                     }
                 })
-                .transition(.move(edge: .trailing))
+                .transition(.asymmetric(
+                    insertion: .move(edge: .trailing),
+                    removal: .move(edge: .leading)
+                ))
                 .zIndex(1)
             }
             if showChallengeCompleteView {
@@ -50,7 +56,10 @@ struct ChallengeView: View {
                         showChallengeRank = true
                     }
                 })
-                .transition(.move(edge: .trailing))
+                .transition(.asymmetric(
+                    insertion: .move(edge: .trailing),
+                    removal: .move(edge: .leading)
+                ))
                 .zIndex(2)
             }
             
@@ -61,7 +70,10 @@ struct ChallengeView: View {
                         onBack()
                     }
                 })
-                .transition(.move(edge: .trailing))
+                .transition(.asymmetric(
+                    insertion: .move(edge: .trailing),
+                    removal: .move(edge: .leading)
+                ))
                 .zIndex(3)
             }
         }
