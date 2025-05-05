@@ -15,7 +15,7 @@ struct OnboardingView: View {
         ZStack {
             AppBackground()
             if showMainView {
-                MainTabView()
+                PersonalPlanView()
                     .transition(.asymmetric(
                         insertion: .move(edge: .trailing),
                         removal: .move(edge: .leading)
