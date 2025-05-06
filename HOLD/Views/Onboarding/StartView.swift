@@ -24,7 +24,7 @@ struct StartView: View {
             }
             else {
                 VStack(spacing:0) {
-//                    Spacer()
+                    Spacer()
                     VStack(spacing:0) {
                         Image("holdIconLarge")
                             .resizable()
@@ -36,27 +36,33 @@ struct StartView: View {
                             .scaledToFit()
                             .padding(.horizontal,44)
                             .padding(.top,-50)
-                            .padding(.bottom,-50)
+                            .padding(.bottom,-100)
                     }
-                    Spacer()
-                    if !isStart {
-                        Image("startText")
-                            .resizable()
-                            .scaledToFit()
-                            .padding(.horizontal,25)
-                        
-                        benefitsView
-                            .padding(.top,36)
-                    } else {
-                        
-                        Text("Let’s start by taking a quiz to tailor your path to total control.")
-                            .font(.system(size: 20, weight: .bold))
-                            .foregroundColor(.white)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, 25)
+                   
+                    VStack {
+                        Spacer()
+                        if !isStart {
+                            
+                            Image("startText")
+                                .resizable()
+                                .scaledToFit()
+                                .padding(.horizontal,49)
+                            
+                            benefitsView
+                                .padding(.top,36)
+                        } else {
+                            
+                            Text("Let’s start by taking a quiz to tailor your path to total control.")
+                                .font(.system(size: 20, weight: .bold))
+                                .foregroundColor(.white)
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal, 25)
+                        }
+                        Spacer()
                     }
-                    Spacer()
+                    
                     Button(action: {
+                        triggerHaptic()
                         if !isStart {
                             isStart = true
                         } else  {
@@ -85,7 +91,6 @@ struct StartView: View {
         }
         .padding(.vertical, 17)
         .padding(.horizontal, 14)
-        .background(Color(hex: "#232B3A")) // Use your app's dark color
         .cornerRadius(22)
         .overlay(
             RoundedRectangle(cornerRadius: 22)
@@ -104,6 +109,12 @@ struct StartView: View {
                 .foregroundColor(.white)
                 .font(.system(size: 16, weight: .medium))
         }
+    }
+    
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.prepare()
+        generator.impactOccurred()
     }
 }
 

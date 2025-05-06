@@ -32,6 +32,7 @@ struct UserStorage {
     
     @AppStorage("username", store: UserDefaults()) static var username: String = ""
     @AppStorage("age", store: UserDefaults()) static var age: String = ""
+    @AppStorage("wantToLastTime", store: UserDefaults()) static var wantToLastTime: String = ""
 
 
 }

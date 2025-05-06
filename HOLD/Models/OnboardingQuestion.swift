@@ -108,7 +108,7 @@ extension OnboardingQuestion {
             imageName: nil
         ),
         OnboardingQuestion(
-            title: "The HOLD app program is better than pills.",
+            title: "",
             subtitle: "Pills are a quick temporary fix. HOLD builds real control—from the inside out. No side effects. Just results that last.",
             allowsMultipleSelection: false,
             options: [],
