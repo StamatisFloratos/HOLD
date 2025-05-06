@@ -10,14 +10,14 @@ struct PersonalPlanView: View {
     ]
     private let totalDuration: Double = 30 // seconds
     private let timerInterval: Double = 0.03 // seconds
-    @State private var showMainView = false
+    @State private var showNextView = false
 
 
     var body: some View {
         ZStack {
             AppBackground()
-            if showMainView {
-                MainTabView()
+            if showNextView {
+                GoodNewsView()
                     .transition(.asymmetric(
                         insertion: .move(edge: .trailing),
                         removal: .move(edge: .leading)
@@ -31,13 +31,14 @@ struct PersonalPlanView: View {
                             Image("holdIcon")
                             Spacer()
                         }
-                        //                    .padding(.top, 24)
+                        .padding(.top, 24)
+                        .padding(.bottom, 14)
                     }
                     VStack(spacing: 0) {
                         Text("Creating Your Personal Plan")
                             .font(.system(size: 24, weight: .black))
                             .foregroundColor(.white)
-                            .padding(.top, 100)
+                            .padding(.top, 86)
                             .padding(.horizontal,33)
                             .multilineTextAlignment(.center)
                             .lineLimit(2)
@@ -78,6 +79,8 @@ struct PersonalPlanView: View {
                         .padding(.top, 20)
                         
                     }
+                    Spacer()
+
                 }
             }
         }
@@ -87,7 +90,7 @@ struct PersonalPlanView: View {
         .onChange(of: progress, {
             if Int(progress) == 100 {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        showMainView = true
+                        showNextView = true
                 }
             }
         })

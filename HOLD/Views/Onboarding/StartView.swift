@@ -24,12 +24,13 @@ struct StartView: View {
             }
             else {
                 VStack(spacing:0) {
-                    Spacer()
+//                    Spacer()
                     VStack(spacing:0) {
                         Image("holdIconLarge")
                             .resizable()
                             .scaledToFit()
                             .padding(.horizontal,91)
+                            .padding(.top,87)
                         Image("start")
                             .resizable()
                             .scaledToFit()
@@ -37,6 +38,7 @@ struct StartView: View {
                             .padding(.top,-50)
                             .padding(.bottom,-50)
                     }
+                    Spacer()
                     if !isStart {
                         Image("startText")
                             .resizable()

@@ -1,0 +1,107 @@
+//
+//  GoodNewsView.swift
+//  HOLD
+//
+//  Created by Rabbia Ijaz on 05/05/2025.
+//
+
+import SwiftUI
+
+struct GoodNewsView: View {
+    @State private var showNextView = false
+    @State private var goal = "40"
+
+    var body: some View {
+        ZStack {
+            AppBackground()
+            if showNextView {
+                TryHoldWorkoutView()
+                    .transition(.asymmetric(
+                        insertion: .move(edge: .trailing),
+                        removal: .move(edge: .leading)
+                    ))
+                    .zIndex(1)
+            } else {
+                VStack(spacing: 0) {
+                    VStack(spacing: 0) {
+                        HStack {
+                            Spacer()
+                            Image("holdIcon")
+                            Spacer()
+                        }
+                        .padding(.top, 24)
+                        .padding(.bottom, 14)
+                    }
+                    VStack(spacing: 0) {
+                        Text("Good News \(UserStorage.username)")
+                            .font(.system(size: 24, weight: .black))
+                            .foregroundColor(.white)
+                            .padding(.top, 34)
+                            .padding(.horizontal,33)
+                            .multilineTextAlignment(.center)
+                            .lineLimit(2)
+                            .fixedSize(horizontal: false, vertical: true)
+                        Text("We’ve put together a personalized plan to help you get back complete control over your body and achieve goal of lasting **\(goal) minutes.**")
+                            .font(.system(size: 16, weight: .regular))
+                            .foregroundColor(.white)
+                            .padding(.top, 34)
+                            .padding(.horizontal,32)
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                        Text("You’ll be able to get real lasting results and all it will take is **5 minutes** per day.")
+                            .font(.system(size: 16, weight: .regular))
+                            .foregroundColor(.white)
+                            .padding(.top, 34)
+                            .padding(.horizontal,32)
+                            .multilineTextAlignment(.center)
+
+                        Image("goodNewsIcon")
+                            .resizable()
+                            .scaledToFit()
+                            .padding(.horizontal,61)
+//                        Spacer()
+                        HStack {
+                            Rectangle()
+                                .frame(width: 6,height: 99)
+                                .cornerRadius(3)
+                                .foregroundColor(Color(hex: "#FF1919"))
+                            VStack(alignment: .leading, spacing: 0) {
+                                Text("Most men notice real improvements within the first month.")
+                                    .font(.system(size: 16, weight: .bold))
+                                    .foregroundColor(.white)
+                                    .fixedSize(horizontal: false, vertical: true)
+                                Spacer().frame(height: 23)
+                                Text("Stick with it—your control, stamina, and confidence start leveling up fast.")
+                                    .font(.system(size: 16, weight: .regular))
+                                    .foregroundColor(.white)
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
+                        }
+                        .padding(.horizontal,30)
+                        
+                        Spacer()
+                        
+                        Button(action: {
+                            showNextView = true
+                        }) {
+                            Text("Next")
+                                .font(.system(size: 16, weight: .semibold))
+                                .frame(maxWidth: .infinity, maxHeight: 47)
+                                .background(Color(hex: "#FF1919"))
+                                .foregroundColor(.white)
+                                .cornerRadius(30)
+                                .padding(.horizontal, 56)
+                        }
+                        .padding(.bottom, 32)
+                        .padding(.top)
+                        
+                    }
+                }
+            }
+        }
+    }
+}
+
+#Preview {
+    GoodNewsView()
+}

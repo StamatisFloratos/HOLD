@@ -90,6 +90,8 @@ struct OnboardingView: View {
                                 currentIndex += 1
                             } else {
                                 // Handle completion (e.g., save answers, navigate away)
+                                UserStorage.username = name
+                                UserStorage.age = age
                                 showMainView = true
                             }
                         }) {

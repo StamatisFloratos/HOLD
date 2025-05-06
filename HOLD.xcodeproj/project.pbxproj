@@ -51,6 +51,11 @@
 		7C22B9682DC7A05A002C3A6E /* MeasurementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C22B9672DC7A05A002C3A6E /* MeasurementView.swift */; };
 		7C22B9692DC7A05A002C3A6E /* MeasurementCompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C22B9662DC7A05A002C3A6E /* MeasurementCompletionView.swift */; };
 		7C22B96E2DC7B768002C3A6E /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C22B96D2DC7B768002C3A6E /* WorkoutView.swift */; };
+		7C25C4182DC9489C0005B321 /* GoodNewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C25C4172DC9489C0005B321 /* GoodNewsView.swift */; };
+		7C25C41A2DC94F260005B321 /* UserStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C25C4192DC94F260005B321 /* UserStorage.swift */; };
+		7C25C41C2DC956340005B321 /* TryHoldWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C25C41B2DC956340005B321 /* TryHoldWorkoutView.swift */; };
+		7C25C41E2DC9758E0005B321 /* BeforeWeStartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C25C41D2DC9758E0005B321 /* BeforeWeStartView.swift */; };
+		7C25C4202DC978F50005B321 /* FindLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C25C41F2DC978F50005B321 /* FindLocationView.swift */; };
 		7C91AB2F2DAED90F00976240 /* knowledge_sample.json in Resources */ = {isa = PBXBuildFile; fileRef = 7C91AB2E2DAED90F00976240 /* knowledge_sample.json */; };
 		7CA106B32DA564A6000950FC /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106B22DA564A6000950FC /* Font+Extension.swift */; };
 		7CA106B52DA564B4000950FC /* CustomFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106B42DA564B4000950FC /* CustomFont.swift */; };
@@ -117,6 +122,11 @@
 		7C22B9662DC7A05A002C3A6E /* MeasurementCompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementCompletionView.swift; sourceTree = "<group>"; };
 		7C22B9672DC7A05A002C3A6E /* MeasurementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementView.swift; sourceTree = "<group>"; };
 		7C22B96D2DC7B768002C3A6E /* WorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutView.swift; sourceTree = "<group>"; };
+		7C25C4172DC9489C0005B321 /* GoodNewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodNewsView.swift; sourceTree = "<group>"; };
+		7C25C4192DC94F260005B321 /* UserStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStorage.swift; sourceTree = "<group>"; };
+		7C25C41B2DC956340005B321 /* TryHoldWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TryHoldWorkoutView.swift; sourceTree = "<group>"; };
+		7C25C41D2DC9758E0005B321 /* BeforeWeStartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeforeWeStartView.swift; sourceTree = "<group>"; };
+		7C25C41F2DC978F50005B321 /* FindLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindLocationView.swift; sourceTree = "<group>"; };
 		7C91AB2E2DAED90F00976240 /* knowledge_sample.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = knowledge_sample.json; sourceTree = "<group>"; };
 		7CA106B22DA564A6000950FC /* Font+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Font+Extension.swift"; path = "../../../TempMail/TempMail/Utilities/Font+Extension.swift"; sourceTree = "<group>"; };
 		7CA106B42DA564B4000950FC /* CustomFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomFont.swift; path = ../../../TempMail/TempMail/Utilities/CustomFont.swift; sourceTree = "<group>"; };
@@ -327,6 +337,7 @@
 		7CA106B72DA57F49000950FC /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				7C25C4192DC94F260005B321 /* UserStorage.swift */,
 				7CA106BA2DA58119000950FC /* SplashView.swift */,
 				7CA106B82DA57F4D000950FC /* NavigationManager.swift */,
 			);
@@ -346,9 +357,13 @@
 		7CA82F362DC7E5F9001C0DFD /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				7C25C41D2DC9758E0005B321 /* BeforeWeStartView.swift */,
 				7C1FADBE2DC826EF00F3EE18 /* PersonalPlanView.swift */,
 				7CA82F372DC7E842001C0DFD /* OnboardingView.swift */,
 				7C1FADBC2DC808D200F3EE18 /* StartView.swift */,
+				7C25C4172DC9489C0005B321 /* GoodNewsView.swift */,
+				7C25C41B2DC956340005B321 /* TryHoldWorkoutView.swift */,
+				7C25C41F2DC978F50005B321 /* FindLocationView.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -430,6 +445,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				762FEBBA2D8CE9910058F107 /* ProgressViewModel.swift in Sources */,
+				7C25C4202DC978F50005B321 /* FindLocationView.swift in Sources */,
 				7C1FADBD2DC808D200F3EE18 /* StartView.swift in Sources */,
 				762FEBE02D8CEE720058F107 /* WorkoutDetailView.swift in Sources */,
 				7C1FADBF2DC826EF00F3EE18 /* PersonalPlanView.swift in Sources */,
@@ -441,6 +457,7 @@
 				7C22B9692DC7A05A002C3A6E /* MeasurementCompletionView.swift in Sources */,
 				762FEBC02D8CE9B90058F107 /* WorkoutViewModel.swift in Sources */,
 				7CA106BF2DA58565000950FC /* AppDelegate.swift in Sources */,
+				7C25C41C2DC956340005B321 /* TryHoldWorkoutView.swift in Sources */,
 				7CA106C82DA6D467000950FC /* ColorExtension.swift in Sources */,
 				7CA106BB2DA58119000950FC /* SplashView.swift in Sources */,
 				7CA106B52DA564B4000950FC /* CustomFont.swift in Sources */,
@@ -459,6 +476,7 @@
 				762FEBEA2D8CEF0F0058F107 /* StreakWeekViewModel.swift in Sources */,
 				762FEBCA2D8CEBE50058F107 /* ProgressTabView.swift in Sources */,
 				762FEBB12D8CE91F0058F107 /* Workout.swift in Sources */,
+				7C25C41A2DC94F260005B321 /* UserStorage.swift in Sources */,
 				762FEBB72D8CE95F0058F107 /* KnowledgeItem.swift in Sources */,
 				7CCDA3832DC19E7300C6A84A /* AppBackground.swift in Sources */,
 				762FEBDB2D8CEDD50058F107 /* ProgressBarView.swift in Sources */,
@@ -466,8 +484,10 @@
 				762FEBE42D8CEEBB0058F107 /* WorkoutScrollerView.swift in Sources */,
 				762FEBAD2D8CE8CF0058F107 /* Measurement.swift in Sources */,
 				762FEBC22D8CE9C70058F107 /* KnowledgeViewModel.swift in Sources */,
+				7C25C41E2DC9758E0005B321 /* BeforeWeStartView.swift in Sources */,
 				762FEBCE2D8CEC240058F107 /* KnowledgeTabView.swift in Sources */,
 				762FEBB32D8CE9430058F107 /* Exercise.swift in Sources */,
+				7C25C4182DC9489C0005B321 /* GoodNewsView.swift in Sources */,
 				9CD9E0D42DC7B6B200411006 /* AppsFlyerManager.swift in Sources */,
 				9CD9E0CC2DC7AFF600411006 /* HapticManager.swift in Sources */,
 				7CA82F382DC7E842001C0DFD /* OnboardingView.swift in Sources */,
