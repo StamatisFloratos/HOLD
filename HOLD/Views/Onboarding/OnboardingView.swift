@@ -36,11 +36,18 @@ struct OnboardingView: View {
                         .padding(.bottom, 49)
                     
                     // Title & Subtitle
-                    Text(questions[currentIndex].title)
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundColor(.white)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 24)
+                    if questions[currentIndex].title != "" {
+                        Text(questions[currentIndex].title)
+                            .font(.system(size: 20, weight: .bold))
+                            .foregroundColor(.white)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 24)
+                    } else {
+                        Image("questionText")
+                            .resizable()
+                            .scaledToFit()
+                            .padding(.horizontal, 54)
+                    }
                     
                     if let subtitle = questions[currentIndex].subtitle {
                         Text(subtitle)
@@ -66,13 +73,14 @@ struct OnboardingView: View {
                     if currentIndex == questions.count - 1 {
                         // Last question with text fields
                         VStack(spacing: 20) {
-                            TextField("Name", text: $name)
-                                .textFieldStyle(CustomTextFieldStyle())
+//                            TextField("Name", text: $name)
+                                
+                                
+                            CustomTextField(placeholder: "Name", text: $name)
                                 .padding(.horizontal, 33)
                                 .foregroundColor(Color.white)
                             
-                            TextField("Age", text: $age)
-                                .textFieldStyle(CustomTextFieldStyle())
+                            CustomTextField(placeholder: "Age", text: $age)
                                 .keyboardType(.numberPad)
                                 .padding(.horizontal, 33)
                         }
@@ -86,6 +94,7 @@ struct OnboardingView: View {
                     // Next Button - Only show on first question, questions with images, or last question
                     if currentIndex == 0 || questions[currentIndex].imageName != nil || currentIndex == questions.count - 1 {
                         Button(action: {
+                            triggerHaptic()
                             if currentIndex < questions.count - 1 {
                                 currentIndex += 1
                             } else {
@@ -146,6 +155,7 @@ struct OnboardingView: View {
             VStack(spacing: 18) {
                 ForEach(question.options, id: \.self) { option in
                     Button(action: {
+                        triggerHaptic()
                         handleSelection(for: question, option: option)
                     }) {
                         HStack {
@@ -194,6 +204,9 @@ struct OnboardingView: View {
             }
             selections[qid] = set
         } else {
+            if question.id == questions[2].id {
+                UserStorage.wantToLastTime = option
+            }
             selections[qid] = [option]
             // Auto-proceed to next question if not first question and no image
             if currentIndex != 0 && question.imageName == nil && currentIndex < questions.count - 1 {
@@ -218,6 +231,12 @@ struct OnboardingView: View {
         }
         return !(selections[question.id]?.isEmpty ?? true)
     }
+    
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.prepare()
+        generator.impactOccurred()
+    }
 }
 
 struct CustomTextFieldStyle: TextFieldStyle {
@@ -227,12 +246,35 @@ struct CustomTextFieldStyle: TextFieldStyle {
             .background(Color(hex: "#525252").opacity(0.5))
             .cornerRadius(16)
             .foregroundColor(.white)
-            .font(.system(size: 17, weight: .semibold))
+            .font(.system(size: 16, weight: .semibold))
             .overlay(
                 RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color.white.opacity(0.4), lineWidth: 1)
+                    .stroke(Color(hex:"#FFF6F6").opacity(0.5), lineWidth: 1)
                     .cornerRadius(16)
             )
+    }
+}
+
+struct CustomTextField: View {
+    let placeholder: String
+    @Binding var text: String
+
+    @FocusState private var isFocused: Bool
+
+    var body: some View {
+        ZStack(alignment: .leading) {
+            // Custom placeholder only shown when not focused and text is empty
+            if text.isEmpty && !isFocused {
+                Text(placeholder)
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 16)
+            }
+
+            TextField("", text: $text)
+                .textFieldStyle(CustomTextFieldStyle())
+                .focused($isFocused)
+        }
     }
 }
 

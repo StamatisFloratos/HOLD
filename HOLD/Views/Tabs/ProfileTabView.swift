@@ -163,6 +163,12 @@ struct ProfileTabView: View {
         }
     }
     
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.prepare()
+        generator.impactOccurred()
+    }
+    
     private var profileInfoView: some View {
         VStack(spacing: 15) {
             if !isEditing {
@@ -179,7 +185,9 @@ struct ProfileTabView: View {
                     
                     Spacer()
                     
-                    Button(action: { isEditing = true }) {
+                    Button(action: {
+                        triggerHaptic()
+                        isEditing = true }) {
                         Text("Edit")
                             .foregroundColor(.black)
                             .padding(.vertical, 8)
@@ -233,7 +241,10 @@ struct ProfileTabView: View {
                     
                     Spacer()
                     
-                    Button(action: saveUserInfo) {
+                    Button(action: {
+                        triggerHaptic()
+                        saveUserInfo()
+                    }) {
                         Text("Save")
                             .foregroundColor(.black)
                             .padding(.vertical, 8)

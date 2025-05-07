@@ -9,7 +9,6 @@ import SwiftUI
 
 struct GoodNewsView: View {
     @State private var showNextView = false
-    @State private var goal = "40"
 
     var body: some View {
         ZStack {
@@ -41,7 +40,7 @@ struct GoodNewsView: View {
                             .multilineTextAlignment(.center)
                             .lineLimit(2)
                             .fixedSize(horizontal: false, vertical: true)
-                        Text("We’ve put together a personalized plan to help you get back complete control over your body and achieve goal of lasting **\(goal) minutes.**")
+                        Text("We’ve put together a personalized plan to help you get back complete control over your body and achieve goal of lasting **\(UserStorage.wantToLastTime)**")
                             .font(.system(size: 16, weight: .regular))
                             .foregroundColor(.white)
                             .padding(.top, 34)
@@ -82,6 +81,7 @@ struct GoodNewsView: View {
                         Spacer()
                         
                         Button(action: {
+                            triggerHaptic()
                             showNextView = true
                         }) {
                             Text("Next")
@@ -99,6 +99,12 @@ struct GoodNewsView: View {
                 }
             }
         }
+    }
+    
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.prepare()
+        generator.impactOccurred()
     }
 }
 

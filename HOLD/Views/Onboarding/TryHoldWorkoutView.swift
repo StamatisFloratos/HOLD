@@ -62,6 +62,7 @@ struct TryHoldWorkoutView: View {
                         Spacer()
                         
                         Button(action: {
+                            triggerHaptic()
                             showNextView = true
                         }) {
                             Text("Start Workout")
@@ -91,6 +92,12 @@ struct TryHoldWorkoutView: View {
                 .foregroundColor(.white)
                 .font(.system(size: 16, weight: .medium))
         }
+    }
+    
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.prepare()
+        generator.impactOccurred()
     }
 }
 

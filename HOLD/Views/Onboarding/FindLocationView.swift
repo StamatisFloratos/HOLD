@@ -6,17 +6,23 @@
 //
 
 import SwiftUI
+import Combine
 
 struct FindLocationView: View {
     @State private var showNextView = false
     @State private var currentStep = 1
     private let totalSteps = 3
+    @State private var progress: CGFloat = 0.0
+    @State private var timer: Timer?
+
+    let stepDuration: TimeInterval = 5.0
+    let timerInterval: TimeInterval = 0.01
 
     var body: some View {
         ZStack {
             AppBackground()
             if showNextView {
-                BeforeWeStartView()
+                MainTabView()
                     .transition(.asymmetric(
                         insertion: .move(edge: .trailing),
                         removal: .move(edge: .leading)
@@ -24,59 +30,171 @@ struct FindLocationView: View {
                     .zIndex(1)
             } else {
                 VStack {
-                    ProgressBar(currentStep: currentStep, totalSteps: totalSteps)
+                    ProgressBar(currentStep: currentStep, totalSteps: totalSteps, progress: progress)
                         .padding(.top, 32)
                         .padding(.bottom, 16)
                     
+//                    Spacer().frame(height: 40)
                     Spacer()
                     
-                    //            Group {
-                    //                switch currentStep {
-                    //                case 0: print("1")
-                    //                case 1: print("2")
-                    //                case 2: print("3")
-                    //                default: EmptyView()
-                    //                }
-                    //            }
-                    //            .animation(.easeInOut, value: currentStep)
-                    //            .transition(.slide)
-                    
-                    Spacer()
-                    
-                    Button(action: {
-                        if currentStep < totalSteps - 1 {
-                            currentStep += 1
+                    Group {
+                        switch currentStep {
+                        case 1:
+                            firstView
+                        case 2: secondView
+                        case 3: thirdView
+                        default: firstView
                         }
-                    }) {
-                        Text(currentStep == totalSteps - 1 ? "Finish" : "Next")
-                            .font(.headline)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.red)
-                            .foregroundColor(.white)
-                            .cornerRadius(12)
-                            .padding(.horizontal)
                     }
-                    .padding(.bottom, 32)
+                    .animation(.easeIn, value: currentStep)
+                    .transition(.asymmetric(
+                        insertion: .move(edge: .trailing),
+                        removal: .move(edge: .leading)
+                    ))
+                    
+//                    Spacer().frame(height: 40)
+                    Spacer()
+                    VStack(spacing: 0) {
+                        HStack {
+                            Spacer()
+                            Image("holdIcon")
+                            Spacer()
+                        }
+                        .padding(.top, 24)
+                        .padding(.bottom, 30)
+                    }
                 }
+                .onAppear {
+                    startProgress()
+                }
+                .onDisappear {
+                    timer?.invalidate()
+                }
+            }
+        }
+    }
+    
+    private func startProgress() {
+        progress = 0
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(withTimeInterval: timerInterval, repeats: true) { t in
+            progress += CGFloat(timerInterval / stepDuration)
+            if progress >= 1.0 {
+                progress = 1.0
+                t.invalidate()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    if currentStep < totalSteps {
+                        currentStep += 1
+                        startProgress()
+                    } else {
+                        showNextView = true
+                    }
+                }
+            }
+        }
+    }
+    
+    var firstView: some View {
+        VStack(spacing: 0) {
+            HStack(alignment: .top,spacing:0) {
+                VStack(alignment: .leading,spacing: 21) {
+                    Text("Find Location")
+                        .font(.system(size: 24, weight: .bold))
+                        .foregroundColor(.white)
+                    Text("PF muscles are\nlocated between\nthe pubic and the\ntailbone they\ncontrol and\nsupport your\npenis.")
+                        .font(.system(size: 16, weight: .regular))
+                        .foregroundColor(.white)
+                        .lineSpacing(6)
+
+                }
+                .padding(.leading,26)
+                .padding(.top,49)
+                
+                Image("image1")
+                    .resizable()
+                    .scaledToFit()
+                    .padding(.leading,-46)
+            }
+            
+            Image("image2")
+                .resizable()
+                .scaledToFit()
+                .padding(.trailing,88)
+        }
+    }
+    
+    var secondView: some View {
+        VStack(alignment: .center,spacing: 14) {
+            Image("image3")
+                .resizable()
+                .scaledToFit()
+                .frame(height: UIScreen.main.bounds.height/2)
+                .padding(.horizontal,0)
+            VStack(alignment: .leading,spacing: 14) {
+                Text("Learn How to Use")
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundColor(.white)
+                    .padding(.horizontal,40)
+                Text("Imagine you're peeing and you suddenly try to stop midstream. The muscles you just used That's your pelvic floor. That's what we're here to train.")
+                    .font(.system(size: 16, weight: .regular))
+                    .foregroundColor(.white)
+                    .padding(.horizontal,40)
+                    .multilineTextAlignment(.leading)
+                    .lineSpacing(6)
+            }
+        }
+    }
+    var thirdView: some View {
+        VStack(alignment: .center,spacing: 14) {
+            Image("image4")
+                .resizable()
+                .scaledToFit()
+                .frame(height: UIScreen.main.bounds.height/2)
+                .padding(.horizontal,0)
+            VStack(alignment: .leading,spacing: 14) {
+                Text("Feel the Sensation")
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundColor(.white)
+                    .padding(.horizontal,40)
+                Text("When you contract the right muscles, you'll feel a lift at the base of your penis and a squeeze near the anus.")
+                    .font(.system(size: 16, weight: .regular))
+                    .foregroundColor(.white)
+                    .padding(.horizontal,40)
+                    .multilineTextAlignment(.leading)
+                    .lineSpacing(6)
             }
         }
     }
 }
 
 struct ProgressBar: View {
-    let currentStep: Int
+    let currentStep: Int      // 1-based
     let totalSteps: Int
+    let progress: CGFloat     // 0.0 to 1.0
 
     var body: some View {
         HStack(spacing: 12) {
             ForEach(0..<totalSteps, id: \.self) { index in
-                Capsule()
-                    .fill(index <= currentStep ? Color.white : Color.gray.opacity(0.3))
-                    .frame(height: 4)
-                    .frame(maxWidth: .infinity)
+                GeometryReader { geometry in
+                    ZStack(alignment: .leading) {
+                        Capsule()
+                            .fill(Color.gray.opacity(0.3))
+                            .frame(height: 4)
+                        if index < currentStep - 1 {
+                            Capsule()
+                                .fill(Color.white)
+                                .frame(width: geometry.size.width, height: 4)
+                        } else if index == currentStep - 1 {
+                            Capsule()
+                                .fill(Color.white)
+                                .frame(width: geometry.size.width * progress, height: 4)
+                        }
+                    }
+                }
+                .frame(height: 4)
             }
         }
+        .frame(height: 4)
         .padding(.horizontal, 32)
     }
 }

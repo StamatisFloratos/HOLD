@@ -137,6 +137,7 @@ struct ChallengeActivityView: View {
                 Spacer()
                 
                 Button(action: {
+                    triggerHapticForButton()
                     stopChallenge() // This now stops timers AND calls onComplete
                     onBack(totalElapsedTime)
                 }) {

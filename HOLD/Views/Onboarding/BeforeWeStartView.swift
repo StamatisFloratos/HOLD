@@ -29,7 +29,7 @@ struct BeforeWeStartView: View {
             .ignoresSafeArea()
             
             if showNextView {
-                MainTabView()
+                FindLocationView()
                     .transition(.asymmetric(
                         insertion: .move(edge: .trailing),
                         removal: .move(edge: .leading)
@@ -75,6 +75,7 @@ struct BeforeWeStartView: View {
                     Spacer()
                     
                     Button(action: {
+                        triggerHaptic()
                         showNextView = true
                     }) {
                         Text("I’m ready to find PF muscles")
@@ -104,6 +105,12 @@ struct BeforeWeStartView: View {
                 .foregroundColor(.white)
                 .font(.system(size: 16, weight: .medium))
         }
+    }
+    
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.prepare()
+        generator.impactOccurred()
     }
 }
 
