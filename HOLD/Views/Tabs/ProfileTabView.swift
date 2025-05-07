@@ -102,7 +102,7 @@ struct ProfileTabView: View {
                             // Support Section
                             SectionView(title: "Support") {
                                 VStack(spacing: 0) {
-                                    Link(destination: URL(string: "mailto:contact@gospelapp.io")!) {
+                                    Link(destination: URL(string: "mailto:contact@holdapp.pro")!) {
                                         HStack {
                                             Text("Contact Us")
                                                 .foregroundColor(.white)
@@ -116,7 +116,7 @@ struct ProfileTabView: View {
                                     Divider()
                                         .background(Color.white.opacity(0.2))
                                     
-                                    Link(destination: URL(string: "http://gospelapp.io/privacy")!) {
+                                    Link(destination: URL(string: "https://www.holdapp.pro/privacy")!) {
                                         HStack {
                                             Text("Privacy Policy")
                                                 .foregroundColor(.white)
@@ -130,7 +130,7 @@ struct ProfileTabView: View {
                                     Divider()
                                         .background(Color.white.opacity(0.2))
                                     
-                                    Link(destination: URL(string: "http://gospelapp.io/terms")!) {
+                                    Link(destination: URL(string: "https://www.holdapp.pro/terms")!) {
                                         HStack {
                                             Text("Terms of Service")
                                                 .foregroundColor(.white)
