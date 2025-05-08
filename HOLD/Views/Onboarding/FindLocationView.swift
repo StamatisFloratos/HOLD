@@ -14,6 +14,7 @@ struct FindLocationView: View {
     private let totalSteps = 3
     @State private var progress: CGFloat = 0.0
     @State private var timer: Timer?
+    @State private var showCompletionModal = false
 
     let stepDuration: TimeInterval = 5.0
     let timerInterval: TimeInterval = 0.01
@@ -22,7 +23,7 @@ struct FindLocationView: View {
         ZStack {
             AppBackground()
             if showNextView {
-                MainTabView()
+                TryExerciseView()
                     .transition(.asymmetric(
                         insertion: .move(edge: .trailing),
                         removal: .move(edge: .leading)
@@ -49,7 +50,7 @@ struct FindLocationView: View {
                     .animation(.easeIn, value: currentStep)
                     .transition(.asymmetric(
                         insertion: .move(edge: .trailing),
-                        removal: .move(edge: .leading)
+                        removal: .move(edge: .trailing)
                     ))
                     
 //                    Spacer().frame(height: 40)
@@ -70,6 +71,61 @@ struct FindLocationView: View {
                 .onDisappear {
                     timer?.invalidate()
                 }
+                .overlay(
+                    Group {
+                        if showCompletionModal {
+                            Color(hex: "#2C2C2C").opacity(0.2)
+                                .ignoresSafeArea()
+                            VStack(spacing: 0) {
+                                Text("Did you manage to find the PF muscles?")
+                                    .font(.system(size: 24, weight: .medium))
+                                    .foregroundColor(.white)
+                                    .multilineTextAlignment(.center)
+                                    .padding(.top, 24)
+                                    .padding(.horizontal, 20)
+                                Button(action: {
+                                    // Handle "Yes" action
+                                    triggerHaptic()
+                                    showNextView = true
+                                }) {
+                                    Text("Yes, I did")
+                                        .font(.system(size: 16, weight: .bold))
+                                        .foregroundColor(.white)
+                                        .frame(maxWidth: .infinity,maxHeight: 45)
+                                        .padding(0)
+                                        .background(Color(hex: "#1A2C46"))
+                                        .cornerRadius(24)
+                                }
+                                .padding(.top, 23)
+                                
+                                Button(action: {
+                                    // Handle "No" action
+                                    triggerHaptic()
+                                    showCompletionModal = false // or show help, etc.
+                                    currentStep = 1
+                                    progress = 0.0
+                                    startProgress()
+                                }) {
+                                    Text("No, I don't get it")
+                                        .font(.system(size: 16, weight: .bold))
+                                        .foregroundColor(.red)
+                                        .frame(maxWidth: .infinity,maxHeight: 45)
+                                        .padding(0)
+                                        .background(Color(hex: "#1A2C46"))
+                                        .cornerRadius(30)
+                                }
+                                .padding(.vertical, 15)
+                            }
+                            .padding(.horizontal, 25)
+                            .background(Color(hex: "#10171F"))
+                            .cornerRadius(20)
+                            .padding(.horizontal, 18)
+                            .frame(maxWidth: 400)
+                            .frame(maxHeight: .infinity, alignment: .bottom)
+                            .transition(.move(edge: .bottom))
+                        }
+                    }
+                )
             }
         }
     }
@@ -87,7 +143,7 @@ struct FindLocationView: View {
                         currentStep += 1
                         startProgress()
                     } else {
-                        showNextView = true
+                        showCompletionModal = true
                     }
                 }
             }
@@ -164,6 +220,12 @@ struct FindLocationView: View {
                     .lineSpacing(6)
             }
         }
+    }
+    
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.prepare()
+        generator.impactOccurred()
     }
 }
 

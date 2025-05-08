@@ -8,6 +8,12 @@
 import SwiftUI
 import AudioToolbox
 
+// Enum to track rep phase
+enum RepPhase {
+    case contract
+    case relax
+}
+
 struct WorkoutDetailView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     @EnvironmentObject var workoutViewModel: WorkoutViewModel
@@ -50,11 +56,7 @@ struct WorkoutDetailView: View {
 
     let haptics = HapticManager()
     
-    // Enum to track rep phase
-    enum RepPhase {
-        case contract
-        case relax
-    }
+    
     
     var body: some View {
         ZStack {

@@ -50,7 +50,7 @@ struct MeasurementView: View {
                 })
                 .transition(.asymmetric(
                     insertion: .move(edge: .trailing),
-                    removal: .move(edge: .leading)
+                    removal: .move(edge: .bottom)
                 ))
                 .zIndex(2)
             }
