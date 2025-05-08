@@ -12,12 +12,13 @@ struct ProgressBarView: View {
     
     let value: CGFloat
     let total: CGFloat
+    let backgroundColor: Color
     
     var body: some View {
         GeometryReader(content: { geometry in
             ZStack(alignment: .leading, content: {
                 Rectangle()
-                    .foregroundColor(Color(hex: "#AFAFAF"))
+                    .foregroundColor(backgroundColor)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .clipShape(Capsule())
                 

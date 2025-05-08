@@ -64,7 +64,7 @@ struct ChallengeRankView: View {
                                 .padding(.bottom,17)
                             VStack(spacing:0) {
                                 withAnimation(.easeInOut(duration: 0.1)) {
-                                    ProgressBarView(value: animatedProgress, total: Double(latestChallengeResult.nextRankValue))
+                                    ProgressBarView(value: animatedProgress, total: Double(latestChallengeResult.nextRankValue), backgroundColor: Color(hex: "#AFAFAF"))
                                         .frame(maxWidth: .infinity)
                                         .frame(height: 12)
                                         .foregroundColor(Color(hex: "#0CFF00"))

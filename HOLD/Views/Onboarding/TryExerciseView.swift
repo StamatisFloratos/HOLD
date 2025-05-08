@@ -10,6 +10,8 @@ import SwiftUI
 struct TryExerciseView: View {
     
     @State private var showNextView = false
+    @State private var showFinishView = false
+    
     @State private var isFirstView = true
     @State private var currentView = 1
     @State private var isPaused: Bool = false
@@ -50,13 +52,26 @@ struct TryExerciseView: View {
         ZStack {
             AppBackground()
             if showNextView {
-                MainTabView()
+                TutorialWorkoutDetailView(selectedWorkout: Workout(
+                    name: "Daily Maintenance",
+                    difficulty: .medium,
+                    durationMinutes: 10,
+                    description: "Regular practice to maintain pelvic floor strength",
+                    exercises: [
+                        Exercise.hold(seconds: 5),
+                        Exercise.rapidFire(reps: 10),
+                        Exercise.hold(seconds: 5),
+                        Exercise.rapidFire(reps: 10),
+                        Exercise.hold(seconds: 5)
+                    ]
+                ))
                     .transition(.asymmetric(
                         insertion: .move(edge: .trailing),
                         removal: .move(edge: .leading)
                     ))
                     .zIndex(1)
-            } else {
+            }
+            else {
                 VStack(spacing: 0) {
                     HStack {
                         Spacer()

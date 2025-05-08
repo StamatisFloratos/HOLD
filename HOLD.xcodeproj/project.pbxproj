@@ -57,6 +57,11 @@
 		7C25C41E2DC9758E0005B321 /* BeforeWeStartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C25C41D2DC9758E0005B321 /* BeforeWeStartView.swift */; };
 		7C25C4202DC978F50005B321 /* FindLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C25C41F2DC978F50005B321 /* FindLocationView.swift */; };
 		7C25C4222DCAAE440005B321 /* TryExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C25C4212DCAAE440005B321 /* TryExerciseView.swift */; };
+		7C25C4242DCC65E80005B321 /* TutorialWorkoutDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C25C4232DCC65E80005B321 /* TutorialWorkoutDetailView.swift */; };
+		7C25C4262DCC69F20005B321 /* TutorialWorkoutFinishView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C25C4252DCC69F20005B321 /* TutorialWorkoutFinishView.swift */; };
+		7C25C4282DCC6B530005B321 /* ProgressFinishView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C25C4272DCC6B530005B321 /* ProgressFinishView.swift */; };
+		7C25C42A2DCC6DF70005B321 /* ReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C25C4292DCC6DF70005B321 /* ReviewView.swift */; };
+		7C25C42C2DCC73B60005B321 /* MilestoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C25C42B2DCC73B60005B321 /* MilestoneView.swift */; };
 		7C91AB2F2DAED90F00976240 /* knowledge_sample.json in Resources */ = {isa = PBXBuildFile; fileRef = 7C91AB2E2DAED90F00976240 /* knowledge_sample.json */; };
 		7CA106B32DA564A6000950FC /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106B22DA564A6000950FC /* Font+Extension.swift */; };
 		7CA106B52DA564B4000950FC /* CustomFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106B42DA564B4000950FC /* CustomFont.swift */; };
@@ -129,6 +134,11 @@
 		7C25C41D2DC9758E0005B321 /* BeforeWeStartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeforeWeStartView.swift; sourceTree = "<group>"; };
 		7C25C41F2DC978F50005B321 /* FindLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindLocationView.swift; sourceTree = "<group>"; };
 		7C25C4212DCAAE440005B321 /* TryExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TryExerciseView.swift; sourceTree = "<group>"; };
+		7C25C4232DCC65E80005B321 /* TutorialWorkoutDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialWorkoutDetailView.swift; sourceTree = "<group>"; };
+		7C25C4252DCC69F20005B321 /* TutorialWorkoutFinishView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialWorkoutFinishView.swift; sourceTree = "<group>"; };
+		7C25C4272DCC6B530005B321 /* ProgressFinishView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressFinishView.swift; sourceTree = "<group>"; };
+		7C25C4292DCC6DF70005B321 /* ReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewView.swift; sourceTree = "<group>"; };
+		7C25C42B2DCC73B60005B321 /* MilestoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestoneView.swift; sourceTree = "<group>"; };
 		7C91AB2E2DAED90F00976240 /* knowledge_sample.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = knowledge_sample.json; sourceTree = "<group>"; };
 		7CA106B22DA564A6000950FC /* Font+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Font+Extension.swift"; path = "../../../TempMail/TempMail/Utilities/Font+Extension.swift"; sourceTree = "<group>"; };
 		7CA106B42DA564B4000950FC /* CustomFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomFont.swift; path = ../../../TempMail/TempMail/Utilities/CustomFont.swift; sourceTree = "<group>"; };
@@ -359,6 +369,11 @@
 		7CA82F362DC7E5F9001C0DFD /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				7C25C42B2DCC73B60005B321 /* MilestoneView.swift */,
+				7C25C4292DCC6DF70005B321 /* ReviewView.swift */,
+				7C25C4252DCC69F20005B321 /* TutorialWorkoutFinishView.swift */,
+				7C25C4272DCC6B530005B321 /* ProgressFinishView.swift */,
+				7C25C4232DCC65E80005B321 /* TutorialWorkoutDetailView.swift */,
 				7C25C41D2DC9758E0005B321 /* BeforeWeStartView.swift */,
 				7C1FADBE2DC826EF00F3EE18 /* PersonalPlanView.swift */,
 				7CA82F372DC7E842001C0DFD /* OnboardingView.swift */,
@@ -448,6 +463,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				762FEBBA2D8CE9910058F107 /* ProgressViewModel.swift in Sources */,
+				7C25C4242DCC65E80005B321 /* TutorialWorkoutDetailView.swift in Sources */,
 				7C25C4202DC978F50005B321 /* FindLocationView.swift in Sources */,
 				7C1FADBD2DC808D200F3EE18 /* StartView.swift in Sources */,
 				762FEBE02D8CEE720058F107 /* WorkoutDetailView.swift in Sources */,
@@ -456,16 +472,19 @@
 				76711AFB2D8CD62500FFEE50 /* HOLDApp.swift in Sources */,
 				762FEBD52D8CED070058F107 /* ProgressGraphView.swift in Sources */,
 				762FEBB52D8CE9500058F107 /* UserProfile.swift in Sources */,
+				7C25C42A2DCC6DF70005B321 /* ReviewView.swift in Sources */,
 				7C22B9682DC7A05A002C3A6E /* MeasurementView.swift in Sources */,
 				7C22B9692DC7A05A002C3A6E /* MeasurementCompletionView.swift in Sources */,
 				762FEBC02D8CE9B90058F107 /* WorkoutViewModel.swift in Sources */,
 				7CA106BF2DA58565000950FC /* AppDelegate.swift in Sources */,
+				7C25C42C2DCC73B60005B321 /* MilestoneView.swift in Sources */,
 				7C25C41C2DC956340005B321 /* TryHoldWorkoutView.swift in Sources */,
 				7CA106C82DA6D467000950FC /* ColorExtension.swift in Sources */,
 				7CA106BB2DA58119000950FC /* SplashView.swift in Sources */,
 				7CA106B52DA564B4000950FC /* CustomFont.swift in Sources */,
 				762FEBAF2D8CE8DE0058F107 /* ChallengeResult.swift in Sources */,
 				7C22B96E2DC7B768002C3A6E /* WorkoutView.swift in Sources */,
+				7C25C4282DCC6B530005B321 /* ProgressFinishView.swift in Sources */,
 				762FEBED2D8CEF5C0058F107 /* KnowledgeView.swift in Sources */,
 				7C22B9632DC797F1002C3A6E /* ChallengeCompletionView.swift in Sources */,
 				762FEBC42D8CE9D50058F107 /* ProfileViewModel.swift in Sources */,
@@ -487,6 +506,7 @@
 				762FEBDE2D8CEE620058F107 /* WorkoutSheetView.swift in Sources */,
 				762FEBE42D8CEEBB0058F107 /* WorkoutScrollerView.swift in Sources */,
 				762FEBAD2D8CE8CF0058F107 /* Measurement.swift in Sources */,
+				7C25C4262DCC69F20005B321 /* TutorialWorkoutFinishView.swift in Sources */,
 				762FEBC22D8CE9C70058F107 /* KnowledgeViewModel.swift in Sources */,
 				7C25C41E2DC9758E0005B321 /* BeforeWeStartView.swift in Sources */,
 				762FEBCE2D8CEC240058F107 /* KnowledgeTabView.swift in Sources */,
