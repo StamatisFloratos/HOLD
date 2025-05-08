@@ -115,9 +115,9 @@ extension Notification.Name {
 }
 
 extension SubscriptionManager: SuperwallDelegate {
-    func handleSuperwallPlacement(withInfo eventInfo: SuperwallPlacementInfo) {
-        switch eventInfo.placement {
-        case .subscriptionStart(let product, let paywallInfo):
+    func handleSuperwallPlacement(withInfo eventInfo: SuperwallEventInfo) {
+        switch eventInfo.event {
+        case .subscriptionStart(let product, _):
             AppsFlyerLib.shared().logEvent(AFEventSubscribe, withValues: [
                 AFEventParamRevenue: product.price,
                 AFEventParamCurrency: product.currencyCode ?? "",
@@ -125,7 +125,7 @@ extension SubscriptionManager: SuperwallDelegate {
                 AFEventParamContentType: "Subscription"
             ])
             break
-        case .freeTrialStart(let product, let paywallInfo):
+        case .freeTrialStart(let product, _):
             AppsFlyerLib.shared().logEvent(AFEventStartTrial, withValues: [
                 AFEventParamContentId: product.productIdentifier,
                 AFEventParamContentType: "Trial"

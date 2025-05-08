@@ -75,6 +75,7 @@
 		7CA82F382DC7E842001C0DFD /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA82F372DC7E842001C0DFD /* OnboardingView.swift */; };
 		7CBB89D62DBAD1E300C8429E /* test_workout_hold.json in Resources */ = {isa = PBXBuildFile; fileRef = 7CBB89D52DBAD1E300C8429E /* test_workout_hold.json */; };
 		7CCDA3832DC19E7300C6A84A /* AppBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCDA3822DC19E7300C6A84A /* AppBackground.swift */; };
+		9C0D88452DCD31930088F5CE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C0D88442DCD31930088F5CE /* LaunchScreen.storyboard */; };
 		9CD9E0C32DC5719A00411006 /* KeyboardResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD9E0C22DC5719A00411006 /* KeyboardResponder.swift */; };
 		9CD9E0CC2DC7AFF600411006 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD9E0CB2DC7AFF600411006 /* HapticManager.swift */; };
 		9CD9E0CF2DC7B54E00411006 /* AppsFlyerLib in Frameworks */ = {isa = PBXBuildFile; productRef = 9CD9E0CE2DC7B54E00411006 /* AppsFlyerLib */; };
@@ -152,6 +153,7 @@
 		7CA82F372DC7E842001C0DFD /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		7CBB89D52DBAD1E300C8429E /* test_workout_hold.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = test_workout_hold.json; sourceTree = "<group>"; };
 		7CCDA3822DC19E7300C6A84A /* AppBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBackground.swift; sourceTree = "<group>"; };
+		9C0D88442DCD31930088F5CE /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9CD9E0C22DC5719A00411006 /* KeyboardResponder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardResponder.swift; sourceTree = "<group>"; };
 		9CD9E0CB2DC7AFF600411006 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		9CD9E0D32DC7B6B200411006 /* AppsFlyerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppsFlyerManager.swift; sourceTree = "<group>"; };
@@ -299,6 +301,7 @@
 				76711AFA2D8CD62500FFEE50 /* HOLDApp.swift */,
 				76711AFE2D8CD62700FFEE50 /* Assets.xcassets */,
 				76711B002D8CD62700FFEE50 /* Preview Content */,
+				9C0D88442DCD31930088F5CE /* LaunchScreen.storyboard */,
 			);
 			path = HOLD;
 			sourceTree = "<group>";
@@ -451,6 +454,7 @@
 				76711B022D8CD62700FFEE50 /* Preview Assets.xcassets in Resources */,
 				76711AFF2D8CD62700FFEE50 /* Assets.xcassets in Resources */,
 				7CBB89D62DBAD1E300C8429E /* test_workout_hold.json in Resources */,
+				9C0D88452DCD31930088F5CE /* LaunchScreen.storyboard in Resources */,
 				7C91AB2F2DAED90F00976240 /* knowledge_sample.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

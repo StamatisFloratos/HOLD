@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct StartView: View {
+    @EnvironmentObject private var notificationsManager: NotificationsManager
+    
     @State private var isStart = false
     @State private var showOnboardingView = false
     var body: some View {
@@ -65,6 +67,7 @@ struct StartView: View {
                         triggerHaptic()
                         if !isStart {
                             isStart = true
+                            scheduleNotifications()
                         } else  {
                             showOnboardingView = true
                         }
@@ -80,6 +83,12 @@ struct StartView: View {
                     .padding(.bottom, 32)
                 }
             }
+        }
+    }
+    
+    func scheduleNotifications() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            notificationsManager.requestPermission()
         }
     }
 

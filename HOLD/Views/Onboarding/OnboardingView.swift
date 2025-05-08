@@ -11,6 +11,9 @@ struct OnboardingView: View {
     
     private let questions = OnboardingQuestion.sampleScreens
     
+    @State private var showValidationAlert: Bool = false
+    @State private var validationMessage: String = ""
+    
     var body: some View {
         ZStack {
             AppBackground()
@@ -99,8 +102,29 @@ struct OnboardingView: View {
                                 currentIndex += 1
                             } else {
                                 // Handle completion (e.g., save answers, navigate away)
-                                UserStorage.username = name
-                                UserStorage.age = age
+                                guard !name.isEmpty else {
+                                    validationMessage = "Name cannot be empty."
+                                    showValidationAlert = true
+                                    return
+                                }
+                                
+                                guard name.count <= 30 else {
+                                    validationMessage = "Name cannot be more than 30 characters."
+                                    showValidationAlert = true
+                                    return
+                                }
+                                
+                                guard let ageInt = Int(age), (13...99).contains(ageInt) else {
+                                    validationMessage = "Age must be between 13 and 99."
+                                    showValidationAlert = true
+                                    return
+                                }
+
+                                var userProfile = UserProfile.load()
+                                userProfile.name = name
+                                userProfile.age = ageInt
+                                userProfile.save()
+                                
                                 showMainView = true
                             }
                         }) {
@@ -120,6 +144,13 @@ struct OnboardingView: View {
             }
         }
         .navigationBarHidden(true)
+        .alert(isPresented: $showValidationAlert) {
+            Alert(
+                title: Text("Invalid Input"),
+                message: Text(validationMessage),
+                dismissButton: .default(Text("OK"))
+            )
+        }
     }
     
     private var progressBar: some View {
