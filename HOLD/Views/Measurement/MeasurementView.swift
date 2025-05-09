@@ -5,6 +5,7 @@ struct MeasurementView: View {
     @State private var showMeasurementActivity = false
     @State private var showMeasurementComplete = false
     @State private var elapsedTime: TimeInterval = 0
+    @EnvironmentObject var progressViewModel: ProgressViewModel
     @EnvironmentObject var navigationManager: NavigationManager
     @State private var showMeasurementSheet: Bool = true
     
@@ -30,6 +31,7 @@ struct MeasurementView: View {
                 MeasurementActivityView(onBack: { time in
                     elapsedTime = time
                     withAnimation {
+                        progressViewModel.measurementDidFinish(duration: elapsedTime)
                         showMeasurementActivity = false
                         showMeasurementComplete = true
                     }
@@ -38,6 +40,7 @@ struct MeasurementView: View {
                     insertion: .move(edge: .trailing),
                     removal: .move(edge: .leading)
                 ))
+                .environmentObject(progressViewModel)
                 .zIndex(1)
             }
             
@@ -52,6 +55,7 @@ struct MeasurementView: View {
                     insertion: .move(edge: .trailing),
                     removal: .move(edge: .bottom)
                 ))
+                .environmentObject(progressViewModel)
                 .zIndex(2)
             }
         }

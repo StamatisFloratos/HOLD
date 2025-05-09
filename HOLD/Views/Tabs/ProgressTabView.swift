@@ -68,6 +68,7 @@ struct ProgressTabView: View {
             MeasurementView(onBack: {
                 showMeasurementView = false
             })
+            .environmentObject(progressViewModel)
         }
     }
     
