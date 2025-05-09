@@ -56,7 +56,7 @@ struct MilestoneView: View {
         VStack(spacing: 0) {
             ZStack(alignment: .topLeading) {
                 LinearGradient(
-                    gradient: Gradient(colors: [Color(hex: "#FF1919"), Color(hex: "#990F0F")]),
+                    gradient: Gradient(colors: [Color(hex: "#990000"), Color(hex: "#FF0000")]),
                     startPoint: .top,
                     endPoint: .bottom
                 )
