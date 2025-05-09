@@ -45,6 +45,7 @@
 		76711B022D8CD62700FFEE50 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76711B012D8CD62700FFEE50 /* Preview Assets.xcassets */; };
 		7C149D612DB837A6003C0297 /* ChallengeActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C149D602DB837A6003C0297 /* ChallengeActivityView.swift */; };
 		7C149D632DB99B99003C0297 /* ChallengeRankView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C149D622DB99B99003C0297 /* ChallengeRankView.swift */; };
+		7C19462D2DCD3B07005BC915 /* SubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C19462C2DCD3B07005BC915 /* SubscriptionView.swift */; };
 		7C1FADBD2DC808D200F3EE18 /* StartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1FADBC2DC808D200F3EE18 /* StartView.swift */; };
 		7C1FADBF2DC826EF00F3EE18 /* PersonalPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1FADBE2DC826EF00F3EE18 /* PersonalPlanView.swift */; };
 		7C22B9632DC797F1002C3A6E /* ChallengeCompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C22B9622DC797F1002C3A6E /* ChallengeCompletionView.swift */; };
@@ -123,6 +124,7 @@
 		76711B012D8CD62700FFEE50 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		7C149D602DB837A6003C0297 /* ChallengeActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeActivityView.swift; sourceTree = "<group>"; };
 		7C149D622DB99B99003C0297 /* ChallengeRankView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeRankView.swift; sourceTree = "<group>"; };
+		7C19462C2DCD3B07005BC915 /* SubscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionView.swift; sourceTree = "<group>"; };
 		7C1FADBC2DC808D200F3EE18 /* StartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartView.swift; sourceTree = "<group>"; };
 		7C1FADBE2DC826EF00F3EE18 /* PersonalPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalPlanView.swift; sourceTree = "<group>"; };
 		7C22B9622DC797F1002C3A6E /* ChallengeCompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeCompletionView.swift; sourceTree = "<group>"; };
@@ -385,6 +387,7 @@
 				7C25C41B2DC956340005B321 /* TryHoldWorkoutView.swift */,
 				7C25C41F2DC978F50005B321 /* FindLocationView.swift */,
 				7C25C4212DCAAE440005B321 /* TryExerciseView.swift */,
+				7C19462C2DCD3B07005BC915 /* SubscriptionView.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -503,6 +506,7 @@
 				762FEBEA2D8CEF0F0058F107 /* StreakWeekViewModel.swift in Sources */,
 				762FEBCA2D8CEBE50058F107 /* ProgressTabView.swift in Sources */,
 				762FEBB12D8CE91F0058F107 /* Workout.swift in Sources */,
+				7C19462D2DCD3B07005BC915 /* SubscriptionView.swift in Sources */,
 				7C25C41A2DC94F260005B321 /* UserStorage.swift in Sources */,
 				762FEBB72D8CE95F0058F107 /* KnowledgeItem.swift in Sources */,
 				7CCDA3832DC19E7300C6A84A /* AppBackground.swift in Sources */,

@@ -29,7 +29,7 @@ struct SplashView: View {
                     
                 }
             } else {
-                MainTabView()
+                StartView()
                     .transition(.move(edge: .trailing)) // or .opacity, .slide, etc.
             }
         }

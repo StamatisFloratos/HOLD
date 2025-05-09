@@ -20,7 +20,7 @@ struct MilestoneView: View {
         ZStack {
             AppBackground()
             if showNextView {
-                MainTabView()
+                SubscriptionView()
                     .transition(.asymmetric(
                         insertion: .move(edge: .trailing),
                         removal: .move(edge: .leading)
