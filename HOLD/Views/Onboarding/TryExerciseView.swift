@@ -311,7 +311,7 @@ struct TryExerciseView: View {
             startHoldAnimation()
         }
         .onChange(of: totalTimeRemaining, {
-            if (totalTimeRemaining == Double(0) && currentView == 3) {
+            if (totalTimeRemaining < Double(1) && currentView == 3) {
                 currentView = 4
                 stopTimer()
                 stopHoldTimer()
@@ -439,7 +439,7 @@ struct TryExerciseView: View {
             startRepetitionAnimation()
         }
         .onChange(of: totalTimeRemaining, {
-            if (totalTimeRemaining == Double(0) && currentView == 5) {
+            if (totalTimeRemaining < Double(1) && currentView == 5) {
                 currentView = 6
                 stopTimer()
                 stopRepTimer()
@@ -724,12 +724,12 @@ struct TryExerciseView: View {
                 switch isHoldExercise {
                 case true:
                     withAnimation {
-                        self.progress = 1.0 - (self.totalTimeRemaining / Double(10))
+                        self.progress = 1.0 - ((self.totalTimeRemaining - 1) / Double(9))
                     }
                 case false:
                     let totalDuration = Double(18) * 0.5
                     withAnimation {
-                        self.progress = 1.0 - (self.totalTimeRemaining / Double(totalDuration))
+                        self.progress = 1.0 - ((self.totalTimeRemaining - 1) / Double(totalDuration - 1))
                     }
                     
                     // Calculate remaining reps properly
