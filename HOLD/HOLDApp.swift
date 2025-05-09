@@ -13,7 +13,6 @@ import SuperwallKit
 @main
 struct HOLDApp: App {
     @Environment(\.scenePhase) var scenePhase
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var tabManager = TabManager()
     @StateObject private var navigationManager = NavigationManager()
     @StateObject private var workoutViewModel = WorkoutViewModel()
@@ -24,8 +23,6 @@ struct HOLDApp: App {
     
     @StateObject private var notificationsManager = NotificationsManager.shared
     @StateObject private var subscriptionManager = SubscriptionManager.shared
-    
-    @AppStorage("isPremium") var isPremium: Bool = false
     
     init() {
         Superwall.configure(apiKey: "pk_3250452d883111f9496cbba98c6fb4fb7250b12e524fbaa6")
@@ -45,8 +42,6 @@ struct HOLDApp: App {
                 .environmentObject(notificationsManager)
                 .environmentObject(subscriptionManager)
                 .onAppear {
-                    appDelegate.applicationDidBecomeActive()
-                    
                     AppsFlyerManager.checkAndRequestATT()
                     subscriptionManager.checkSubscriptionStatus()
                 }

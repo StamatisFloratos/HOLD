@@ -9,6 +9,7 @@ import SwiftUI
 
 struct GoodNewsView: View {
     @State private var showNextView = false
+    @State private var userProfile: UserProfile = UserProfile.load()
 
     var body: some View {
         ZStack {
@@ -32,7 +33,7 @@ struct GoodNewsView: View {
                         .padding(.bottom, 14)
                     }
                     VStack(spacing: 0) {
-                        Text("Good News \(UserStorage.username)")
+                        Text("Good News \(userProfile.name)")
                             .font(.system(size: 24, weight: .black))
                             .foregroundColor(.white)
                             .padding(.top, 34)

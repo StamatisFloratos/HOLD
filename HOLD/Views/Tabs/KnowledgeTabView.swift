@@ -118,7 +118,7 @@ struct KnowledgeSectionView: View {
                 }
             }
         }
-        .fullScreenCover(isPresented: $showKnowledgeDetailSheet) {
+        .sheet(isPresented: $showKnowledgeDetailSheet) {
             if let item = selectedItem {
                 KnowledgeDetailView(item: item, onBack: {
                     withAnimation {

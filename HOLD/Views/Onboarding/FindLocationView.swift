@@ -50,7 +50,7 @@ struct FindLocationView: View {
                     .animation(.easeIn, value: currentStep)
                     .transition(.asymmetric(
                         insertion: .move(edge: .trailing),
-                        removal: .move(edge: .trailing)
+                        removal: .move(edge: .leading)
                     ))
                     
 //                    Spacer().frame(height: 40)
@@ -71,6 +71,7 @@ struct FindLocationView: View {
                 .onDisappear {
                     timer?.invalidate()
                 }
+                .blur(radius: showCompletionModal ? 20 : 0)
                 .overlay(
                     Group {
                         if showCompletionModal {

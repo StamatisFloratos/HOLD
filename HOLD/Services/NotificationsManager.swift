@@ -8,6 +8,7 @@
 import Foundation
 import UserNotifications
 import SwiftUICore
+import SwiftUI
 
 class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenterDelegate {
     static let shared = NotificationsManager()
@@ -17,6 +18,8 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
     private let notificationCenter = UNUserNotificationCenter.current()
 
     @State private var userProfile: UserProfile = UserProfile.load()
+    
+    @AppStorage("isNotificationsScheduled") private var isNotificationsScheduled: Bool = false
     
     private let firstLaunchDateKey = "com.hold.firstLaunchDate"
     private let notificationsEnabledKey = "com.hold.notificationsEnabled"
@@ -63,6 +66,7 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
             DispatchQueue.main.async {
                 self.isAuthorized = granted
                 if granted && self.notificationsEnabled {
+                    self.isNotificationsScheduled = true
                     self.scheduleAllNotifications()
                 }
             }
@@ -71,12 +75,14 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
 
     func enableNotifications() {
         notificationsEnabled = true
+        isNotificationsScheduled = true
         UserDefaults.standard.set(true, forKey: notificationsEnabledKey)
         scheduleAllNotifications()
     }
 
     func disableNotifications() {
         notificationsEnabled = false
+        isNotificationsScheduled = false
         UserDefaults.standard.set(false, forKey: notificationsEnabledKey)
         notificationCenter.removeAllPendingNotificationRequests()
     }
@@ -138,6 +144,15 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
             let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
             notificationCenter.add(request)
         }
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.banner, .sound, .badge])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        let identifier = response.notification.request.identifier
+        completionHandler()
     }
     
     func resetBadgeCount() {

@@ -23,7 +23,6 @@ struct KnowledgeDetailView: View {
                         .scaledToFill()
                         .frame(maxWidth: .infinity)
                         .frame(height: UIScreen.main.bounds.height * 0.4)
-                        .ignoresSafeArea(edges: .top)
                     VStack {
                         HStack{
                             Spacer()
@@ -38,7 +37,6 @@ struct KnowledgeDetailView: View {
                         }
                         Spacer()
                     }
-                    .padding(.top,20)
                 }
                 .zIndex(1)
                 
@@ -57,7 +55,6 @@ struct KnowledgeDetailView: View {
                     .padding(.horizontal)
                 }
                 .frame(maxWidth: .infinity)
-                .frame(height: UIScreen.main.bounds.height * 0.6)
             }
         }
         .navigationBarHidden(true)

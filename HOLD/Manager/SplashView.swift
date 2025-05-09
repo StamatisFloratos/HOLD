@@ -16,31 +16,22 @@ struct SplashView: View {
     @EnvironmentObject var progressViewModel: ProgressViewModel
     @EnvironmentObject var challengeViewModel: ChallengeViewModel
     
-    @State private var isOnboardingDone: Bool = false
+    @AppStorage("isPremium") var isPremium: Bool = false
+    
     @State private var showStartView = false
 
     var body: some View {
         ZStack {
-            if !showStartView {
-                // Splash content
-                ZStack {
-                    AppBackground()
-                    Image("holdIcon")
-                    
-                }
+            if isPremium {
+                MainTabView()
             } else {
-                StartView()
-                    .transition(.move(edge: .trailing)) // or .opacity, .slide, etc.
-            }
-        }
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                withAnimation(.easeInOut(duration: 0.5)) {
-                    showStartView = true
+                if UserStorage.isOnboardingDone {
+                    SubscriptionView()
+                } else {
+                    StartView()
                 }
             }
         }
-        
     }
 }
 

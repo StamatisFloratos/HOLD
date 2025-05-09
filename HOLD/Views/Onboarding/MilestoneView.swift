@@ -9,16 +9,26 @@ import SwiftUI
 
 struct MilestoneView: View {
     @State private var showNextView = false
+    @State private var userProfile: UserProfile = UserProfile.load()
+    @State private var showContinueButton = false
+    
     var milestoneTitle: String = "Milestone 1"
-
     var progress: Int = 40
-        var name: String = "Jack"
-        var streak: String = "1 day"
-        var badge: String = "Holder"
+    var streak: String = "1 day"
+    var badge: String = "Holder"
+    
+    let welcomeMessages = [
+        "Welcome to HOLD, your personal performance trainer.",
+        "Based on your answers, we’ve built a custom plan just for you.",
+        "You’re already 40% of the way to your first milestone!",
+        "This plan helps you take control, last longer, and be irresistible.",
+        "Now, it’s time to invest in yourself."
+    ]
     
     var body: some View {
         ZStack {
             AppBackground()
+            
             if showNextView {
                 SubscriptionView()
                     .transition(.asymmetric(
@@ -27,25 +37,43 @@ struct MilestoneView: View {
                     ))
                     .zIndex(1)
             } else {
-                VStack{
+                VStack {
                     HStack {
                         Spacer()
                         Image("holdIcon")
                         Spacer()
                     }
                     .padding(.top, 24)
-                    .padding(.bottom, 14)
+                    .padding(.bottom, 24)
                     
-                    Text("Welcome to HOLD, your personal\nperformance trainer.")
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundColor(.white)
-                        .padding(.horizontal,35)
+                    TypewriterText(texts: welcomeMessages, onCompletion: {
+                        withAnimation(.easeIn(duration: 0.3)) {
+                            showContinueButton = true
+                        }
+                    })
+                    .padding(.horizontal, 35)
+                    
                     Spacer()
-                    //milestoneView
+                    
                     milestoneView
                     
                     Spacer()
                     
+                    if showContinueButton {
+                        Button(action: {
+                            showNextView = true
+                            UserStorage.isOnboardingDone = true
+                        }) {
+                            Text("Continue")
+                                .font(.system(size: 16, weight: .semibold))
+                                .frame(maxWidth: .infinity, maxHeight: 47)
+                                .background(Color(hex: "#FF1919"))
+                                .foregroundColor(.white)
+                                .cornerRadius(30)
+                                .padding(.horizontal, 56)
+                        }
+                        .padding(.bottom, 32)
+                    }
                 }
             }
         }
@@ -109,7 +137,7 @@ struct MilestoneView: View {
                     Text("Name")
                         .font(.system(size: 12, weight: .regular))
                         .foregroundColor(.white.opacity(0.5))
-                    Text(UserStorage.username)
+                    Text(userProfile.name)
                         .font(.system(size: 16, weight: .medium))
                         .foregroundColor(.white)
                 }

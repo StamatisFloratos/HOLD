@@ -26,12 +26,6 @@ struct UserStorage {
 
     @AppStorage("isFromOnboarding", store: UserDefaults()) static var isFromOnboarding: Bool = true
 
-    @AppStorage("isShowTrialSubscription", store: UserDefaults()) static var isShowTrialSubscription: Bool = false
-    @AppStorage("subscriptionWeeklyRevenue", store: UserDefaults()) static var subscriptionWeeklyRevenue: Double = 0
-    
-    
-    @AppStorage("username", store: UserDefaults()) static var username: String = ""
-    @AppStorage("age", store: UserDefaults()) static var age: String = ""
     @AppStorage("wantToLastTime", store: UserDefaults()) static var wantToLastTime: String = ""
 
 

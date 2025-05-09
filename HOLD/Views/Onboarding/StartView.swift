@@ -12,6 +12,9 @@ struct StartView: View {
     
     @State private var isStart = false
     @State private var showOnboardingView = false
+    
+    @AppStorage("isNotificationsScheduled") private var isNotificationsScheduled: Bool = false
+    
     var body: some View {
         ZStack {
             AppBackground()
@@ -67,7 +70,9 @@ struct StartView: View {
                         triggerHaptic()
                         if !isStart {
                             isStart = true
-                            scheduleNotifications()
+                            if !isNotificationsScheduled {
+                                scheduleNotifications()
+                            }
                         } else  {
                             showOnboardingView = true
                         }
