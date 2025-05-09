@@ -13,6 +13,7 @@ struct MilestoneView: View {
     @State private var showNextView = false
     @State private var userProfile: UserProfile = UserProfile.load()
     @State private var showContinueButton = false
+    @State private var milestoneOpacity: Double = 0
     
     @AppStorage("isNotificationsScheduled") private var isNotificationsScheduled: Bool = false
     
@@ -50,16 +51,20 @@ struct MilestoneView: View {
                     .padding(.top, 24)
                     .padding(.bottom, 24)
                     
-                    TypewriterText(texts: welcomeMessages, onCompletion: {
-                        withAnimation(.easeIn(duration: 0.3)) {
-                            showContinueButton = true
-                        }
-                    })
-                    .padding(.horizontal, 35)
+                    VStack {
+                        TypewriterText(texts: welcomeMessages, onCompletion: {
+                            withAnimation(.easeIn(duration: 0.3)) {
+                                showContinueButton = true
+                            }
+                        })
+                        .padding(.horizontal, 35)
+                    }
+                    .frame(height: 80)
                     
                     Spacer()
                     
                     milestoneView
+                        .opacity(milestoneOpacity)
                     
                     Spacer()
                     
@@ -88,7 +93,11 @@ struct MilestoneView: View {
         }
         .navigationBarHidden(true)
         .animation(.easeInOut, value: showNextView)
-
+        .onAppear {
+            withAnimation(.easeIn(duration: 0.8).delay(0.3)) {
+                milestoneOpacity = 1.0
+            }
+        }
     }
     
     var milestoneView: some View {
