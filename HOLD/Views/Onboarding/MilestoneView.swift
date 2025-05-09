@@ -8,9 +8,13 @@ import Foundation
 import SwiftUI
 
 struct MilestoneView: View {
+    @EnvironmentObject private var notificationsManager: NotificationsManager
+    
     @State private var showNextView = false
     @State private var userProfile: UserProfile = UserProfile.load()
     @State private var showContinueButton = false
+    
+    @AppStorage("isNotificationsScheduled") private var isNotificationsScheduled: Bool = false
     
     var milestoneTitle: String = "Milestone 1"
     var progress: Int = 40
@@ -63,6 +67,9 @@ struct MilestoneView: View {
                         Button(action: {
                             showNextView = true
                             UserStorage.isOnboardingDone = true
+                            if !isNotificationsScheduled {
+                                scheduleNotifications()
+                            }
                         }) {
                             Text("Continue")
                                 .font(.system(size: 16, weight: .semibold))
@@ -165,6 +172,12 @@ struct MilestoneView: View {
         )
         .frame(width: 269)
         .shadow(radius: 8)
+    }
+    
+    func scheduleNotifications() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            notificationsManager.requestPermission()
+        }
     }
 }
 

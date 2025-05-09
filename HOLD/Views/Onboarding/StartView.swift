@@ -8,12 +8,8 @@
 import SwiftUI
 
 struct StartView: View {
-    @EnvironmentObject private var notificationsManager: NotificationsManager
-    
     @State private var isStart = false
     @State private var showOnboardingView = false
-    
-    @AppStorage("isNotificationsScheduled") private var isNotificationsScheduled: Bool = false
     
     var body: some View {
         ZStack {
@@ -70,9 +66,6 @@ struct StartView: View {
                         triggerHaptic()
                         if !isStart {
                             isStart = true
-                            if !isNotificationsScheduled {
-                                scheduleNotifications()
-                            }
                         } else  {
                             showOnboardingView = true
                         }
@@ -88,12 +81,6 @@ struct StartView: View {
                     .padding(.bottom, 32)
                 }
             }
-        }
-    }
-    
-    func scheduleNotifications() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            notificationsManager.requestPermission()
         }
     }
 

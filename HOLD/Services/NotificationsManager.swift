@@ -124,6 +124,19 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
             "She said it felt like we were having sex for the first time again",
             "You’re not broken. You’re just untrained"
         ]
+        
+        let descriptions = [
+            "My boyfriend started using Hold two weeks ago. At first, I thought it was another useless app but last night? Let’s just say, I didn’t know he had it in him. Literally changed everything.",
+            "I used to pretend just to get it over with. Then he told me he was using something called Hold. Now? I beg him not to stop. Whoever made this app, thank you.",
+            "Not gonna lie, I was nervous. I always finished way too fast. But after a few sessions with Hold, it just clicked. I finally controlled it. And the look on her face? I’ll never forget it.",
+            "That’s what she whispered after our last session. I didn’t even tell her I was training with Hold. She just knew something was different. Better. Way better.",
+            "I hated the embarrassment. Finishing early kills your confidence. But Hold gave me tools that actually work. I feel in control now and that changes everything.",
+            "Yeah, it was that good. One night, and she wouldn’t shut up about it. Now her group chat’s asking about that app you’re using. Hold’s my secret weapon and I’m proud of it.",
+            "That shift didn’t come overnight. But Hold taught me how to train for real stamina. She notices. I notice. We both leave the bed smiling now.",
+            "It was humiliating. But I didn’t give up. Hold gave me daily routines that built control step by step. Now I take my time and she loves every second.",
+            "It wasn’t magic, it was practice. Hold made me consistent. Focused. Strong. And that moment we locked eyes, both breathless? I knew I was never going back.",
+            "I thought I was the problem. But Hold showed me how to treat my performance like a skill. It’s training, not luck. I took control and it’s the best decision I’ve made for us."
+        ]
 
         let firstLaunch = getFirstLaunchDate()
         let calendar = Calendar.current
@@ -135,8 +148,8 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
             dateComponents.hour = 18
 
             let content = UNMutableNotificationContent()
-            content.title = message.components(separatedBy: "\n").first ?? "Hold Update"
-            content.body = message.components(separatedBy: "\n").dropFirst().joined(separator: " ")
+            content.title = messages[index]
+            content.body = descriptions[index]
             content.sound = .default
 
             let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
@@ -151,7 +164,6 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
     }
     
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        let identifier = response.notification.request.identifier
         completionHandler()
     }
     

@@ -12,7 +12,7 @@ struct MeasurementActivityView: View {
     @EnvironmentObject var progressViewModel: ProgressViewModel
     @State private var hold = false
     @State private var finish = false
-    @State private var holdTime: Int = 0
+    @State private var holdTime: Double = 0
     @State private var hapticTimer: Timer? = nil
     var onBack: (TimeInterval) -> Void
 
@@ -72,7 +72,7 @@ struct MeasurementActivityView: View {
                         hold = false
                         finish = true
                         stopHapticLoop() // stop continous haptic
-                        onBack(Double(holdTime))
+                        onBack(holdTime)
                     }
                 )
                 .padding(.top,106)
@@ -92,11 +92,11 @@ struct MeasurementActivityView: View {
     }
     
     func startHapticLoop() {
-        let generator = UIImpactFeedbackGenerator(style: .medium)
+        let generator = UIImpactFeedbackGenerator(style: .light)
         generator.prepare()
         
-        hapticTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            holdTime += 1
+        hapticTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+            holdTime += 0.1
             generator.impactOccurred()
         }
     }
