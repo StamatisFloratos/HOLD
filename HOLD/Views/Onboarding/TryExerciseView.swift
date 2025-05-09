@@ -86,20 +86,46 @@ struct TryExerciseView: View {
                     switch currentView {
                     case 1:
                         firstView
+                        
                     case 2:
                         secondView
+                            .transition(.asymmetric(
+                                insertion: .move(edge: .trailing),
+                                removal: .move(edge: .leading)
+                            ))
                     case 3:
                         thirdView
+                            .transition(.asymmetric(
+                                insertion: .move(edge: .trailing),
+                                removal: .move(edge: .leading)
+                            ))
                     case 4:
                         fourthView
+                            .transition(.asymmetric(
+                                insertion: .move(edge: .trailing),
+                                removal: .move(edge: .leading)
+                            ))
                     case 5:
                         fifthView
+                            .transition(.asymmetric(
+                                insertion: .move(edge: .trailing),
+                                removal: .move(edge: .leading)
+                            ))
                     case 6:
                         sixthView
+                            .transition(.asymmetric(
+                                insertion: .move(edge: .trailing),
+                                removal: .move(edge: .leading)
+                            ))
                         
                     default:
                         firstView
+                            .transition(.asymmetric(
+                                insertion: .move(edge: .trailing),
+                                removal: .move(edge: .leading)
+                            ))
                     }
+                    
                     
                     Spacer()
                     
@@ -153,6 +179,7 @@ struct TryExerciseView: View {
             }
         }
         .animation(.easeInOut, value: showNextView)
+        .animation(.easeInOut, value: currentView)
     }
     
     var firstView: some View {
