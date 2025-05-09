@@ -65,7 +65,9 @@ struct MilestoneView: View {
                     
                     if showContinueButton {
                         Button(action: {
-                            showNextView = true
+                            withAnimation {
+                                showNextView = true
+                            }
                             UserStorage.isOnboardingDone = true
                             if !isNotificationsScheduled {
                                 scheduleNotifications()
@@ -85,6 +87,8 @@ struct MilestoneView: View {
             }
         }
         .navigationBarHidden(true)
+        .animation(.easeInOut, value: showNextView)
+
     }
     
     var milestoneView: some View {

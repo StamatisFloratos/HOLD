@@ -76,7 +76,9 @@ struct BeforeWeStartView: View {
                     
                     Button(action: {
                         triggerHaptic()
-                        showNextView = true
+                        withAnimation {
+                            showNextView = true
+                        }
                     }) {
                         Text("I’m ready to find PF muscles")
                             .font(.system(size: 16, weight: .semibold))
@@ -93,6 +95,7 @@ struct BeforeWeStartView: View {
                 }
             }
         }
+        .animation(.easeInOut, value: showNextView)
     }
     
     @ViewBuilder

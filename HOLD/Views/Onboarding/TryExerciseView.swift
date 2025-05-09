@@ -107,7 +107,9 @@ struct TryExerciseView: View {
                         Button(action: {
                             triggerHapticOnButton()
                             if currentView == 6 {
-                                showNextView = true
+                                withAnimation {
+                                    showNextView = true
+                                }
                             }
                             currentView += 1
                            
@@ -150,6 +152,7 @@ struct TryExerciseView: View {
                 
             }
         }
+        .animation(.easeInOut, value: showNextView)
     }
     
     var firstView: some View {

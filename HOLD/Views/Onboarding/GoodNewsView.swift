@@ -83,7 +83,9 @@ struct GoodNewsView: View {
                         
                         Button(action: {
                             triggerHaptic()
-                            showNextView = true
+                            withAnimation {
+                                showNextView = true
+                            }
                         }) {
                             Text("Next")
                                 .font(.system(size: 16, weight: .semibold))
@@ -100,6 +102,7 @@ struct GoodNewsView: View {
                 }
             }
         }
+        .animation(.easeInOut, value: showNextView)
     }
     
     func triggerHaptic() {

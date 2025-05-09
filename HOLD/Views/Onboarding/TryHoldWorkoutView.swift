@@ -63,7 +63,9 @@ struct TryHoldWorkoutView: View {
                         
                         Button(action: {
                             triggerHaptic()
-                            showNextView = true
+                            withAnimation {
+                                showNextView = true
+                            }
                         }) {
                             Text("Start Workout")
                                 .font(.system(size: 16, weight: .semibold))
@@ -80,6 +82,7 @@ struct TryHoldWorkoutView: View {
                 }
             }
         }
+        .animation(.easeInOut, value: showNextView)
     }
     
     @ViewBuilder

@@ -126,8 +126,8 @@
             filePath = "HOLD/Views/Onboarding/TryExerciseView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "494"
-            endingLineNumber = "494"
+            startingLineNumber = "497"
+            endingLineNumber = "497"
             landmarkName = "startHoldAnimation()"
             landmarkType = "7">
          </BreakpointContent>

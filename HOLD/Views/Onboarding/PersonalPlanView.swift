@@ -90,10 +90,13 @@ struct PersonalPlanView: View {
         .onChange(of: progress, {
             if Int(progress) == 100 {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    withAnimation {
                         showNextView = true
+                    }
                 }
             }
         })
+        .animation(.easeInOut, value: showNextView)
     }
     
     private func startProgress() {

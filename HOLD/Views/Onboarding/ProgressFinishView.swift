@@ -69,7 +69,9 @@ struct ProgressFinishView: View {
                     
                     Button(action: {
                         triggerHaptic()
-                        showNextView = true
+                        withAnimation {
+                            showNextView = true
+                        }
                     }) {
                         Text("Continue")
                             .font(.system(size: 16, weight: .semibold))
@@ -90,6 +92,8 @@ struct ProgressFinishView: View {
                 animatedProgress = 40
             }
         }
+        .animation(.easeInOut, value: showNextView)
+
     }
     
     func triggerHaptic() {

@@ -138,6 +138,7 @@ struct TutorialWorkoutDetailView: View {
                 triggerHaptic()
             }
         })
+        .animation(.easeInOut, value: finish)
     }
     
     // MARK: Progress Circle
@@ -608,7 +609,9 @@ struct TutorialWorkoutDetailView: View {
             // Workout completed
             WorkoutCompletionManager.saveCompletion(WorkoutCompletion(workoutName: selectedWorkout.name))
             workoutViewModel.updateStreakAfterWorkout()
-            finish = true
+            withAnimation {
+                finish = true
+            }
         }
     }
     

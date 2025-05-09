@@ -87,7 +87,9 @@ struct FindLocationView: View {
                                 Button(action: {
                                     // Handle "Yes" action
                                     triggerHaptic()
-                                    showNextView = true
+                                    withAnimation {
+                                        showNextView = true
+                                    }
                                 }) {
                                     Text("Yes, I did")
                                         .font(.system(size: 16, weight: .bold))
@@ -129,6 +131,7 @@ struct FindLocationView: View {
                 )
             }
         }
+        .animation(.easeInOut, value: showNextView)
     }
     
     private func startProgress() {

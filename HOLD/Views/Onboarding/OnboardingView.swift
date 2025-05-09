@@ -125,7 +125,10 @@ struct OnboardingView: View {
                                 userProfile.age = ageInt
                                 userProfile.save()
                                 
-                                showMainView = true
+                                withAnimation {
+                                    showMainView = true
+                                }
+                                
                             }
                         }) {
                             Text(currentIndex == questions.count - 1 ? "Make Personalized Plan" : "Next")
@@ -143,6 +146,7 @@ struct OnboardingView: View {
                 }
             }
         }
+        .animation(.easeInOut, value: showMainView)
         .navigationBarHidden(true)
         .alert(isPresented: $showValidationAlert) {
             Alert(
@@ -241,7 +245,10 @@ struct OnboardingView: View {
             selections[qid] = [option]
             // Auto-proceed to next question if not first question and no image
             if currentIndex != 0 && question.imageName == nil && currentIndex < questions.count - 1 {
-                currentIndex += 1
+                // Add a small delay to show the selection before proceeding
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    currentIndex += 1
+                }
             }
         }
     }

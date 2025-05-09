@@ -65,9 +65,11 @@ struct StartView: View {
                     Button(action: {
                         triggerHaptic()
                         if !isStart {
-                            isStart = true
+                                isStart = true
                         } else  {
-                            showOnboardingView = true
+                            withAnimation {
+                                showOnboardingView = true
+                            }
                         }
                     }) {
                         Text(isStart ? "Next" : "Start Quiz")
@@ -82,6 +84,7 @@ struct StartView: View {
                 }
             }
         }
+        .animation(.easeInOut, value: showOnboardingView)
     }
 
     private var benefitsView: some View {

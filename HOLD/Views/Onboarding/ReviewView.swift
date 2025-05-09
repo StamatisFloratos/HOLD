@@ -73,7 +73,9 @@ struct ReviewView: View {
                     Spacer()
                     Button(action: {
                         triggerHaptic()
-                        showNextView = true
+                        withAnimation {
+                            showNextView = true
+                        }
                     }) {
                         Text("Continue")
                             .font(.system(size: 16, weight: .semibold))
@@ -95,6 +97,8 @@ struct ReviewView: View {
             }
         }
         .navigationBarHidden(true)
+        .animation(.easeInOut, value: showNextView)
+
     }
     
     func requestReview() {
