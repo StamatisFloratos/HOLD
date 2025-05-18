@@ -47,10 +47,25 @@ struct TryHoldWorkoutView: View {
                             .multilineTextAlignment(.center)
                             .fixedSize(horizontal: false, vertical: true)
                             .padding(.bottom, 8)
-                        Image("Try a HOLD Workout")
-                            .resizable()
-                            .scaledToFit()
-                            .padding(.horizontal,85)
+                        
+                        HStack(spacing: 0) {
+                            Text("Try a ")
+                                .foregroundColor(.white)
+                            + Text("H")
+                                .foregroundColor(.white)
+                            + Text("O")
+                                .foregroundColor(Color(hex: "#BD0005"))
+                            + Text("LD")
+                                .foregroundColor(.white)
+                            + Text(" Workout")
+                                .foregroundColor(.white)
+                        }
+                        .font(.system(size: 24, weight: .bold))
+                        .multilineTextAlignment(.center)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .background(Color.clear)
+                        .padding(.horizontal, 40)
+                        
                         VStack(alignment: .leading, spacing: 18) {
                             benefitRow(text: "Train wherever you are")
                             benefitRow(text: "Takes 2 minutes ")
@@ -76,7 +91,7 @@ struct TryHoldWorkoutView: View {
                                 .padding(.horizontal, 56)
                         }
                         .padding(.bottom, 32)
-                        .padding(.top)
+                        .padding(.top, 50)
                         
                     }
                 }

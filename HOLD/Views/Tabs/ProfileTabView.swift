@@ -151,6 +151,7 @@ struct ProfileTabView: View {
                         }
                         .padding(.vertical)
                     }
+                    .scrollIndicators(.hidden)
                 }
             }
         }

@@ -14,7 +14,6 @@ struct StartView: View {
     var body: some View {
         ZStack {
             AppBackground()
-            
             if showOnboardingView {
                 OnboardingView()
                     .transition(.asymmetric(
@@ -39,25 +38,41 @@ struct StartView: View {
                             .padding(.top,-50)
                             .padding(.bottom,-100)
                     }
-                   
+                    
                     VStack {
                         Spacer()
                         if !isStart {
-                            
-                            Image("startText")
-                                .resizable()
-                                .scaledToFit()
-                                .padding(.horizontal,49)
-                            
-                            benefitsView
-                                .padding(.top,36)
+                            VStack {
+                                HStack(spacing: 0) {
+                                    Text("Men are using ")
+                                        .foregroundColor(.white)
+                                    + Text("H")
+                                        .foregroundColor(.white)
+                                    + Text("O")
+                                        .foregroundColor(Color(red: 189/255, green: 0, blue: 5/255))
+                                    + Text("LD")
+                                        .foregroundColor(.white)
+                                    + Text(" to take back control of their bodies.")
+                                        .foregroundColor(.white)
+                                }
+                                .font(.system(size: 20, weight: .bold))
+                                .multilineTextAlignment(.center)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                                .padding(.horizontal, 40)
+                                
+                                benefitsView
+                                    .padding(.top, 36)
+                            }
+                            .transition(.opacity)
+                            .animation(.easeInOut(duration: 0.5), value: isStart)
                         } else {
-                            
                             Text("Let’s start by taking a quiz to tailor your path to total control.")
                                 .font(.system(size: 20, weight: .bold))
                                 .foregroundColor(.white)
                                 .multilineTextAlignment(.center)
                                 .padding(.horizontal, 25)
+                                .transition(.opacity)
+                                .animation(.easeInOut(duration: 0.5), value: isStart)
                         }
                         Spacer()
                     }
@@ -65,7 +80,9 @@ struct StartView: View {
                     Button(action: {
                         triggerHaptic()
                         if !isStart {
+                            withAnimation {
                                 isStart = true
+                            }
                         } else  {
                             withAnimation {
                                 showOnboardingView = true
@@ -86,7 +103,7 @@ struct StartView: View {
         }
         .animation(.easeInOut, value: showOnboardingView)
     }
-
+    
     private var benefitsView: some View {
         VStack(alignment: .leading, spacing: 18) {
             benefitRow(text: "Strengthen Erections")
@@ -102,7 +119,7 @@ struct StartView: View {
         )
         .frame(width: 222)
     }
-
+    
     @ViewBuilder
     private func benefitRow(text: String) -> some View {
         HStack(spacing: 11) {

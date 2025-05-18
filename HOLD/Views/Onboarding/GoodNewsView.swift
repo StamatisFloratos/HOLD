@@ -8,8 +8,12 @@
 import SwiftUI
 
 struct GoodNewsView: View {
+    @EnvironmentObject private var notificationsManager: NotificationsManager
+    
     @State private var showNextView = false
     @State private var userProfile: UserProfile = UserProfile.load()
+    
+    @AppStorage("isNotificationsScheduled") private var isNotificationsScheduled: Bool = false
 
     var body: some View {
         ZStack {
@@ -58,7 +62,9 @@ struct GoodNewsView: View {
                         Image("goodNewsIcon")
                             .resizable()
                             .scaledToFit()
-                            .padding(.horizontal,61)
+                            .padding(.horizontal, 60)
+                            .padding(.top, 60)
+                            .padding(.bottom, 48)
 //                        Spacer()
                         HStack {
                             Rectangle()
@@ -85,6 +91,9 @@ struct GoodNewsView: View {
                             triggerHaptic()
                             withAnimation {
                                 showNextView = true
+                                if !isNotificationsScheduled {
+                                    scheduleNotifications()
+                                }
                             }
                         }) {
                             Text("Next")
@@ -109,6 +118,12 @@ struct GoodNewsView: View {
         let generator = UIImpactFeedbackGenerator(style: .light)
         generator.prepare()
         generator.impactOccurred()
+    }
+    
+    func scheduleNotifications() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            notificationsManager.requestPermission()
+        }
     }
 }
 

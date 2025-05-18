@@ -45,8 +45,8 @@ struct TryExerciseView: View {
     
     let haptics = HapticManager()
     
-    
-    
+    @State private var shakeTrigger: CGFloat = 0
+    @State private var trembleTimer: Timer?
     
     var body: some View {
         ZStack {
@@ -140,13 +140,23 @@ struct TryExerciseView: View {
                             currentView += 1
                            
                         }) {
-                            Text(isFirstView ? "Start Workout":"Try Exercise")
-                                .font(.system(size: 16, weight: .semibold))
-                                .frame(maxWidth: .infinity, maxHeight: 47)
-                                .background(Color(hex: "#FF1919"))
-                                .foregroundColor(.white)
-                                .cornerRadius(30)
-                                .padding(.horizontal, 56)
+                            if currentView == 1 || currentView == 6 {
+                                Text("Start Workout")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .frame(maxWidth: .infinity, maxHeight: 47)
+                                    .background(Color(hex: "#FF1919"))
+                                    .foregroundColor(.white)
+                                    .cornerRadius(30)
+                                    .padding(.horizontal, 56)
+                            } else {
+                                Text("Try Exercise")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .frame(maxWidth: .infinity, maxHeight: 47)
+                                    .background(Color(hex: "#FF1919"))
+                                    .foregroundColor(.white)
+                                    .cornerRadius(30)
+                                    .padding(.horizontal, 56)
+                            }
                         }
                         .padding(.bottom, 32)
                     } else {
@@ -199,6 +209,7 @@ struct TryExerciseView: View {
                 .multilineTextAlignment(.leading)
         }
         .padding(.horizontal,35)
+        .padding(.bottom, 100)
     }
     
     var secondView: some View {
@@ -220,10 +231,12 @@ struct TryExerciseView: View {
                 .multilineTextAlignment(.leading)
         }
         .padding(.horizontal,35)
+        .padding(.bottom, 100)
     }
     
     var thirdView: some View {
         // Progress circle with counter
+        
         VStack(spacing:0) {
             GeometryReader { geometry in
                 ZStack(alignment: .center) {
@@ -234,17 +247,19 @@ struct TryExerciseView: View {
                     // Outer glow circle
                     Circle()
                         .fill(
-                            RadialGradient(
-                                gradient: Gradient(colors: [Color(hex: "#990F0F"), Color(hex: "#FF0000")]),
-                                center: .center,
-                                startRadius: 50,
-                                endRadius: 70
+                            EllipticalGradient(
+                                stops: [
+                                    Gradient.Stop(color: Color(red: 0.6, green: 0.06, blue: 0.06).opacity(0), location: 0.51),
+                                    Gradient.Stop(color: Color(red: 1, green: 0.1, blue: 0.1), location: 1.00),
+                                ],
+                                center: UnitPoint(x: 0.5, y: 0.5)
                             )
                         )
                         .frame(width: 152, height: 152)
                         .position(x: centerX, y: centerY)
                         .scaleEffect(isExpanded ? 1.7 : 1)
-                        .offset(x: isTrembling ? trembleOffset : 0)
+                        .modifier(ShakeEffect(animatableData: shakeTrigger))
+                        .animation(.easeInOut(duration: 0.5), value: isExpanded)
                     
                     // Inner dark circle - explicitly positioned
                     Circle()
@@ -282,7 +297,7 @@ struct TryExerciseView: View {
                     .font(.system(size: 20, weight: .semibold))
                     .foregroundColor(.white)
                 
-                Rectangle()
+                RoundedRectangle(cornerRadius: 5)
                     .fill(Color.white)
                     .frame(height: 4)
                     .frame(width: 60)
@@ -305,25 +320,26 @@ struct TryExerciseView: View {
             contractOrExpandText = "Contract"
             
             progress = 0
-            totalTimeRemaining = 10
+            totalTimeRemaining = 8
             
             startTimer()
             startHoldAnimation()
         }
         .onChange(of: totalTimeRemaining, {
             if (totalTimeRemaining < Double(1) && currentView == 3) {
-                currentView = 4
                 stopTimer()
                 stopHoldTimer()
-                withAnimation(.easeOut(duration: 1)) {
+                withAnimation(.easeIn(duration: 0.5)) {
                     isExpanded = false
                 }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                    currentView = 4
+                })
             }
         })
-        .onChange(of: isTrembling, {
-            if currentView == 3 && isTrembling {
-                triggerHaptic()
-            }
+        .onChange(of: shakeTrigger, {
+            triggerHaptic()
         })
     }
     
@@ -340,12 +356,13 @@ struct TryExerciseView: View {
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
             
-            Text("When the circle expands—**contract** your pelvic floor muscle.\nWhen it shrinks—**release**.\nFollow the **rhythm** on screen. **Quick.**\n **Controlled. Sharp.**")
+            Text("When the circle expands—**contract** your pelvic floor muscle.\nWhen it shrinks—**release**.\nFollow the **rhythm** on screen. **Quick.**\n**Controlled. Sharp.**")
                 .font(.system(size: 16, weight: .regular))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.leading)
         }
         .padding(.horizontal,35)
+        .padding(.bottom, 100)
     }
     
     var fifthView : some View {
@@ -360,17 +377,18 @@ struct TryExerciseView: View {
                     // Outer glow circle
                     Circle()
                         .fill(
-                            RadialGradient(
-                                gradient: Gradient(colors: [Color(hex: "#990F0F"), Color(hex: "#FF0000")]),
-                                center: .center,
-                                startRadius: 50,
-                                endRadius: 70
+                            EllipticalGradient(
+                                stops: [
+                                    Gradient.Stop(color: Color(red: 0.6, green: 0.06, blue: 0.06).opacity(0), location: 0.51),
+                                    Gradient.Stop(color: Color(red: 1, green: 0.1, blue: 0.1), location: 1.00),
+                                ],
+                                center: UnitPoint(x: 0.5, y: 0.5)
                             )
                         )
                         .frame(width: 152, height: 152)
                         .position(x: centerX, y: centerY)
                         .scaleEffect(isExpanded ? 1.7 : 1)
-                        .offset(x: isTrembling ? trembleOffset : 0)
+                        .animation(.easeInOut(duration: 0.5), value: isExpanded)
                     
                     // Inner dark circle - explicitly positioned
                     Circle()
@@ -409,7 +427,7 @@ struct TryExerciseView: View {
                     .font(.system(size: 20, weight: .semibold))
                     .foregroundColor(.white)
                 
-                Rectangle()
+                RoundedRectangle(cornerRadius: 5)
                     .fill(Color.white)
                     .frame(height: 4)
                     .frame(width: 60)
@@ -440,12 +458,15 @@ struct TryExerciseView: View {
         }
         .onChange(of: totalTimeRemaining, {
             if (totalTimeRemaining < Double(1) && currentView == 5) {
-                currentView = 6
                 stopTimer()
                 stopRepTimer()
-                withAnimation(.easeOut(duration: 1)) {
+                withAnimation(.easeIn(duration: 0.5)) {
                     isExpanded = false
                 }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                    currentView = 6
+                })
             }
         })
     }
@@ -502,71 +523,29 @@ struct TryExerciseView: View {
             }
         }
         .padding(.horizontal,35)
+        .padding(.bottom, 100)
     }
     
-    //MARK: Timers
     func startHoldAnimation() {
         stopRepTimer()
         stopHoldTimer()
-        currentHoldTime = 0 // Reset the timer
-        holdDuration = 10
-        
-        // Step 1: Expand the circle in the start
-        withAnimation(.easeOut(duration: 1)) {
+
+        holdDuration = 8
+        holdProgress = 0
+
+        withAnimation(.easeOut(duration: 0.5)) {
             isExpanded = true
         }
-        
-        
-        // Tremble after delay
-        holdTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-            print(currentHoldTime)
-            if totalTimeRemaining == Double(1) {
-                stopHoldTimer()
-                return
-            }
-            
-            // Tremble animation
-            isTrembling = true
-            withAnimation(.linear(duration: 0.1).repeatCount(10, autoreverses: true)) {
-                trembleOffset = 6
-            }
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                withAnimation(.linear(duration: 0.05)) {
-                    trembleOffset = 0
-                    isTrembling = false
-                }
-            }
-            
-            currentHoldTime += 1
-        }
-    }
-    
-    func pauseHoldAnimation() {
-        stopHoldTimer()
-    }
-    
-    func resumeHoldAnimation() {
-        // Start from where we left off
+
+        startTrembleLoop()
+
         holdTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
             guard totalTimeRemaining > 0 else {
                 stopHoldTimer()
+                stopTrembleLoop()
                 return
             }
-            
-            // Tremble animation
-            isTrembling = true
-            withAnimation(.linear(duration: 0.1).repeatCount(10, autoreverses: true)) {
-                trembleOffset = 6
-            }
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                withAnimation(.linear(duration: 0.05)) {
-                    trembleOffset = 0
-                    isTrembling = false
-                }
-            }
-            
+
             currentHoldTime += 1
             holdProgress = Double(currentHoldTime) / Double(holdDuration)
         }
@@ -575,6 +554,40 @@ struct TryExerciseView: View {
     func stopHoldTimer() {
         holdTimer?.invalidate()
         holdTimer = nil
+        stopTrembleLoop()
+    }
+    
+    func startTrembleLoop() {
+        trembleTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+            withAnimation(.linear(duration: 0.1)) {
+                shakeTrigger += 1
+            }
+        }
+    }
+
+    func stopTrembleLoop() {
+        shakeTrigger = 0
+        trembleTimer?.invalidate()
+        trembleTimer = nil
+    }
+    
+    func resumeHoldAnimation() {
+        startTrembleLoop()
+
+        holdTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            guard totalTimeRemaining > 0 else {
+                stopHoldTimer()
+                stopTrembleLoop()
+                return
+            }
+
+            currentHoldTime += 1
+            holdProgress = Double(currentHoldTime) / Double(holdDuration)
+        }
+    }
+    
+    func pauseHoldAnimation() {
+        stopHoldTimer()
     }
     
     // MARK: Repetition Animation
@@ -582,10 +595,9 @@ struct TryExerciseView: View {
         stopRepTimer()
         stopHoldTimer()
 
-//        let rhythm = currentExercise.getRhythmParameters()
         currentRep = 0
-        repDuration = 0.5
-        totalReps = 18
+        repDuration = 1
+        totalReps = 8
         repProgress = 0
         repPhase = .contract
         contractOrExpandText = "Contract" // Ensure we start with contract
@@ -601,8 +613,7 @@ struct TryExerciseView: View {
         contractOrExpandText = "Contract"
         repPhase = .contract
         
-        haptics.playRampUpHaptic(duration: halfDuration)
-        
+        haptics.playRampUpHaptic(duration: repDuration)
         withAnimation(.easeInOut(duration: halfDuration)) {
             isExpanded = true
         }
@@ -621,7 +632,7 @@ struct TryExerciseView: View {
             self.repTimer = Timer.scheduledTimer(withTimeInterval: halfDuration, repeats: false) { _ in
                 self.currentRep += 1
                 
-                if self.currentRep < self.totalReps && self.totalTimeRemaining > 0 {
+                if self.totalTimeRemaining > 0 {
                     self.startNextRep()
                 }
             }
@@ -630,10 +641,7 @@ struct TryExerciseView: View {
     
     func pauseRepetitionAnimation() {
         stopRepTimer()
-        
-        if repPhase == .contract {
-            haptics.pauseHaptic()
-        }
+        haptics.pauseHaptic()
     }
     
     func resumeRepetitionAnimation() {
@@ -643,9 +651,10 @@ struct TryExerciseView: View {
         let currentPhaseTimeRemaining: Double
         let totalPhaseTime = halfDuration
         
+        haptics.resumeHaptic()
+        
         if repPhase == .contract {
             // If we're in contract phase, calculate remaining time in this phase
-            haptics.resumeHaptic()
             
             let contractProgress = repProgress * 2 // Scale to get progress within just this phase (0-1)
             currentPhaseTimeRemaining = totalPhaseTime * (1 - contractProgress)
@@ -674,13 +683,11 @@ struct TryExerciseView: View {
                     self.isExpanded = false
                 }
                 
-                self.haptics.stopHaptic()
-                
                 // Schedule next rep
                 self.repTimer = Timer.scheduledTimer(withTimeInterval: halfDuration, repeats: false) { _ in
                     self.currentRep += 1
                     
-                    if self.currentRep < self.totalReps && self.totalTimeRemaining > 0 {
+                    if self.totalTimeRemaining > 0 {
                         self.startNextRep()
                     }
                 }
@@ -696,7 +703,7 @@ struct TryExerciseView: View {
             repTimer = Timer.scheduledTimer(withTimeInterval: currentPhaseTimeRemaining, repeats: false) { _ in
                 self.currentRep += 1
                 
-                if self.currentRep < self.totalReps && self.totalTimeRemaining > 0 {
+                if self.totalTimeRemaining > 0 {
                     self.startNextRep()
                 }
             }
@@ -724,41 +731,27 @@ struct TryExerciseView: View {
                 switch isHoldExercise {
                 case true:
                     withAnimation {
-                        self.progress = 1.0 - ((self.totalTimeRemaining - 1) / Double(9))
+                        self.progress = 1.0 - ((self.totalTimeRemaining - 1) / Double(7))
                     }
                 case false:
-                    let totalDuration = Double(18) * 0.5
+                    let totalDuration = Double(8)
                     withAnimation {
                         self.progress = 1.0 - ((self.totalTimeRemaining - 1) / Double(totalDuration - 1))
                     }
                     
                     // Calculate remaining reps properly
                     let completedTime = totalDuration - self.totalTimeRemaining
-                    let completedReps = Int(floor(completedTime / 0.5))
-                    self.totalRepsRemaining = max(1, 18 - completedReps)
+                    let completedReps = Int(floor(completedTime / 1))
+                    self.totalRepsRemaining = max(0, 8 - completedReps)
                     
                     // Update rep progress for pause/resume functionality
-                    let currentRepTime = completedTime.truncatingRemainder(dividingBy: 0.5)
-                    self.repProgress = currentRepTime / 0.5
-                    
-                    // Only update phase when not paused to avoid state inconsistency
-                    if !self.isPaused {
-                        // Update phase based on progress (only when not paused)
-                        let newPhase: RepPhase = self.repProgress < 0.5 ? .contract : .relax
-                        
-                        // Only update if phase changed to prevent unnecessary UI updates
-                        if self.repPhase != newPhase {
-                            self.repPhase = newPhase
-                            self.contractOrExpandText = newPhase == .contract ? "Contract" : "Relax"
-                        }
-                    }
-                    
+                    let currentRepTime = completedTime
+                    self.repProgress = currentRepTime / 1
                 }
                 
                 // If time is up (exactly zero or less), complete exercise
                 if self.totalTimeRemaining <= 0.05 { // Use small threshold to prevent
                     self.totalTimeRemaining = 0
-//                    self.exerciseCompleted()
                 }
             }
         }

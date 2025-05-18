@@ -79,11 +79,32 @@ struct ProgressTabView: View {
         let progress = (currentValue - minValue) / (maxValue - minValue)
 
         return VStack(spacing: 6) {
-            // Progress slider visualization with moving triangle
-            VStack(spacing:0) {
-                // Moving triangle
+            ZStack(alignment: .top) {
+                VStack(spacing: 0) {
+                    Rectangle()
+                        .fill(Color.clear)
+                        .frame(height: 35)
+                    
+                    ZStack {
+                        LinearGradient(
+                            colors: [Color(hex: "FF0000"), Color(hex: "FFC800"), Color(hex: "00FF09")],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                        .frame(height: 33)
+                        .cornerRadius(20)
+                        HStack {
+                            Text("😭")
+                                .font(.title)
+                            Spacer()
+                            Text("😩")
+                                .font(.title)
+                        }
+                    }
+                }
+                
                 GeometryReader { geo in
-                    VStack(spacing:2) {
+                    VStack(spacing: 2) {
                         Text("You")
                             .font(.system(size: 16, weight: .semibold))
                             .foregroundColor(.white)
@@ -91,27 +112,10 @@ struct ProgressTabView: View {
                             .foregroundColor(.white)
                             .rotationEffect(.degrees(180))
                     }
-                    .offset(x: progress * (geo.size.width - 20))                              // 20 is to avoid going out of bounds
-                }.frame(height: 33)
-                
-                ZStack {
-                    LinearGradient(
-                        colors: [Color(hex: "FF0000"), Color(hex: "FFC800"), Color(hex: "00FF09")],
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                    .frame(height: 33)
-                    .cornerRadius(20)
-                    // Emoji ends
-                    HStack {
-                        Text("😭")
-                            .font(.title)
-                        Spacer()
-                        Text("😩")
-                            .font(.title)
-                    }
-                }.padding(.top,2)
+                    .offset(x: progress * (geo.size.width - 20))
+                }
             }
+            .frame(height: 68)
             
             HStack {
                 Text("\(Int(minValue)) sec")
@@ -125,10 +129,9 @@ struct ProgressTabView: View {
                     .foregroundColor(.white)
             }
         }
-        .padding(.horizontal,28)
+        .padding(.horizontal, 28)
         .padding(.top, 16)
         .padding(.bottom, 31)
-
     }
 
     

@@ -38,6 +38,4 @@ struct SplashView: View {
 #Preview {
     SplashView()
         .environmentObject(NavigationManager())
-//        .environmentObject(OnboardingData())
-//        .environmentObject(PaywallViewModel())
 }

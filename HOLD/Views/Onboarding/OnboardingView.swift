@@ -9,10 +9,14 @@ struct OnboardingView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     @State private var showMainView = false
     
+    // Add this state to track the direction of transitions
+    @State private var slideFromRight = true
+    
     private let questions = OnboardingQuestion.sampleScreens
     
     @State private var showValidationAlert: Bool = false
     @State private var validationMessage: String = ""
+    @State private var userProfile = UserProfile.load()
     
     var body: some View {
         ZStack {
@@ -38,58 +42,76 @@ struct OnboardingView: View {
                         .padding(.top, 32)
                         .padding(.bottom, 49)
                     
-                    // Title & Subtitle
-                    if questions[currentIndex].title != "" {
-                        Text(questions[currentIndex].title)
-                            .font(.system(size: 20, weight: .bold))
-                            .foregroundColor(.white)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, 24)
-                    } else {
-                        Image("questionText")
-                            .resizable()
-                            .scaledToFit()
-                            .padding(.horizontal, 54)
-                    }
-                    
-                    if let subtitle = questions[currentIndex].subtitle {
-                        Text(subtitle)
-                            .font(.system(size: 16, weight: .regular))
-                            .foregroundColor(.white)
-                            .multilineTextAlignment(.center)
-                            .padding(.top, 30)
-                            .padding(.horizontal, 24)
-                    }
-                    
-                    // Image (if any)
-                    if let imageName = questions[currentIndex].imageName {
-                        Image(imageName)
-                            .resizable()
-                            .scaledToFit()
-                            .padding(.horizontal,42)
-                            .padding(.top, 32)
-                    }
-                    
-                    //                Spacer()
-                    
-                    // Options, Text Fields, or Info
-                    if currentIndex == questions.count - 1 {
-                        // Last question with text fields
-                        VStack(spacing: 20) {
-//                            TextField("Name", text: $name)
-                                
-                                
-                            CustomTextField(placeholder: "Name", text: $name)
-                                .padding(.horizontal, 33)
-                                .foregroundColor(Color.white)
+                    // Content container with transition
+                    ZStack {
+                        // Title & Subtitle with ID for transition
+                        VStack {
+                            if questions[currentIndex].title != "" {
+                                Text(questions[currentIndex].title)
+                                    .font(.system(size: 20, weight: .bold))
+                                    .foregroundColor(.white)
+                                    .multilineTextAlignment(.center)
+                                    .padding(.horizontal, 24)
+                            } else {
+                                HStack(spacing: 0) {
+                                    Text("The ")
+                                        .foregroundColor(.white)
+                                    + Text("H")
+                                        .foregroundColor(.white)
+                                    + Text("O")
+                                        .foregroundColor(Color(hex: "#BD0005"))
+                                    + Text("LD")
+                                        .foregroundColor(.white)
+                                    + Text(" program is better than pills.")
+                                        .foregroundColor(.white)
+                                }
+                                .font(.system(size: 20, weight: .bold))
+                                .multilineTextAlignment(.center)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                                .background(Color.clear)
+                                .padding(.horizontal, 40)
+                            }
                             
-                            CustomTextField(placeholder: "Age", text: $age)
-                                .keyboardType(.numberPad)
-                                .padding(.horizontal, 33)
+                            if let subtitle = questions[currentIndex].subtitle {
+                                Text(subtitle)
+                                    .font(.system(size: 16, weight: .regular))
+                                    .foregroundColor(.white)
+                                    .multilineTextAlignment(.center)
+                                    .padding(.top, 30)
+                                    .padding(.horizontal, 24)
+                            }
+                            
+                            // Image (if any)
+                            if let imageName = questions[currentIndex].imageName {
+                                Image(imageName)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .padding(.horizontal, 42)
+                                    .padding(.top, 32)
+                            }
+                            
+                            // Options, Text Fields, or Info
+                            if currentIndex == questions.count - 1 {
+                                // Last question with text fields
+                                VStack(spacing: 20) {
+                                    CustomTextField(placeholder: "Name", text: $name)
+                                        .padding(.horizontal, 33)
+                                        .foregroundColor(Color.white)
+                                    
+                                    CustomTextField(placeholder: "Age", text: $age)
+                                        .keyboardType(.numberPad)
+                                        .padding(.horizontal, 33)
+                                }
+                                .padding(.top, 30)
+                            } else if !questions[currentIndex].options.isEmpty {
+                                optionsView(for: questions[currentIndex])
+                            }
                         }
-                        .padding(.top, 30)
-                    } else if !questions[currentIndex].options.isEmpty {
-                        optionsView(for: questions[currentIndex])
+                        .id("question_\(currentIndex)") // Unique ID for transition
+                        .transition(.asymmetric(
+                            insertion: .move(edge: slideFromRight ? .trailing : .leading),
+                            removal: .move(edge: slideFromRight ? .leading : .trailing)
+                        ))
                     }
                     
                     Spacer()
@@ -99,7 +121,11 @@ struct OnboardingView: View {
                         Button(action: {
                             triggerHaptic()
                             if currentIndex < questions.count - 1 {
-                                currentIndex += 1
+                                // Set direction for next question
+                                slideFromRight = true
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    currentIndex +=  1
+                                }
                             } else {
                                 // Handle completion (e.g., save answers, navigate away)
                                 guard !name.isEmpty else {
@@ -120,7 +146,6 @@ struct OnboardingView: View {
                                     return
                                 }
 
-                                var userProfile = UserProfile.load()
                                 userProfile.name = name
                                 userProfile.age = ageInt
                                 userProfile.save()
@@ -128,7 +153,6 @@ struct OnboardingView: View {
                                 withAnimation {
                                     showMainView = true
                                 }
-                                
                             }
                         }) {
                             Text(currentIndex == questions.count - 1 ? "Make Personalized Plan" : "Next")
@@ -140,6 +164,7 @@ struct OnboardingView: View {
                                 .cornerRadius(30)
                                 .padding(.horizontal, 56)
                         }
+                        .padding(.top, 15)
                         .padding(.bottom, 32)
                         .disabled(!canProceed(for: questions[currentIndex]))
                     }
@@ -163,21 +188,21 @@ struct OnboardingView: View {
             ZStack(alignment: .leading) {
                 Capsule()
                     .frame(height: 13)
-                    .foregroundColor(Color(hex: "#525252"))
-                withAnimation {
-                    Capsule()
-                        .frame(width: geo.size.width * progress, height: 13)
-                        .foregroundStyle(
-                            LinearGradient(
-                                gradient: Gradient(colors: [
-                                    Color(hex: "#FF1919"),
-                                    Color(hex: "#990F0F")
-                                ]),
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
+                    .foregroundColor(Color(hex: "#393939"))
+                
+                Capsule()
+                    .frame(width: geo.size.width * progress, height: 13)
+                    .foregroundStyle(
+                        LinearGradient(
+                            gradient: Gradient(colors: [
+                                Color(hex: "#990F0F"),
+                                Color(hex: "#FF1919")
+                            ]),
+                            startPoint: .leading,
+                            endPoint: .trailing
                         )
-                }
+                    )
+                    .animation(.easeInOut(duration: 0.3), value: currentIndex)
             }
         }
         .frame(height: 13)
@@ -197,8 +222,9 @@ struct OnboardingView: View {
                             Text(option)
                                 .font(.system(size: 17, weight: .semibold))
                                 .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 16)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .frame(height: 58)
+                                .padding(.horizontal, 16)
                                 .background(
                                     selected(for: question, option: option) ?
                                     LinearGradient(
@@ -211,8 +237,7 @@ struct OnboardingView: View {
                                     ) :
                                     LinearGradient(
                                         gradient: Gradient(colors: [
-                                            Color(hex: "#525252"),
-                                            Color(hex: "#525252")
+                                            Color(hex: "#393939")
                                         ]),
                                         startPoint: .leading,
                                         endPoint: .trailing
@@ -226,6 +251,7 @@ struct OnboardingView: View {
             .padding(.horizontal, 33)
             .padding(.top, 30)
         }
+        .scrollIndicators(.hidden)
     }
     
     private func handleSelection(for question: OnboardingQuestion, option: String) {
@@ -247,7 +273,11 @@ struct OnboardingView: View {
             if currentIndex != 0 && question.imageName == nil && currentIndex < questions.count - 1 {
                 // Add a small delay to show the selection before proceeding
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    currentIndex += 1
+                    // Set direction for auto-proceed
+                    slideFromRight = true
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                        currentIndex += 1
+                    }
                 }
             }
         }
@@ -259,7 +289,6 @@ struct OnboardingView: View {
     
     private func canProceed(for question: OnboardingQuestion) -> Bool {
         if question.options.isEmpty {
-            
             return true
         }
         else if currentIndex == questions.count - 1 {
@@ -280,11 +309,13 @@ struct OnboardingView: View {
 struct CustomTextFieldStyle: TextFieldStyle {
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
-            .padding()
-            .background(Color(hex: "#525252").opacity(0.5))
+            .padding(.horizontal, 16)
+            .frame(height: 58, alignment: .leading)
+            .background(Color(hex: "#393939"))
             .cornerRadius(16)
             .foregroundColor(.white)
             .font(.system(size: 16, weight: .semibold))
+            .multilineTextAlignment(.leading)
             .overlay(
                 RoundedRectangle(cornerRadius: 16)
                     .stroke(Color(hex:"#FFF6F6").opacity(0.5), lineWidth: 1)
@@ -302,16 +333,17 @@ struct CustomTextField: View {
     var body: some View {
         ZStack(alignment: .leading) {
             // Custom placeholder only shown when not focused and text is empty
+
+            TextField("", text: $text)
+                .textFieldStyle(CustomTextFieldStyle())
+                .focused($isFocused)
+            
             if text.isEmpty && !isFocused {
                 Text(placeholder)
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(.white)
                     .padding(.horizontal, 16)
             }
-
-            TextField("", text: $text)
-                .textFieldStyle(CustomTextFieldStyle())
-                .focused($isFocused)
         }
     }
 }

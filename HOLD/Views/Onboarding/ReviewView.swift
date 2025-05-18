@@ -69,7 +69,15 @@ struct ReviewView: View {
                                 .scaledToFit()
                         }
                         .padding(.horizontal,44)
+                        .padding(.bottom, 100)
                     }
+                    .scrollIndicators(.hidden)
+                    
+                    Spacer()
+                }
+                .ignoresSafeArea()
+                
+                VStack {
                     Spacer()
                     Button(action: {
                         triggerHaptic()
@@ -86,8 +94,7 @@ struct ReviewView: View {
                             .cornerRadius(30)
                     }
                     .padding(.horizontal, 50)
-                    .padding(.bottom, 15)
-                    .padding(.top, 10)
+                    .padding(.bottom, 10)
                 }
             }
         }

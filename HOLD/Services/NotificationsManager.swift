@@ -16,8 +16,6 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
     @Published var isAuthorized = false
     @Published var notificationsEnabled = true
     private let notificationCenter = UNUserNotificationCenter.current()
-
-    @State private var userProfile: UserProfile = UserProfile.load()
     
     @AppStorage("isNotificationsScheduled") private var isNotificationsScheduled: Bool = false
     
@@ -98,6 +96,8 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
     }
 
     private func scheduleDailyReminder() {
+        let userProfile = UserProfile.load()
+        
         let content = UNMutableNotificationContent()
         content.title = "\(userProfile.name), Today's workout is ready"
         content.body = "Rome wasn't built in a day, neither did anyone's stamina. Come do a 5 min workout!"

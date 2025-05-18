@@ -69,7 +69,7 @@ extension OnboardingQuestion {
             imageName: nil
         ),
          OnboardingQuestion(
-            title: "Your ability to last longer depends depends on the strength and control over your pelvic floor muscle.",
+            title: "Your ability to last longer depends on the strength and control over your pelvic floor muscle.",
             subtitle: "Strong pelvic floor muscles are the key to delaying ejaculation and to lasting in bed as long as you wish. You can have complete control.",
             allowsMultipleSelection: false,
             options: [],

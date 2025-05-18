@@ -116,17 +116,21 @@ struct ChallengeRankView: View {
     var rankView: some View {
         VStack(spacing:0) {
             if let latestChallengeResult = challengeViewModel.latestChallengeResult {
-                Image(latestChallengeResult.rankImage)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(height: 208)
                 ZStack {
                     LinearGradient(
                         colors: latestChallengeResult.backgroundColor,
                         startPoint: .top,
                         endPoint: .bottom
                     )
+                    
                     VStack(spacing:0){
+                        Image(latestChallengeResult.rankImage)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(height: 208)
+                        
+                        Spacer()
+                        
                         Text("Duration")
                             .font(.system(size: 20, weight: .semibold))
                             .foregroundColor((latestChallengeResult.rank == .npc || latestChallengeResult.rank == .simp) ? .black : .white)
@@ -146,9 +150,10 @@ struct ChallengeRankView: View {
                             .foregroundColor((latestChallengeResult.rank == .npc || latestChallengeResult.rank == .simp) ? .black : .white)
                             .padding(.top,0)
                         
+                        Spacer()
                     }
                     
-                }.frame(height: 164)
+                }.frame(height: 372)
             }
                 
         }.frame(width: 289)

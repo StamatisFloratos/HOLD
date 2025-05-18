@@ -31,8 +31,7 @@ struct WorkoutView: View {
                 if let selectedWorkout = workoutViewModel.todaysWorkout {
                     WorkoutDetailView(selectedWorkout: selectedWorkout, onBack: {
                         withAnimation {
-                            showWorkoutDetail = false
-                            showWorkoutFinish = true
+                            onBack()
                         }
                     })
                     .transition(.asymmetric(
@@ -41,20 +40,6 @@ struct WorkoutView: View {
                     ))
                     .zIndex(1)
                 }
-            }
-            
-            if showWorkoutFinish {
-                WorkoutFinishView(onBack: {
-                    withAnimation {
-                        showWorkoutFinish = false
-                        onBack()
-                    }
-                })
-                .transition(.asymmetric(
-                    insertion: .move(edge: .trailing),
-                    removal: .move(edge: .bottom)
-                ))
-                .zIndex(2)
             }
         }
         .navigationBarHidden(true)

@@ -26,8 +26,6 @@ struct TutorialWorkoutDetailView: View {
     
     // Animation state tracking
     @State private var isExpanded = false
-    @State private var isTrembling = false
-    @State private var trembleOffset: CGFloat = 0
     
     // Rep tracking
     @State private var currentRep = 0
@@ -45,10 +43,11 @@ struct TutorialWorkoutDetailView: View {
 
     @State private var contractOrExpandText = "Contract"
     @State private var isStartExercise = false
+    
+    @State private var shakeTrigger: CGFloat = 0
+    @State private var trembleTimer: Timer?
 
     let haptics = HapticManager()
-    
-    
     
     var body: some View {
         ZStack {
@@ -105,19 +104,6 @@ struct TutorialWorkoutDetailView: View {
                         }
                         .padding(.bottom, 40)
                     }
-                    
-                    LinearGradient(
-                        gradient: Gradient(stops: [
-                            .init(color: Color(hex: "#10171F").opacity(0.3), location: 0),
-                            .init(color: Color.clear, location: 0.15),
-                            .init(color: Color.clear, location: 0.85),
-                            .init(color: Color(hex: "#10171F").opacity(0.3), location: 1)
-                        ]),
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                    .allowsHitTesting(false)
-                    .ignoresSafeArea()
                 }
             }
         }
@@ -133,8 +119,8 @@ struct TutorialWorkoutDetailView: View {
                 pauseAllAnimations()
             }
         }
-        .onChange(of: isTrembling, {
-            if currentExercise.type == .hold && isTrembling {
+        .onChange(of: shakeTrigger, {
+            if currentExercise.type == .hold {
                 triggerHaptic()
             }
         })
@@ -154,17 +140,18 @@ struct TutorialWorkoutDetailView: View {
                 if currentExercise.type != .rest {
                     Circle()
                         .fill(
-                            RadialGradient(
-                                gradient: Gradient(colors: [Color(hex: "#990F0F"), Color(hex: "#FF0000")]),
-                                center: .center,
-                                startRadius: 50,
-                                endRadius: 70
+                            EllipticalGradient(
+                                stops: [
+                                    Gradient.Stop(color: Color(red: 0.6, green: 0.06, blue: 0.06).opacity(0), location: 0.51),
+                                    Gradient.Stop(color: Color(red: 1, green: 0.1, blue: 0.1), location: 1.00),
+                                ],
+                                center: UnitPoint(x: 0.5, y: 0.5)
                             )
                         )
                         .frame(width: 152, height: 152)
                         .position(x: centerX, y: centerY)
                         .scaleEffect(isExpanded ? 1.7 : 1)
-                        .offset(x: isTrembling ? trembleOffset : 0)
+                        .modifier(ShakeEffect(animatableData: shakeTrigger))
                         .animation(.easeInOut(duration: 0.5), value: isExpanded)
                 }
                 
@@ -232,69 +219,26 @@ struct TutorialWorkoutDetailView: View {
         }
     }
     
-    // MARK: Hold Animation
     func startHoldAnimation() {
         stopRepTimer()
         stopHoldTimer()
-        
+
         holdDuration = currentExercise.seconds ?? 10
         holdProgress = 0
-        
-        // Start with the circle already expanded
+
         withAnimation(.easeOut(duration: 0.5)) {
             isExpanded = true
         }
-        
-        // Tremble after delay
+
+        startTrembleLoop()
+
         holdTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
             guard totalTimeRemaining > 0 else {
                 stopHoldTimer()
+                stopTrembleLoop()
                 return
             }
-            
-            // Tremble animation
-            isTrembling = true
-            withAnimation(.linear(duration: 0.1).repeatCount(10, autoreverses: true)) {
-                trembleOffset = 6
-            }
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                withAnimation(.linear(duration: 0.05)) {
-                    trembleOffset = 0
-                    isTrembling = false
-                }
-            }
-            
-            currentHoldTime += 1
-            holdProgress = Double(currentHoldTime) / Double(holdDuration)
-        }
-    }
-    
-    func pauseHoldAnimation() {
-        stopHoldTimer()
-    }
-    
-    func resumeHoldAnimation() {
-        // Start from where we left off
-        holdTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-            guard totalTimeRemaining > 0 else {
-                stopHoldTimer()
-                return
-            }
-            
-            // Tremble animation
-            isTrembling = true
-            withAnimation(.linear(duration: 0.1).repeatCount(10, autoreverses: true)) {
-                trembleOffset = 6
-            }
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                withAnimation(.linear(duration: 0.05)) {
-                    trembleOffset = 0
-                    isTrembling = false
-                }
-            }
-            
+
             currentHoldTime += 1
             holdProgress = Double(currentHoldTime) / Double(holdDuration)
         }
@@ -303,6 +247,40 @@ struct TutorialWorkoutDetailView: View {
     func stopHoldTimer() {
         holdTimer?.invalidate()
         holdTimer = nil
+        stopTrembleLoop()
+    }
+    
+    func startTrembleLoop() {
+        trembleTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+            withAnimation(.linear(duration: 0.1)) {
+                shakeTrigger += 1
+            }
+        }
+    }
+
+    func stopTrembleLoop() {
+        shakeTrigger = 0
+        trembleTimer?.invalidate()
+        trembleTimer = nil
+    }
+    
+    func resumeHoldAnimation() {
+        startTrembleLoop()
+
+        holdTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            guard totalTimeRemaining > 0 else {
+                stopHoldTimer()
+                stopTrembleLoop()
+                return
+            }
+
+            currentHoldTime += 1
+            holdProgress = Double(currentHoldTime) / Double(holdDuration)
+        }
+    }
+    
+    func pauseHoldAnimation() {
+        stopHoldTimer()
     }
     
     // MARK: Repetition Animation
@@ -329,8 +307,7 @@ struct TutorialWorkoutDetailView: View {
         contractOrExpandText = "Contract"
         repPhase = .contract
         
-        haptics.playRampUpHaptic(duration: halfDuration)
-        
+        haptics.playRampUpHaptic(duration: repDuration)
         withAnimation(.easeInOut(duration: halfDuration)) {
             isExpanded = true
         }
@@ -349,7 +326,7 @@ struct TutorialWorkoutDetailView: View {
             self.repTimer = Timer.scheduledTimer(withTimeInterval: halfDuration, repeats: false) { _ in
                 self.currentRep += 1
                 
-                if self.currentRep < self.totalReps && self.totalTimeRemaining > 0 {
+                if self.totalTimeRemaining > 0 {
                     self.startNextRep()
                 }
             }
@@ -358,10 +335,7 @@ struct TutorialWorkoutDetailView: View {
     
     func pauseRepetitionAnimation() {
         stopRepTimer()
-        
-        if repPhase == .contract {
-            haptics.pauseHaptic()
-        }
+        haptics.pauseHaptic()
     }
     
     func resumeRepetitionAnimation() {
@@ -371,9 +345,10 @@ struct TutorialWorkoutDetailView: View {
         let currentPhaseTimeRemaining: Double
         let totalPhaseTime = halfDuration
         
+        haptics.resumeHaptic()
+        
         if repPhase == .contract {
             // If we're in contract phase, calculate remaining time in this phase
-            haptics.resumeHaptic()
             
             let contractProgress = repProgress * 2 // Scale to get progress within just this phase (0-1)
             currentPhaseTimeRemaining = totalPhaseTime * (1 - contractProgress)
@@ -402,8 +377,6 @@ struct TutorialWorkoutDetailView: View {
                     self.isExpanded = false
                 }
                 
-                self.haptics.stopHaptic()
-                
                 // Schedule next rep
                 self.repTimer = Timer.scheduledTimer(withTimeInterval: halfDuration, repeats: false) { _ in
                     self.currentRep += 1
@@ -424,7 +397,7 @@ struct TutorialWorkoutDetailView: View {
             repTimer = Timer.scheduledTimer(withTimeInterval: currentPhaseTimeRemaining, repeats: false) { _ in
                 self.currentRep += 1
                 
-                if self.currentRep < self.totalReps && self.totalTimeRemaining > 0 {
+                if self.totalTimeRemaining > 0 {
                     self.startNextRep()
                 }
             }
@@ -468,23 +441,11 @@ struct TutorialWorkoutDetailView: View {
                         // Calculate remaining reps properly
                         let completedTime = totalDuration - self.totalTimeRemaining
                         let completedReps = Int(floor(completedTime / rhythm.duration))
-                        self.totalRepsRemaining = max(1, reps - completedReps)
+                        self.totalRepsRemaining = max(0, reps - completedReps)
                         
                         // Update rep progress for pause/resume functionality
                         let currentRepTime = completedTime.truncatingRemainder(dividingBy: rhythm.duration)
                         self.repProgress = currentRepTime / rhythm.duration
-                        
-                        // Only update phase when not paused to avoid state inconsistency
-                        if !self.isPaused {
-                            // Update phase based on progress (only when not paused)
-                            let newPhase: RepPhase = self.repProgress < 0.5 ? .contract : .relax
-                            
-                            // Only update if phase changed to prevent unnecessary UI updates
-                            if self.repPhase != newPhase {
-                                self.repPhase = newPhase
-                                self.contractOrExpandText = newPhase == .contract ? "Contract" : "Relax"
-                            }
-                        }
                     }
                 }
                 
@@ -574,7 +535,7 @@ struct TutorialWorkoutDetailView: View {
                 .font(.system(size: 20, weight: isSelected ? .semibold : .regular))
                 .foregroundColor(.white)
             
-            Rectangle()
+            RoundedRectangle(cornerRadius: 5)
                 .fill(isSelected ? Color.white : Color.clear)
                 .frame(height: 4)
                 .frame(width: 42)
@@ -593,24 +554,52 @@ struct TutorialWorkoutDetailView: View {
         stopRepTimer()
         stopHoldTimer()
         
-        if selectedExerciseIndex < workoutWithRests.exercises.count - 1 {
-            // Move to the next exercise (which could be a rest period)
-            selectedExerciseIndex += 1
+        switch currentExercise.type {
+        case .hold:
+            withAnimation(.easeIn(duration: 0.5)) {
+                isExpanded = false
+            }
             
-            // Reset animation state
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                if selectedExerciseIndex < workoutWithRests.exercises.count - 1 {
+                    // Move to the next exercise (which could be a rest period)
+                    
+                    selectedExerciseIndex += 1
+                    
+                    // Reset animation state
+                    
+                    self.initializeExercise()
+                    self.startTimer()
+                    self.startCurrentExerciseAnimation()
+                    
+                } else {
+                    // Workout completed
+                    WorkoutCompletionManager.saveCompletion(WorkoutCompletion(workoutName: selectedWorkout.name))
+                    workoutViewModel.updateStreakAfterWorkout()
+                    finish = true
+                }
+            })
+        case .clamp, .flash, .rapidFire, .rest:
             isExpanded = false
-            isTrembling = false
-            trembleOffset = 0
             
-            self.initializeExercise()
-            self.startTimer()
-            self.startCurrentExerciseAnimation()
-        } else {
-            // Workout completed
-            WorkoutCompletionManager.saveCompletion(WorkoutCompletion(workoutName: selectedWorkout.name))
-            workoutViewModel.updateStreakAfterWorkout()
-            withAnimation {
-                finish = true
+            if selectedExerciseIndex < workoutWithRests.exercises.count - 1 {
+                // Move to the next exercise (which could be a rest period)
+                
+                selectedExerciseIndex += 1
+                
+                // Reset animation state
+                
+                self.initializeExercise()
+                self.startTimer()
+                self.startCurrentExerciseAnimation()
+                
+            } else {
+                // Workout completed
+                WorkoutCompletionManager.saveCompletion(WorkoutCompletion(workoutName: selectedWorkout.name))
+                workoutViewModel.updateStreakAfterWorkout()
+                withAnimation {
+                    finish = true
+                }
             }
         }
     }
@@ -621,8 +610,6 @@ struct TutorialWorkoutDetailView: View {
         
         // Reset animation states
         isExpanded = false
-        isTrembling = false
-        trembleOffset = 0
         currentHoldTime = 0
         currentRep = 0
         repProgress = 0
@@ -678,7 +665,7 @@ struct TutorialWorkoutDetailView: View {
         durationMinutes: 10,
         description: "Regular practice to maintain pelvic floor strength",
         exercises: [
-            Exercise.hold(seconds: 5),
+            Exercise.rapidFire(reps: 10),
             Exercise.rapidFire(reps: 10),
             Exercise.hold(seconds: 5),
             Exercise.rapidFire(reps: 10),
@@ -686,4 +673,6 @@ struct TutorialWorkoutDetailView: View {
         ]
     )
     TutorialWorkoutDetailView(selectedWorkout: workout)
+        .environmentObject(NavigationManager())
+        .environmentObject(WorkoutViewModel())
 }

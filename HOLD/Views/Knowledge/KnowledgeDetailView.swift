@@ -54,6 +54,7 @@ struct KnowledgeDetailView: View {
                     }
                     .padding(.horizontal)
                 }
+                .scrollIndicators(.hidden)
                 .frame(maxWidth: .infinity)
             }
         }

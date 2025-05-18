@@ -20,6 +20,39 @@ struct KnowledgeTabView: View {
         ZStack {
             AppBackground()
             
+            VStack(spacing:0) {
+                HStack {
+                    Spacer()
+                    Image("holdIcon")
+                    Spacer()
+                }
+                .padding(.top, 24)
+                .padding(.bottom, 14)
+                
+                ScrollView(showsIndicators: false) {
+                    HStack {
+                        Text("Knowledge")
+                            .font(.system(size: 24, weight: .bold))
+                            .foregroundColor(.white)
+                        Spacer()
+                    }
+                    .padding(.bottom,62)
+                    
+                    ForEach(knowledgeViewModel.sortedCategories, id: \.self) { category in
+                        KnowledgeSectionView(
+                            title: category,
+                            items: knowledgeViewModel.groupedKnowledgeData[category] ?? [],
+                            selectedItem: $selectedItem,
+                            showKnowledgeCategory: $showKnowledgeCategory,
+                            selectedItems: $selectedItems,
+                            selectedCategory: $selectedCategory
+                        )
+                    }
+                }
+                .padding(.leading,14)
+                .padding(.trailing,0)
+            }
+            
             if showKnowledgeCategory {
                 if let selectedItems = selectedItems, let category = selectedCategory {
                     KnowledgeView(categoryTitle: category, items: selectedItems, onBack: {
@@ -29,46 +62,14 @@ struct KnowledgeTabView: View {
                     }, selectedItem: $selectedItem)
                     .transition(.asymmetric(
                         insertion: .move(edge: .trailing),
-                        removal: .move(edge: .leading)
+                        removal: .move(edge: .trailing)
                     ))
                     .zIndex(1)
-                }
-            } else {
-                VStack(spacing:0) {
-                    HStack {
-                        Spacer()
-                        Image("holdIcon")
-                        Spacer()
-                    }
-                    .padding(.top, 24)
-                    .padding(.bottom, 14)
-                    
-                    ScrollView(showsIndicators: false) {
-                        HStack {
-                            Text("Knowledge")
-                                .font(.system(size: 24, weight: .bold))
-                                .foregroundColor(.white)
-                            Spacer()
-                        }
-                        .padding(.bottom,62)
-                        
-                        ForEach(knowledgeViewModel.sortedCategories, id: \.self) { category in
-                            KnowledgeSectionView(
-                                title: category,
-                                items: knowledgeViewModel.groupedKnowledgeData[category] ?? [],
-                                selectedItem: $selectedItem,
-                                showKnowledgeCategory: $showKnowledgeCategory,
-                                selectedItems: $selectedItems,
-                                selectedCategory: $selectedCategory
-                            )
-                        }
-                    }
-                    .padding(.leading,14)
-                    .padding(.trailing,0)
                 }
             }
         }
         .navigationBarHidden(true)
+        .animation(.easeInOut(duration: 0.3), value: showKnowledgeCategory)
     }
 }
 
