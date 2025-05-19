@@ -99,6 +99,7 @@ struct ReviewView: View {
             }
         }
         .onAppear {
+            track("ob_review")
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 requestReview()
             }

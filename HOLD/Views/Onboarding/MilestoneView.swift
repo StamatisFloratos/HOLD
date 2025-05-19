@@ -20,10 +20,10 @@ struct MilestoneView: View {
     
     let welcomeMessages = [
         "Welcome to HOLD, your personal performance trainer.",
-        "Based on your answers, we’ve built a custom plan just for you.",
-        "You’re already 40% of the way to your first milestone!",
+        "Based on your answers, we've built a custom plan just for you.",
+        "You're already 40% of the way to your first milestone!",
         "This plan helps you take control, last longer, and be irresistible.",
-        "Now, it’s time to invest in yourself."
+        "Now, it's time to invest in yourself."
     ]
     
     var body: some View {
@@ -87,6 +87,7 @@ struct MilestoneView: View {
         .navigationBarHidden(true)
         .animation(.easeInOut, value: showNextView)
         .onAppear {
+            track("ob_milestone")
             withAnimation(.easeIn(duration: 0.8).delay(0.3)) {
                 milestoneOpacity = 1.0
             }

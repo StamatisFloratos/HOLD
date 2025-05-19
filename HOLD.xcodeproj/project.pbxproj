@@ -69,6 +69,9 @@
 		7CA82F382DC7E842001C0DFD /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA82F372DC7E842001C0DFD /* OnboardingView.swift */; };
 		7CBB89D62DBAD1E300C8429E /* test_workout_hold.json in Resources */ = {isa = PBXBuildFile; fileRef = 7CBB89D52DBAD1E300C8429E /* test_workout_hold.json */; };
 		7CCDA3832DC19E7300C6A84A /* AppBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CCDA3822DC19E7300C6A84A /* AppBackground.swift */; };
+		943FD41A2DDB85220071D9A5 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 943FD4192DDB85220071D9A5 /* FirebaseAnalytics */; };
+		943FD41E2DDB910F0071D9A5 /* Tracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 943FD41D2DDB910F0071D9A5 /* Tracking.swift */; };
+		943FD4202DDB95860071D9A5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 943FD41F2DDB95860071D9A5 /* GoogleService-Info.plist */; };
 		9C0D88452DCD31930088F5CE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C0D88442DCD31930088F5CE /* LaunchScreen.storyboard */; };
 		9C0D88472DCE238E0088F5CE /* TypewriterText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0D88462DCE238E0088F5CE /* TypewriterText.swift */; };
 		9C4AB2BD2DCFF3C000E3CDAC /* ShakeEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4AB2BC2DCFF3C000E3CDAC /* ShakeEffect.swift */; };
@@ -143,6 +146,8 @@
 		7CA82F372DC7E842001C0DFD /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		7CBB89D52DBAD1E300C8429E /* test_workout_hold.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = test_workout_hold.json; sourceTree = "<group>"; };
 		7CCDA3822DC19E7300C6A84A /* AppBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBackground.swift; sourceTree = "<group>"; };
+		943FD41D2DDB910F0071D9A5 /* Tracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracking.swift; sourceTree = "<group>"; };
+		943FD41F2DDB95860071D9A5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9C0D88442DCD31930088F5CE /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9C0D88462DCE238E0088F5CE /* TypewriterText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypewriterText.swift; sourceTree = "<group>"; };
 		9C4AB2BC2DCFF3C000E3CDAC /* ShakeEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShakeEffect.swift; sourceTree = "<group>"; };
@@ -159,6 +164,7 @@
 			files = (
 				9CD9E0CF2DC7B54E00411006 /* AppsFlyerLib in Frameworks */,
 				9CD9E0D22DC7B62C00411006 /* SuperwallKit in Frameworks */,
+				943FD41A2DDB85220071D9A5 /* FirebaseAnalytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,6 +295,7 @@
 				76711AFE2D8CD62700FFEE50 /* Assets.xcassets */,
 				76711B002D8CD62700FFEE50 /* Preview Content */,
 				9C0D88442DCD31930088F5CE /* LaunchScreen.storyboard */,
+				943FD41F2DDB95860071D9A5 /* GoogleService-Info.plist */,
 			);
 			path = HOLD;
 			sourceTree = "<group>";
@@ -332,6 +339,7 @@
 				9CD9E0C22DC5719A00411006 /* KeyboardResponder.swift */,
 				7CCDA3822DC19E7300C6A84A /* AppBackground.swift */,
 				9C4AB2BC2DCFF3C000E3CDAC /* ShakeEffect.swift */,
+				943FD41D2DDB910F0071D9A5 /* Tracking.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -424,6 +432,7 @@
 			packageReferences = (
 				9CD9E0CD2DC7B54E00411006 /* XCRemoteSwiftPackageReference "AppsFlyerFramework" */,
 				9CD9E0D02DC7B62C00411006 /* XCRemoteSwiftPackageReference "Superwall-iOS" */,
+				943FD4182DDB85220071D9A5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 76711AF82D8CD62500FFEE50 /* Products */;
 			projectDirPath = "";
@@ -444,6 +453,7 @@
 				7CBB89D62DBAD1E300C8429E /* test_workout_hold.json in Resources */,
 				9C0D88452DCD31930088F5CE /* LaunchScreen.storyboard in Resources */,
 				7C91AB2F2DAED90F00976240 /* knowledge_sample.json in Resources */,
+				943FD4202DDB95860071D9A5 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,6 +492,7 @@
 				7C149D632DB99B99003C0297 /* ChallengeRankView.swift in Sources */,
 				762FEBD92D8CEDB20058F107 /* ChallengeSheetView.swift in Sources */,
 				7C25C4222DCAAE440005B321 /* TryExerciseView.swift in Sources */,
+				943FD41E2DDB910F0071D9A5 /* Tracking.swift in Sources */,
 				7CA106C12DA5BA35000950FC /* View+Extension.swift in Sources */,
 				7C149D612DB837A6003C0297 /* ChallengeActivityView.swift in Sources */,
 				762FEBEA2D8CEF0F0058F107 /* StreakWeekViewModel.swift in Sources */,
@@ -738,6 +749,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		943FD4182DDB85220071D9A5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.12.0;
+			};
+		};
 		9CD9E0CD2DC7B54E00411006 /* XCRemoteSwiftPackageReference "AppsFlyerFramework" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AppsFlyerSDK/AppsFlyerFramework.git";
@@ -757,6 +776,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		943FD4192DDB85220071D9A5 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 943FD4182DDB85220071D9A5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
 		9CD9E0CE2DC7B54E00411006 /* AppsFlyerLib */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9CD9E0CD2DC7B54E00411006 /* XCRemoteSwiftPackageReference "AppsFlyerFramework" */;

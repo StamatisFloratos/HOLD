@@ -89,6 +89,7 @@ struct PersonalPlanView: View {
             }
         }
         .onAppear {
+            track("ob_personal_plan")
             startProgress()
         }
         .onChange(of: progress) { oldValue, newValue in

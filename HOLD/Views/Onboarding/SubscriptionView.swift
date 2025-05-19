@@ -20,6 +20,11 @@ struct SubscriptionView: View {
         ZStack {
             AppBackground()
             
+            // Track when the paywall is displayed
+            Color.clear.onAppear {
+                track("ob_paywall")
+            }
+            
             VStack(alignment:.center) {
                 ScrollView {
                     Image(systemName: "checkmark.circle.fill")
@@ -27,7 +32,7 @@ struct SubscriptionView: View {
                         .font(.system(size: 32, weight: .regular))
                         .padding(.top,60)
                     
-                    Text("\(userProfile.name), we’ve made a custom plan for you.")
+                    Text("\(userProfile.name), we've made a custom plan for you.")
                         .foregroundColor(Color.white)
                         .font(.system(size: 20, weight: .bold))
                         .padding(.top,20)
@@ -159,7 +164,7 @@ struct SubscriptionView: View {
                     .frame(width: 145, height: 36)
                     .padding(.top, 10)
                     
-                    Text("*“Honestly didn’t think an app could make a difference,\nbut here I am, lasting longer and feeling way more in\ncontrol. My girl noticed too...let’s just say she’s not\ncomplaining.”*")
+                    Text("*“Honestly didn't think an app could make a difference,\nbut here I am, lasting longer and feeling way more in\ncontrol. My girl noticed too...let's just say she's not\ncomplaining.”*")
                         .foregroundColor(Color.white)
                         .font(.system(size: 12, weight: .regular))
                         .padding(.top,40)
@@ -181,12 +186,12 @@ struct SubscriptionView: View {
                         .padding(.horizontal,133)
                         .padding(.top,0)
                     
-                    Text("She’ll Thank You Later")
+                    Text("She'll Thank You Later")
                         .foregroundColor(Color.white)
                         .font(.system(size: 20, weight: .bold))
                         .padding(.top,-10)
                     
-                    Text("This isn’t just about ***you***.\nIt’s about showing up, lasting longer, and\ngiving her an experience she won’t forget.")
+                    Text("This isn't just about ***you***.\nIt's about showing up, lasting longer, and\ngiving her an experience she won't forget.")
                         .foregroundColor(Color.white)
                         .font(.system(size: 12, weight: .bold))
                         .padding(.top,17)
@@ -212,13 +217,13 @@ struct SubscriptionView: View {
                     .padding(.top, 30)
                     
                     
-                    Text("*“I asked him how did he do this and after some time\nhe admitted that he was using this app, idk why the\ngatekeeping. Anyway I came on here as the REAL end-\nuser of the results to say that this is MORE than worth\nit, ladies trust me on this one, get it for him.””*")
+                    Text("*“I asked him how did he do this and after some time\nhe admitted that he was using this app, idk why the\ngatekeeping. Anyway I came on here as the REAL end-\nuser of the results to say that this is MORE than worth\nit, ladies trust me on this one, get it for him.”*")
                         .foregroundColor(Color.white)
                         .font(.system(size: 12, weight: .regular))
                         .padding(.top,40)
                         .multilineTextAlignment(.center)
                     
-                    Text("-Jamie’s Girlfriend (apparently)")
+                    Text("-Jamie's Girlfriend (apparently)")
                         .foregroundColor(Color.white.opacity(0.5))
                         .font(.system(size: 14, weight: .regular))
                         .padding(.top,10)
@@ -276,7 +281,7 @@ struct SubscriptionView: View {
                             
                             HStack(alignment: .center, spacing: 10) {
                                 Image("emojiIcon")
-                                Text("Learn about the secret methods nobody’s telling you that will change your sex-life.")
+                                Text("Learn about the secret methods nobody's telling you that will change your sex-life.")
                                     .foregroundColor(.white)
                             }
                             
@@ -459,7 +464,7 @@ struct SubscriptionView: View {
                     .frame(width: 145, height: 36)
                     .padding(.top, 20)
                     
-                    Text("But to succeed, you need the right\ntools and the right methods.\nWe’ve done the science, so you can\nfocus on the results.")
+                    Text("But to succeed, you need the right\ntools and the right methods.\nWe've done the science, so you can\nfocus on the results.")
                         .foregroundColor(Color.white)
                         .font(.system(size: 12, weight: .medium))
                         .padding(.top,17)

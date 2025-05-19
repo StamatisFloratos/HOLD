@@ -98,6 +98,9 @@ struct TryHoldWorkoutView: View {
             }
         }
         .animation(.easeInOut, value: showNextView)
+        .onAppear {
+            track("ob_try_workout")
+        }
     }
     
     @ViewBuilder

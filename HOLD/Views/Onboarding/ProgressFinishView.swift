@@ -88,6 +88,7 @@ struct ProgressFinishView: View {
         }
         .navigationBarHidden(true)
         .onAppear{
+            track("ob_progress_finish")
             withAnimation(.easeInOut(duration: 1.5)) {
                 animatedProgress = 40
             }

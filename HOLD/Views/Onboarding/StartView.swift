@@ -66,7 +66,7 @@ struct StartView: View {
                             .transition(.opacity)
                             .animation(.easeInOut(duration: 0.5), value: isStart)
                         } else {
-                            Text("Let’s start by taking a quiz to tailor your path to total control.")
+                            Text("Let's start by taking a quiz to tailor your path to total control.")
                                 .font(.system(size: 20, weight: .bold))
                                 .foregroundColor(.white)
                                 .multilineTextAlignment(.center)
@@ -102,6 +102,9 @@ struct StartView: View {
             }
         }
         .animation(.easeInOut, value: showOnboardingView)
+        .onAppear {
+            track("ob_start_view")
+        }
     }
     
     private var benefitsView: some View {

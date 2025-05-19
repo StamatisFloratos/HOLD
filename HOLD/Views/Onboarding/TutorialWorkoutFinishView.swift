@@ -41,7 +41,7 @@ struct TutorialWorkoutFinishView: View {
                             .font(.system(size: 24, weight: .semibold))
                             .foregroundColor(.white)
                             .multilineTextAlignment(.center)
-                        Text("You finished today’s workout!")
+                        Text("You finished today's workout!")
                             .font(.system(size: 20, weight: .semibold))
                             .foregroundColor(.white)
                             .multilineTextAlignment(.center)
@@ -81,7 +81,9 @@ struct TutorialWorkoutFinishView: View {
         }
         .navigationBarHidden(true)
         .animation(.easeInOut, value: showNextView)
-
+        .onAppear {
+            track("ob_workout_finish")
+        }
     }
     
     func triggerHaptic() {

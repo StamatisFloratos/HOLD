@@ -45,14 +45,14 @@ struct GoodNewsView: View {
                             .multilineTextAlignment(.center)
                             .lineLimit(2)
                             .fixedSize(horizontal: false, vertical: true)
-                        Text("We’ve put together a personalized plan to help you get back complete control over your body and achieve goal of lasting **\(UserStorage.wantToLastTime)**")
+                        Text("We've put together a personalized plan to help you get back complete control over your body and achieve goal of lasting **\(UserStorage.wantToLastTime)**")
                             .font(.system(size: 16, weight: .regular))
                             .foregroundColor(.white)
                             .padding(.top, 34)
                             .padding(.horizontal,32)
                             .multilineTextAlignment(.center)
                             .fixedSize(horizontal: false, vertical: true)
-                        Text("You’ll be able to get real lasting results and all it will take is **5 minutes** per day.")
+                        Text("You'll be able to get real lasting results and all it will take is **5 minutes** per day.")
                             .font(.system(size: 16, weight: .regular))
                             .foregroundColor(.white)
                             .padding(.top, 34)
@@ -112,6 +112,9 @@ struct GoodNewsView: View {
             }
         }
         .animation(.easeInOut, value: showNextView)
+        .onAppear {
+            track("ob_good_news")
+        }
     }
     
     func triggerHaptic() {

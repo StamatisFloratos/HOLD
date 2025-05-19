@@ -190,6 +190,13 @@ struct TryExerciseView: View {
         }
         .animation(.easeInOut, value: showNextView)
         .animation(.easeInOut, value: currentView)
+        .onAppear {
+            track("ob_try_exercise_step1")
+        }
+        .onChange(of: currentView) { oldValue, newValue in
+            let event = "ob_try_exercise_step\(newValue)"
+            track(event)
+        }
     }
     
     var firstView: some View {
@@ -203,7 +210,7 @@ struct TryExerciseView: View {
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
             
-            Text("You’ve learned what PF muscles are and how to contract them.\n\nSo, it’s the right time to try to 2 simple exercises that will be part of your training.")
+            Text("You've learned what PF muscles are and how to contract them.\n\nSo, it's the right time to try to 2 simple exercises that will be part of your training.")
                 .font(.system(size: 16, weight: .regular))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.leading)
@@ -477,7 +484,7 @@ struct TryExerciseView: View {
                 .resizable()
                 .frame(width: 77,height: 77)
             
-            Text("You’re about to start a\nworkout.")
+            Text("You're about to start a\nworkout.")
                 .font(.system(size: 24, weight: .semibold))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)

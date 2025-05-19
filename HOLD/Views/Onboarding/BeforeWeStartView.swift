@@ -62,7 +62,7 @@ struct BeforeWeStartView: View {
                             .multilineTextAlignment(.center)
                             .fixedSize(horizontal: false, vertical: true)
                             .padding(.bottom, 8)
-                        Text("If you’re not targeting the right spot, nothing works. Please read the next screens carefully as they will help you locate your Pelvic Floor (PF) muscles.")
+                        Text("If you're not targeting the right spot, nothing works. Please read the next screens carefully as they will help you locate your Pelvic Floor (PF) muscles.")
                             .font(.system(size: 16, weight: .regular))
                             .foregroundColor(.white)
                             .padding(.top, 34)
@@ -80,7 +80,7 @@ struct BeforeWeStartView: View {
                             showNextView = true
                         }
                     }) {
-                        Text("I’m ready to find PF muscles")
+                        Text("I'm ready to find PF muscles")
                             .font(.system(size: 16, weight: .semibold))
                             .frame(maxWidth: .infinity, maxHeight: 47)
                             .background(Color(hex: "#FFFFFF"))
@@ -96,6 +96,9 @@ struct BeforeWeStartView: View {
             }
         }
         .animation(.easeInOut, value: showNextView)
+        .onAppear {
+            track("ob_before_start")
+        }
     }
     
     @ViewBuilder
