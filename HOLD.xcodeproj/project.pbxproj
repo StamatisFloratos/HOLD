@@ -60,8 +60,6 @@
 		7C25C42A2DCC6DF70005B321 /* ReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C25C4292DCC6DF70005B321 /* ReviewView.swift */; };
 		7C25C42C2DCC73B60005B321 /* MilestoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C25C42B2DCC73B60005B321 /* MilestoneView.swift */; };
 		7C91AB2F2DAED90F00976240 /* knowledge_sample.json in Resources */ = {isa = PBXBuildFile; fileRef = 7C91AB2E2DAED90F00976240 /* knowledge_sample.json */; };
-		7CA106B32DA564A6000950FC /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106B22DA564A6000950FC /* Font+Extension.swift */; };
-		7CA106B52DA564B4000950FC /* CustomFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106B42DA564B4000950FC /* CustomFont.swift */; };
 		7CA106B92DA57F4D000950FC /* NavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106B82DA57F4D000950FC /* NavigationManager.swift */; };
 		7CA106BB2DA58119000950FC /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106BA2DA58119000950FC /* SplashView.swift */; };
 		7CA106C12DA5BA35000950FC /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA106C02DA5BA35000950FC /* View+Extension.swift */; };
@@ -136,8 +134,6 @@
 		7C25C4292DCC6DF70005B321 /* ReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewView.swift; sourceTree = "<group>"; };
 		7C25C42B2DCC73B60005B321 /* MilestoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestoneView.swift; sourceTree = "<group>"; };
 		7C91AB2E2DAED90F00976240 /* knowledge_sample.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = knowledge_sample.json; sourceTree = "<group>"; };
-		7CA106B22DA564A6000950FC /* Font+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "Font+Extension.swift"; path = "../../../TempMail/TempMail/Utilities/Font+Extension.swift"; sourceTree = "<group>"; };
-		7CA106B42DA564B4000950FC /* CustomFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomFont.swift; path = ../../../TempMail/TempMail/Utilities/CustomFont.swift; sourceTree = "<group>"; };
 		7CA106B82DA57F4D000950FC /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
 		7CA106BA2DA58119000950FC /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		7CA106C02DA5BA35000950FC /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
@@ -333,7 +329,6 @@
 			children = (
 				7CBB89D52DBAD1E300C8429E /* test_workout_hold.json */,
 				7C91AB2E2DAED90F00976240 /* knowledge_sample.json */,
-				7CA106B42DA564B4000950FC /* CustomFont.swift */,
 				9CD9E0C22DC5719A00411006 /* KeyboardResponder.swift */,
 				7CCDA3822DC19E7300C6A84A /* AppBackground.swift */,
 				9C4AB2BC2DCFF3C000E3CDAC /* ShakeEffect.swift */,
@@ -356,7 +351,6 @@
 			children = (
 				7CA106C72DA6D45F000950FC /* ColorExtension.swift */,
 				7CA106C02DA5BA35000950FC /* View+Extension.swift */,
-				7CA106B22DA564A6000950FC /* Font+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -477,7 +471,6 @@
 				7C25C41C2DC956340005B321 /* TryHoldWorkoutView.swift in Sources */,
 				7CA106C82DA6D467000950FC /* ColorExtension.swift in Sources */,
 				7CA106BB2DA58119000950FC /* SplashView.swift in Sources */,
-				7CA106B52DA564B4000950FC /* CustomFont.swift in Sources */,
 				762FEBAF2D8CE8DE0058F107 /* ChallengeResult.swift in Sources */,
 				7C22B96E2DC7B768002C3A6E /* WorkoutView.swift in Sources */,
 				7C25C4282DCC6B530005B321 /* ProgressFinishView.swift in Sources */,
@@ -489,7 +482,6 @@
 				7C149D632DB99B99003C0297 /* ChallengeRankView.swift in Sources */,
 				762FEBD92D8CEDB20058F107 /* ChallengeSheetView.swift in Sources */,
 				7C25C4222DCAAE440005B321 /* TryExerciseView.swift in Sources */,
-				7CA106B32DA564A6000950FC /* Font+Extension.swift in Sources */,
 				7CA106C12DA5BA35000950FC /* View+Extension.swift in Sources */,
 				7C149D612DB837A6003C0297 /* ChallengeActivityView.swift in Sources */,
 				762FEBEA2D8CEF0F0058F107 /* StreakWeekViewModel.swift in Sources */,
@@ -656,7 +648,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HOLD/Preview Content\"";
 				DEVELOPMENT_TEAM = HXU7ACHQ5T;
 				ENABLE_PREVIEWS = YES;
@@ -673,7 +665,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.chronos.holdapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -692,7 +684,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HOLD/Preview Content\"";
 				DEVELOPMENT_TEAM = HXU7ACHQ5T;
 				ENABLE_PREVIEWS = YES;
@@ -709,7 +701,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.chronos.holdapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
