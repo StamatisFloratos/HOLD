@@ -74,6 +74,8 @@
 		943FD4202DDB95860071D9A5 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 943FD41F2DDB95860071D9A5 /* GoogleService-Info.plist */; };
 		9C0D88452DCD31930088F5CE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C0D88442DCD31930088F5CE /* LaunchScreen.storyboard */; };
 		9C0D88472DCE238E0088F5CE /* TypewriterText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0D88462DCE238E0088F5CE /* TypewriterText.swift */; };
+		9C12CC742DDE24220055974B /* RapidFireOnboardingTutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C12CC732DDE24220055974B /* RapidFireOnboardingTutorial.swift */; };
+		9C1763792DDD089A00E506B7 /* HoldOnboardingTutorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1763782DDD089A00E506B7 /* HoldOnboardingTutorial.swift */; };
 		9C4AB2BD2DCFF3C000E3CDAC /* ShakeEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C4AB2BC2DCFF3C000E3CDAC /* ShakeEffect.swift */; };
 		9CD9E0C32DC5719A00411006 /* KeyboardResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD9E0C22DC5719A00411006 /* KeyboardResponder.swift */; };
 		9CD9E0CC2DC7AFF600411006 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD9E0CB2DC7AFF600411006 /* HapticManager.swift */; };
@@ -150,6 +152,8 @@
 		943FD41F2DDB95860071D9A5 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9C0D88442DCD31930088F5CE /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9C0D88462DCE238E0088F5CE /* TypewriterText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypewriterText.swift; sourceTree = "<group>"; };
+		9C12CC732DDE24220055974B /* RapidFireOnboardingTutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RapidFireOnboardingTutorial.swift; sourceTree = "<group>"; };
+		9C1763782DDD089A00E506B7 /* HoldOnboardingTutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoldOnboardingTutorial.swift; sourceTree = "<group>"; };
 		9C4AB2BC2DCFF3C000E3CDAC /* ShakeEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShakeEffect.swift; sourceTree = "<group>"; };
 		9CD9E0C22DC5719A00411006 /* KeyboardResponder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardResponder.swift; sourceTree = "<group>"; };
 		9CD9E0CB2DC7AFF600411006 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
@@ -381,6 +385,8 @@
 				7C25C4212DCAAE440005B321 /* TryExerciseView.swift */,
 				7C19462C2DCD3B07005BC915 /* SubscriptionView.swift */,
 				9C0D88462DCE238E0088F5CE /* TypewriterText.swift */,
+				9C1763782DDD089A00E506B7 /* HoldOnboardingTutorial.swift */,
+				9C12CC732DDE24220055974B /* RapidFireOnboardingTutorial.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -467,6 +473,7 @@
 				762FEBBA2D8CE9910058F107 /* ProgressViewModel.swift in Sources */,
 				7C25C4242DCC65E80005B321 /* TutorialWorkoutDetailView.swift in Sources */,
 				7C25C4202DC978F50005B321 /* FindLocationView.swift in Sources */,
+				9C1763792DDD089A00E506B7 /* HoldOnboardingTutorial.swift in Sources */,
 				7C1FADBD2DC808D200F3EE18 /* StartView.swift in Sources */,
 				762FEBE02D8CEE720058F107 /* WorkoutDetailView.swift in Sources */,
 				7C1FADBF2DC826EF00F3EE18 /* PersonalPlanView.swift in Sources */,
@@ -480,6 +487,7 @@
 				7C25C42C2DCC73B60005B321 /* MilestoneView.swift in Sources */,
 				7C25C41C2DC956340005B321 /* TryHoldWorkoutView.swift in Sources */,
 				7CA106C82DA6D467000950FC /* ColorExtension.swift in Sources */,
+				9C12CC742DDE24220055974B /* RapidFireOnboardingTutorial.swift in Sources */,
 				7CA106BB2DA58119000950FC /* SplashView.swift in Sources */,
 				762FEBAF2D8CE8DE0058F107 /* ChallengeResult.swift in Sources */,
 				7C22B96E2DC7B768002C3A6E /* WorkoutView.swift in Sources */,
@@ -659,7 +667,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"HOLD/Preview Content\"";
 				DEVELOPMENT_TEAM = HXU7ACHQ5T;
 				ENABLE_PREVIEWS = YES;
@@ -695,7 +703,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"HOLD/Preview Content\"";
 				DEVELOPMENT_TEAM = HXU7ACHQ5T;
 				ENABLE_PREVIEWS = YES;
