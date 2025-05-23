@@ -104,7 +104,7 @@ struct TryExerciseView: View {
                         }
                     }) {
                         if currentView == 1 {
-                            Text("Start Workout")
+                            Text("Learn Exercises")
                                 .font(.system(size: 16, weight: .semibold))
                                 .frame(maxWidth: .infinity, maxHeight: 47)
                                 .background(Color(hex: "#FF1919"))
@@ -112,7 +112,7 @@ struct TryExerciseView: View {
                                 .cornerRadius(30)
                                 .padding(.horizontal, 56)
                         } else {
-                            Text("Try Exercise")
+                            Text("Show Me")
                                 .font(.system(size: 16, weight: .semibold))
                                 .frame(maxWidth: .infinity, maxHeight: 47)
                                 .background(Color(hex: "#FF1919"))
@@ -160,12 +160,20 @@ struct TryExerciseView: View {
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
             
-            Text("Hold")
-                .font(.system(size: 24, weight: .semibold))
-                .foregroundColor(.white)
-                .multilineTextAlignment(.center)
             
-            Text("**Contract** your pelvic floor muscle and hold it steady while the timer **counts down.**\nThe circle stays expanded—stay **tight** until it closes.\nThis builds **endurance** and staying power when it matters most.")
+            VStack(spacing: 0) {
+                Text("New Exercise")
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+                
+                Text("Hold")
+                    .font(.system(size: 24, weight: .semibold))
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+            }
+            
+            Text("**Contract** your pelvic floor muscle and hold it steady while the timer **counts down.**")
                 .font(.system(size: 16, weight: .regular))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.leading)

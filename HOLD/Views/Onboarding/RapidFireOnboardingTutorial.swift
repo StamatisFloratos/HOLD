@@ -133,7 +133,7 @@ struct RapidFireOnboardingTutorial: View {
                                     .font(.system(size: 24, weight: .semibold))
                                     .foregroundColor(.white)
                                 
-                                Text("Start from a relaxed position do not contract your PF Musle at all")
+                                Text("Start from a relaxed position do not contract your PF Muscle at all.")
                                     .font(.system(size: 16, weight: .medium))
                                     .foregroundColor(.white)
                                     .multilineTextAlignment(.center)
@@ -175,7 +175,7 @@ struct RapidFireOnboardingTutorial: View {
                                     .font(.system(size: 24, weight: .semibold))
                                     .foregroundColor(.white)
                                 
-                                Text("Keep up. This is a fast exercise so contract quickly and let go quickly. Are you ready to give it a try.")
+                                Text("Keep up. This is a fast exercise so contract quickly and let go quickly. Are you ready to give it a try?")
                                     .font(.system(size: 16, weight: .medium))
                                     .foregroundColor(.white)
                                     .multilineTextAlignment(.center)
@@ -204,8 +204,8 @@ struct RapidFireOnboardingTutorial: View {
                                 currentView += 1
                             }
                         }) {
-                            if currentView == 0 || currentView == 6 {
-                                Text("Try Exercise")
+                            if currentView == 0 {
+                                Text("Show Me")
                                     .font(.system(size: 16, weight: .semibold))
                                     .frame(maxWidth: .infinity, maxHeight: 47)
                                     .background(Color(hex: "#FF1919"))
@@ -222,6 +222,14 @@ struct RapidFireOnboardingTutorial: View {
                                     .padding(.horizontal, 56)
                             } else if currentView == 4 {
                                 Text("Let's go")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .frame(maxWidth: .infinity, maxHeight: 47)
+                                    .background(Color(hex: "#FF1919"))
+                                    .foregroundColor(.white)
+                                    .cornerRadius(30)
+                                    .padding(.horizontal, 56)
+                            } else if currentView == 6 {
+                                Text("Start Workout")
                                     .font(.system(size: 16, weight: .semibold))
                                     .frame(maxWidth: .infinity, maxHeight: 47)
                                     .background(Color(hex: "#FF1919"))
@@ -276,12 +284,19 @@ struct RapidFireOnboardingTutorial: View {
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
             
-            Text("Rapid Fire")
-                .font(.system(size: 24, weight: .semibold))
-                .foregroundColor(.white)
-                .multilineTextAlignment(.center)
+            VStack(spacing: 0) {
+                Text("New Exercise")
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+                
+                Text("Rapid Fire")
+                    .font(.system(size: 24, weight: .semibold))
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+            }
             
-            Text("When the circle expands—**contract** your pelvic floor muscle.\nWhen it shrinks—**release**.\nFollow the **rhythm** on screen. **Quick.**\n**Controlled. Sharp.**")
+            Text("Follow the **rhythm** on screen. **Quick.**\n**Controlled. Sharp.**")
                 .font(.system(size: 16, weight: .regular))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.leading)
@@ -443,12 +458,12 @@ struct RapidFireOnboardingTutorial: View {
             
             // Reset progress
             progress = 0.0
-            totalTimeRemaining = Double(10) * 0.5 + 0.9
+            totalTimeRemaining = Double(40) * 0.5
             totalRepsRemaining = 5
             contractOrExpandText = "Contract"
             repPhase = .contract
             
-            totalReps = 5
+            totalReps = 20
             repProgress = 0
             
             isHoldExercise = false
@@ -471,7 +486,7 @@ struct RapidFireOnboardingTutorial: View {
                     isExpanded = false
                 }
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
                     withAnimation {
                         currentView += 1
                     }

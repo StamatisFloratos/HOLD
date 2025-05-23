@@ -107,7 +107,7 @@ struct HoldOnboardingTutorial: View {
                                     .font(.system(size: 24, weight: .semibold))
                                     .foregroundColor(.white)
                                 
-                                Text("Start from a relaxed position do not contract your PF Musle at all")
+                                Text("Start from a relaxed position do not contract your PF Muscle at all.")
                                     .font(.system(size: 16, weight: .medium))
                                     .foregroundColor(.white)
                                     .multilineTextAlignment(.center)
@@ -313,11 +313,11 @@ struct HoldOnboardingTutorial: View {
             repProgress = 0
             holdProgress = 0
             
-            holdDuration = 5
+            holdDuration = 10
             holdProgress = 0
             
             progress = 0
-            totalTimeRemaining = 5.5
+            totalTimeRemaining = 10.5
             
             startTimer()
             startHoldAnimation()
@@ -330,9 +330,11 @@ struct HoldOnboardingTutorial: View {
                     isExpanded = false
                 }
                 
-                withAnimation {
-                    showNextView = true
-                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+                    withAnimation {
+                        showNextView = true
+                    }
+                })
             }
         })
         .onChange(of: shakeTrigger, {
