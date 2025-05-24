@@ -20,7 +20,6 @@ struct RapidFireOnboardingTutorial: View {
     @State private var trembleOffset: CGFloat = 0
     @State private var progress: CGFloat = 0
     @State private var totalTimeRemaining: Double = 0 // Time in seconds
-    @State private var totalRepsRemaining: Int = 0
     
     @State private var contractOrExpandText = "Contract"
     @State private var holdTimer: Timer?
@@ -100,33 +99,48 @@ struct RapidFireOnboardingTutorial: View {
                                 insertion: .move(edge: .trailing),
                                 removal: .move(edge: .leading)
                             ))
+                        
+                        Spacer()
                     case 1:
                         tutorialStepOne
+                        
+                        Spacer().frame(height: 140)
                     case 2:
                         tutorialStepTwo
+                        
+                        Spacer().frame(height: 140)
                     case 3:
                         tutorialStepThree
+                        
+                        Spacer().frame(height: 140)
                     case 4:
                         tutorialStepFour
+                        
+                        Spacer().frame(height: 140)
                     case 5:
                         rapidFireMainView
+                        
+                        Spacer().frame(height: 140)
                     case 6:
                         tryExercisesOnboardingView
                             .transition(.asymmetric(
                                 insertion: .move(edge: .trailing),
                                 removal: .move(edge: .leading)
                             ))
+                        
+                        Spacer()
                     default:
                         rapidFireMainView
+                        
+                        Spacer().frame(height: 140)
                     }
-                    
-                    Spacer().frame(height: 140)
                 }
                 
                 VStack(spacing: 0) {
-                    Spacer()
                     
                     if showText {
+                        Spacer()
+                        
                         if currentView == 1 {
                             VStack(spacing: 13) {
                                 Text("Step 1/4")
@@ -187,6 +201,10 @@ struct RapidFireOnboardingTutorial: View {
                     }
                     
                     if currentView < 5 || currentView > 5 {
+                        if !showText {
+                            Spacer()
+                        }
+                        
                         Button(action: {
                             triggerHapticOnButton()
                             showText = false
@@ -242,6 +260,10 @@ struct RapidFireOnboardingTutorial: View {
                         .opacity(buttonOpacity)
                         .disabled(buttonOpacity < 1.0)
                     } else {
+                        if !showText {
+                            Spacer()
+                        }
+                        
                         Button(action: {
                             triggerHapticOnButton()
                             isPaused.toggle()
@@ -458,12 +480,11 @@ struct RapidFireOnboardingTutorial: View {
             
             // Reset progress
             progress = 0.0
-            totalTimeRemaining = Double(40) * 0.5
-            totalRepsRemaining = 5
+            totalTimeRemaining = Double(30) * 0.5
             contractOrExpandText = "Contract"
             repPhase = .contract
             
-            totalReps = 20
+            totalReps = 15
             repProgress = 0
             
             isHoldExercise = false
@@ -838,7 +859,6 @@ struct RapidFireOnboardingTutorial: View {
             // Reset progress
             progress = 0.0
             totalTimeRemaining = Double(40) * 0.5
-            totalRepsRemaining = 20
             contractOrExpandText = "Contract"
             repPhase = .contract
             
@@ -884,7 +904,6 @@ struct RapidFireOnboardingTutorial: View {
                     // Reset progress
                     progress = 0.0
                     totalTimeRemaining = Double(40) * 0.5
-                    totalRepsRemaining = 20
                     contractOrExpandText = "Contract"
                     repPhase = .contract
                     
@@ -1049,7 +1068,6 @@ struct RapidFireOnboardingTutorial: View {
                     // Calculate remaining reps properly
                     let completedTime = Double(totalDuration) - self.totalTimeRemaining
                     let completedReps = Int(floor(completedTime / 1))
-                    self.totalRepsRemaining = max(0, 8 - completedReps)
                     
                     // Update rep progress for pause/resume functionality
                     let currentRepTime = completedTime

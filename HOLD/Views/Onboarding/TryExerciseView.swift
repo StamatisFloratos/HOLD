@@ -146,7 +146,7 @@ struct TryExerciseView: View {
                 .multilineTextAlignment(.leading)
         }
         .padding(.horizontal,35)
-        .padding(.bottom, 100)
+        .padding(.bottom, 50)
         .onAppear {
             track("ob_try_exercise_step1")
         }
@@ -179,7 +179,7 @@ struct TryExerciseView: View {
                 .multilineTextAlignment(.leading)
         }
         .padding(.horizontal,35)
-        .padding(.bottom, 100)
+        .padding(.bottom, 50)
         .onAppear {
             track("ob_try_exercise_step2")
         }
