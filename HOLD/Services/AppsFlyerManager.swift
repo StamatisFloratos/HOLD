@@ -12,8 +12,8 @@ import AppTrackingTransparency
 
 class AppsFlyerManager {
     static func initialize() {
-        AppsFlyerLib.shared().appsFlyerDevKey = "id6745149501"
-        AppsFlyerLib.shared().appleAppID = "WaVeTPraQ7xQAnTge9W5tg"
+        AppsFlyerLib.shared().appsFlyerDevKey = "WaVeTPraQ7xQAnTge9W5tg"
+        AppsFlyerLib.shared().appleAppID = "6745149501"
         AppsFlyerLib.shared().customerUserID = getUniqueDeviceId()
         
         #if DEBUG
