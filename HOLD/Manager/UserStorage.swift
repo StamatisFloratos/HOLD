@@ -9,6 +9,13 @@
 import Foundation
 import SwiftUI
 
+enum OnboardingType: String {
+    case onboardingOne = "Onboarding1"
+    case onboardingTwo = "Onboarding2"
+    case onboardingThree = "Onboarding3"
+    case onboardingFour = "Onboarding4"
+}
+
 struct UserStorage {
     @AppStorage("isOnboardingDone", store: UserDefaults()) static var isOnboardingDone: Bool = false
     @AppStorage("isFirstTimeAppOpen", store: UserDefaults()) static var isFirstTimeAppOpen: Bool = true
@@ -27,6 +34,5 @@ struct UserStorage {
     @AppStorage("isFromOnboarding", store: UserDefaults()) static var isFromOnboarding: Bool = true
 
     @AppStorage("wantToLastTime", store: UserDefaults()) static var wantToLastTime: String = ""
-
-
+    @AppStorage("onboarding", store: UserDefaults()) static var onboarding: String = ""
 }

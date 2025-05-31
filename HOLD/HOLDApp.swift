@@ -57,11 +57,13 @@ struct HOLDApp: App {
                 .onAppear {
                     AppsFlyerManager.checkAndRequestATT()
                     subscriptionManager.checkSubscriptionStatus()
+                    
+                    if !UserStorage.isOnboardingDone {
+                        FirebaseManager.shared.fetchRemoteConfig {}
+                    }
                 }
                 .onChange(of: scenePhase) { _, newPhase in
-                    if newPhase == .background {
-//                        navigationManager.reset()
-                    } else if newPhase == .active {
+                    if newPhase == .active {
                         if navigationManager.routes.isEmpty {
                             navigationManager.push(to: .mainTabView)
                         }

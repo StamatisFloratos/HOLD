@@ -20,12 +20,22 @@ struct PersonalPlanView: View {
         ZStack {
             AppBackground()
             if showNextView {
-                GoodNewsView()
-                    .transition(.asymmetric(
-                        insertion: .move(edge: .trailing),
-                        removal: .move(edge: .leading)
-                    ))
-                    .zIndex(1)
+                if UserStorage.onboarding == OnboardingType.onboardingThree
+                    .rawValue {
+                    QuizBadNews()
+                        .transition(.asymmetric(
+                            insertion: .move(edge: .trailing),
+                            removal: .move(edge: .leading)
+                        ))
+                        .zIndex(1)
+                } else {
+                    GoodNewsView()
+                        .transition(.asymmetric(
+                            insertion: .move(edge: .trailing),
+                            removal: .move(edge: .leading)
+                        ))
+                        .zIndex(1)
+                }
             } else {
                 VStack(spacing: 0) {
                     VStack(spacing: 0) {

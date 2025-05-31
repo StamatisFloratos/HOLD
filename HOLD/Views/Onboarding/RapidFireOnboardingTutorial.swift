@@ -55,24 +55,36 @@ struct RapidFireOnboardingTutorial: View {
             AppBackground()
             
             if showNextView {
-                TutorialWorkoutDetailView(selectedWorkout: Workout(
-                    name: "Daily Maintenance",
-                    difficulty: .medium,
-                    durationMinutes: 10,
-                    description: "Regular practice to maintain pelvic floor strength",
-                    exercises: [
-                        Exercise.hold(seconds: 5),
-                        Exercise.rapidFire(reps: 10),
-                        Exercise.hold(seconds: 5),
-                        Exercise.rapidFire(reps: 10),
-                        Exercise.hold(seconds: 5)
-                    ]
-                ))
-                .transition(.asymmetric(
-                    insertion: .move(edge: .trailing),
-                    removal: .move(edge: .leading)
-                ))
-                .zIndex(1)
+                if UserStorage.onboarding == OnboardingType.onboardingTwo
+                    .rawValue || UserStorage.onboarding == OnboardingType.onboardingFour
+                    .rawValue {
+                    ProgressFinishView()
+                        .transition(.asymmetric(
+                            insertion: .move(edge: .trailing),
+                            removal: .move(edge: .leading)
+                        ))
+                        .zIndex(1)
+                    
+                } else {
+                    TutorialWorkoutDetailView(selectedWorkout: Workout(
+                        name: "Daily Maintenance",
+                        difficulty: .medium,
+                        durationMinutes: 10,
+                        description: "Regular practice to maintain pelvic floor strength",
+                        exercises: [
+                            Exercise.hold(seconds: 5),
+                            Exercise.rapidFire(reps: 10),
+                            Exercise.hold(seconds: 5),
+                            Exercise.rapidFire(reps: 10),
+                            Exercise.hold(seconds: 5)
+                        ]
+                    ))
+                    .transition(.asymmetric(
+                        insertion: .move(edge: .trailing),
+                        removal: .move(edge: .leading)
+                    ))
+                    .zIndex(1)
+                }
             } else {
                 if showOverlay {
                     Color.black.opacity(0.5)
@@ -129,6 +141,7 @@ struct RapidFireOnboardingTutorial: View {
                             ))
                         
                         Spacer()
+                        
                     default:
                         rapidFireMainView
                         
@@ -509,7 +522,13 @@ struct RapidFireOnboardingTutorial: View {
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
                     withAnimation {
-                        currentView += 1
+                        if UserStorage.onboarding == OnboardingType.onboardingTwo
+                            .rawValue || UserStorage.onboarding == OnboardingType.onboardingFour
+                            .rawValue {
+                            showNextView = true
+                        } else {
+                            currentView += 1
+                        }
                     }
                     showText = false
                     buttonOpacity = 0.0

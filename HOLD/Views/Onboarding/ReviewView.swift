@@ -75,7 +75,7 @@ struct ReviewView: View {
                     
                     Spacer()
                 }
-                .ignoresSafeArea()
+                .ignoresSafeArea(.container, edges: .bottom)
                 
                 VStack {
                     Spacer()

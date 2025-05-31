@@ -19,12 +19,21 @@ struct GoodNewsView: View {
         ZStack {
             AppBackground()
             if showNextView {
-                TryHoldWorkoutView()
-                    .transition(.asymmetric(
-                        insertion: .move(edge: .trailing),
-                        removal: .move(edge: .leading)
-                    ))
-                    .zIndex(1)
+                if UserStorage.onboarding == OnboardingType.onboardingTwo.rawValue {
+                    TryExerciseView()
+                        .transition(.asymmetric(
+                            insertion: .move(edge: .trailing),
+                            removal: .move(edge: .leading)
+                        ))
+                        .zIndex(1)
+                } else {
+                    TryHoldWorkoutView()
+                        .transition(.asymmetric(
+                            insertion: .move(edge: .trailing),
+                            removal: .move(edge: .leading)
+                        ))
+                        .zIndex(1)
+                }
             } else {
                 VStack(spacing: 0) {
                     VStack(spacing: 0) {
@@ -132,4 +141,5 @@ struct GoodNewsView: View {
 
 #Preview {
     GoodNewsView()
+        .environmentObject(NotificationsManager.shared)
 }
