@@ -84,7 +84,6 @@
 		9CB9C8B42DEB46EF009DEA46 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 9CB9C8B32DEB46EF009DEA46 /* FirebaseDatabase */; };
 		9CB9C8B62DEB46EF009DEA46 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 9CB9C8B52DEB46EF009DEA46 /* FirebaseRemoteConfig */; };
 		9CB9C8B92DEB4726009DEA46 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 9CB9C8B82DEB4726009DEA46 /* FirebaseFirestore */; };
-		9CB9C8BD2DEB74B5009DEA46 /* QuizGoodNews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB9C8BC2DEB74B5009DEA46 /* QuizGoodNews.swift */; };
 		9CB9C8BF2DEB74C4009DEA46 /* QuizBadNews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB9C8BE2DEB74C4009DEA46 /* QuizBadNews.swift */; };
 		9CD9E0C32DC5719A00411006 /* KeyboardResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD9E0C22DC5719A00411006 /* KeyboardResponder.swift */; };
 		9CD9E0CC2DC7AFF600411006 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD9E0CB2DC7AFF600411006 /* HapticManager.swift */; };
@@ -165,7 +164,6 @@
 		9C1763782DDD089A00E506B7 /* HoldOnboardingTutorial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HoldOnboardingTutorial.swift; sourceTree = "<group>"; };
 		9C4AB2BC2DCFF3C000E3CDAC /* ShakeEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShakeEffect.swift; sourceTree = "<group>"; };
 		9CB9C8AB2DEB46BB009DEA46 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
-		9CB9C8BC2DEB74B5009DEA46 /* QuizGoodNews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizGoodNews.swift; sourceTree = "<group>"; };
 		9CB9C8BE2DEB74C4009DEA46 /* QuizBadNews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizBadNews.swift; sourceTree = "<group>"; };
 		9CD9E0C22DC5719A00411006 /* KeyboardResponder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardResponder.swift; sourceTree = "<group>"; };
 		9CD9E0CB2DC7AFF600411006 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
@@ -407,7 +405,6 @@
 				9C0D88462DCE238E0088F5CE /* TypewriterText.swift */,
 				9C1763782DDD089A00E506B7 /* HoldOnboardingTutorial.swift */,
 				9C12CC732DDE24220055974B /* RapidFireOnboardingTutorial.swift */,
-				9CB9C8BC2DEB74B5009DEA46 /* QuizGoodNews.swift */,
 				9CB9C8BE2DEB74C4009DEA46 /* QuizBadNews.swift */,
 			);
 			path = Onboarding;
@@ -560,7 +557,6 @@
 				762FEBBC2D8CE9A10058F107 /* MeasurementViewModel.swift in Sources */,
 				762FEBBE2D8CE9AD0058F107 /* ChallengeViewModel.swift in Sources */,
 				7CA106B92DA57F4D000950FC /* NavigationManager.swift in Sources */,
-				9CB9C8BD2DEB74B5009DEA46 /* QuizGoodNews.swift in Sources */,
 				762FEBD32D8CECF70058F107 /* ChallengeView.swift in Sources */,
 				762FEBF32D8CEFAD0058F107 /* NotificationsManager.swift in Sources */,
 				762FEBC82D8CEA820058F107 /* MainTabView.swift in Sources */,
@@ -699,7 +695,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"HOLD/Preview Content\"";
 				DEVELOPMENT_TEAM = HXU7ACHQ5T;
 				ENABLE_PREVIEWS = YES;
@@ -735,7 +731,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_ASSET_PATHS = "\"HOLD/Preview Content\"";
 				DEVELOPMENT_TEAM = HXU7ACHQ5T;
 				ENABLE_PREVIEWS = YES;

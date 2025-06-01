@@ -8,14 +8,19 @@
 import SwiftUI
 
 struct QuizBadNews: View {
+    @EnvironmentObject private var notificationsManager: NotificationsManager
+    
     @State private var showNextView = false
     @State private var animatedProgress: Double = 0.0
+    @State private var isFirstView = true
+    
+    @AppStorage("isNotificationsScheduled") private var isNotificationsScheduled: Bool = false
     
     var body: some View {
         ZStack {
             AppBackground()
             if showNextView {
-                QuizGoodNews()
+                ReviewView()
                     .transition(.asymmetric(
                         insertion: .move(edge: .trailing),
                         removal: .move(edge: .leading)
@@ -46,10 +51,17 @@ struct QuizBadNews: View {
                                     .frame(maxWidth: .infinity)
                                     .frame(height: 22)
                                     .foregroundStyle(
-                                        LinearGradient(
+                                        isFirstView ? LinearGradient(
                                             gradient: Gradient(colors: [
                                                 Color(hex: "#990F0F"),
                                                 Color(hex: "#FF1919")
+                                            ]),
+                                            startPoint: .leading,
+                                            endPoint: .trailing
+                                        ) : LinearGradient(
+                                            gradient: Gradient(colors: [
+                                                Color(hex: "#00FF2A"),
+                                                Color(hex: "#00FF2A")
                                             ]),
                                             startPoint: .leading,
                                             endPoint: .trailing
@@ -61,39 +73,79 @@ struct QuizBadNews: View {
                         }
                         .padding(.top, 46)
                         
-                        Spacer()
-                        
-                        (
-                            Text("Based on your answers you are only reaching ") +
-                            Text("13%").foregroundColor(Color(hex: "#FF0000")) +
-                            Text(" of your potential.")
-                        )
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundColor(.white)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal)
-                        
-                        Spacer()
-                        
-                        (
-                            Text("That places you in the ") +
-                            Text("bottom 20%").foregroundColor(Color(hex: "#FF0000")) +
-                            Text(" of men worldwide.")
-                        )
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundColor(.white)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal)
-                        
-                        Spacer()
-                        
-                        Text("But it’s not all bad...")
-                            .font(.system(size: 20, weight: .semibold))
-                            .foregroundColor(.white)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal)
-                        
-                        Spacer()
+                        if isFirstView {
+                            VStack {
+                                Spacer()
+                                
+                                (
+                                    Text("Based on your answers you are only reaching ") +
+                                    Text("13%").foregroundColor(Color(hex: "#FF0000")) +
+                                    Text(" of your potential.")
+                                )
+                                .font(.system(size: 20, weight: .semibold))
+                                .foregroundColor(.white)
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal)
+                                
+                                Spacer()
+                                
+                                (
+                                    Text("That places you in the ") +
+                                    Text("bottom 20%").foregroundColor(Color(hex: "#FF0000")) +
+                                    Text(" of men worldwide.")
+                                )
+                                .font(.system(size: 20, weight: .semibold))
+                                .foregroundColor(.white)
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal)
+                                
+                                Spacer()
+                                
+                                Text("But it’s not all bad...")
+                                    .font(.system(size: 20, weight: .semibold))
+                                    .foregroundColor(.white)
+                                    .multilineTextAlignment(.center)
+                                    .padding(.horizontal)
+                                
+                                Spacer()
+                            }
+                            .transition(.asymmetric(
+                                insertion: .move(edge: .trailing),
+                                removal: .move(edge: .leading)
+                            ))
+                        } else {
+                            VStack {
+                                Spacer()
+                                
+                                (
+                                    Text("Based on your answers you can reach your goal of lasting ") +
+                                    Text("\(UserStorage.wantToLastTime)").foregroundColor(Color(hex: "#00FF2A")) +
+                                    Text(" by \(getFormattedDate())")
+                                )
+                                .font(.system(size: 20, weight: .semibold))
+                                .foregroundColor(.white)
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal)
+                                
+                                Spacer()
+                                
+                                (
+                                    Text("That will place you in the ") +
+                                    Text("top 1.3%").foregroundColor(Color(hex: "#00FF2A")) +
+                                    Text(" of men worldwide.")
+                                )
+                                .font(.system(size: 20, weight: .semibold))
+                                .foregroundColor(.white)
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal)
+                                
+                                Spacer()
+                            }
+                            .transition(.asymmetric(
+                                insertion: .move(edge: .trailing),
+                                removal: .move(edge: .leading)
+                            ))
+                        }
                     }
                     .padding(.horizontal,35)
 
@@ -102,7 +154,15 @@ struct QuizBadNews: View {
                     Button(action: {
                         triggerHaptic()
                         withAnimation {
-                            showNextView = true
+                            if isFirstView {
+                                isFirstView = false
+                                animatedProgress = 98
+                            } else {
+                                showNextView = true
+                                if !isNotificationsScheduled {
+                                    scheduleNotifications()
+                                }
+                            }
                         }
                     }) {
                         Text("Continue")
@@ -120,12 +180,12 @@ struct QuizBadNews: View {
         }
         .navigationBarHidden(true)
         .onAppear{
-            withAnimation(.easeInOut(duration: 1.5)) {
+            withAnimation(.easeInOut(duration: 1)) {
                 animatedProgress = 13
             }
         }
         .animation(.easeInOut, value: showNextView)
-
+        .animation(.easeInOut, value: isFirstView)
     }
     
     func triggerHaptic() {
@@ -133,8 +193,24 @@ struct QuizBadNews: View {
         generator.prepare()
         generator.impactOccurred()
     }
+    
+    func getFormattedDate() -> String {
+        let futureDate = Calendar.current.date(byAdding: .day, value: 60, to: Date())!
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d, yyyy"
+        let formattedDate = formatter.string(from: futureDate)
+        
+        return formattedDate
+    }
+    
+    func scheduleNotifications() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            notificationsManager.requestPermission()
+        }
+    }
 }
 
 #Preview {
     QuizBadNews()
+        .environmentObject(NotificationsManager.shared)
 }

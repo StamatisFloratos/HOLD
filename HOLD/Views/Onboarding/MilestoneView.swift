@@ -12,16 +12,24 @@ struct MilestoneView: View {
     @State private var userProfile: UserProfile = UserProfile.load()
     @State private var showContinueButton = false
     @State private var milestoneOpacity: Double = 0
+    @State var progress: Int = 0
     
     var milestoneTitle: String = "Milestone 1"
-    var progress: Int = 40
     var streak: String = "1 day"
     var badge: String = "Holder"
     
-    let welcomeMessages = [
+    let welcomeMessagesV1 = [
         "Welcome to HOLD, your personal performance trainer.",
         "Based on your answers, we've built a custom plan just for you.",
         "You're already 40% of the way to your first milestone!",
+        "This plan helps you take control, last longer, and be irresistible.",
+        "Now, it's time to invest in yourself."
+    ]
+    
+    let welcomeMessagesV2 = [
+        "Welcome to HOLD, your personal performance trainer.",
+        "Based on your answers, we've built a custom plan just for you.",
+        "You have all this potential ahead of you. Don’t waste it.",
         "This plan helps you take control, last longer, and be irresistible.",
         "Now, it's time to invest in yourself."
     ]
@@ -48,7 +56,7 @@ struct MilestoneView: View {
                     .padding(.bottom, 24)
                     
                     VStack {
-                        TypewriterText(texts: welcomeMessages, onCompletion: {
+                        TypewriterText(texts: UserStorage.onboarding == OnboardingType.onboardingThree.rawValue ? welcomeMessagesV2 : welcomeMessagesV1, onCompletion: {
                             withAnimation(.easeIn(duration: 0.3)) {
                                 showContinueButton = true
                             }
@@ -87,6 +95,12 @@ struct MilestoneView: View {
         .navigationBarHidden(true)
         .animation(.easeInOut, value: showNextView)
         .onAppear {
+            if UserStorage.onboarding == OnboardingType.onboardingThree.rawValue {
+                progress = 13
+            } else {
+                progress = 40
+            }
+            
             track("ob_milestone")
             withAnimation(.easeIn(duration: 0.8).delay(0.3)) {
                 milestoneOpacity = 1.0
@@ -128,7 +142,7 @@ struct MilestoneView: View {
                     Spacer()
                     
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Progress")
+                        Text(UserStorage.onboarding == OnboardingType.onboardingThree.rawValue ? "Potential Used" : "Progress")
                             .font(.system(size: 16, weight: .medium))
                             .foregroundColor(.white)
                         Text("\(progress)%")
