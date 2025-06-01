@@ -296,7 +296,7 @@ struct HoldOnboardingTutorial: View {
         }
         .onAppear{
             // Reset animation states
-            track("ob_try_exercise_step7")
+            trackOnboarding("ob_try_exercise_step7", variant: UserStorage.onboarding)
             
             withAnimation(.easeIn(duration: 0.2)) {
                 buttonOpacity = 1.0
@@ -397,7 +397,7 @@ struct HoldOnboardingTutorial: View {
         }
         .onAppear{
             // Reset animation states
-            track("ob_try_exercise_step3")
+            trackOnboarding("ob_try_exercise_step3", variant: UserStorage.onboarding)
             
             isExpanded = false
             isTrembling = false
@@ -488,7 +488,7 @@ struct HoldOnboardingTutorial: View {
         }
         .onAppear{
             // Reset animation states
-            track("ob_try_exercise_step4")
+            trackOnboarding("ob_try_exercise_step4", variant: UserStorage.onboarding)
             
             isExpanded = true
             isTrembling = false
@@ -579,7 +579,7 @@ struct HoldOnboardingTutorial: View {
         }
         .onAppear{
             // Reset animation states
-            track("ob_try_exercise_step5")
+            trackOnboarding("ob_try_exercise_step5", variant: UserStorage.onboarding)
             
             isTrembling = false
             trembleOffset = 0
@@ -702,7 +702,7 @@ struct HoldOnboardingTutorial: View {
         }
         .onAppear{
             // Reset animation states
-            track("ob_try_exercise_step6")
+            trackOnboarding("ob_try_exercise_step6", variant: UserStorage.onboarding)
             
             withAnimation(.easeOut(duration: 0.5)) {
                 isExpanded = false

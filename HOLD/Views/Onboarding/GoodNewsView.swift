@@ -122,7 +122,7 @@ struct GoodNewsView: View {
         }
         .animation(.easeInOut, value: showNextView)
         .onAppear {
-            track("ob_good_news")
+            trackOnboarding("ob_good_news", variant: UserStorage.onboarding)
         }
     }
     

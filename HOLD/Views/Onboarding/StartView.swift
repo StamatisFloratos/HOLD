@@ -103,7 +103,7 @@ struct StartView: View {
         }
         .animation(.easeInOut, value: showOnboardingView)
         .onAppear {
-            track("ob_start_view")
+            trackOnboarding("ob_start_view", variant: UserStorage.onboarding)
         }
     }
     

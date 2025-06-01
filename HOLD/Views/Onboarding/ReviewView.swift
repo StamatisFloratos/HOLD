@@ -99,7 +99,7 @@ struct ReviewView: View {
             }
         }
         .onAppear {
-            track("ob_review")
+            trackOnboarding("ob_review", variant: UserStorage.onboarding)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 requestReview()
             }

@@ -174,12 +174,12 @@ struct OnboardingView: View {
         .animation(.easeInOut, value: showMainView)
         .onAppear {
             // Track first question display
-            track("ob_q01_shown")
+            trackOnboarding("ob_q01_shown", variant: UserStorage.onboarding)
         }
         .onChange(of: currentIndex) { oldValue, newValue in
             // Log event for each subsequent question (1-based index)
             let number = String(format: "%02d", newValue + 1)
-            track("ob_q\(number)_shown")
+            trackOnboarding("ob_q\(number)_shown", variant: UserStorage.onboarding)
         }
         .navigationBarHidden(true)
         .alert(isPresented: $showValidationAlert) {

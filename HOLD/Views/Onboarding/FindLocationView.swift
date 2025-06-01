@@ -57,14 +57,14 @@ struct FindLocationView: View {
                 }
                 .onAppear {
                     startProgress()
-                    track("ob_find_location_step1")
+                    trackOnboarding("ob_find_location_step1", variant: UserStorage.onboarding)
                 }
                 .onDisappear {
                     timer?.invalidate()
                 }
                 .onChange(of: currentStep) { oldValue, newValue in
                     let stepEvent = "ob_find_location_step\(newValue)"
-                    track(stepEvent)
+                    trackOnboarding(stepEvent, variant: UserStorage.onboarding)
                 }
                 .blur(radius: blurAmount)
                 .overlay(

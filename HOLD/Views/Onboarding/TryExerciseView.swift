@@ -140,15 +140,22 @@ struct TryExerciseView: View {
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
             
-            Text("You've learned what PF muscles are and how to contract them.\n\nSo, it's the right time to try to 2 simple exercises that will be part of your training.")
-                .font(.system(size: 16, weight: .regular))
-                .foregroundColor(.white)
-                .multilineTextAlignment(.leading)
+            if UserStorage.onboarding == OnboardingType.onboardingTwo.rawValue {
+                Text("You're about to learn how to use your pelvic floor muscles.\n\nThese are the muscles you'd squeeze if you were trying to stop yourself from peeing midstream that's your pelvic floor.\n\nLet's start with two simple exercises that will become part of your training.")
+                    .font(.system(size: 16, weight: .regular))
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.leading)
+            } else {
+                Text("You've learned what PF muscles are and how to contract them.\n\nSo, it's the right time to try to 2 simple exercises that will be part of your training.")
+                    .font(.system(size: 16, weight: .regular))
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.leading)
+            }
         }
         .padding(.horizontal,35)
         .padding(.bottom, 50)
         .onAppear {
-            track("ob_try_exercise_step1")
+            trackOnboarding("ob_try_exercise_step1", variant: UserStorage.onboarding)
         }
     }
     
@@ -181,7 +188,7 @@ struct TryExerciseView: View {
         .padding(.horizontal,35)
         .padding(.bottom, 50)
         .onAppear {
-            track("ob_try_exercise_step2")
+            trackOnboarding("ob_try_exercise_step2", variant: UserStorage.onboarding)
         }
     }
     

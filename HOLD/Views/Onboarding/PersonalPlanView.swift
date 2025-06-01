@@ -99,7 +99,7 @@ struct PersonalPlanView: View {
             }
         }
         .onAppear {
-            track("ob_personal_plan")
+            trackOnboarding("ob_personal_plan", variant: UserStorage.onboarding)
             startProgress()
         }
         .onChange(of: progress) { oldValue, newValue in

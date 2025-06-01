@@ -109,7 +109,7 @@ struct TutorialWorkoutDetailView: View {
         }
         .navigationBarHidden(true)
         .onAppear {
-            track("ob_workout_detail")
+            trackOnboarding("ob_workout_detail", variant: UserStorage.onboarding)
             initializeExercise()
             startTimer()
             startCurrentExerciseAnimation()

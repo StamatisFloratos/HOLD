@@ -99,7 +99,7 @@ struct TryHoldWorkoutView: View {
         }
         .animation(.easeInOut, value: showNextView)
         .onAppear {
-            track("ob_try_workout")
+            trackOnboarding("ob_try_workout", variant: UserStorage.onboarding)
         }
     }
     

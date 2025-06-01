@@ -29,7 +29,7 @@ struct MilestoneView: View {
     let welcomeMessagesV2 = [
         "Welcome to HOLD, your personal performance trainer.",
         "Based on your answers, we've built a custom plan just for you.",
-        "You have all this potential ahead of you. Don’t waste it.",
+        "You have all this potential ahead of you. Don't waste it.",
         "This plan helps you take control, last longer, and be irresistible.",
         "Now, it's time to invest in yourself."
     ]
@@ -101,7 +101,7 @@ struct MilestoneView: View {
                 progress = 40
             }
             
-            track("ob_milestone")
+            trackOnboarding("ob_milestone", variant: UserStorage.onboarding)
             withAnimation(.easeIn(duration: 0.8).delay(0.3)) {
                 milestoneOpacity = 1.0
             }

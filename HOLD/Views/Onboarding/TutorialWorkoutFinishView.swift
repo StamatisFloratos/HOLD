@@ -82,7 +82,7 @@ struct TutorialWorkoutFinishView: View {
         .navigationBarHidden(true)
         .animation(.easeInOut, value: showNextView)
         .onAppear {
-            track("ob_workout_finish")
+            trackOnboarding("ob_workout_finish", variant: UserStorage.onboarding)
         }
     }
     

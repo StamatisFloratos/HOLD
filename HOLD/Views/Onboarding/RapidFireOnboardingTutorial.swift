@@ -339,7 +339,7 @@ struct RapidFireOnboardingTutorial: View {
         .padding(.horizontal,35)
         .padding(.bottom, 100)
         .onAppear{
-            track("ob_try_exercise_step8")
+            trackOnboarding("ob_try_exercise_step8", variant: UserStorage.onboarding)
             
             withAnimation(.easeIn(duration: 1.0)) {
                 buttonOpacity = 1.0
@@ -401,7 +401,7 @@ struct RapidFireOnboardingTutorial: View {
         .padding(.horizontal,35)
         .padding(.bottom, 100)
         .onAppear{
-            track("ob_try_exercise_step14")
+            trackOnboarding("ob_try_exercise_step14", variant: UserStorage.onboarding)
             
             withAnimation(.easeIn(duration: 1.0)) {
                 buttonOpacity = 1.0
@@ -481,7 +481,7 @@ struct RapidFireOnboardingTutorial: View {
         }
         .onAppear{
             // Reset animation states
-            track("ob_try_exercise_step13")
+            trackOnboarding("ob_try_exercise_step13", variant: UserStorage.onboarding)
             
             isExpanded = false
             isTrembling = false
@@ -597,7 +597,7 @@ struct RapidFireOnboardingTutorial: View {
         }
         .onAppear{
             // Reset animation states
-            track("ob_try_exercise_step9")
+            trackOnboarding("ob_try_exercise_step9", variant: UserStorage.onboarding)
             
             isExpanded = false
             
@@ -686,7 +686,7 @@ struct RapidFireOnboardingTutorial: View {
         }
         .onAppear{
             // Reset animation states
-            track("ob_try_exercise_step10")
+            trackOnboarding("ob_try_exercise_step10", variant: UserStorage.onboarding)
             
             isExpanded = true
             
@@ -774,7 +774,7 @@ struct RapidFireOnboardingTutorial: View {
         }
         .onAppear{
             // Reset animation states
-            track("ob_try_exercise_step11")
+            trackOnboarding("ob_try_exercise_step11", variant: UserStorage.onboarding)
             
             withAnimation(.easeOut(duration: 0.5)) {
                 isExpanded = false
@@ -865,7 +865,7 @@ struct RapidFireOnboardingTutorial: View {
         }
         .onAppear{
             // Reset animation states
-            track("ob_try_exercise_step12")
+            trackOnboarding("ob_try_exercise_step12", variant: UserStorage.onboarding)
             
             isExpanded = false
             isTrembling = false

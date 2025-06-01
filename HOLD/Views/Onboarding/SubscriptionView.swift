@@ -22,7 +22,7 @@ struct SubscriptionView: View {
             
             // Track when the paywall is displayed
             Color.clear.onAppear {
-                track("ob_paywall")
+                trackOnboarding("ob_paywall", variant: UserStorage.onboarding)
             }
             
             VStack(alignment:.center) {
@@ -287,7 +287,7 @@ struct SubscriptionView: View {
                             
                             HStack(alignment: .center, spacing: 10) {
                                 Image("mountainIcon")
-                                Text("Do “The Challenge” and see how you perform.")
+                                Text("Do 'The Challenge' and see how you perform.")
                                     .foregroundColor(.white)
                             }
                             

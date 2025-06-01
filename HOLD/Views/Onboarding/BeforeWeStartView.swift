@@ -97,7 +97,7 @@ struct BeforeWeStartView: View {
         }
         .animation(.easeInOut, value: showNextView)
         .onAppear {
-            track("ob_before_start")
+            trackOnboarding("ob_before_start", variant: UserStorage.onboarding)
         }
     }
     
