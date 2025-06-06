@@ -93,6 +93,8 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
 
         scheduleDailyReminder()
         scheduleEveryThirdDayNotifications()
+        
+        logPendingNotifications()
     }
 
     private func scheduleDailyReminder() {
@@ -104,7 +106,8 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
         content.sound = .default
 
         var dateComponents = DateComponents()
-        dateComponents.hour = 19
+        dateComponents.hour = 18
+        dateComponents.minute = 35
 
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         let request = UNNotificationRequest(identifier: "dailyWorkout", content: content, trigger: trigger)
@@ -171,6 +174,19 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
         notificationCenter.setBadgeCount(0) { error in
             if let error = error {
                 print("Error resetting badge count: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func logPendingNotifications() {
+        notificationCenter.getPendingNotificationRequests { requests in
+            print("Total Pending Notifications: \(requests.count)")
+            for request in requests {
+                print("ID: \(request.identifier)")
+                print("Title: \(request.content.title)")
+                print("Body: \(request.content.body)")
+                print("Trigger: \(String(describing: request.trigger))")
+                print("-----------")
             }
         }
     }
