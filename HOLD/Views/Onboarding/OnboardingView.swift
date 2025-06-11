@@ -6,6 +6,7 @@ struct OnboardingView: View {
     @State private var textInputs: [UUID: String] = [:]
     @State private var name: String = ""
     @State private var age: String = ""
+    @State private var code: String = ""
     @EnvironmentObject var navigationManager: NavigationManager
     @State private var showMainView = false
     
@@ -94,15 +95,20 @@ struct OnboardingView: View {
                             if currentIndex == questions.count - 1 {
                                 // Last question with text fields
                                 VStack(spacing: 20) {
-                                    CustomTextField(placeholder: "Name", text: $name)
+                                    CustomTextField(placeholder: "Name", placeholderColor: .white, text: $name)
                                         .padding(.horizontal, 33)
                                         .foregroundColor(Color.white)
                                     
-                                    CustomTextField(placeholder: "Age", text: $age)
+                                    CustomTextField(placeholder: "Age", placeholderColor: .white, text: $age)
                                         .keyboardType(.numberPad)
                                         .padding(.horizontal, 33)
                                 }
                                 .padding(.top, 30)
+                            } else if currentIndex == questions.count - 2 {
+                                CustomTextField(placeholder: "CODE", placeholderColor: Color.white.opacity(0.5), text: $code)
+                                    .padding(.horizontal, 33)
+                                    .padding(.top, 40)
+                                    .foregroundColor(Color.white)
                             } else if !questions[currentIndex].options.isEmpty {
                                 optionsView(for: questions[currentIndex])
                             }
@@ -117,17 +123,10 @@ struct OnboardingView: View {
                     Spacer()
                     
                     // Next Button - Only show on first question, questions with images, or last question
-                    if currentIndex == 0 || questions[currentIndex].imageName != nil || currentIndex == questions.count - 1 {
+                    if currentIndex == 0 || questions[currentIndex].imageName != nil || currentIndex == questions.count - 1 || currentIndex == questions.count - 2 {
                         Button(action: {
                             triggerHaptic()
-                            if currentIndex < questions.count - 1 {
-                                // Set direction for next question
-                                slideFromRight = true
-                                withAnimation(.easeInOut(duration: 0.3)) {
-                                    currentIndex +=  1
-                                }
-                            } else {
-                                // Handle completion (e.g., save answers, navigate away)
+                            if currentIndex == questions.count - 1 {
                                 guard !name.isEmpty else {
                                     validationMessage = "Name cannot be empty."
                                     showValidationAlert = true
@@ -153,16 +152,45 @@ struct OnboardingView: View {
                                 withAnimation {
                                     showMainView = true
                                 }
+                            } else if currentIndex == questions.count - 2 {
+                                CreatorAttributionSystem.shared.attributeUser(creatorIdentifier: code, source: .code)
+                                slideFromRight = true
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    currentIndex +=  1
+                                }
+                            } else {
+                                slideFromRight = true
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    currentIndex +=  1
+                                }
                             }
                         }) {
-                            Text(currentIndex == questions.count - 1 ? "Make Personalized Plan" : "Next")
-                                .font(.system(size: 16, weight: .semibold))
-                                .frame(maxWidth: .infinity, maxHeight: 47)
-                                .background(currentIndex == questions.count - 1 && (name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
-                                                                                    age.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) ? Color(hex: "#FF1919").opacity(0.7) :Color(hex: "#FF1919"))
-                                .foregroundColor(.white)
-                                .cornerRadius(30)
-                                .padding(.horizontal, 56)
+                            if currentIndex == questions.count - 1 {
+                                Text("Make Personalized Plan")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .frame(maxWidth: .infinity, maxHeight: 47)
+                                    .background(currentIndex == questions.count - 1 && (name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+                                                                                        age.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) ? Color(hex: "#FF1919").opacity(0.7) :Color(hex: "#FF1919"))
+                                    .foregroundColor(.white)
+                                    .cornerRadius(30)
+                                    .padding(.horizontal, 56)
+                            } else if currentIndex == questions.count - 2 {
+                                Text(code.isEmpty ? "Skip" : "Next")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .frame(maxWidth: .infinity, maxHeight: 47)
+                                    .background(code.isEmpty ? Color.white : Color(hex: "#FF1919"))
+                                    .foregroundColor(code.isEmpty ? .black : .white)
+                                    .cornerRadius(30)
+                                    .padding(.horizontal, 56)
+                            } else {
+                                Text("Next")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .frame(maxWidth: .infinity, maxHeight: 47)
+                                    .background(Color(hex: "#FF1919"))
+                                    .foregroundColor(.white)
+                                    .cornerRadius(30)
+                                    .padding(.horizontal, 56)
+                            }
                         }
                         .padding(.top, 15)
                         .padding(.bottom, 32)
@@ -299,11 +327,12 @@ struct OnboardingView: View {
     private func canProceed(for question: OnboardingQuestion) -> Bool {
         if question.options.isEmpty {
             return true
-        }
-        else if currentIndex == questions.count - 1 {
+        } else if currentIndex == questions.count - 1 {
             // For the last question, check if both name and age are filled
             return !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
                    !age.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        } else if currentIndex == questions.count - 2 {
+            return true
         }
         return !(selections[question.id]?.isEmpty ?? true)
     }
@@ -335,6 +364,7 @@ struct CustomTextFieldStyle: TextFieldStyle {
 
 struct CustomTextField: View {
     let placeholder: String
+    let placeholderColor: Color
     @Binding var text: String
 
     @FocusState private var isFocused: Bool
@@ -350,7 +380,7 @@ struct CustomTextField: View {
             if text.isEmpty && !isFocused {
                 Text(placeholder)
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.white)
+                    .foregroundColor(placeholderColor)
                     .padding(.horizontal, 16)
             }
         }

@@ -35,4 +35,6 @@ struct UserStorage {
 
     @AppStorage("wantToLastTime", store: UserDefaults()) static var wantToLastTime: String = ""
     @AppStorage("onboarding", store: UserDefaults()) static var onboarding: String = ""
+    
+    @AppStorage("isValidAttributionSource", store: UserDefaults()) static var isValidAttributionSource: Bool = false
 }
