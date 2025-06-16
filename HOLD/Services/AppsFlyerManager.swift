@@ -14,7 +14,7 @@ class AppsFlyerManager {
     static func initialize() {
         AppsFlyerLib.shared().appsFlyerDevKey = "WaVeTPraQ7xQAnTge9W5tg"
         AppsFlyerLib.shared().appleAppID = "6745149501"
-        AppsFlyerLib.shared().customerUserID = getUniqueDeviceId()
+        AppsFlyerLib.shared().customerUserID = DeviceIdManager.getUniqueDeviceId()
         
         #if DEBUG
         AppsFlyerLib.shared().isDebug = true
@@ -45,18 +45,5 @@ class AppsFlyerManager {
     
     static func trackEvent(name: String, parameters: [String: Any]? = nil) {
         AppsFlyerLib.shared().logEvent(name, withValues: parameters)
-    }
-    
-    static func getUniqueDeviceId() -> String {
-        let key = "com.hold.uniqueDeviceId"
-        
-        if let existingId = UserDefaults.standard.string(forKey: key) {
-            return existingId
-        }
-        
-        let newId = UUID().uuidString
-        UserDefaults.standard.set(newId, forKey: key)
-        
-        return newId
     }
 }

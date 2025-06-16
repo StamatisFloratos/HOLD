@@ -47,6 +47,7 @@ struct StreakBadgeView: View {
                     }
                     .padding(.trailing, 26)
                 }
+                .padding(.top, 20)
                 
                 Spacer()
                 

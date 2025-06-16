@@ -10,13 +10,81 @@ import SwiftUI
 import SwiftData
 import SuperwallKit
 import FirebaseCore
+import AppsFlyerLib
 
-
-class AppDelegate: NSObject, UIApplicationDelegate {
-    func application(_ application: UIApplication,
-                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        AppsFlyerManager.initialize()
         FirebaseApp.configure()
+        
+        if let url = launchOptions?[.url] as? URL {
+            handleDeepLink(url: url)
+        }
+        
         return true
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        handleDeepLink(url: url)
+        return true
+    }
+    
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        AppsFlyerLib.shared().continue(userActivity, restorationHandler: { _ in })
+        
+        if userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+           let url = userActivity.webpageURL {
+            handleDeepLink(url: url)
+        }
+        
+        return true
+    }
+    
+    private func handleDeepLink(url: URL) {
+        DeepLinkHandler.shared.processDeepLink(url: url)
+    }
+}
+
+extension AppDelegate: AppsFlyerLibDelegate {
+    
+    func onConversionDataSuccess(_ conversionInfo: [AnyHashable: Any]) {
+        print("AppsFlyer conversion data: \(conversionInfo)")
+        
+        if let status = conversionInfo["af_status"] as? String,
+           status == "Non-organic" {
+            
+            if let campaign = conversionInfo["campaign"] as? String {
+                print("User came from campaign: \(campaign)")
+            }
+            
+            if let deepLinkValue = conversionInfo["deep_link_value"] as? String {
+                CreatorAttributionSystem.shared.attributeUser(
+                    creatorIdentifier: deepLinkValue,
+                    source: .link
+                )
+            }
+        }
+    }
+    
+    func onConversionDataFail(_ error: Error) {
+        print("AppsFlyer conversion data failed: \(error)")
+    }
+    
+    func onAppOpenAttribution(_ attributionData: [AnyHashable : Any]) {
+        print("AppsFlyer deep link data: \(attributionData)")
+        
+        if let deepLinkValue = attributionData["deep_link_value"] as? String {
+            CreatorAttributionSystem.shared.attributeUser(
+                creatorIdentifier: deepLinkValue,
+                source: .link
+            )
+        }
+    }
+    
+    func onAppOpenAttributionFailure(_ error: Error) {
+        print("AppsFlyer deep link failed: \(error)")
     }
 }
 
@@ -39,7 +107,6 @@ struct HOLDApp: App {
     
     init() {
         Superwall.configure(apiKey: "pk_3250452d883111f9496cbba98c6fb4fb7250b12e524fbaa6")
-        AppsFlyerManager.initialize()
     }
     
     var body: some Scene {

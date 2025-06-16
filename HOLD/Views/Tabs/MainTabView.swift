@@ -21,7 +21,7 @@ struct MainTabView: View {
     @EnvironmentObject var knowledgeViewModel: KnowledgeViewModel
     @EnvironmentObject var keyboardResponder: KeyboardResponder
     
-    @State private var showWelcomeOnboarding = true
+    @State private var showWelcomeOnboarding = UserStorage.showWelcomeOnboarding
     @State private var blurAmount: CGFloat = 0
     @State private var welcomeContentOpacity: Double = 0
     
@@ -82,6 +82,8 @@ struct MainTabView: View {
             if showWelcomeOnboarding {
                 startWelcomeAnimation()
             }
+            
+            FirebaseManager.shared.logAgeEvent()
         }
         .overlay {
             if showWelcomeOnboarding {

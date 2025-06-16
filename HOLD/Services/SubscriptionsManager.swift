@@ -124,12 +124,16 @@ extension SubscriptionManager: SuperwallDelegate {
                 AFEventParamContentId: product.productIdentifier,
                 AFEventParamContentType: "Subscription"
             ])
+            PurchaseTracker.shared.trackPurchase(purchaseAttribution: PurchaseAttribution(productID: product.productIdentifier, productName: product.sk2Product?.displayName ?? "", purchaseAmount: product.price, currency: product.currencyCode ?? "", isFreeTrial: false))
+            UserQuestionnaireManager.shared.logSubscriptionEvent()
             break
         case .freeTrialStart(let product, _):
             AppsFlyerLib.shared().logEvent(AFEventStartTrial, withValues: [
                 AFEventParamContentId: product.productIdentifier,
                 AFEventParamContentType: "Trial"
             ])
+            PurchaseTracker.shared.trackPurchase(purchaseAttribution: PurchaseAttribution(productID: product.productIdentifier, productName: product.sk2Product?.displayName ?? "", purchaseAmount: product.price, currency: product.currencyCode ?? "", isFreeTrial: true))
+            UserQuestionnaireManager.shared.logSubscriptionEvent()
             break
         default:
             break

@@ -78,6 +78,18 @@ struct MilestoneView: View {
                                 showNextView = true
                             }
                             UserStorage.isOnboardingDone = true
+                            OnboardingQuestionnaireBuilder.shared.completeOnboarding { result in
+                                DispatchQueue.main.async {
+                                    switch result {
+                                    case .success:
+                                        print("Questionnaire sent to firebase successfully!")
+                                        UserStorage.questionnaireSentToFirebase = true
+                                    case .failure(let error):
+                                        print("Questionnaire failed to sent to firebase!")
+                                        UserStorage.questionnaireSentToFirebase = false
+                                    }
+                                }
+                            }
                         }) {
                             Text("Continue")
                                 .font(.system(size: 16, weight: .semibold))

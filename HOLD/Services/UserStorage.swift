@@ -37,4 +37,8 @@ struct UserStorage {
 
     @AppStorage("wantToLastTime", store: UserDefaults()) static var wantToLastTime: String = ""
     @AppStorage("onboarding", store: UserDefaults()) static var onboarding: String = ""
+    
+    @AppStorage("isValidAttributionSource", store: UserDefaults()) static var isValidAttributionSource: Bool = false
+    @AppStorage("questionnaireSentToFirebase", store: UserDefaults()) static var questionnaireSentToFirebase: Bool = false
+    @AppStorage("isAgeTriggerLogged", store: UserDefaults()) static var isAgeTriggerLogged: Bool = false
 }

@@ -150,6 +150,13 @@ extension OnboardingQuestion {
             imageName: nil
         ),
         OnboardingQuestion(
+            title: "Do you have an invite code?",
+            subtitle: "This code is if someone invited you to the HOLD. You can skip this step if you don’t have one.",
+            allowsMultipleSelection: false,
+            options: [],
+            imageName: nil
+        ),
+        OnboardingQuestion(
             title: "Finally...",
             subtitle: "A little more about you.",
             allowsMultipleSelection: false,

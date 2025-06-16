@@ -41,4 +41,17 @@ class FirebaseManager: ObservableObject {
             }
         }
     }
+    
+    func logAgeEvent() {
+        if !UserStorage.isAgeTriggerLogged {
+            let userProfile = UserProfile.load()
+            Analytics.logEvent("user_age_trigger", parameters: [
+                "userID": DeviceIdManager.getUniqueDeviceId(),
+                "name": userProfile.name,
+                "age": userProfile.age
+            ])
+            
+            UserStorage.isAgeTriggerLogged = true
+        }
+    }
 }

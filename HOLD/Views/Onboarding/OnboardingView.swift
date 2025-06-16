@@ -6,6 +6,7 @@ struct OnboardingView: View {
     @State private var textInputs: [UUID: String] = [:]
     @State private var name: String = ""
     @State private var age: String = ""
+    @State private var code: String = ""
     @EnvironmentObject var navigationManager: NavigationManager
     @State private var showMainView = false
     
@@ -94,15 +95,20 @@ struct OnboardingView: View {
                             if currentIndex == questions.count - 1 {
                                 // Last question with text fields
                                 VStack(spacing: 20) {
-                                    CustomTextField(placeholder: "Name", text: $name)
+                                    CustomTextField(placeholder: "Name", placeholderColor: .white, text: $name)
                                         .padding(.horizontal, 33)
                                         .foregroundColor(Color.white)
                                     
-                                    CustomTextField(placeholder: "Age", text: $age)
+                                    CustomTextField(placeholder: "Age", placeholderColor: .white, text: $age)
                                         .keyboardType(.numberPad)
                                         .padding(.horizontal, 33)
                                 }
                                 .padding(.top, 30)
+                            } else if currentIndex == questions.count - 2 {
+                                CustomTextField(placeholder: "CODE", placeholderColor: Color.white.opacity(0.5), text: $code)
+                                    .padding(.horizontal, 33)
+                                    .padding(.top, 40)
+                                    .foregroundColor(Color.white)
                             } else if !questions[currentIndex].options.isEmpty {
                                 optionsView(for: questions[currentIndex])
                             }
@@ -117,17 +123,10 @@ struct OnboardingView: View {
                     Spacer()
                     
                     // Next Button - Only show on first question, questions with images, or last question
-                    if currentIndex == 0 || questions[currentIndex].imageName != nil || currentIndex == questions.count - 1 {
+                    if currentIndex == 0 || questions[currentIndex].imageName != nil || currentIndex == questions.count - 1 || currentIndex == questions.count - 2 {
                         Button(action: {
                             triggerHaptic()
-                            if currentIndex < questions.count - 1 {
-                                // Set direction for next question
-                                slideFromRight = true
-                                withAnimation(.easeInOut(duration: 0.3)) {
-                                    currentIndex +=  1
-                                }
-                            } else {
-                                // Handle completion (e.g., save answers, navigate away)
+                            if currentIndex == questions.count - 1 {
                                 guard !name.isEmpty else {
                                     validationMessage = "Name cannot be empty."
                                     showValidationAlert = true
@@ -150,19 +149,56 @@ struct OnboardingView: View {
                                 userProfile.age = ageInt
                                 userProfile.save()
                                 
+                                OnboardingQuestionnaireBuilder.shared.setName(name)
+                                OnboardingQuestionnaireBuilder.shared.setAge(age)
+                            
+                                FirebaseManager.shared.logAgeEvent()
+                                
                                 withAnimation {
                                     showMainView = true
                                 }
+                            } else if currentIndex == questions.count - 2 {
+                                if !code.isEmpty {
+                                    CreatorAttributionSystem.shared.attributeUser(creatorIdentifier: code, source: .code)
+                                }
+                                
+                                slideFromRight = true
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    currentIndex +=  1
+                                }
+                            } else {
+                                slideFromRight = true
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    currentIndex +=  1
+                                }
                             }
                         }) {
-                            Text(currentIndex == questions.count - 1 ? "Make Personalized Plan" : "Next")
-                                .font(.system(size: 16, weight: .semibold))
-                                .frame(maxWidth: .infinity, maxHeight: 47)
-                                .background(currentIndex == questions.count - 1 && (name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
-                                                                                    age.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) ? Color(hex: "#FF1919").opacity(0.7) :Color(hex: "#FF1919"))
-                                .foregroundColor(.white)
-                                .cornerRadius(30)
-                                .padding(.horizontal, 56)
+                            if currentIndex == questions.count - 1 {
+                                Text("Make Personalized Plan")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .frame(maxWidth: .infinity, maxHeight: 47)
+                                    .background(currentIndex == questions.count - 1 && (name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+                                                                                        age.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty) ? Color(hex: "#FF1919").opacity(0.7) :Color(hex: "#FF1919"))
+                                    .foregroundColor(.white)
+                                    .cornerRadius(30)
+                                    .padding(.horizontal, 56)
+                            } else if currentIndex == questions.count - 2 {
+                                Text(code.isEmpty ? "Skip" : "Next")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .frame(maxWidth: .infinity, maxHeight: 47)
+                                    .background(code.isEmpty ? Color.white : Color(hex: "#FF1919"))
+                                    .foregroundColor(code.isEmpty ? .black : .white)
+                                    .cornerRadius(30)
+                                    .padding(.horizontal, 56)
+                            } else {
+                                Text("Next")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .frame(maxWidth: .infinity, maxHeight: 47)
+                                    .background(Color(hex: "#FF1919"))
+                                    .foregroundColor(.white)
+                                    .cornerRadius(30)
+                                    .padding(.horizontal, 56)
+                            }
                         }
                         .padding(.top, 15)
                         .padding(.bottom, 32)
@@ -269,14 +305,32 @@ struct OnboardingView: View {
             var set = selections[qid] ?? []
             if set.contains(option) {
                 set.remove(option)
+                OnboardingQuestionnaireBuilder.shared.removeGoalOfWhatDoYouWantToAchieve(option)
             } else {
                 set.insert(option)
+                OnboardingQuestionnaireBuilder.shared.setGoalOfWhatDoYouWantToAchieve(option)
             }
             selections[qid] = set
         } else {
-            if question.id == questions[2].id {
+            if question.id == questions[1].id {
+                OnboardingQuestionnaireBuilder.shared.setAvgDurationOfSexualIntercourse(option)
+            } else if question.id == questions[2].id {
                 UserStorage.wantToLastTime = option
+                OnboardingQuestionnaireBuilder.shared.setHowLongYouWishYouCouldLast(option)
+            } else if question.id == questions[3].id {
+                OnboardingQuestionnaireBuilder.shared.setHowOftenYouFinishEarlierThanYouWish(option)
+            } else if question.id == questions[6].id {
+                OnboardingQuestionnaireBuilder.shared.setRelationshipStatus(option)
+            } else if question.id == questions[7].id {
+                OnboardingQuestionnaireBuilder.shared.setTakenPillsEarlierToImproveIntimateLife(option)
+            } else if question.id == questions[9].id {
+                OnboardingQuestionnaireBuilder.shared.setSleepPerDay(option)
+            } else if question.id == questions[10].id {
+                OnboardingQuestionnaireBuilder.shared.setAlcoholConsumption(option)
+            } else if question.id == questions[11].id {
+                OnboardingQuestionnaireBuilder.shared.setDoYouSmoke(option)
             }
+            
             selections[qid] = [option]
             // Auto-proceed to next question if not first question and no image
             if currentIndex != 0 && question.imageName == nil && currentIndex < questions.count - 1 {
@@ -299,11 +353,12 @@ struct OnboardingView: View {
     private func canProceed(for question: OnboardingQuestion) -> Bool {
         if question.options.isEmpty {
             return true
-        }
-        else if currentIndex == questions.count - 1 {
+        } else if currentIndex == questions.count - 1 {
             // For the last question, check if both name and age are filled
             return !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
                    !age.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        } else if currentIndex == questions.count - 2 {
+            return true
         }
         return !(selections[question.id]?.isEmpty ?? true)
     }
@@ -335,6 +390,7 @@ struct CustomTextFieldStyle: TextFieldStyle {
 
 struct CustomTextField: View {
     let placeholder: String
+    let placeholderColor: Color
     @Binding var text: String
 
     @FocusState private var isFocused: Bool
@@ -350,7 +406,7 @@ struct CustomTextField: View {
             if text.isEmpty && !isFocused {
                 Text(placeholder)
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.white)
+                    .foregroundColor(placeholderColor)
                     .padding(.horizontal, 16)
             }
         }
