@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		13B8AFE62DFF19AF00CDFB90 /* StreakBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B8AFE52DFF19AF00CDFB90 /* StreakBadge.swift */; };
+		13B8AFE82DFF1B1D00CDFB90 /* BadgeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B8AFE72DFF1B1D00CDFB90 /* BadgeManager.swift */; };
+		13B8AFEA2DFF718500CDFB90 /* StreakBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B8AFE92DFF718500CDFB90 /* StreakBadgeView.swift */; };
+		13B8AFED2E009A9800CDFB90 /* UnlockingBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B8AFEC2E009A9800CDFB90 /* UnlockingBadgeView.swift */; };
+		13B8AFEF2E009ABC00CDFB90 /* LockedBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B8AFEE2E009ABC00CDFB90 /* LockedBadgeView.swift */; };
+		13BCE24D2DF27E6700DEA9FB /* DashboardWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BCE24C2DF27E6700DEA9FB /* DashboardWelcomeView.swift */; };
+		13BCE2502DF2828C00DEA9FB /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 13BCE24F2DF2828C00DEA9FB /* ConfettiSwiftUI */; };
 		762FEBAD2D8CE8CF0058F107 /* Measurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762FEBAC2D8CE8CF0058F107 /* Measurement.swift */; };
 		762FEBAF2D8CE8DE0058F107 /* ChallengeResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762FEBAE2D8CE8DE0058F107 /* ChallengeResult.swift */; };
 		762FEBB12D8CE91F0058F107 /* Workout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762FEBB02D8CE91F0058F107 /* Workout.swift */; };
@@ -93,6 +100,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		13B8AFE52DFF19AF00CDFB90 /* StreakBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakBadge.swift; sourceTree = "<group>"; };
+		13B8AFE72DFF1B1D00CDFB90 /* BadgeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeManager.swift; sourceTree = "<group>"; };
+		13B8AFE92DFF718500CDFB90 /* StreakBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakBadgeView.swift; sourceTree = "<group>"; };
+		13B8AFEC2E009A9800CDFB90 /* UnlockingBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnlockingBadgeView.swift; sourceTree = "<group>"; };
+		13B8AFEE2E009ABC00CDFB90 /* LockedBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockedBadgeView.swift; sourceTree = "<group>"; };
+		13BCE24C2DF27E6700DEA9FB /* DashboardWelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardWelcomeView.swift; sourceTree = "<group>"; };
 		762FEBAC2D8CE8CF0058F107 /* Measurement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measurement.swift; sourceTree = "<group>"; };
 		762FEBAE2D8CE8DE0058F107 /* ChallengeResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeResult.swift; sourceTree = "<group>"; };
 		762FEBB02D8CE91F0058F107 /* Workout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Workout.swift; sourceTree = "<group>"; };
@@ -176,6 +189,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				13BCE2502DF2828C00DEA9FB /* ConfettiSwiftUI in Frameworks */,
 				9CD9E0CF2DC7B54E00411006 /* AppsFlyerLib in Frameworks */,
 				9CB9C8B02DEB46EF009DEA46 /* FirebaseCore in Frameworks */,
 				9CD9E0D22DC7B62C00411006 /* SuperwallKit in Frameworks */,
@@ -191,6 +205,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		13B8AFEB2E009A7B00CDFB90 /* Streak */ = {
+			isa = PBXGroup;
+			children = (
+				13B8AFE92DFF718500CDFB90 /* StreakBadgeView.swift */,
+				13B8AFEC2E009A9800CDFB90 /* UnlockingBadgeView.swift */,
+				13B8AFEE2E009ABC00CDFB90 /* LockedBadgeView.swift */,
+			);
+			path = Streak;
+			sourceTree = "<group>";
+		};
 		762FEBAB2D8CE8B80058F107 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -201,6 +225,7 @@
 				762FEBB22D8CE9430058F107 /* Exercise.swift */,
 				762FEBB42D8CE9500058F107 /* UserProfile.swift */,
 				762FEBB62D8CE95F0058F107 /* KnowledgeItem.swift */,
+				13B8AFE52DFF19AF00CDFB90 /* StreakBadge.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -222,6 +247,7 @@
 		762FEBC52D8CEA6E0058F107 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				13B8AFEB2E009A7B00CDFB90 /* Streak */,
 				7CA82F362DC7E5F9001C0DFD /* Onboarding */,
 				7C22B96A2DC7A063002C3A6E /* Measurement */,
 				7C22B9652DC79F14002C3A6E /* Challenges */,
@@ -281,6 +307,7 @@
 				9CD9E0CB2DC7AFF600411006 /* HapticManager.swift */,
 				9CD9E0D32DC7B6B200411006 /* AppsFlyerManager.swift */,
 				9CB9C8AB2DEB46BB009DEA46 /* FirebaseManager.swift */,
+				13B8AFE72DFF1B1D00CDFB90 /* BadgeManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -406,6 +433,7 @@
 				9C1763782DDD089A00E506B7 /* HoldOnboardingTutorial.swift */,
 				9C12CC732DDE24220055974B /* RapidFireOnboardingTutorial.swift */,
 				9CB9C8BE2DEB74C4009DEA46 /* QuizBadNews.swift */,
+				13BCE24C2DF27E6700DEA9FB /* DashboardWelcomeView.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -465,6 +493,7 @@
 				9CD9E0CD2DC7B54E00411006 /* XCRemoteSwiftPackageReference "AppsFlyerFramework" */,
 				9CD9E0D02DC7B62C00411006 /* XCRemoteSwiftPackageReference "Superwall-iOS" */,
 				943FD4182DDB85220071D9A5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				13BCE24E2DF2828C00DEA9FB /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
 			);
 			productRefGroup = 76711AF82D8CD62500FFEE50 /* Products */;
 			projectDirPath = "";
@@ -504,9 +533,11 @@
 				762FEBE02D8CEE720058F107 /* WorkoutDetailView.swift in Sources */,
 				7C1FADBF2DC826EF00F3EE18 /* PersonalPlanView.swift in Sources */,
 				762FEBCC2D8CEC160058F107 /* WorkoutTabView.swift in Sources */,
+				13B8AFED2E009A9800CDFB90 /* UnlockingBadgeView.swift in Sources */,
 				76711AFB2D8CD62500FFEE50 /* HOLDApp.swift in Sources */,
 				762FEBB52D8CE9500058F107 /* UserProfile.swift in Sources */,
 				7C25C42A2DCC6DF70005B321 /* ReviewView.swift in Sources */,
+				13B8AFEF2E009ABC00CDFB90 /* LockedBadgeView.swift in Sources */,
 				7C22B9682DC7A05A002C3A6E /* MeasurementView.swift in Sources */,
 				7C22B9692DC7A05A002C3A6E /* MeasurementCompletionView.swift in Sources */,
 				762FEBC02D8CE9B90058F107 /* WorkoutViewModel.swift in Sources */,
@@ -514,6 +545,7 @@
 				7C25C41C2DC956340005B321 /* TryHoldWorkoutView.swift in Sources */,
 				7CA106C82DA6D467000950FC /* ColorExtension.swift in Sources */,
 				9C12CC742DDE24220055974B /* RapidFireOnboardingTutorial.swift in Sources */,
+				13BCE24D2DF27E6700DEA9FB /* DashboardWelcomeView.swift in Sources */,
 				7CA106BB2DA58119000950FC /* SplashView.swift in Sources */,
 				762FEBAF2D8CE8DE0058F107 /* ChallengeResult.swift in Sources */,
 				7C22B96E2DC7B768002C3A6E /* WorkoutView.swift in Sources */,
@@ -522,6 +554,7 @@
 				7C22B9632DC797F1002C3A6E /* ChallengeCompletionView.swift in Sources */,
 				762FEBC42D8CE9D50058F107 /* ProfileViewModel.swift in Sources */,
 				762FEBE62D8CEEE30058F107 /* WorkoutFinishView.swift in Sources */,
+				13B8AFE82DFF1B1D00CDFB90 /* BadgeManager.swift in Sources */,
 				762FEBEF2D8CEF6F0058F107 /* KnowledgeDetailView.swift in Sources */,
 				7C149D632DB99B99003C0297 /* ChallengeRankView.swift in Sources */,
 				762FEBD92D8CEDB20058F107 /* ChallengeSheetView.swift in Sources */,
@@ -536,11 +569,13 @@
 				7C25C41A2DC94F260005B321 /* UserStorage.swift in Sources */,
 				762FEBB72D8CE95F0058F107 /* KnowledgeItem.swift in Sources */,
 				9C4AB2BD2DCFF3C000E3CDAC /* ShakeEffect.swift in Sources */,
+				13B8AFE62DFF19AF00CDFB90 /* StreakBadge.swift in Sources */,
 				7CCDA3832DC19E7300C6A84A /* AppBackground.swift in Sources */,
 				762FEBDB2D8CEDD50058F107 /* ProgressBarView.swift in Sources */,
 				762FEBDE2D8CEE620058F107 /* WorkoutSheetView.swift in Sources */,
 				762FEBAD2D8CE8CF0058F107 /* Measurement.swift in Sources */,
 				9CB9C8BF2DEB74C4009DEA46 /* QuizBadNews.swift in Sources */,
+				13B8AFEA2DFF718500CDFB90 /* StreakBadgeView.swift in Sources */,
 				7C25C4262DCC69F20005B321 /* TutorialWorkoutFinishView.swift in Sources */,
 				762FEBC22D8CE9C70058F107 /* KnowledgeViewModel.swift in Sources */,
 				7C25C41E2DC9758E0005B321 /* BeforeWeStartView.swift in Sources */,
@@ -785,6 +820,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		13BCE24E2DF2828C00DEA9FB /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/simibac/ConfettiSwiftUI.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		943FD4182DDB85220071D9A5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -812,6 +855,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		13BCE24F2DF2828C00DEA9FB /* ConfettiSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 13BCE24E2DF2828C00DEA9FB /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */;
+			productName = ConfettiSwiftUI;
+		};
 		943FD4192DDB85220071D9A5 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 943FD4182DDB85220071D9A5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

@@ -13,6 +13,7 @@ struct ProgressTabView: View {
     @EnvironmentObject var tabManager: TabManager
     @EnvironmentObject var progressViewModel: ProgressViewModel
     @EnvironmentObject var challengeViewModel: ChallengeViewModel
+    @EnvironmentObject var workoutViewModel: WorkoutViewModel
 
     @State private var showChallengeView = false
     @State private var showMeasurementView = false
@@ -34,20 +35,7 @@ struct ProgressTabView: View {
                 .padding(.bottom, 14)
                 
                 ScrollView(showsIndicators: false) {
-                    HStack {
-                        Text("Welcome back")
-                            .font(.system(size: 24, weight: .bold))
-                            .foregroundColor(.white)
-                        Text("💪")
-                            .font(.title)
-                        Spacer()
-                    }
-                    .padding(.horizontal,39)
-                    .padding(.bottom,39)
-                    .padding(.top,20)
-                    
-                    
-                    
+                    badgesView
                     progressChart
                     progressIndicator
                     challengeView
@@ -70,6 +58,36 @@ struct ProgressTabView: View {
             })
             .environmentObject(progressViewModel)
         }
+    }
+    
+    var badgesView: some View {
+        VStack(spacing: 15) {
+            Text("Badges")
+                .font(.system(size: 20, weight: .bold))
+                .foregroundColor(.white)
+                .multilineTextAlignment(.center)
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 16) {
+                    ForEach(workoutViewModel.badgeManager.badges) { badge in
+                        if badge.isEarned {
+                            Image(badge.imageName)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 88, height: 88)
+                        } else {
+                            Image("badge_locked")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 88, height: 88)
+                        }
+                    }
+                }
+                .padding(.horizontal, 20)
+            }
+        }
+        .padding(.top, 20)
+        .padding(.bottom, 30)
     }
     
     var progressIndicator: some View {
@@ -439,4 +457,5 @@ struct Bar: View {
         .environmentObject(TabManager())
         .environmentObject(ProgressViewModel())
         .environmentObject(ChallengeViewModel())
+        .environmentObject(WorkoutViewModel())
 }

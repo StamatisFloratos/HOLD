@@ -20,6 +20,10 @@ class WorkoutViewModel: ObservableObject {
     @Published var totalWorkoutsCompleted: Int = 0
     @Published var streakDates: [Date] = []
     
+    @Published var badgeManager = BadgeManager()
+    
+    @Published var newBadges: [StreakBadge] = []
+    
     private let shownWorkoutsKey = "shownWorkoutsKey"
     private let todaysDateKey = "todaysDateKey"
     
@@ -249,9 +253,25 @@ class WorkoutViewModel: ObservableObject {
         // Update streak
         updateStreakAfterWorkout()
         
+        // Check for new badges
+        let newBadges = badgeManager.checkAndAwardBadges(for: currentStreak)
+        if !newBadges.isEmpty {
+            handleNewlyEarnedBadges(newBadges)
+        }
+        
         // Reset workout state
         isWorkoutInProgress = false
         currentExerciseIndex = 0
+    }
+    
+    func handleNewlyEarnedBadges(_ badges: [StreakBadge]) {
+        for badge in badges {
+            print("🎉 Congratulations! You've earned the '\(badge.name)' badge!")
+        }
+    }
+    
+    func getNextBatchToUnlock() -> StreakBadge? {
+        return badgeManager.nextBadgeToUnlock
     }
     
     func cancelWorkout() {

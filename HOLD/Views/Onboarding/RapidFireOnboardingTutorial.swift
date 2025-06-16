@@ -50,6 +50,8 @@ struct RapidFireOnboardingTutorial: View {
     @State private var buttonOpacity = 1.0
     @State private var showOverlay = false
     
+    var onCompletion: (() -> Void)?
+    
     var body: some View {
         ZStack {
             AppBackground()
@@ -522,12 +524,16 @@ struct RapidFireOnboardingTutorial: View {
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
                     withAnimation {
-                        if UserStorage.onboarding == OnboardingType.onboardingTwo
-                            .rawValue || UserStorage.onboarding == OnboardingType.onboardingFour
-                            .rawValue {
-                            showNextView = true
+                        if UserStorage.isWelcomeOnboardingInProgress {
+                            onCompletion?()
                         } else {
-                            currentView += 1
+                            if UserStorage.onboarding == OnboardingType.onboardingTwo
+                                .rawValue || UserStorage.onboarding == OnboardingType.onboardingFour
+                                .rawValue {
+                                showNextView = true
+                            } else {
+                                currentView += 1
+                            }
                         }
                     }
                     showText = false

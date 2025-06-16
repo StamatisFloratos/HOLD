@@ -51,12 +51,14 @@ struct HoldOnboardingTutorial: View {
     @State private var buttonOpacity = 0.0
     @State private var showOverlay = false
     
+    var onCompletion: (() -> Void)?
+    
     var body: some View {
         ZStack {
             AppBackground()
             
             if showNextView {
-                RapidFireOnboardingTutorial()
+                RapidFireOnboardingTutorial(onCompletion: onCompletion)
                     .transition(.asymmetric(
                         insertion: .move(edge: .trailing),
                         removal: .move(edge: .leading)

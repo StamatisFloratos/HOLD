@@ -21,11 +21,13 @@ struct FindLocationView: View {
     let stepDuration: TimeInterval = 5.0
     let timerInterval: TimeInterval = 0.01
 
+    var onCompletion: (() -> Void)?
+    
     var body: some View {
         ZStack {
             AppBackground()
             if showNextView {
-                TryExerciseView()
+                TryExerciseView(onCompletion: onCompletion)
                     .zIndex(1)
             } else {
                 VStack {

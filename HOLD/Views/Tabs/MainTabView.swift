@@ -21,6 +21,10 @@ struct MainTabView: View {
     @EnvironmentObject var knowledgeViewModel: KnowledgeViewModel
     @EnvironmentObject var keyboardResponder: KeyboardResponder
     
+    @State private var showWelcomeOnboarding = true
+    @State private var blurAmount: CGFloat = 0
+    @State private var welcomeContentOpacity: Double = 0
+    
     init() {
         UITabBar.appearance().isHidden = true // Hide the default tab bar
     }
@@ -71,6 +75,53 @@ struct MainTabView: View {
                 }
                 .padding(.horizontal,5)
                 .background(Color(hex: "#111720"))
+            }
+        }
+        .blur(radius: blurAmount)
+        .onAppear() {
+            if showWelcomeOnboarding {
+                startWelcomeAnimation()
+            }
+        }
+        .overlay {
+            if showWelcomeOnboarding {
+                DashboardWelcomeView(onCompletion: {
+                    dismissWelcomeAnimation()
+                })
+                .transition(.asymmetric(
+                    insertion: .opacity,
+                    removal: .move(edge: .leading)
+                ))
+                .opacity(welcomeContentOpacity)
+            }
+        }
+    }
+    
+    private func startWelcomeAnimation() {
+        withAnimation(.easeInOut(duration: 0.4)) {
+            blurAmount = 20
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            withAnimation(.easeInOut(duration: 0.3)) {
+                welcomeContentOpacity = 1.0
+            }
+        }
+    }
+    
+    private func dismissWelcomeAnimation() {
+        withAnimation(.easeInOut(duration: 0.3)) {
+            welcomeContentOpacity = 0
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            withAnimation(.easeInOut(duration: 0.4)) {
+                blurAmount = 0
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                showWelcomeOnboarding = false
+                UserStorage.showWelcomeOnboarding = false
             }
         }
     }
@@ -141,4 +192,5 @@ struct RoundedCorner: Shape {
         .environmentObject(ProgressViewModel())
         .environmentObject(WorkoutViewModel())
         .environmentObject(KnowledgeViewModel())
+        .environmentObject(KeyboardResponder())
 }

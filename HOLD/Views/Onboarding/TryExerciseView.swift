@@ -48,11 +48,13 @@ struct TryExerciseView: View {
     @State private var shakeTrigger: CGFloat = 0
     @State private var trembleTimer: Timer?
     
+    var onCompletion: (() -> Void)?
+    
     var body: some View {
         ZStack {
             AppBackground()
             if showNextView {
-                HoldOnboardingTutorial()
+                HoldOnboardingTutorial(onCompletion: onCompletion)
                     .transition(.asymmetric(
                         insertion: .move(edge: .trailing),
                         removal: .move(edge: .leading)

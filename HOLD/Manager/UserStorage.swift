@@ -32,6 +32,8 @@ struct UserStorage {
     @AppStorage("isUserBasic", store: UserDefaults()) static var isUserBasic: Bool = false
 
     @AppStorage("isFromOnboarding", store: UserDefaults()) static var isFromOnboarding: Bool = true
+    @AppStorage("showWelcomeOnboarding", store: UserDefaults()) static var showWelcomeOnboarding: Bool = true
+    @AppStorage("isWelcomeOnboardingInProgress", store: UserDefaults()) static var isWelcomeOnboardingInProgress: Bool = false
 
     @AppStorage("wantToLastTime", store: UserDefaults()) static var wantToLastTime: String = ""
     @AppStorage("onboarding", store: UserDefaults()) static var onboarding: String = ""

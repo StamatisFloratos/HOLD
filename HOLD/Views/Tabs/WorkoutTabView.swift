@@ -12,6 +12,7 @@ struct WorkoutTabView: View {
     @EnvironmentObject var workoutViewModel: WorkoutViewModel
     @State private var selectedWorkoutIndex = 0
     @State private var showWorkoutView = false
+    @State private var showBadgesView = false
 
     
     var body: some View {
@@ -59,7 +60,22 @@ struct WorkoutTabView: View {
         .fullScreenCover(isPresented: $showWorkoutView) {
             WorkoutView(onBack: {
                 showWorkoutView = false
+                showBadgesView = true
             })
+        }
+        .sheet(isPresented: $showBadgesView) {
+            let badge = workoutViewModel.newBadges.last
+            StreakBadgeView(
+                unlockedBadge: badge,
+                nextBadge: workoutViewModel.getNextBatchToUnlock(),
+                showUnlockedBadge: badge != nil ? true : false,
+                onBack: {
+                    showBadgesView = false
+                    workoutViewModel.newBadges = []
+                }
+            )
+            .presentationDetents([.large])
+            .presentationDragIndicator(.hidden)
         }
     }
     
