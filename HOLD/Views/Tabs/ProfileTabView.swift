@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ProfileTabView: View {
+    @Environment(\.scenePhase) var scenePhase
     @EnvironmentObject private var notificationsManager: NotificationsManager
     
     @State private var userProfile: UserProfile = UserProfile.load()
@@ -15,6 +16,7 @@ struct ProfileTabView: View {
     @State private var showSubscriptionManagement: Bool = false
     
     @State private var showValidationAlert: Bool = false
+    @State private var showSettingsAlert: Bool = false
     @State private var validationMessage: String = ""
     
     var body: some View {
@@ -91,7 +93,12 @@ struct ProfileTabView: View {
                                     .toggleStyle(SwitchToggleStyle(tint: Color.green))
                                     .onChange(of: notificationsManager.notificationsEnabled) { oldValue, newValue in
                                         if newValue {
-                                            notificationsManager.enableNotifications()
+                                            if notificationsManager.isAuthorized {
+                                                notificationsManager.enableNotifications()
+                                            } else {
+                                                notificationsManager.notificationsEnabled = false
+                                                showSettingsAlert = true
+                                            }
                                         } else {
                                             notificationsManager.disableNotifications()
                                         }
@@ -161,6 +168,25 @@ struct ProfileTabView: View {
                 message: Text(validationMessage),
                 dismissButton: .default(Text("OK"))
             )
+        }
+        .alert("Enable Notifications", isPresented: $showSettingsAlert) {
+            Button("Open Settings") {
+                guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else { return }
+                if UIApplication.shared.canOpenURL(settingsUrl) {
+                    UIApplication.shared.open(settingsUrl)
+                }
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("To receive workout reminders and motivation, please enable notifications for Hold in your device settings, then turn this toggle on again.")
+        }
+        .onAppear() {
+            notificationsManager.checkAuthorizationStatus()
+        }
+        .onChange(of: scenePhase) { oldPhase, newPhase in
+            if newPhase == .active {
+                notificationsManager.checkAuthorizationStatus()
+            }
         }
     }
     

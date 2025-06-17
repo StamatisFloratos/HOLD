@@ -232,36 +232,11 @@ class WorkoutViewModel: ObservableObject {
         currentExerciseIndex = 0
     }
     
-    func nextExercise() {
-        guard let workout = todaysWorkout else { return }
-        
-        if currentExerciseIndex < workout.exercises.count - 1 {
-            currentExerciseIndex += 1
-        } else {
-            // Last exercise completed
-            completeWorkout()
-        }
-    }
-    
-    func completeWorkout() {
-        guard let workout = todaysWorkout else { return }
-        
-        // Save workout completion
-        let completion = WorkoutCompletion(workoutName: workout.name)
-        WorkoutCompletionManager.saveCompletion(completion)
-        
-        // Update streak
-        updateStreakAfterWorkout()
-        
-        // Check for new badges
-        let newBadges = badgeManager.checkAndAwardBadges(for: currentStreak)
+    func checkAndAwardBadges() {
+        newBadges = badgeManager.checkAndAwardBadges(for: currentStreak)
         if !newBadges.isEmpty {
             handleNewlyEarnedBadges(newBadges)
         }
-        
-        // Reset workout state
-        isWorkoutInProgress = false
-        currentExerciseIndex = 0
     }
     
     func handleNewlyEarnedBadges(_ badges: [StreakBadge]) {
@@ -502,5 +477,24 @@ extension WorkoutViewModel {
             }
             print("")
         }
+    }
+    
+    func createStreakStub() {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        
+        var testStreakDates: [Date] = []
+        
+        for i in 0..<7 {
+            let date = calendar.date(byAdding: .day, value: -i, to: today)!
+            testStreakDates.append(date)
+        }
+        
+        testStreakDates.sort()
+        
+        self.streakDates = testStreakDates
+        
+        calculateStreaks()
+        saveStreakDatesToFile()
     }
 }

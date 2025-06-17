@@ -14,7 +14,7 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
     static let shared = NotificationsManager()
 
     @Published var isAuthorized = false
-    @Published var notificationsEnabled = true
+    @Published var notificationsEnabled = false
     private let notificationCenter = UNUserNotificationCenter.current()
     
     @AppStorage("isNotificationsScheduled") private var isNotificationsScheduled: Bool = false
@@ -24,12 +24,8 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
 
     private override init() {
         super.init()
-        if UserDefaults.standard.object(forKey: notificationsEnabledKey) == nil {
-            UserDefaults.standard.set(true, forKey: notificationsEnabledKey)
-            notificationsEnabled = true
-        } else {
-            notificationsEnabled = UserDefaults.standard.bool(forKey: notificationsEnabledKey)
-        }
+        
+        notificationsEnabled = UserDefaults.standard.bool(forKey: notificationsEnabledKey)
 
         notificationCenter.delegate = self
         checkAuthorizationStatus()
@@ -55,6 +51,7 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
         notificationCenter.getNotificationSettings { settings in
             DispatchQueue.main.async {
                 self.isAuthorized = settings.authorizationStatus == .authorized
+                self.notificationsEnabled = settings.authorizationStatus == .authorized
             }
         }
     }
@@ -63,7 +60,8 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
         notificationCenter.requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
             DispatchQueue.main.async {
                 self.isAuthorized = granted
-                if granted && self.notificationsEnabled {
+                if granted {
+                    self.notificationsEnabled = true
                     self.isNotificationsScheduled = true
                     self.scheduleAllNotifications()
                 }
@@ -175,4 +173,3 @@ class NotificationsManager: NSObject, ObservableObject, UNUserNotificationCenter
         }
     }
 }
-

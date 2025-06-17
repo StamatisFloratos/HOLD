@@ -658,6 +658,7 @@ struct WorkoutDetailView: View {
                     // Workout completed
                     WorkoutCompletionManager.saveCompletion(WorkoutCompletion(workoutName: selectedWorkout.name))
                     workoutViewModel.updateStreakAfterWorkout()
+                    workoutViewModel.checkAndAwardBadges()
                     finish = true
                 }
             })
@@ -679,6 +680,7 @@ struct WorkoutDetailView: View {
                 // Workout completed
                 WorkoutCompletionManager.saveCompletion(WorkoutCompletion(workoutName: selectedWorkout.name))
                 workoutViewModel.updateStreakAfterWorkout()
+                workoutViewModel.checkAndAwardBadges()
                 finish = true
             }
         }
