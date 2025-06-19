@@ -26,14 +26,13 @@ class DeepLinkHandler {
     }
     
     private func extractLinkAttribution(from url: URL) -> String? {
-        let pathComponents = url.pathComponents
-        
-        let filteredComponents = pathComponents.filter { $0 != "/" }
-        
-        if filteredComponents.count >= 2 {
-            return filteredComponents.last
+        if let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+           let queryItems = components.queryItems,
+           let deepLinkValue = queryItems.first(where: { $0.name == "deep_link_value" })?.value {
+            return deepLinkValue
         }
         
-        return nil
+        let pathComponents = url.pathComponents.filter { $0 != "/" }
+        return pathComponents.last
     }
 }

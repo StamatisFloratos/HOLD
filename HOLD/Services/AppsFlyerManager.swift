@@ -9,6 +9,7 @@ import Foundation
 import AppsFlyerLib
 import AdSupport
 import AppTrackingTransparency
+import UIKit
 
 class AppsFlyerManager {
     static func initialize() {
@@ -19,6 +20,10 @@ class AppsFlyerManager {
         #if DEBUG
         AppsFlyerLib.shared().isDebug = true
         #endif
+        
+        if let appDelegate = UIApplication.shared.delegate as? AppsFlyerLibDelegate {
+            AppsFlyerLib.shared().delegate = appDelegate
+        }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
             DispatchQueue.main.async {
