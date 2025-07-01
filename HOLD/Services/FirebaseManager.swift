@@ -28,7 +28,11 @@ class FirebaseManager: ObservableObject {
                         return
                     }
                     
-                    UserStorage.onboarding = remoteConfig.configValue(forKey: "Onboarding").stringValue
+                    if UserStorage.isFromMetaAd {
+                        UserStorage.onboarding = OnboardingType.onboardingThree.rawValue
+                    } else {
+                        UserStorage.onboarding = remoteConfig.configValue(forKey: "Onboarding").stringValue
+                    }
                     
                     print("Onboarding is: \(UserStorage.onboarding)")
                     completion()
@@ -43,15 +47,15 @@ class FirebaseManager: ObservableObject {
     }
     
     func logAgeEvent() {
-        if !UserStorage.isAgeTriggerLogged {
+        if !UserStorage.isNewAgeTriggerLogged {
             let userProfile = UserProfile.load()
-            Analytics.logEvent("user_age_trigger", parameters: [
-                "userID": DeviceIdManager.getUniqueDeviceId(),
-                "name": userProfile.name,
-                "age": userProfile.age
+            Analytics.logEvent("user_age_trigger_new", parameters: [
+                "user_ID": DeviceIdManager.getUniqueDeviceId(),
+                "user_name": userProfile.name,
+                "user_age": String(userProfile.age)
             ])
             
-            UserStorage.isAgeTriggerLogged = true
+            UserStorage.isNewAgeTriggerLogged = true
         }
     }
 }

@@ -40,5 +40,6 @@ struct UserStorage {
     
     @AppStorage("isValidAttributionSource", store: UserDefaults()) static var isValidAttributionSource: Bool = false
     @AppStorage("questionnaireSentToFirebase", store: UserDefaults()) static var questionnaireSentToFirebase: Bool = false
-    @AppStorage("isAgeTriggerLogged", store: UserDefaults()) static var isAgeTriggerLogged: Bool = false
+    @AppStorage("isNewAgeTriggerLogged", store: UserDefaults()) static var isNewAgeTriggerLogged: Bool = false
+    @AppStorage("isFromMetaAd", store: UserDefaults()) static var isFromMetaAd: Bool = false
 }

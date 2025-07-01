@@ -12,39 +12,13 @@ import AppTrackingTransparency
 import UIKit
 
 class AppsFlyerManager {
-    static func initialize() {
-        AppsFlyerLib.shared().appsFlyerDevKey = "WaVeTPraQ7xQAnTge9W5tg"
-        AppsFlyerLib.shared().appleAppID = "6745149501"
-        AppsFlyerLib.shared().customerUserID = DeviceIdManager.getUniqueDeviceId()
-        
-        #if DEBUG
-        AppsFlyerLib.shared().isDebug = true
-        #endif
-        
-        if let appDelegate = UIApplication.shared.delegate as? AppsFlyerLibDelegate {
-            AppsFlyerLib.shared().delegate = appDelegate
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            DispatchQueue.main.async {
-                self.checkAndRequestATT()
-            }
-        }
-        
-        AppsFlyerLib.shared().start()
-    }
-    
-    static func checkAndRequestATT() {
+    static func launchSDK() {
         if #available(iOS 14, *) {
-            let status = ATTrackingManager.trackingAuthorizationStatus
-
-            if status == .notDetermined {
-                ATTrackingManager.requestTrackingAuthorization { newStatus in
-                    print("New ATT Status: \(newStatus.rawValue)")
-                }
-            } else {
-                print("ATT already determined: \(status.rawValue)")
+            ATTrackingManager.requestTrackingAuthorization { status in
+                AppsFlyerLib.shared().start()
             }
+        } else {
+            AppsFlyerLib.shared().start()
         }
     }
     

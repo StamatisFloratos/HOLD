@@ -12,82 +12,57 @@ import SuperwallKit
 import FirebaseCore
 import AppsFlyerLib
 
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, DeepLinkDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        AppsFlyerManager.initialize()
+        AppsFlyerLib.shared().appsFlyerDevKey = "WaVeTPraQ7xQAnTge9W5tg"
+        AppsFlyerLib.shared().appleAppID = "6745149501"
+        AppsFlyerLib.shared().customerUserID = DeviceIdManager.getUniqueDeviceId()
+        
+        #if DEBUG
+        AppsFlyerLib.shared().isDebug = true
+        #endif
+        
+        AppsFlyerLib.shared().deepLinkDelegate = self
+        
         FirebaseApp.configure()
         
-        if let url = launchOptions?[.url] as? URL {
-            handleDeepLink(url: url)
-        }
-        
-        return true
-    }
-    
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        handleDeepLink(url: url)
         return true
     }
     
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        AppsFlyerLib.shared().continue(userActivity, restorationHandler: { _ in })
-        
-        if userActivity.activityType == NSUserActivityTypeBrowsingWeb,
-           let url = userActivity.webpageURL {
-            handleDeepLink(url: url)
-        }
-        
-        return true
+      AppsFlyerLib.shared().continue(userActivity, restorationHandler: nil)
+      return true
     }
-    
-    private func handleDeepLink(url: URL) {
-        DeepLinkHandler.shared.processDeepLink(url: url)
-    }
-}
 
-extension AppDelegate: AppsFlyerLibDelegate {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+      AppsFlyerLib.shared().handleOpen(url, options: options)
+      return true
+    }
     
-    func onConversionDataSuccess(_ conversionInfo: [AnyHashable: Any]) {
-        print("AppsFlyer conversion data: \(conversionInfo)")
-        
-        if let status = conversionInfo["af_status"] as? String,
-           status == "Non-organic" {
+    func didResolveDeepLink(_ result: DeepLinkResult) {
+        switch result.status {
+        case .found:
+            let deepLink = result.deepLink
             
-            if let campaign = conversionInfo["campaign"] as? String {
-                print("User came from campaign: \(campaign)")
+            if let mediaSource = deepLink?.mediaSource,
+               mediaSource == "Social_facebook" || mediaSource == "Social_instagram" {
+                UserStorage.isFromMetaAd = true
+                UserStorage.onboarding = OnboardingType.onboardingThree.rawValue
             }
             
-            if let deepLinkValue = conversionInfo["deep_link_value"] as? String {
+            if let deepLinkValue = deepLink?.deeplinkValue {
                 CreatorAttributionSystem.shared.attributeUser(
                     creatorIdentifier: deepLinkValue,
                     source: .link
                 )
             }
+        default:
+            print("No deep link found or error occurred.")
         }
-    }
-    
-    func onConversionDataFail(_ error: Error) {
-        print("AppsFlyer conversion data failed: \(error)")
-    }
-    
-    func onAppOpenAttribution(_ attributionData: [AnyHashable : Any]) {
-        print("AppsFlyer deep link data: \(attributionData)")
-        
-        if let deepLinkValue = attributionData["deep_link_value"] as? String {
-            CreatorAttributionSystem.shared.attributeUser(
-                creatorIdentifier: deepLinkValue,
-                source: .link
-            )
-        }
-    }
-    
-    func onAppOpenAttributionFailure(_ error: Error) {
-        print("AppsFlyer deep link failed: \(error)")
     }
 }
-
 
 @main
 struct HOLDApp: App {
@@ -121,8 +96,19 @@ struct HOLDApp: App {
                 .environmentObject(keyboardResponder)
                 .environmentObject(notificationsManager)
                 .environmentObject(subscriptionManager)
+                .onOpenURL { url in
+                    AppsFlyerLib.shared().handleOpen(url)
+                }
+                .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { userActivity in
+                    AppsFlyerLib.shared().continue(userActivity, restorationHandler: nil)
+                }
                 .onAppear {
-                    AppsFlyerManager.checkAndRequestATT()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                        DispatchQueue.main.async {
+                            AppsFlyerManager.launchSDK()
+                        }
+                    }
+                    
                     subscriptionManager.checkSubscriptionStatus()
                     
                     if !UserStorage.isOnboardingDone {

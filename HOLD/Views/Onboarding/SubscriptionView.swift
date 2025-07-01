@@ -485,30 +485,35 @@ struct SubscriptionView: View {
                                 .font(.system(size: 14, weight: .semibold))
                                 .padding(.top,11)
                             Button(action: {
-                                if UserStorage.onboarding == OnboardingType.onboardingOne
-                                    .rawValue {
-                                    Superwall.shared.register(placement: "hold_gift_offer", feature: {
-                                        subscriptionManager.checkSubscriptionStatus()
-                                    })
-                                } else if UserStorage.onboarding == OnboardingType.onboardingTwo
-                                    .rawValue {
-                                    Superwall.shared.register(placement: "hold_gift_offer_2", feature: {
-                                        subscriptionManager.checkSubscriptionStatus()
-                                    })
-                                } else if UserStorage.onboarding == OnboardingType.onboardingThree
-                                    .rawValue {
-                                    Superwall.shared.register(placement: "hold_gift_offer_3", feature: {
-                                        subscriptionManager.checkSubscriptionStatus()
-                                    })
-                                } else if UserStorage.onboarding == OnboardingType.onboardingFour
-                                    .rawValue {
-                                    Superwall.shared.register(placement: "hold_gift_offer_4", feature: {
-                                        subscriptionManager.checkSubscriptionStatus()
+                                if UserStorage.isFromMetaAd {
+                                    Superwall.shared.register(placement: "hold_gift_offer_meta", feature: {     subscriptionManager.checkSubscriptionStatus()
                                     })
                                 } else {
-                                    Superwall.shared.register(placement: "hold_gift_offer", feature: {
-                                        subscriptionManager.checkSubscriptionStatus()
-                                    })
+                                    if UserStorage.onboarding == OnboardingType.onboardingOne
+                                        .rawValue {
+                                        Superwall.shared.register(placement: "hold_gift_offer", feature: {
+                                            subscriptionManager.checkSubscriptionStatus()
+                                        })
+                                    } else if UserStorage.onboarding == OnboardingType.onboardingTwo
+                                        .rawValue {
+                                        Superwall.shared.register(placement: "hold_gift_offer_2", feature: {
+                                            subscriptionManager.checkSubscriptionStatus()
+                                        })
+                                    } else if UserStorage.onboarding == OnboardingType.onboardingThree
+                                        .rawValue {
+                                        Superwall.shared.register(placement: "hold_gift_offer_3", feature: {
+                                            subscriptionManager.checkSubscriptionStatus()
+                                        })
+                                    } else if UserStorage.onboarding == OnboardingType.onboardingFour
+                                        .rawValue {
+                                        Superwall.shared.register(placement: "hold_gift_offer_4", feature: {
+                                            subscriptionManager.checkSubscriptionStatus()
+                                        })
+                                    } else {
+                                        Superwall.shared.register(placement: "hold_gift_offer", feature: {
+                                            subscriptionManager.checkSubscriptionStatus()
+                                        })
+                                    }
                                 }
                             }, label: {
                                 HStack {
@@ -534,25 +539,30 @@ struct SubscriptionView: View {
                 VStack(spacing:11) {
                     Button(action: {
                         triggerHapticOnButton()
-                        if UserStorage.onboarding == OnboardingType.onboardingOne
-                            .rawValue {
-                            Superwall.shared.register(placement: "hold_main", feature: {     subscriptionManager.checkSubscriptionStatus()
-                            })
-                        } else if UserStorage.onboarding == OnboardingType.onboardingTwo
-                            .rawValue {
-                            Superwall.shared.register(placement: "hold_main_2", feature: {     subscriptionManager.checkSubscriptionStatus()
-                            })
-                        } else if UserStorage.onboarding == OnboardingType.onboardingThree
-                            .rawValue {
-                            Superwall.shared.register(placement: "hold_main_3", feature: {     subscriptionManager.checkSubscriptionStatus()
-                            })
-                        } else if UserStorage.onboarding == OnboardingType.onboardingFour
-                            .rawValue {
-                            Superwall.shared.register(placement: "hold_main_4", feature: {     subscriptionManager.checkSubscriptionStatus()
+                        if UserStorage.isFromMetaAd {
+                            Superwall.shared.register(placement: "hold_main_meta", feature: {     subscriptionManager.checkSubscriptionStatus()
                             })
                         } else {
-                            Superwall.shared.register(placement: "hold_main", feature: {     subscriptionManager.checkSubscriptionStatus()
-                            })
+                            if UserStorage.onboarding == OnboardingType.onboardingOne
+                                .rawValue {
+                                Superwall.shared.register(placement: "hold_main", feature: {     subscriptionManager.checkSubscriptionStatus()
+                                })
+                            } else if UserStorage.onboarding == OnboardingType.onboardingTwo
+                                .rawValue {
+                                Superwall.shared.register(placement: "hold_main_2", feature: {     subscriptionManager.checkSubscriptionStatus()
+                                })
+                            } else if UserStorage.onboarding == OnboardingType.onboardingThree
+                                .rawValue {
+                                Superwall.shared.register(placement: "hold_main_3", feature: {     subscriptionManager.checkSubscriptionStatus()
+                                })
+                            } else if UserStorage.onboarding == OnboardingType.onboardingFour
+                                .rawValue {
+                                Superwall.shared.register(placement: "hold_main_4", feature: {     subscriptionManager.checkSubscriptionStatus()
+                                })
+                            } else {
+                                Superwall.shared.register(placement: "hold_main", feature: {     subscriptionManager.checkSubscriptionStatus()
+                                })
+                            }
                         }
                     }) {
                         Text("Become a HOLDER")
@@ -577,8 +587,9 @@ struct SubscriptionView: View {
                 }
                 .padding(.bottom, 13)
             }
-            //                .padding(.horizontal,33)
-            
+        }
+        .onAppear() {
+            FirebaseManager.shared.logAgeEvent()
         }
     }
     

@@ -175,7 +175,7 @@ struct WorkoutTabView: View {
                     .font(.system(size: 20, weight: .semibold))
                     .foregroundColor(.white)
                 
-                Text("You're on a \(workoutViewModel.longestStreak) day streak!")
+                Text("You're on a \(workoutViewModel.currentStreak) day streak!")
                     .font(.system(size: 14, weight: .regular))
                     .foregroundColor(.white)
                 
