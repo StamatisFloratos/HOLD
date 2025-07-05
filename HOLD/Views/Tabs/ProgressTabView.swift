@@ -17,8 +17,8 @@ struct ProgressTabView: View {
 
     @State private var showChallengeView = false
     @State private var showMeasurementView = false
-    
-
+    @State private var dragOffset: CGFloat = 0.0
+    let segmentModes = ProgressChartMode.allCases
     
     var body: some View {
         ZStack {
@@ -36,8 +36,7 @@ struct ProgressTabView: View {
                 
                 ScrollView(showsIndicators: false) {
                     badgesView
-                    progressChart
-                    progressIndicator
+                    progressChartWithPaging
                     challengeView
                     
                     Spacer(minLength: 80)
@@ -90,146 +89,101 @@ struct ProgressTabView: View {
         .padding(.bottom, 30)
     }
     
-    var progressIndicator: some View {
-        let minValue = 3.0
-        let maxValue = 300.0
-        let currentValue = progressViewModel.mostRecentMeaurementTime // most recent
-        let progress = (currentValue - minValue) / (maxValue - minValue)
-
-        return VStack(spacing: 6) {
-            ZStack(alignment: .top) {
-                VStack(spacing: 0) {
-                    Rectangle()
-                        .fill(Color.clear)
-                        .frame(height: 35)
+    var progressChartWithPaging: some View {
+        VStack(alignment: .center) {
+            HStack {
+                Text("Training Progress")
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundColor(.white)
+                
+                Spacer()
+            }
+            .padding(.horizontal, 40)
+            .padding(.bottom, 20)
+            
+            HStack {
+                Image("BestResultsIcon")
+                    .frame(width: 35, height: 35)
+                
+                VStack (alignment: .leading, spacing: 2) {
+                    Text("Best Result")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundColor(.white.opacity(0.5))
                     
-                    ZStack {
-                        LinearGradient(
-                            colors: [Color(hex: "FF0000"), Color(hex: "FFC800"), Color(hex: "00FF09")],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                        .frame(height: 33)
-                        .cornerRadius(20)
-                        HStack {
-                            Text("😭")
-                                .font(.title)
-                            Spacer()
-                            Text("😩")
-                                .font(.title)
-                        }
-                    }
+                    Text(formatDuration(progressViewModel.bestResult))
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundColor(.white)
                 }
                 
-                GeometryReader { geo in
-                    VStack(spacing: 2) {
-                        Text("You")
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(.white)
-                        Image(systemName: "triangle.fill")
-                            .foregroundColor(.white)
-                            .rotationEffect(.degrees(180))
-                    }
-                    .offset(x: progress * (geo.size.width - 20))
+                
+                Spacer()
+                
+                VStack (alignment: .trailing, spacing: 2) {
+                    Text("Last Measurement")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundColor(.white.opacity(0.5))
+                    
+                    Text(progressViewModel.latestMeasurementDateString())
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundColor(.white)
                 }
             }
-            .frame(height: 68)
-            
-            HStack {
-                Text("\(Int(minValue)) sec")
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(.white)
-
-                Spacer()
-
-                Text("\(Int(maxValue)) sec")
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(.white)
-            }
-        }
-        .padding(.horizontal, 28)
-        .padding(.top, 16)
-        .padding(.bottom, 31)
-    }
-
-    
-    
-    var progressChart: some View {
-        VStack(alignment: .leading) {
-            Text("Training Progress")
-                .font(.system(size: 20, weight: .semibold))
-                .foregroundColor(.white)
-                .padding(.horizontal,39)
-                .padding(.bottom,19)
-            
-            HStack {
-                Text("All Time Best: \(formatDuration(progressViewModel.allTimeBest))")
-                    .font(.system(size: 15, weight: .medium))
-                    .foregroundColor(.gray)
-                Spacer()
-                Text("Weekly Best: \(formatDuration(progressViewModel.weeklyBest))")
-                    .font(.system(size: 15, weight: .medium))
-                    .foregroundColor(.gray)
-            }
-            .padding(.horizontal,39)
-            .padding(.bottom,7)
-            
-            // Progress Chart Container
-            
+            .padding(.horizontal,40)
+            .padding(.bottom,8)
             
             VStack {
-                HStack{
-                    Text(progressViewModel.weekDateRange)
+                HStack {
+                    Button(action: { 
+                        progressViewModel.goToPreviousPage()
+                    }) {
+                        Image(systemName: "chevron.left")
+                            .foregroundColor(progressViewModel.canGoToPreviousPage() ? .white : .gray)
+                    }
+                    .disabled(!progressViewModel.canGoToPreviousPage())
+                    Spacer()
+                    Text(progressViewModel.chartDateRangeString)
                         .font(.system(size: 16, weight: .medium))
                         .foregroundColor(.white)
                     Spacer()
+                    Button(action: { 
+                        progressViewModel.goToNextPage()
+                    }) {
+                        Image(systemName: "chevron.right")
+                            .foregroundColor(progressViewModel.canGoToNextPage() ? .white : .gray)
+                    }
+                    .disabled(!progressViewModel.canGoToNextPage())
                 }
                 .padding(.top,16)
                 .padding(.horizontal,21)
                 
                 Chart {
-                    ForEach(progressViewModel.chartDisplayData) { dailyData in
+                    ForEach(progressViewModel.chartDisplayData) { data in
                         BarMark(
-                            x: .value("Day", dailyData.day),
-                            y: .value("Duration", dailyData.duration ?? 0.0)
+                            x: .value("Label", data.day),
+                            y: .value("Duration", data.duration ?? 0.0)
                         )
-                        .foregroundStyle(Color(hex:"#FF1919")) // red for bars
+                        .foregroundStyle(Color(hex:"#FF1919"))
                         .cornerRadius(5, style: .continuous)
-                        
                     }
                 }
                 .chartXAxis {
                     AxisMarks { value in
-                        AxisGridLine()
-                            .foregroundStyle(.clear)
-                        AxisTick()
-                            .foregroundStyle(.clear)
-                        AxisValueLabel()
-                            .foregroundStyle(.white)
-                            .font(.system(size: 12, weight: .regular))
+                        AxisGridLine().foregroundStyle(.clear)
+                        AxisTick().foregroundStyle(.clear)
+                        AxisValueLabel().foregroundStyle(.white).font(.system(size: 10, weight: .regular))
                     }
                 }
                 .chartYAxis {
                     AxisMarks { value in
-                        AxisGridLine()
-                            .foregroundStyle(.white.opacity(0.5))
-                        AxisTick()
-                            .foregroundStyle(.clear)
-                        AxisValueLabel {
-                            if let val = value.as(Double.self) {
-                                Text("\(Int(val)) sec")
-                                    .foregroundStyle(.white)
-                            }
-                        }
-                        .font(.system(size: 10, weight: .regular))
+                        AxisGridLine().foregroundStyle(.white)
+                        AxisTick().foregroundStyle(.clear)
+                        AxisValueLabel().foregroundStyle(.white).font(.system(size: 10, weight: .regular))
                     }
                 }
-                .foregroundStyle(Color.white)
-                .frame(height: 150) // Adjust height as needed
+                .frame(height: 180)
                 .padding(.horizontal)
+                .padding(.vertical, 40)
                 
-                
-                // Take Measurement Button
                 Button {
                     triggerHaptic()
                     showMeasurementView = true
@@ -247,39 +201,80 @@ struct ProgressTabView: View {
                 }
                 .frame(width: 214, height: 47)
                 .padding(.bottom, 24)
-                .padding(.top,42)
             }
-            .background(.black.opacity(0.2))
+            .background(Color(hex: "#242E3A"))
             .cornerRadius(20)
             .overlay(
                 RoundedRectangle(cornerRadius: 20)
-                    .stroke(Color.white.opacity(0.4), lineWidth: 1)
-                    .cornerRadius(20)
+                    .stroke(Color.white, lineWidth: 0.5)
             )
-            .padding(.horizontal,28)
+            .padding(.horizontal, 16)
+            
+            HStack(spacing: 8) {
+                ForEach(segmentModes) { mode in
+                    Button(action: {
+                        progressViewModel.chartMode = mode
+                    }) {
+                        Text(mode.displayName.capitalized)
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(progressViewModel.chartMode == mode ? Color.white : Color.white.opacity(0.5))
+                            .frame(width: 75)
+                            .padding(.vertical, 8)
+                            .background(progressViewModel.chartMode == mode ? Color(hex: "#0D151F") : Color.clear)
+                            .cornerRadius(20)
+                    }
+                }
+            }
+            .background(Color(hex: "#242E3A"))
+            .cornerRadius(20)
+            .padding(.top, 8)
         }
-        
     }
     
     var challengeView: some View {
         // Challenge section
         VStack(spacing:0) {
             if let latestChallengeResult = challengeViewModel.latestChallengeResult {
-                HStack{
-                    VStack(alignment: .leading, spacing: 26) {
-                        Text("The Challenge")
-                            .font(.system(size: 20, weight: .semibold))
-                            .foregroundColor(.white)
-                        
-                        Text("Last Attempt: \(latestChallengeResult.dateOfChallenge())")
-                            .font(.system(size: 15, weight: .semibold))
-                            .foregroundColor(.white).opacity(0.4)
-                    }
+                HStack {
+                    Text("The Challenge")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(.white)
+                    
                     Spacer()
                 }
-                .padding(.horizontal,39)
-                .padding(.bottom,9)
-
+                .padding(.horizontal, 40)
+                .padding(.bottom, 10)
+                .padding(.top, 50)
+                
+                HStack {
+                    Image("BestResultsIcon")
+                        .frame(width: 35, height: 35)
+                    
+                    VStack (alignment: .leading, spacing: 2) {
+                        Text("Best Performance")
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundColor(.white.opacity(0.5))
+                        
+                        Text(challengeViewModel.bestChallengeResult.durationDisplay)
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(.white)
+                    }
+                    
+                    
+                    Spacer()
+                    
+                    VStack (alignment: .trailing, spacing: 2) {
+                        Text("Last Attempt")
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundColor(.white.opacity(0.5))
+                        
+                        Text(challengeViewModel.lastAttemptedChallengeDateString())
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(.white)
+                    }
+                }
+                .padding(.horizontal,40)
+                .padding(.bottom,8)
                 
                 // Progress Chart Container
                 
@@ -307,12 +302,7 @@ struct ProgressTabView: View {
                         .font(.system(size: 20, weight: .semibold))
                         .foregroundColor(.white)
                         .padding(.top,18)
-                    Text(latestChallengeResult.challengeDescription)
-                        .font(.system(size: 20, weight: .semibold))
-                        .foregroundColor(.white)
-                        .padding(.top,18)
-                        .padding(.bottom,17)
-                    
+                        .padding(.bottom,26)
                     
                     // Start Challenge Button
                     Button {
@@ -343,21 +333,46 @@ struct ProgressTabView: View {
                 .padding(.horizontal,28)
                 
             } else {
-                HStack{
-                    VStack(alignment: .leading, spacing: 26) {
-                        Text("The Challenge")
-                            .font(.system(size: 20, weight: .semibold))
-                            .foregroundColor(.white)
-                        
-                        Text("Last Attempt: Never")
-                            .font(.system(size: 15, weight: .semibold))
-                            .foregroundColor(.white).opacity(0.4)
-                    }
+                HStack {
+                    Text("The Challenge")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(.white)
+                    
                     Spacer()
                 }
-                .padding(.horizontal,39)
-                .padding(.bottom,9)
+                .padding(.horizontal, 40)
+                .padding(.bottom, 10)
+                .padding(.top, 50)
                 
+                HStack {
+                    Image("BestResultsIcon")
+                        .frame(width: 35, height: 35)
+                    
+                    VStack (alignment: .leading, spacing: 2) {
+                        Text("Best Performance")
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundColor(.white.opacity(0.5))
+                        
+                        Text(challengeViewModel.bestChallengeResult.durationDisplay)
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(.white)
+                    }
+                    
+                    
+                    Spacer()
+                    
+                    VStack (alignment: .trailing, spacing: 2) {
+                        Text("Last Attempt")
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundColor(.white.opacity(0.5))
+                        
+                        Text(challengeViewModel.lastAttemptedChallengeDateString())
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(.white)
+                    }
+                }
+                .padding(.horizontal,40)
+                .padding(.bottom,8)
                 
                 // Progress Chart Container
                 

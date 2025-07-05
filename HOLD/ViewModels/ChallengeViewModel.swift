@@ -94,4 +94,20 @@ class ChallengeViewModel: ObservableObject {
     var bestDuration: String {
         return bestChallengeResult.durationDisplay
     }
+    
+    func lastAttemptedChallengeDateString() -> String {
+        guard let lastResult = allChallengeResultsSorted.first else {
+            return "Never"
+        }
+        let calendar = Calendar.current
+        if calendar.isDateInToday(lastResult.date) {
+            return "Today"
+        } else if calendar.isDateInYesterday(lastResult.date) {
+            return "Yesterday"
+        } else {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "d MMM yyyy"
+            return formatter.string(from: lastResult.date)
+        }
+    }
 }

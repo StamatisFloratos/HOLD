@@ -190,9 +190,9 @@ struct ChallengeResult: Identifiable, Codable, Hashable  {
         case 50..<100:
             return "🤨 We got work to do."
         case 20..<49.9:
-            return "🙂 We’re getting somewhere!"
+            return "🙂 We're getting somewhere!"
         case 0.01..<19.9:
-            return "😧 That’s really impressive!"
+            return "😧 That's really impressive!"
         default:
             return ""
         }

@@ -3,7 +3,6 @@ import SwiftUI
 
 struct MeasurementView: View {
     @State private var showMeasurementActivity = false
-    @State private var showMeasurementComplete = false
     @State private var elapsedTime: TimeInterval = 0
     @EnvironmentObject var progressViewModel: ProgressViewModel
     @EnvironmentObject var navigationManager: NavigationManager
@@ -17,8 +16,10 @@ struct MeasurementView: View {
             
             if showMeasurementSheet {
                 MeasurementSheetView(onBack: {
-                    showMeasurementSheet = false
-                    showMeasurementActivity = true
+                    withAnimation {
+                        showMeasurementSheet = false
+                        showMeasurementActivity = true
+                    }
                 })
                 .transition(.asymmetric(
                     insertion: .move(edge: .trailing),
@@ -33,7 +34,7 @@ struct MeasurementView: View {
                     withAnimation {
                         progressViewModel.measurementDidFinish(duration: elapsedTime)
                         showMeasurementActivity = false
-                        showMeasurementComplete = true
+                        onBack()
                     }
                 })
                 .transition(.asymmetric(
@@ -42,21 +43,6 @@ struct MeasurementView: View {
                 ))
                 .environmentObject(progressViewModel)
                 .zIndex(1)
-            }
-            
-            if showMeasurementComplete {
-                MeasurementCompletionView(totalElapsedTime: elapsedTime, onBack: {
-                    withAnimation {
-                        showMeasurementComplete = false
-                        onBack()
-                    }
-                })
-                .transition(.asymmetric(
-                    insertion: .move(edge: .trailing),
-                    removal: .move(edge: .bottom)
-                ))
-                .environmentObject(progressViewModel)
-                .zIndex(2)
             }
         }
         .navigationBarHidden(true)

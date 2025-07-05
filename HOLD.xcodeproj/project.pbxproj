@@ -63,7 +63,6 @@
 		7C1FADBF2DC826EF00F3EE18 /* PersonalPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C1FADBE2DC826EF00F3EE18 /* PersonalPlanView.swift */; };
 		7C22B9632DC797F1002C3A6E /* ChallengeCompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C22B9622DC797F1002C3A6E /* ChallengeCompletionView.swift */; };
 		7C22B9682DC7A05A002C3A6E /* MeasurementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C22B9672DC7A05A002C3A6E /* MeasurementView.swift */; };
-		7C22B9692DC7A05A002C3A6E /* MeasurementCompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C22B9662DC7A05A002C3A6E /* MeasurementCompletionView.swift */; };
 		7C22B96E2DC7B768002C3A6E /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C22B96D2DC7B768002C3A6E /* WorkoutView.swift */; };
 		7C25C4182DC9489C0005B321 /* GoodNewsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C25C4172DC9489C0005B321 /* GoodNewsView.swift */; };
 		7C25C41A2DC94F260005B321 /* UserStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C25C4192DC94F260005B321 /* UserStorage.swift */; };
@@ -166,7 +165,6 @@
 		7C1FADBC2DC808D200F3EE18 /* StartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartView.swift; sourceTree = "<group>"; };
 		7C1FADBE2DC826EF00F3EE18 /* PersonalPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalPlanView.swift; sourceTree = "<group>"; };
 		7C22B9622DC797F1002C3A6E /* ChallengeCompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeCompletionView.swift; sourceTree = "<group>"; };
-		7C22B9662DC7A05A002C3A6E /* MeasurementCompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementCompletionView.swift; sourceTree = "<group>"; };
 		7C22B9672DC7A05A002C3A6E /* MeasurementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasurementView.swift; sourceTree = "<group>"; };
 		7C22B96D2DC7B768002C3A6E /* WorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutView.swift; sourceTree = "<group>"; };
 		7C25C4172DC9489C0005B321 /* GoodNewsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodNewsView.swift; sourceTree = "<group>"; };
@@ -414,7 +412,6 @@
 		7C22B96A2DC7A063002C3A6E /* Measurement */ = {
 			isa = PBXGroup;
 			children = (
-				7C22B9662DC7A05A002C3A6E /* MeasurementCompletionView.swift */,
 				7C22B9672DC7A05A002C3A6E /* MeasurementView.swift */,
 				7CA106C22DA5C896000950FC /* MeasurementActivityView.swift */,
 				762FEBD62D8CED980058F107 /* MeasurementSheetView.swift */,
@@ -573,7 +570,6 @@
 				762FEBB52D8CE9500058F107 /* UserProfile.swift in Sources */,
 				7C25C42A2DCC6DF70005B321 /* ReviewView.swift in Sources */,
 				7C22B9682DC7A05A002C3A6E /* MeasurementView.swift in Sources */,
-				7C22B9692DC7A05A002C3A6E /* MeasurementCompletionView.swift in Sources */,
 				762FEBC02D8CE9B90058F107 /* WorkoutViewModel.swift in Sources */,
 				7C25C42C2DCC73B60005B321 /* MilestoneView.swift in Sources */,
 				7C25C41C2DC956340005B321 /* TryHoldWorkoutView.swift in Sources */,

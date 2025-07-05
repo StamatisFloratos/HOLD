@@ -27,6 +27,18 @@ extension Date {
     }
 }
 
+// Add this enum at the top of the file (outside the class)
+enum ProgressChartMode: String, CaseIterable, Identifiable {
+    case days, weeks, months
+    var id: String { rawValue }
+    var displayName: String {
+        switch self {
+        case .days: return "days"
+        case .weeks: return "weeks"
+        case .months: return "months"
+        }
+    }
+}
 
 // --- ViewModel ---
 class ProgressViewModel: ObservableObject {
@@ -37,6 +49,12 @@ class ProgressViewModel: ObservableObject {
     @Published var weeklyBest: Double? = nil
     @Published var mostRecent: Double? = nil
     @Published var mostRecentMeaurementTime: Double = 3
+    @Published var chartMode: ProgressChartMode = .days {
+        didSet {
+            updateCurrentPageForMostRecentMeasurement()
+        }
+    }
+    @Published var currentPage: Int = 0 // 0 = current, 1 = previous, etc.
 
     let daysOfWeekLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
@@ -49,17 +67,110 @@ class ProgressViewModel: ObservableObject {
         let duration: Double? // Keep it optional
     }
     
-    // Computed property to transform data for the chart view
-    var chartDisplayData: [DailyDuration] {
-        // Zip the labels and data together, handling potential mismatch
-        let count = min(daysOfWeekLabels.count, chartData.count)
-        return (0..<count).map { index in
-            DailyDuration(day: daysOfWeekLabels[index], duration: chartData[index])
+    private func pageForDate(_ date: Date, mode: ProgressChartMode) -> Int {
+        let calendar = Calendar.current
+        switch mode {
+        case .days:
+            let todayWeek = calendar.dateInterval(of: .weekOfYear, for: Date())!.start
+            let targetWeek = calendar.dateInterval(of: .weekOfYear, for: date)!.start
+            let weeks = calendar.dateComponents([.weekOfYear], from: targetWeek, to: todayWeek).weekOfYear ?? 0
+            return weeks
+        case .weeks:
+            let todayWeek = calendar.dateInterval(of: .weekOfYear, for: Date())!.start
+            let targetWeek = calendar.dateInterval(of: .weekOfYear, for: date)!.start
+            let weeks = calendar.dateComponents([.weekOfYear], from: targetWeek, to: todayWeek).weekOfYear ?? 0
+            return weeks / 4
+        case .months:
+            let todayYear = calendar.component(.year, from: Date())
+            let targetYear = calendar.component(.year, from: date)
+            return todayYear - targetYear
         }
     }
 
+    func updateCurrentPageForMostRecentMeasurement() {
+        guard let mostRecent = latestMeasurementDate else { return }
+        currentPage = pageForDate(mostRecent, mode: chartMode)
+    }
+
+    private func normalized(_ date: Date) -> Date {
+        Calendar.current.startOfDay(for: date)
+    }
+
+    var chartDisplayData: [DailyDuration] {
+        switch chartMode {
+        case .days:
+            return weekChartData(for: currentPage)
+        case .weeks:
+            return last4WeeksChartData(for: currentPage)
+        case .months:
+            return yearChartDataWithNumbers()
+        }
+    }
+
+    private func weekChartData(for page: Int) -> [DailyDuration] {
+        let calendar = Calendar.current
+        let start = weekStart(for: page)
+        let end = calendar.date(byAdding: .day, value: 7, to: start)!
+        let weekMeasurements = allMeasurements.filter { normalized($0.date) >= normalized(start) && normalized($0.date) < normalized(end) }
+        var daily: [Double?] = Array(repeating: nil, count: 7)
+        for m in weekMeasurements {
+            let weekday = calendar.component(.weekday, from: m.date)
+            let index = (weekday + 5) % 7
+            if index >= 0 && index < 7 {
+                daily[index] = max(daily[index] ?? 0, m.durationSeconds)
+            }
+        }
+        return (0..<7).map { i in DailyDuration(day: daysOfWeekLabels[i], duration: daily[i]) }
+    }
+
+    private func last4WeeksChartData(for page: Int) -> [DailyDuration] {
+        let calendar = Calendar.current
+        let today = Date()
+        let startOfCurrentWeek = calendar.dateInterval(of: .weekOfYear, for: today)!.start
+        let startOfWindow = calendar.date(byAdding: .weekOfYear, value: -(3 + page * 4), to: startOfCurrentWeek)!
+        let weekStarts = (0..<4).map { i in
+            calendar.date(byAdding: .weekOfYear, value: i, to: startOfWindow)!
+        }
+        return weekStarts.map { weekStart in
+            let weekEnd = calendar.date(byAdding: .day, value: 7, to: weekStart)!
+            let weekMeasurements = allMeasurements.filter { normalized($0.date) >= normalized(weekStart) && normalized($0.date) < normalized(weekEnd) }
+            let maxValue = weekMeasurements.map { $0.durationSeconds }.max()
+            let df = DateFormatter(); df.locale = Locale.current; df.dateFormat = "d"
+            let startDay = df.string(from: weekStart)
+            let endDay = df.string(from: calendar.date(byAdding: .day, value: 6, to: weekStart)!)
+            df.dateFormat = "MMM"
+            let startMonth = df.string(from: weekStart)
+            let endMonth = df.string(from: calendar.date(byAdding: .day, value: 6, to: weekStart)!)
+            let label: String
+            if startMonth == endMonth {
+                label = "\(startDay) - \(endDay) \(endMonth)"
+            } else {
+                label = "\(startDay) \(startMonth) - \(endDay) \(endMonth)"
+            }
+            return DailyDuration(day: label, duration: maxValue)
+        }
+    }
+
+    // --- Year Chart Data with Month Numbers (normalized) ---
+    private func yearChartDataWithNumbers() -> [DailyDuration] {
+        let calendar = Calendar.current
+        let start = yearStart(for: currentPage)
+        let yearComponent = calendar.component(.year, from: start)
+        var monthDurations: [Double?] = Array(repeating: nil, count: 12)
+        for m in allMeasurements {
+            let mDate = normalized(m.date)
+            if calendar.component(.year, from: mDate) == yearComponent {
+                let month = calendar.component(.month, from: mDate) - 1
+                if month >= 0 && month < 12 {
+                    monthDurations[month] = max(monthDurations[month] ?? 0, m.durationSeconds)
+                }
+            }
+        }
+        return (0..<12).map { i in DailyDuration(day: "\(i+1)", duration: monthDurations[i]) }
+    }
+
     init() {
-        // Load initial data when the ViewModel is created
+        // Remove dummy data and debug prints
         loadData()
     }
     
@@ -99,10 +210,7 @@ class ProgressViewModel: ObservableObject {
 
     // --- Public method to call when new data is available ---
     func loadData() {
-        // 1. Simulate fetching all historical measurements
-        fetchMeasurements() // Replace with your actual data fetching
-
-        // 2. Process data for the most recent *completed* week
+        fetchMeasurements() // Restore original logic
         processLatestWeekData()
     }
 
@@ -274,6 +382,199 @@ class ProgressViewModel: ObservableObject {
         } catch {
             print("Error loading or decoding challenge results: \(error)")
             return []
+        }
+    }
+
+    // MARK: - Paging Logic
+    var earliestMeasurementDate: Date? {
+        allMeasurements.map { $0.date }.min()
+    }
+    var latestMeasurementDate: Date? {
+        allMeasurements.map { $0.date }.max()
+    }
+
+    func canGoToNextPage() -> Bool {
+        switch chartMode {
+        case .days:
+            return currentPage > 0
+        case .weeks:
+            return currentPage > 0
+        case .months:
+            return currentPage > 0
+        }
+    }
+    func canGoToPreviousPage() -> Bool {
+        guard let earliest = earliestMeasurementDate else { return false }
+        let calendar = Calendar.current
+        switch chartMode {
+        case .days:
+            let targetWeekStart = weekStart(for: currentPage + 1)
+            let earliestWeekStart = calendar.dateInterval(of: .weekOfYear, for: earliest)!.start
+            return targetWeekStart >= earliestWeekStart
+        case .weeks:
+            guard let earliest = earliestMeasurementDate else { return false }
+            let calendar = Calendar.current
+            let today = Date()
+            let startOfCurrentWeek = calendar.dateInterval(of: .weekOfYear, for: today)!.start
+            
+            let startOfWindow = calendar.date(byAdding: .weekOfYear, value: -(3 + (currentPage + 1) * 4), to: startOfCurrentWeek)!
+            let endOfWindow = calendar.date(byAdding: .weekOfYear, value: 4, to: startOfWindow)!
+            let earliestWeekStart = calendar.dateInterval(of: .weekOfYear, for: earliest)!.start
+            
+            return endOfWindow > earliestWeekStart
+        case .months:
+            guard let earliest = earliestMeasurementDate else { return false }
+            let calendar = Calendar.current
+            let todayYear = calendar.component(.year, from: Date())
+            let earliestYear = calendar.component(.year, from: earliest)
+            let targetYear = todayYear - (currentPage + 1)
+            return targetYear >= earliestYear
+        }
+    }
+    func goToNextPage() { if canGoToNextPage() { currentPage -= 1 } }
+    func goToPreviousPage() { if canGoToPreviousPage() { currentPage += 1 } }
+
+    // MARK: - Chart Data for Selected Mode/Page
+    var chartDateRangeString: String {
+        switch chartMode {
+        case .days:
+            return weekDateRange(for: currentPage)
+        case .weeks:
+            // Range from oldest week start to newest week end, paged
+            let calendar = Calendar.current
+            let today = Date()
+            let startOfCurrentWeek = calendar.dateInterval(of: .weekOfYear, for: today)!.start
+            let startOfWindow = calendar.date(byAdding: .weekOfYear, value: -(3 + currentPage * 4), to: startOfCurrentWeek)!
+            let endOfWindow = calendar.date(byAdding: .day, value: 6, to: calendar.date(byAdding: .weekOfYear, value: 3, to: startOfWindow)!)!
+            let df = DateFormatter(); df.locale = Locale.current; df.dateFormat = "d MMM"
+            let startLabel = df.string(from: startOfWindow)
+            let endLabel = df.string(from: endOfWindow)
+            return "\(startLabel) - \(endLabel)"
+        case .months:
+            return yearDateRange(for: currentPage)
+        }
+    }
+    var bestResult: Double? {
+        switch chartMode {
+        case .days:
+            return weekBest(for: currentPage)
+        case .weeks:
+            return monthBest(for: currentPage)
+        case .months:
+            return yearBest(for: currentPage)
+        }
+    }
+
+    // MARK: - Week/Month/Year Data Calculation
+    private func weekStart(for page: Int) -> Date {
+        let calendar = Calendar.current
+        let today = Date()
+        let startOfWeek = today.startOfWeek()
+        return calendar.date(byAdding: .weekOfYear, value: -page, to: startOfWeek)!
+    }
+    private func weekDateRange(for page: Int) -> String {
+        let calendar = Calendar.current
+        let start = weekStart(for: page)
+        let end = calendar.date(byAdding: .day, value: 6, to: start)!
+        let df = DateFormatter(); df.dateFormat = "d MMM"
+        let startStr = df.string(from: start)
+        df.dateFormat = "d MMM yyyy"
+        let endStr = df.string(from: end)
+        return "\(startStr) - \(endStr)"
+    }
+    private func weekBest(for page: Int) -> Double? {
+        let calendar = Calendar.current
+        let start = weekStart(for: page)
+        let end = calendar.date(byAdding: .day, value: 7, to: start)!
+        return allMeasurements.filter { $0.date >= start && $0.date < end }.map { $0.durationSeconds }.max()
+    }
+    
+    private func monthStart(for page: Int) -> Date {
+        let calendar = Calendar.current
+        let today = Date()
+        let comps = calendar.dateComponents([.year, .month], from: today)
+        let startOfMonth = calendar.date(from: comps)!
+        return calendar.date(byAdding: .month, value: -page, to: startOfMonth)!
+    }
+    private func monthChartData(for page: Int) -> [DailyDuration] {
+        let calendar = Calendar.current
+        let start = monthStart(for: page)
+        let end = calendar.date(byAdding: .month, value: 1, to: start)!
+        let weeks = calendar.range(of: .weekOfMonth, in: .month, for: start) ?? (1..<5)
+        var weekDurations: [Double?] = Array(repeating: nil, count: weeks.count)
+        for m in allMeasurements {
+            if m.date >= start && m.date < end {
+                let weekOfMonth = calendar.component(.weekOfMonth, from: m.date) - 1
+                if weekOfMonth >= 0 && weekOfMonth < weekDurations.count {
+                    weekDurations[weekOfMonth] = max(weekDurations[weekOfMonth] ?? 0, m.durationSeconds)
+                }
+            }
+        }
+        return (0..<weekDurations.count).map { i in DailyDuration(day: "Week \(i+1)", duration: weekDurations[i]) }
+    }
+    private func monthDateRange(for page: Int) -> String {
+        let calendar = Calendar.current
+        let start = monthStart(for: page)
+        let df = DateFormatter(); df.dateFormat = "MMMM yyyy"
+        return df.string(from: start)
+    }
+    private func monthBest(for page: Int) -> Double? {
+        let calendar = Calendar.current
+        let start = monthStart(for: page)
+        let end = calendar.date(byAdding: .month, value: 1, to: start)!
+        return allMeasurements.filter { $0.date >= start && $0.date < end }.map { $0.durationSeconds }.max()
+    }
+    
+    private func yearStart(for page: Int) -> Date {
+        let calendar = Calendar.current
+        let today = Date()
+        let comps = calendar.dateComponents([.year], from: today)
+        let startOfYear = calendar.date(from: comps)!
+        return calendar.date(byAdding: .year, value: -page, to: startOfYear)!
+    }
+    private func yearChartData(for page: Int) -> [DailyDuration] {
+        let calendar = Calendar.current
+        let start = yearStart(for: page)
+        let end = calendar.date(byAdding: .year, value: 1, to: start)!
+        var monthDurations: [Double?] = Array(repeating: nil, count: 12)
+        for m in allMeasurements {
+            if m.date >= start && m.date < end {
+                let month = calendar.component(.month, from: m.date) - 1
+                if month >= 0 && month < 12 {
+                    monthDurations[month] = max(monthDurations[month] ?? 0, m.durationSeconds)
+                }
+            }
+        }
+        let df = DateFormatter(); df.dateFormat = "MMM"
+        return (0..<12).map { i in DailyDuration(day: df.shortMonthSymbols[i], duration: monthDurations[i]) }
+    }
+    private func yearDateRange(for page: Int) -> String {
+        let calendar = Calendar.current
+        let start = yearStart(for: page)
+        let df = DateFormatter(); df.dateFormat = "yyyy"
+        return df.string(from: start)
+    }
+    private func yearBest(for page: Int) -> Double? {
+        let calendar = Calendar.current
+        let start = yearStart(for: page)
+        let end = calendar.date(byAdding: .year, value: 1, to: start)!
+        return allMeasurements.filter { $0.date >= start && $0.date < end }.map { $0.durationSeconds }.max()
+    }
+
+    // Helper to get a user-friendly latest measurement date string
+    func latestMeasurementDateString() -> String {
+        guard let latest = latestMeasurementDate else {
+            return "No Measurements Found"
+        }
+        let calendar = Calendar.current
+        if calendar.isDateInToday(latest) {
+            return "Today"
+        } else if calendar.isDateInYesterday(latest) {
+            return "Yesterday"
+        } else {
+            let df = DateFormatter()
+            df.dateFormat = "d MMM yyyy"
+            return df.string(from: latest)
         }
     }
 }
