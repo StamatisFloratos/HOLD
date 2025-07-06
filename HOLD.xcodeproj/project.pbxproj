@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		13357DCC2E19BDA900A64F4C /* FacebookAEM in Frameworks */ = {isa = PBXBuildFile; productRef = 13357DCB2E19BDA900A64F4C /* FacebookAEM */; };
+		13357DCE2E19BDA900A64F4C /* FacebookBasics in Frameworks */ = {isa = PBXBuildFile; productRef = 13357DCD2E19BDA900A64F4C /* FacebookBasics */; };
+		13357DD02E19BDA900A64F4C /* FacebookCore in Frameworks */ = {isa = PBXBuildFile; productRef = 13357DCF2E19BDA900A64F4C /* FacebookCore */; };
+		13357DD22E19BDA900A64F4C /* FacebookGamingServices in Frameworks */ = {isa = PBXBuildFile; productRef = 13357DD12E19BDA900A64F4C /* FacebookGamingServices */; };
+		13357DD42E19BDA900A64F4C /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 13357DD32E19BDA900A64F4C /* FacebookLogin */; };
+		13357DD62E19BDA900A64F4C /* FacebookShare in Frameworks */ = {isa = PBXBuildFile; productRef = 13357DD52E19BDA900A64F4C /* FacebookShare */; };
 		13B8AFF42E00AA1B00CDFB90 /* UnlockingBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B8AFF22E00AA1B00CDFB90 /* UnlockingBadgeView.swift */; };
 		13B8AFF52E00AA1B00CDFB90 /* LockedBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B8AFF02E00AA1B00CDFB90 /* LockedBadgeView.swift */; };
 		13B8AFF62E00AA1B00CDFB90 /* StreakBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B8AFF12E00AA1B00CDFB90 /* StreakBadgeView.swift */; };
@@ -210,14 +216,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				13357DD02E19BDA900A64F4C /* FacebookCore in Frameworks */,
 				13B8AFFF2E00AD0000CDFB90 /* ConfettiSwiftUI in Frameworks */,
 				9CD9E0CF2DC7B54E00411006 /* AppsFlyerLib in Frameworks */,
 				9CB9C8B02DEB46EF009DEA46 /* FirebaseCore in Frameworks */,
 				9CD9E0D22DC7B62C00411006 /* SuperwallKit in Frameworks */,
+				13357DD42E19BDA900A64F4C /* FacebookLogin in Frameworks */,
+				13357DD22E19BDA900A64F4C /* FacebookGamingServices in Frameworks */,
 				9CB9C8B22DEB46EF009DEA46 /* FirebaseCrashlytics in Frameworks */,
 				9CB9C8AE2DEB46EF009DEA46 /* FirebaseAnalytics in Frameworks */,
 				9CB9C8B92DEB4726009DEA46 /* FirebaseFirestore in Frameworks */,
+				13357DD62E19BDA900A64F4C /* FacebookShare in Frameworks */,
+				13357DCC2E19BDA900A64F4C /* FacebookAEM in Frameworks */,
 				9CB9C8B42DEB46EF009DEA46 /* FirebaseDatabase in Frameworks */,
+				13357DCE2E19BDA900A64F4C /* FacebookBasics in Frameworks */,
 				943FD41A2DDB85220071D9A5 /* FirebaseAnalytics in Frameworks */,
 				9CB9C8B62DEB46EF009DEA46 /* FirebaseRemoteConfig in Frameworks */,
 			);
@@ -526,6 +538,7 @@
 				9CD9E0D02DC7B62C00411006 /* XCRemoteSwiftPackageReference "Superwall-iOS" */,
 				943FD4182DDB85220071D9A5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				13B8AFFD2E00AD0000CDFB90 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
+				13357DCA2E19BDA900A64F4C /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 			);
 			productRefGroup = 76711AF82D8CD62500FFEE50 /* Products */;
 			projectDirPath = "";
@@ -790,7 +803,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.4;
+				MARKETING_VERSION = 1.1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.chronos.holdapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -827,7 +840,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.4;
+				MARKETING_VERSION = 1.1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.chronos.holdapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -864,6 +877,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		13357DCA2E19BDA900A64F4C /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/facebook/facebook-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 18.0.0;
+			};
+		};
 		13B8AFFD2E00AD0000CDFB90 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/simibac/ConfettiSwiftUI.git";
@@ -899,6 +920,36 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		13357DCB2E19BDA900A64F4C /* FacebookAEM */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 13357DCA2E19BDA900A64F4C /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookAEM;
+		};
+		13357DCD2E19BDA900A64F4C /* FacebookBasics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 13357DCA2E19BDA900A64F4C /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookBasics;
+		};
+		13357DCF2E19BDA900A64F4C /* FacebookCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 13357DCA2E19BDA900A64F4C /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookCore;
+		};
+		13357DD12E19BDA900A64F4C /* FacebookGamingServices */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 13357DCA2E19BDA900A64F4C /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookGamingServices;
+		};
+		13357DD32E19BDA900A64F4C /* FacebookLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 13357DCA2E19BDA900A64F4C /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookLogin;
+		};
+		13357DD52E19BDA900A64F4C /* FacebookShare */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 13357DCA2E19BDA900A64F4C /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookShare;
+		};
 		13B8AFFE2E00AD0000CDFB90 /* ConfettiSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 13B8AFFD2E00AD0000CDFB90 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */;
