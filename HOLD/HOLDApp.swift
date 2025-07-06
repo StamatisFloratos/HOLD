@@ -103,7 +103,7 @@ struct HOLDApp: App {
                     _ = ApplicationDelegate.shared.application(UIApplication.shared, continue: userActivity)
                 }
                 .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                         DispatchQueue.main.async {
                             AppsFlyerManager.launchSDK()
                         }
