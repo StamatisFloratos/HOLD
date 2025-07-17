@@ -19,14 +19,10 @@ class AppsFlyerManager {
             ATTrackingManager.requestTrackingAuthorization { status in
                 AppsFlyerLib.shared().start()
                 AppEvents.shared.activateApp()
-                
-                checkForFirebaseDeepLink()
             }
         } else {
             AppsFlyerLib.shared().start()
             AppEvents.shared.activateApp()
-            
-            checkForFirebaseDeepLink()
         }
     }
     
@@ -35,14 +31,7 @@ class AppsFlyerManager {
             if let error = error {
                 print("Received error while fetching deferred app link: \(error)")
             }
-            if let _ = url {
-                UserStorage.isFromMetaAd = true
-                UserStorage.onboarding = OnboardingType.onboardingThree.rawValue
-                
-                Analytics.logEvent("facebook_deferred_link_attribution", parameters: [
-                    "user_ID": DeviceIdManager.getUniqueDeviceId()
-                ])
-            }
+            if let _ = url {}
         }
     }
     

@@ -158,10 +158,6 @@ struct OnboardingView: View {
                                     showMainView = true
                                 }
                             } else if currentIndex == questions.count - 2 {
-                                if !code.isEmpty {
-                                    CreatorAttributionSystem.shared.attributeUser(creatorIdentifier: code, source: .code)
-                                }
-                                
                                 slideFromRight = true
                                 withAnimation(.easeInOut(duration: 0.3)) {
                                     currentIndex +=  1

@@ -13,6 +13,7 @@
 		13357DD22E19BDA900A64F4C /* FacebookGamingServices in Frameworks */ = {isa = PBXBuildFile; productRef = 13357DD12E19BDA900A64F4C /* FacebookGamingServices */; };
 		13357DD42E19BDA900A64F4C /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = 13357DD32E19BDA900A64F4C /* FacebookLogin */; };
 		13357DD62E19BDA900A64F4C /* FacebookShare in Frameworks */ = {isa = PBXBuildFile; productRef = 13357DD52E19BDA900A64F4C /* FacebookShare */; };
+		1393E7952E284EA800AF5AA4 /* SuperwallKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1393E7942E284EA800AF5AA4 /* SuperwallKit */; };
 		13B8AFF42E00AA1B00CDFB90 /* UnlockingBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B8AFF22E00AA1B00CDFB90 /* UnlockingBadgeView.swift */; };
 		13B8AFF52E00AA1B00CDFB90 /* LockedBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B8AFF02E00AA1B00CDFB90 /* LockedBadgeView.swift */; };
 		13B8AFF62E00AA1B00CDFB90 /* StreakBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B8AFF12E00AA1B00CDFB90 /* StreakBadgeView.swift */; };
@@ -23,13 +24,10 @@
 		13B8B0012E00B32800CDFB90 /* UserQuestionnaire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B8B0002E00B32800CDFB90 /* UserQuestionnaire.swift */; };
 		13B8B0032E00B39200CDFB90 /* UserQuestionnaireManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B8B0022E00B39200CDFB90 /* UserQuestionnaireManager.swift */; };
 		13B8B0052E00B56E00CDFB90 /* OnboardingQuestionnaireBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B8B0042E00B56E00CDFB90 /* OnboardingQuestionnaireBuilder.swift */; };
-		13BD960D2DF3A149001428E3 /* CreatorAttributionSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BD960C2DF3A149001428E3 /* CreatorAttributionSystem.swift */; };
+		13BD960D2DF3A149001428E3 /* UserAttributionSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BD960C2DF3A149001428E3 /* UserAttributionSystem.swift */; };
 		13BD960F2DF3A920001428E3 /* UserAttribution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BD960E2DF3A920001428E3 /* UserAttribution.swift */; };
-		13BD96112DF3A9C2001428E3 /* PurchaseTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BD96102DF3A9C2001428E3 /* PurchaseTracker.swift */; };
-		13BD96132DF3C82F001428E3 /* PurchaseAttribution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BD96122DF3C82F001428E3 /* PurchaseAttribution.swift */; };
 		13BD96152DF3CE41001428E3 /* DeviceIdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BD96142DF3CE41001428E3 /* DeviceIdManager.swift */; };
 		13BD96172DF3CE56001428E3 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BD96162DF3CE56001428E3 /* KeychainHelper.swift */; };
-		13BD961B2DF3D4D5001428E3 /* DeepLinkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BD961A2DF3D4D5001428E3 /* DeepLinkHandler.swift */; };
 		762FEBAD2D8CE8CF0058F107 /* Measurement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762FEBAC2D8CE8CF0058F107 /* Measurement.swift */; };
 		762FEBAF2D8CE8DE0058F107 /* ChallengeResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762FEBAE2D8CE8DE0058F107 /* ChallengeResult.swift */; };
 		762FEBB12D8CE91F0058F107 /* Workout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762FEBB02D8CE91F0058F107 /* Workout.swift */; };
@@ -111,7 +109,6 @@
 		9CD9E0C32DC5719A00411006 /* KeyboardResponder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD9E0C22DC5719A00411006 /* KeyboardResponder.swift */; };
 		9CD9E0CC2DC7AFF600411006 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD9E0CB2DC7AFF600411006 /* HapticManager.swift */; };
 		9CD9E0CF2DC7B54E00411006 /* AppsFlyerLib in Frameworks */ = {isa = PBXBuildFile; productRef = 9CD9E0CE2DC7B54E00411006 /* AppsFlyerLib */; };
-		9CD9E0D22DC7B62C00411006 /* SuperwallKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9CD9E0D12DC7B62C00411006 /* SuperwallKit */; };
 		9CD9E0D42DC7B6B200411006 /* AppsFlyerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CD9E0D32DC7B6B200411006 /* AppsFlyerManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -125,13 +122,10 @@
 		13B8B0002E00B32800CDFB90 /* UserQuestionnaire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserQuestionnaire.swift; sourceTree = "<group>"; };
 		13B8B0022E00B39200CDFB90 /* UserQuestionnaireManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserQuestionnaireManager.swift; sourceTree = "<group>"; };
 		13B8B0042E00B56E00CDFB90 /* OnboardingQuestionnaireBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingQuestionnaireBuilder.swift; sourceTree = "<group>"; };
-		13BD960C2DF3A149001428E3 /* CreatorAttributionSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatorAttributionSystem.swift; sourceTree = "<group>"; };
+		13BD960C2DF3A149001428E3 /* UserAttributionSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAttributionSystem.swift; sourceTree = "<group>"; };
 		13BD960E2DF3A920001428E3 /* UserAttribution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAttribution.swift; sourceTree = "<group>"; };
-		13BD96102DF3A9C2001428E3 /* PurchaseTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseTracker.swift; sourceTree = "<group>"; };
-		13BD96122DF3C82F001428E3 /* PurchaseAttribution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseAttribution.swift; sourceTree = "<group>"; };
 		13BD96142DF3CE41001428E3 /* DeviceIdManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceIdManager.swift; sourceTree = "<group>"; };
 		13BD96162DF3CE56001428E3 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
-		13BD961A2DF3D4D5001428E3 /* DeepLinkHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkHandler.swift; sourceTree = "<group>"; };
 		13BD961C2DF3D8A4001428E3 /* HOLD.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HOLD.entitlements; sourceTree = "<group>"; };
 		762FEBAC2D8CE8CF0058F107 /* Measurement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measurement.swift; sourceTree = "<group>"; };
 		762FEBAE2D8CE8DE0058F107 /* ChallengeResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeResult.swift; sourceTree = "<group>"; };
@@ -219,8 +213,8 @@
 				13357DD02E19BDA900A64F4C /* FacebookCore in Frameworks */,
 				13B8AFFF2E00AD0000CDFB90 /* ConfettiSwiftUI in Frameworks */,
 				9CD9E0CF2DC7B54E00411006 /* AppsFlyerLib in Frameworks */,
+				1393E7952E284EA800AF5AA4 /* SuperwallKit in Frameworks */,
 				9CB9C8B02DEB46EF009DEA46 /* FirebaseCore in Frameworks */,
-				9CD9E0D22DC7B62C00411006 /* SuperwallKit in Frameworks */,
 				13357DD42E19BDA900A64F4C /* FacebookLogin in Frameworks */,
 				13357DD22E19BDA900A64F4C /* FacebookGamingServices in Frameworks */,
 				9CB9C8B22DEB46EF009DEA46 /* FirebaseCrashlytics in Frameworks */,
@@ -248,18 +242,15 @@
 			path = Streak;
 			sourceTree = "<group>";
 		};
-		13BD960B2DF3A128001428E3 /* Referral Attribution */ = {
+		13BD960B2DF3A128001428E3 /* User Attribution */ = {
 			isa = PBXGroup;
 			children = (
 				13BD960E2DF3A920001428E3 /* UserAttribution.swift */,
-				13BD96122DF3C82F001428E3 /* PurchaseAttribution.swift */,
-				13BD960C2DF3A149001428E3 /* CreatorAttributionSystem.swift */,
-				13BD96102DF3A9C2001428E3 /* PurchaseTracker.swift */,
+				13BD960C2DF3A149001428E3 /* UserAttributionSystem.swift */,
 				13BD96142DF3CE41001428E3 /* DeviceIdManager.swift */,
 				13BD96162DF3CE56001428E3 /* KeychainHelper.swift */,
-				13BD961A2DF3D4D5001428E3 /* DeepLinkHandler.swift */,
 			);
-			path = "Referral Attribution";
+			path = "User Attribution";
 			sourceTree = "<group>";
 		};
 		762FEBAB2D8CE8B80058F107 /* Models */ = {
@@ -388,7 +379,7 @@
 				13BD961C2DF3D8A4001428E3 /* HOLD.entitlements */,
 				9CD9E0D52DC7C28C00411006 /* Info.plist */,
 				7CA106C52DA6D1E4000950FC /* Extensions */,
-				13BD960B2DF3A128001428E3 /* Referral Attribution */,
+				13BD960B2DF3A128001428E3 /* User Attribution */,
 				7CA106B62DA56510000950FC /* Utilities */,
 				762FEBF12D8CEF9E0058F107 /* Services */,
 				762FEBC52D8CEA6E0058F107 /* Views */,
@@ -535,10 +526,10 @@
 			mainGroup = 76711AEE2D8CD62500FFEE50;
 			packageReferences = (
 				9CD9E0CD2DC7B54E00411006 /* XCRemoteSwiftPackageReference "AppsFlyerFramework" */,
-				9CD9E0D02DC7B62C00411006 /* XCRemoteSwiftPackageReference "Superwall-iOS" */,
 				943FD4182DDB85220071D9A5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				13B8AFFD2E00AD0000CDFB90 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
 				13357DCA2E19BDA900A64F4C /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
+				1393E7932E284EA800AF5AA4 /* XCRemoteSwiftPackageReference "Superwall-iOS" */,
 			);
 			productRefGroup = 76711AF82D8CD62500FFEE50 /* Products */;
 			projectDirPath = "";
@@ -576,7 +567,6 @@
 				9C1763792DDD089A00E506B7 /* HoldOnboardingTutorial.swift in Sources */,
 				13B8B0052E00B56E00CDFB90 /* OnboardingQuestionnaireBuilder.swift in Sources */,
 				7C1FADBD2DC808D200F3EE18 /* StartView.swift in Sources */,
-				13BD96112DF3A9C2001428E3 /* PurchaseTracker.swift in Sources */,
 				762FEBE02D8CEE720058F107 /* WorkoutDetailView.swift in Sources */,
 				7C1FADBF2DC826EF00F3EE18 /* PersonalPlanView.swift in Sources */,
 				762FEBCC2D8CEC160058F107 /* WorkoutTabView.swift in Sources */,
@@ -607,12 +597,11 @@
 				762FEBD92D8CEDB20058F107 /* ChallengeSheetView.swift in Sources */,
 				7C25C4222DCAAE440005B321 /* TryExerciseView.swift in Sources */,
 				943FD41E2DDB910F0071D9A5 /* Tracking.swift in Sources */,
-				13BD961B2DF3D4D5001428E3 /* DeepLinkHandler.swift in Sources */,
 				7CA106C12DA5BA35000950FC /* View+Extension.swift in Sources */,
 				7C149D612DB837A6003C0297 /* ChallengeActivityView.swift in Sources */,
 				762FEBEA2D8CEF0F0058F107 /* StreakWeekViewModel.swift in Sources */,
 				762FEBCA2D8CEBE50058F107 /* ProgressTabView.swift in Sources */,
-				13BD960D2DF3A149001428E3 /* CreatorAttributionSystem.swift in Sources */,
+				13BD960D2DF3A149001428E3 /* UserAttributionSystem.swift in Sources */,
 				762FEBB12D8CE91F0058F107 /* Workout.swift in Sources */,
 				7C19462D2DCD3B07005BC915 /* SubscriptionView.swift in Sources */,
 				7C25C41A2DC94F260005B321 /* UserStorage.swift in Sources */,
@@ -620,7 +609,6 @@
 				9C4AB2BD2DCFF3C000E3CDAC /* ShakeEffect.swift in Sources */,
 				7CCDA3832DC19E7300C6A84A /* AppBackground.swift in Sources */,
 				762FEBDB2D8CEDD50058F107 /* ProgressBarView.swift in Sources */,
-				13BD96132DF3C82F001428E3 /* PurchaseAttribution.swift in Sources */,
 				762FEBDE2D8CEE620058F107 /* WorkoutSheetView.swift in Sources */,
 				762FEBAD2D8CE8CF0058F107 /* Measurement.swift in Sources */,
 				9CB9C8BF2DEB74C4009DEA46 /* QuizBadNews.swift in Sources */,
@@ -803,7 +791,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.5;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.chronos.holdapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -840,7 +828,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.5;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.chronos.holdapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -885,6 +873,14 @@
 				minimumVersion = 18.0.0;
 			};
 		};
+		1393E7932E284EA800AF5AA4 /* XCRemoteSwiftPackageReference "Superwall-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/superwall/Superwall-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.6.0;
+			};
+		};
 		13B8AFFD2E00AD0000CDFB90 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/simibac/ConfettiSwiftUI.git";
@@ -907,14 +903,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 6.17.0;
-			};
-		};
-		9CD9E0D02DC7B62C00411006 /* XCRemoteSwiftPackageReference "Superwall-iOS" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/superwall/Superwall-iOS";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.3.5;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -949,6 +937,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 13357DCA2E19BDA900A64F4C /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
 			productName = FacebookShare;
+		};
+		1393E7942E284EA800AF5AA4 /* SuperwallKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1393E7932E284EA800AF5AA4 /* XCRemoteSwiftPackageReference "Superwall-iOS" */;
+			productName = SuperwallKit;
 		};
 		13B8AFFE2E00AD0000CDFB90 /* ConfettiSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -989,11 +982,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 9CD9E0CD2DC7B54E00411006 /* XCRemoteSwiftPackageReference "AppsFlyerFramework" */;
 			productName = AppsFlyerLib;
-		};
-		9CD9E0D12DC7B62C00411006 /* SuperwallKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 9CD9E0D02DC7B62C00411006 /* XCRemoteSwiftPackageReference "Superwall-iOS" */;
-			productName = SuperwallKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

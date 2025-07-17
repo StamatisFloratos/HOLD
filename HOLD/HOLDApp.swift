@@ -34,32 +34,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Settings.shared.isAutoLogAppEventsEnabled = true
         Settings.shared.isAdvertiserIDCollectionEnabled = true
         
+        SubscriptionManager.shared.checkSubscriptionStatus()
+        
         return true
     }
     
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        let handled = ApplicationDelegate.shared.application(application, continue: userActivity)
-        if handled {
-            UserStorage.isFromMetaAd = true
-            UserStorage.onboarding = OnboardingType.onboardingThree.rawValue
-            
-            Analytics.logEvent("facebook_deferred_link_attribution", parameters: [
-                "user_ID": DeviceIdManager.getUniqueDeviceId()
-            ])
-        }
+        let _ = ApplicationDelegate.shared.application(application, continue: userActivity)
+        
         return true
     }
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-      let handled = ApplicationDelegate.shared.application(app, open: url, options: options)
-      if handled {
-          UserStorage.isFromMetaAd = true
-          UserStorage.onboarding = OnboardingType.onboardingThree.rawValue
-          
-          Analytics.logEvent("facebook_deferred_link_attribution", parameters: [
-              "user_ID": DeviceIdManager.getUniqueDeviceId()
-          ])
-      }
+      let _ = ApplicationDelegate.shared.application(app, open: url, options: options)
+      
       return true
     }
 }
@@ -108,8 +96,6 @@ struct HOLDApp: App {
                             AppsFlyerManager.launchSDK()
                         }
                     }
-                    
-                    subscriptionManager.checkSubscriptionStatus()
                     
                     if !UserStorage.isOnboardingDone {
                         FirebaseManager.shared.fetchRemoteConfig {}
