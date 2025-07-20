@@ -11,9 +11,9 @@ struct KnowledgeTabView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     @EnvironmentObject var tabManager: TabManager
     @EnvironmentObject var knowledgeViewModel : KnowledgeViewModel
-    @State var selectedItem: KnowledgeItem?
+    @State var selectedItem: KnowledgeCategoryItem?
     @State var showKnowledgeCategory: Bool = false
-    @State var selectedItems: [KnowledgeItem]?
+    @State var selectedItems: [KnowledgeCategoryItem]?
     @State var selectedCategory: String?
 
     var body: some View {
@@ -31,17 +31,35 @@ struct KnowledgeTabView: View {
                 
                 ScrollView(showsIndicators: false) {
                     HStack {
-                        Text("Knowledge")
+                        Spacer()
+                        Text("Explore")
                             .font(.system(size: 24, weight: .bold))
-                            .foregroundColor(.white)
+                            .foregroundStyle(LinearGradient(
+                                colors: [Color(hex: "#FFFFFF"), Color(hex: "#999999")],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            ))
                         Spacer()
                     }
-                    .padding(.bottom,62)
+                    .padding(.vertical, 30)
                     
-                    ForEach(knowledgeViewModel.sortedCategories, id: \.self) { category in
+                    HStack {
+                        Text("Knowledge")
+                            .font(.system(size: 20, weight: .bold))
+                            .foregroundStyle(LinearGradient(
+                                colors: [Color(hex: "#FFFFFF"), Color(hex: "#999999")],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            ))
+                        Spacer()
+                    }
+                    .padding(.bottom,24)
+                    .padding(.horizontal,28)
+                    
+                    ForEach(knowledgeViewModel.categories, id: \.id) { category in
                         KnowledgeSectionView(
-                            title: category,
-                            items: knowledgeViewModel.groupedKnowledgeData[category] ?? [],
+                            title: category.categoryName,
+                            items: category.categoryItems,
                             selectedItem: $selectedItem,
                             showKnowledgeCategory: $showKnowledgeCategory,
                             selectedItems: $selectedItems,
@@ -49,8 +67,6 @@ struct KnowledgeTabView: View {
                         )
                     }
                 }
-                .padding(.leading,14)
-                .padding(.trailing,0)
             }
             
             if showKnowledgeCategory {
@@ -77,49 +93,62 @@ struct KnowledgeTabView: View {
 struct KnowledgeSectionView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     let title: String
-    let items: [KnowledgeItem]
+    let items: [KnowledgeCategoryItem]
     
-    @Binding var selectedItem: KnowledgeItem?
+    @Binding var selectedItem: KnowledgeCategoryItem?
     @Binding var showKnowledgeCategory: Bool
-    @Binding var selectedItems: [KnowledgeItem]?
+    @Binding var selectedItems: [KnowledgeCategoryItem]?
     @Binding var selectedCategory: String?
     @State var showKnowledgeDetailSheet = false
 
     var body: some View {
         VStack(alignment: .leading) {
-            Button {
-                selectedItems = items
-                selectedCategory = title
-                showKnowledgeCategory = true
-            } label: {
-                HStack {
-                    Text(title)
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundColor(.white)
-                    Image(systemName: "chevron.right")
-                        .foregroundColor(.white)
-                        .font(.system(size: 16, weight: .bold))
-                    Spacer()
+            HStack {
+                Text(title)
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundColor(.white)
+                
+                Spacer()
+                
+                Button {
+                    selectedItems = items
+                    selectedCategory = title
+                    showKnowledgeCategory = true
+                } label: {
+                    HStack(spacing: 4) {
+                        Text("See all")
+                            .font(.system(size: 12, weight: .regular))
+                            .foregroundColor(.white.opacity(0.7))
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 12, weight: .regular))
+                            .foregroundColor(.white.opacity(0.7))
+                    }
                 }
-                .padding(.bottom,20)
             }
+            .padding(.horizontal, 28)
+            .padding(.bottom,24)
             
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 15) {
+                HStack(spacing: 20) {
+                    
+                    Spacer().frame(width: 8)
+                    
                     ForEach(items, id: \.id) { item in
                         Button {
                             print("Selected item: \(item.title)") // Debug print
                             selectedItem = item
                             showKnowledgeDetailSheet = true
                         } label: {
-                            KnowledgeCardView(imageName: item.imageName, title: item.title, width: 139, height: 185)
-                                .padding(.bottom,17)
+                            KnowledgeCardView(imageName: item.coverImage, title: item.title, description: item.subtitle, width: 135, height: 200)
                         }
                     }
+                    
+                    Spacer().frame(width: 8)
                 }
+                .padding(.bottom,24)
             }
         }
-        .sheet(isPresented: $showKnowledgeDetailSheet) {
+        .fullScreenCover(isPresented: $showKnowledgeDetailSheet) {
             if let item = selectedItem {
                 KnowledgeDetailView(item: item, onBack: {
                     withAnimation {
@@ -132,21 +161,46 @@ struct KnowledgeSectionView: View {
     }
 }
 
-
-// Reusable view for the knowledge cards
 struct KnowledgeCardView: View {
     let imageName: String
     let title: String
+    let description: String
     let width: CGFloat
     let height: CGFloat
 
     var body: some View {
-        ZStack(alignment: .bottomLeading) {
-            Image(imageName)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: width, height: height)
-                .clipped()
+        ZStack(alignment: .center) {
+            AsyncImage(url: URL(string: imageName)) { phase in
+                switch phase {
+                case .empty:
+                    Rectangle()
+                        .fill(Color.black)
+                        .frame(width: width, height: height)
+                        .overlay(
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        )
+                case .success(let image):
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: width, height: height)
+                        .clipped()
+                case .failure(_):
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.3))
+                        .frame(width: width, height: height)
+                        .overlay(
+                            Image(systemName: "photo")
+                                .font(.system(size: 30))
+                                .foregroundColor(.white.opacity(0.7))
+                        )
+                @unknown default:
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.3))
+                        .frame(width: width, height: height)
+                }
+            }
 
             LinearGradient(
                 gradient: Gradient(colors: [Color(hex: "#666666").opacity(0.1), Color.black]),
@@ -154,18 +208,46 @@ struct KnowledgeCardView: View {
                 endPoint: .bottom
             )
 
-            Text(title)
-                .font(.system(size: 16, weight: .semibold))
-                .foregroundColor(.white)
-                .multilineTextAlignment(.leading)
-                .padding(8)
+            VStack(alignment: .center) {
+                Text(title)
+                    .font(.system(size: 14, weight: .heavy))
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+                
+                Spacer()
+                
+                HStack {
+                    Text(description)
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.leading)
+                    
+                    Spacer()
+                }
+                .padding(.horizontal, 8)
+            }
+            .padding(.top, 17)
+            .padding(.bottom, 10)
         }
         .frame(width: width, height: height)
-        .cornerRadius(15)
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .inset(by: 0.25)
+                .stroke(
+                    LinearGradient(
+                        colors: [Color(hex: "#FFFFFF"), Color(hex: "#999999")],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    , lineWidth: 0.5)
+        )
+        .cornerRadius(16)
     }
 }
 
 #Preview {
     KnowledgeTabView()
+        .environmentObject(NavigationManager())
+        .environmentObject(TabManager())
         .environmentObject(KnowledgeViewModel())
 }

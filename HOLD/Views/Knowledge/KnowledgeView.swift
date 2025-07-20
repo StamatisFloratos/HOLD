@@ -10,15 +10,15 @@ import SwiftUI
 struct KnowledgeView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     let categoryTitle: String
-    let items: [KnowledgeItem]
+    let items: [KnowledgeCategoryItem]
     var onBack: () -> Void
-    @Binding var selectedItem: KnowledgeItem?
+    @Binding var selectedItem: KnowledgeCategoryItem?
     @State var showKnowledgeDetailSheet = false
 
     // Define grid layout: 2 columns, adaptive spacing
     let columns: [GridItem] = [
-        GridItem(.flexible(), spacing: 16),
-        GridItem(.flexible(), spacing: 16)
+        GridItem(.flexible(), spacing: 45),
+        GridItem(.flexible(), spacing: 45)
     ]
 
     var body: some View {
@@ -40,37 +40,39 @@ struct KnowledgeView: View {
                     } label: {
                         Image(systemName: "chevron.left")
                             .foregroundColor(.white)
-                            .font(.system(size: 22, weight: .bold))
+                            .font(.system(size: 24, weight: .medium))
                         Text(categoryTitle)
-                            .font(.system(size: 24, weight: .bold))
-                            .foregroundColor(.white)
+                            .font(.system(size: 24, weight: .medium))
+                            .foregroundStyle(LinearGradient(
+                                colors: [Color(hex: "#FFFFFF"), Color(hex: "#999999")],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            ))
                     }
 
                     Spacer()
                 }
-                .padding(.horizontal,13)
+                .padding(.horizontal,28)
                 .padding(.top, 10)
-                .padding(.bottom, 15)
+                .padding(.bottom, 36)
                 
-                // --- Grid Content ---
                 ScrollView(showsIndicators: false) {
-                    LazyVGrid(columns: columns, spacing: 54) {
+                    LazyVGrid(columns: columns, spacing: 35) {
                         ForEach(items) { item in
                             Button {
                                 selectedItem = item
                                 showKnowledgeDetailSheet = true
                             } label: {
-                                KnowledgeCardView(imageName: item.imageName, title: item.title, width: 139, height: 185)
+                                KnowledgeCardView(imageName: item.coverImage, title: item.title, description: item.subtitle, width: 135, height: 200)
                             }
                         }
                     }
-                    .padding(.horizontal,35)
-                    .padding(.top, 10)
+                    .padding(.horizontal,40)
                 }
             }
         }
         .navigationBarHidden(true)
-        .sheet(isPresented: $showKnowledgeDetailSheet) {
+        .fullScreenCover(isPresented: $showKnowledgeDetailSheet) {
             if let item = selectedItem {
                 KnowledgeDetailView(item: item, onBack: {
                     withAnimation {
@@ -83,14 +85,14 @@ struct KnowledgeView: View {
 }
 
 #Preview {
-//    let knowledgeViewModel = KnowledgeViewModel()
-//    Group {
-//        if let items = knowledgeViewModel.groupedKnowledgeData["Nutrition"] {
-//            KnowledgeView(categoryTitle: "Nutrition", items: items, onBack: {}, selectedItem: $Knowledge)
-//                .environmentObject(NavigationManager())
-//                .environmentObject(knowledgeViewModel)
-//        } else {
-//            Text("Loading...")
-//        }
-//    }
+    @Previewable @State var selectedItem: KnowledgeCategoryItem? = nil
+    
+    return KnowledgeView(
+        categoryTitle: "Nutrition",
+        items: [],
+        onBack: {},
+        selectedItem: $selectedItem
+    )
+    .environmentObject(NavigationManager())
+    .environmentObject(KnowledgeViewModel())
 }

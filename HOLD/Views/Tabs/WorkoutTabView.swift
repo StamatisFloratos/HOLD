@@ -10,10 +10,19 @@ import SwiftUI
 struct WorkoutTabView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     @EnvironmentObject var workoutViewModel: WorkoutViewModel
-    @State private var selectedWorkoutIndex = 0
+    @EnvironmentObject var trainingPlansViewModel: TrainingPlansViewModel
+    @EnvironmentObject var tabManager: TabManager
     @State private var showWorkoutView = false
     @State private var showBadgesView = false
-
+    @State private var showPlanDetail = false
+    
+    @State private var showChallengeSheet = false
+    @State private var showMeasurementSheet = false
+    @State private var measurementDayIndex: Int? = nil
+    @State private var challengeDayIndex: Int? = nil
+    
+    @State private var showSwitchProgramSheet = false
+    @State private var pendingModalToDismiss: String? = nil
     
     var body: some View {
         ZStack {
@@ -30,8 +39,8 @@ struct WorkoutTabView: View {
                 
                 ScrollView(showsIndicators: false) {
                     VStack(alignment: .leading, spacing: 0) {
-                        Text("Today’s Workout")
-                            .font(.system(size: 24, weight: .semibold))
+                        Text("Today's Workout")
+                            .font(.system(size: 20, weight: .semibold))
                             .foregroundColor(.white)
                             .padding(.top,39)
                             .padding(.leading,10)
@@ -46,6 +55,99 @@ struct WorkoutTabView: View {
                                 .background(Color(hex: "#161616").opacity(0.4))
                                 .cornerRadius(20)
                         }
+                        
+                        if let todaysDay = getTodaysScheduledDay() {
+                            let hasChallenge = todaysDay.showPracticeChallenge
+                            let hasMeasurement = todaysDay.showPracticeMeasurement
+                            
+                            if hasChallenge || hasMeasurement {
+                                Text("Measure your progress")
+                                    .font(.system(size: 20, weight: .semibold))
+                                    .foregroundColor(.white)
+                                    .padding(.top, 40)
+                                    .padding(.leading, 10)
+                                
+                                VStack(spacing: 20) {
+                                    if hasChallenge {
+                                        if trainingPlansViewModel.isChallengeCompleted(planId: trainingPlansViewModel.currentPlanId ?? "", dayIndex: todaysDay.dayIndex) {
+                                            PracticeChallengeCompletedCell(
+                                                day: todaysDay,
+                                                workout: Workout(id: "the_challenge", name: "The Challenge", difficulty: .medium, durationMinutes: 10, description: "Practice challenge.", exercises: [], restSeconds: 30),
+                                                onMeasure: {}
+                                            )
+                                        } else {
+                                            PracticeChallengeCell(
+                                                day: todaysDay,
+                                                workout: Workout(id: "the_challenge", name: "The Challenge", difficulty: .medium, durationMinutes: 10, description: "Practice challenge.", exercises: [], restSeconds: 30),
+                                                onMeasure: {
+                                                    challengeDayIndex = todaysDay.dayIndex
+                                                    showChallengeSheet = true
+                                                }
+                                            )
+                                        }
+                                    }
+                                    
+                                    if hasMeasurement {
+                                        if trainingPlansViewModel.isMeasurementCompleted(planId: trainingPlansViewModel.currentPlanId ?? "", dayIndex: todaysDay.dayIndex) {
+                                            PracticeMeasurementCompletedCell(
+                                                day: todaysDay,
+                                                workout: Workout(id: "hold_measurement", name: "HOLD Measurement", difficulty: .easy, durationMinutes: 5, description: "Progress tracking measurement.", exercises: [], restSeconds: 30),
+                                                onMeasure: {}
+                                            )
+                                        } else {
+                                            PracticeMeasurementCell(
+                                                day: todaysDay,
+                                                workout: Workout(id: "hold_measurement", name: "HOLD Measurement", difficulty: .easy, durationMinutes: 5, description: "Progress tracking measurement.", exercises: [], restSeconds: 30),
+                                                onMeasure: {
+                                                    measurementDayIndex = todaysDay.dayIndex
+                                                    showMeasurementSheet = true
+                                                }
+                                            )
+                                        }
+                                    }
+                                }
+                                .padding(.top, 16)
+                            }
+                        }
+                        
+                        if let currentPlanId = trainingPlansViewModel.currentPlanId,
+                           let currentPlan = trainingPlansViewModel.plans.first(where: { $0.id == currentPlanId }) {
+                            
+                            HStack {
+                                Button(action: {
+                                    withAnimation {
+                                        tabManager.isTabBarHidden = true
+                                        showPlanDetail = true
+                                    }
+                                }) {
+                                    HStack(spacing: 6) {
+                                        Text("Training Plan")
+                                            .font(.system(size: 20, weight: .semibold))
+                                            .foregroundColor(.white)
+                                        Image(systemName: "chevron.right")
+                                            .foregroundColor(.white)
+                                            .font(.system(size: 16, weight: .regular))
+                                    }
+                                    .padding(.leading, 10)
+                                    .padding(.vertical, 8)
+                                }
+                                Spacer()
+                            }
+                            .padding(.top, 40)
+                            .padding(.bottom, 15)
+                            
+                            TrainingPlanCard(
+                                planName: currentPlan.name,
+                                daysLeft: max(0, currentPlan.duration - (trainingPlansViewModel.planProgress[currentPlan.id]?.count ?? 0)),
+                                percentComplete: currentPlan.days.count > 0 ? Int((Double(trainingPlansViewModel.planProgress[currentPlan.id]?.count ?? 0) / Double(currentPlan.days.count)) * 100) : 0,
+                                progress: currentPlan.days.count > 0 ? Double(trainingPlansViewModel.planProgress[currentPlan.id]?.count ?? 0) / Double(currentPlan.days.count) : 0.0,
+                                image: currentPlan.image,
+                                height: 180,
+                                onTap: { }
+                            )
+                            .padding(.bottom, 24)
+                        }
+                        
                         streakView
                             .padding(.top,17)
                         Spacer(minLength: 14)
@@ -54,28 +156,91 @@ struct WorkoutTabView: View {
                 
             }
             .padding(.horizontal,28)
-            
-        }
-        .navigationBarHidden(true)
-        .fullScreenCover(isPresented: $showWorkoutView) {
-            WorkoutView(onBack: {
-                showWorkoutView = false
-                showBadgesView = true
-            })
-        }
-        .sheet(isPresented: $showBadgesView) {
-            let badge = workoutViewModel.newBadges.last
-            StreakBadgeView(
-                unlockedBadge: badge,
-                nextBadge: workoutViewModel.getNextBatchToUnlock(),
-                showUnlockedBadge: badge != nil ? true : false,
-                onBack: {
-                    showBadgesView = false
-                    workoutViewModel.newBadges = []
+            .navigationBarHidden(true)
+            .onAppear {
+                // Refresh workout completion status when view appears
+                workoutViewModel.refreshWorkoutCompletionStatus()
+            }
+            .onReceive(trainingPlansViewModel.$planProgress) { _ in
+                // Refresh when plan progress changes
+                workoutViewModel.refreshWorkoutCompletionStatus()
+            }
+            .onReceive(trainingPlansViewModel.$currentPlanId) { _ in
+                // Refresh when current plan changes
+                workoutViewModel.refreshWorkoutCompletionStatus()
+            }
+            .fullScreenCover(isPresented: $showWorkoutView) {
+                Group {
+                    if let selectedWorkout = workoutViewModel.todaysWorkout {
+                        WorkoutView(selectedWorkout: selectedWorkout, onBack: {
+                            showWorkoutView = false
+                            showBadgesView = true
+                        })
+                    } else {
+                        EmptyView()
+                            .onAppear {
+                                showWorkoutView = false
+                            }
+                    }
                 }
-            )
-            .presentationDetents([.large])
-            .presentationDragIndicator(.hidden)
+            }
+            .fullScreenCover(isPresented: $showChallengeSheet) {
+                ChallengeView(onBack: { duration in
+                    // Only mark as completed if challenge was done on the scheduled day
+                    if let dayIndex = challengeDayIndex,
+                       let planId = trainingPlansViewModel.currentPlanId,
+                       trainingPlansViewModel.isChallengeScheduledForToday(dayIndex: dayIndex) {
+                        trainingPlansViewModel.markChallengeCompleted(planId: planId, dayIndex: dayIndex, duration: duration)
+                    }
+                    showChallengeSheet = false
+                    challengeDayIndex = nil
+                })
+            }
+            .fullScreenCover(isPresented: $showMeasurementSheet) {
+                MeasurementView(onBack: { duration in
+                    // Only mark as completed if measurement was done on the scheduled day
+                    if let dayIndex = measurementDayIndex,
+                       let planId = trainingPlansViewModel.currentPlanId,
+                       trainingPlansViewModel.isMeasurementScheduledForToday(dayIndex: dayIndex) {
+                        trainingPlansViewModel.markMeasurementCompleted(planId: planId, dayIndex: dayIndex, duration: duration)
+                    }
+                    showMeasurementSheet = false
+                    measurementDayIndex = nil
+                })
+            }
+            .sheet(isPresented: $showBadgesView) {
+                let badge = workoutViewModel.newBadges.last
+                StreakBadgeView(
+                    unlockedBadge: badge,
+                    nextBadge: workoutViewModel.getNextBatchToUnlock(),
+                    showUnlockedBadge: badge != nil ? true : false,
+                    onBack: {
+                        showBadgesView = false
+                        workoutViewModel.newBadges = []
+                    }
+                )
+                .presentationDetents([.large])
+                .presentationDragIndicator(.hidden)
+            }
+            
+            if showPlanDetail, let currentPlan = trainingPlansViewModel.plans.first(where: { $0.id == trainingPlansViewModel.currentPlanId }) {
+                TrainingPlanDetailView(
+                    viewModel: trainingPlansViewModel,
+                    plan: currentPlan,
+                    onClose: {
+                        withAnimation {
+                            showPlanDetail = false
+                        }
+                        tabManager.isTabBarHidden = false
+                        workoutViewModel.refreshWorkoutCompletionStatus()
+                    }
+                )
+                .transition(.asymmetric(
+                    insertion: .move(edge: .trailing),
+                    removal: .move(edge: .trailing)
+                ))
+                .zIndex(1)
+            }
         }
     }
     
@@ -88,7 +253,7 @@ struct WorkoutTabView: View {
                     .padding(.top,19)
                 
                 if workoutViewModel.isWorkoutCompletedToday(workout) {
-                    Image(systemName: "checkmark.circle.fill") // Using a checkmark icon
+                    Image(systemName: "checkmark.circle.fill")
                         .resizable()
                         .frame(width: 88, height: 88)
                         .foregroundStyle(LinearGradient(
@@ -157,13 +322,13 @@ struct WorkoutTabView: View {
             .padding(.horizontal, 60)
             .padding(.bottom, 18)
             .padding(.top, 40)
-
+            
         }
-        .background(Color(hex: "#161616").opacity(0.2))
+        .background(Color(hex: "#242E3A"))
         .cornerRadius(20)
         .overlay(
             RoundedRectangle(cornerRadius: 20)
-                .stroke(Color.white.opacity(0.4), lineWidth: 1)
+                .stroke(Color.white, lineWidth: 0.5)
                 .cornerRadius(20)
         )
     }
@@ -181,7 +346,7 @@ struct WorkoutTabView: View {
                 
             }
             .padding(.leading)
-
+            
             
             // Week Streak View
             HStack() {
@@ -197,11 +362,11 @@ struct WorkoutTabView: View {
             }
         }
         .padding(.vertical)
-        .background(Color(hex: "#161616").opacity(0.2))
+        .background(Color(hex: "#242E3A"))
         .cornerRadius(20)
         .overlay(
             RoundedRectangle(cornerRadius: 20)
-                .stroke(Color.white.opacity(0.4), lineWidth: 1)
+                .stroke(Color.white, lineWidth: 0.5)
                 .cornerRadius(20)
         )
     }
@@ -219,39 +384,59 @@ struct WorkoutTabView: View {
         // Get the date for the requested day of the week
         return calendar.date(byAdding: .day, value: index, to: mondayDate)!
     }
-
+    
     private func getDayShortName(for index: Int) -> String {
         let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
         return days[index]
     }
-
+    
     private func getDateNumber(for date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "d"
         return formatter.string(from: date)
     }
-
+    
     private func isDateToday(_ date: Date) -> Bool {
         Calendar.current.isDateInToday(date)
     }
-
+    
     private func hasWorkoutOnDate(_ date: Date) -> Bool {
         // Check if the date is in the viewModel's streakDates array
         return workoutViewModel.streakDates.contains { streakDate in
             Calendar.current.isDate(streakDate, inSameDayAs: date)
         }
     }
+    
     func triggerHaptic() {
         let generator = UIImpactFeedbackGenerator(style: .light)
         generator.prepare()
         generator.impactOccurred()
+    }
+    
+    // MARK: - Today's Scheduled Activities
+    
+    func getTodaysScheduledDay() -> TrainingDay? {
+        guard let currentPlanId = trainingPlansViewModel.currentPlanId,
+              let currentPlan = trainingPlansViewModel.plans.first(where: { $0.id == currentPlanId }),
+              let startDate = trainingPlansViewModel.planStartDate else {
+            return nil
+        }
+        
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        
+        // Find today's day in the plan
+        return currentPlan.days.first(where: { day in
+            let dayDate = calendar.date(byAdding: .day, value: day.dayIndex - 1, to: startDate)!
+            return calendar.isDate(dayDate, inSameDayAs: today)
+        })
     }
 }
 
 struct DayCircleView: View {
     let day: String
     let isCompleted: Bool
-
+    
     var body: some View {
         VStack(spacing: 5) {
             if isCompleted {
@@ -282,4 +467,5 @@ struct DayCircleView: View {
     WorkoutTabView()
         .environmentObject(TabManager())
         .environmentObject(WorkoutViewModel())
+        .environmentObject(TrainingPlansViewModel.preview)
 }

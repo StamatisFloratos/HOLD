@@ -115,22 +115,38 @@ struct StartView: View {
         }
         .padding(.vertical, 17)
         .padding(.horizontal, 14)
-        .cornerRadius(22)
+        .background(Color(hex: "#1A1A1A"))
+        .cornerRadius(20)
         .overlay(
-            RoundedRectangle(cornerRadius: 22)
-                .stroke(Color.white.opacity(0.5), lineWidth: 2)
+            RoundedRectangle(cornerRadius: 20)
+                .inset(by: 0.25)
+                .stroke(
+                    LinearGradient(
+                        colors: [Color(hex: "#FFFFFF"), Color(hex: "#999999")],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    , lineWidth: 0.5)
         )
-        .frame(width: 222)
+        .frame(width: 222, height: 127)
     }
     
     @ViewBuilder
     private func benefitRow(text: String) -> some View {
         HStack(spacing: 11) {
             Image(systemName: "checkmark.circle.fill")
-                .foregroundColor(Color(hex: "#FF1919"))
-                .font(.system(size: 22))
+                .foregroundStyle(LinearGradient(
+                    gradient: Gradient(colors: [Color(hex: "#FF1919"), Color(hex: "#990F0F")]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                ))
+                .font(.system(size: 16))
             Text(text)
-                .foregroundColor(.white)
+                .foregroundStyle(LinearGradient(
+                    colors: [Color(hex: "#FFFFFF"), Color(hex: "#999999")],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                ))
                 .font(.system(size: 16, weight: .medium))
         }
     }

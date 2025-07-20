@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct MeasurementActivityView: View {
     @EnvironmentObject var navigationManager: NavigationManager
@@ -174,6 +175,12 @@ struct MeasurementActivityView: View {
             }
         )
         .navigationBarHidden(true)
+        .onAppear {
+            UIApplication.shared.isIdleTimerDisabled = true
+        }
+        .onDisappear {
+            UIApplication.shared.isIdleTimerDisabled = false
+        }
     }
     
     var resultsView: some View {

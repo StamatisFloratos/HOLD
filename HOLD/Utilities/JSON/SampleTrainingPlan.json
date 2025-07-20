@@ -1,0 +1,63 @@
+{
+  "id": "kegel_basics",
+  "name": "Kegel Basics",
+  "duration": 35,
+  "difficulty": "This is a beginner program and is relatively easy for most users.",
+  "summary": "Beginner program to build pelvic floor strength.",
+  "description": "Beginner program to build pelvic floor strength. Beginner program to build pelvic floor strength. Beginner program to build pelvic floor strength.",
+  "unlockRequirement": null,
+  "cardImage": "trainingPlanBgSmall",
+  "days": [
+    {
+      "id": 1,
+      "workout": {
+        "name": "Kegel Forge",
+        "difficulty": "easy",
+        "durationMinutes": 5,
+        "restSeconds": 30,
+        "description": "Lay the foundation for a stronger core with slow, steady movements.",
+        "exercises": [
+          { "name": "Flash", "reps": 14, "seconds": null },
+          { "name": "Hold", "reps": null, "seconds": 7 },
+          { "name": "Rapid Fire", "reps": 14, "seconds": null }
+        ]
+      },
+      "showPracticeMeasurement": false,
+      "showPracticeChallenge": false
+    },
+    {
+      "id": 2,
+      "workout": {
+        "name": "Kegel Forge",
+        "difficulty": "easy",
+        "durationMinutes": 5,
+        "restSeconds": 30,
+        "description": "Lay the foundation for a stronger core with slow, steady movements.",
+        "exercises": [
+          { "name": "Flash", "reps": 14, "seconds": null },
+          { "name": "Hold", "reps": null, "seconds": 7 },
+          { "name": "Rapid Fire", "reps": 14, "seconds": null }
+        ]
+      },
+      "showPracticeMeasurement": true,
+      "showPracticeChallenge": false
+    },
+    {
+      "id": 3,
+      "workout": {
+        "name": "Kegel Forge",
+        "difficulty": "easy",
+        "durationMinutes": 5,
+        "restSeconds": 30,
+        "description": "Lay the foundation for a stronger core with slow, steady movements.",
+        "exercises": [
+          { "name": "Flash", "reps": 14, "seconds": null },
+          { "name": "Hold", "reps": null, "seconds": 7 },
+          { "name": "Rapid Fire", "reps": 14, "seconds": null }
+        ]
+      },
+      "showPracticeMeasurement": false,
+      "showPracticeChallenge": true
+    }
+  ]
+} 

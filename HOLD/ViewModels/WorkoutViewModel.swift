@@ -109,6 +109,7 @@ class WorkoutViewModel: ObservableObject {
         do {
             // Create temporary struct that matches JSON structure exactly
             struct TempWorkout: Codable {
+                let id: String
                 let name: String
                 let difficulty: String
                 let durationMinutes: Int
@@ -185,7 +186,7 @@ class WorkoutViewModel: ObservableObject {
                 
                 // Create workout with generated UUID
                 let workout = Workout(
-                    id: UUID(),
+                    id: tempWorkout.id,
                     name: tempWorkout.name,
                     difficulty: difficultyEnum,
                     durationMinutes: tempWorkout.durationMinutes,
@@ -334,6 +335,12 @@ class WorkoutViewModel: ObservableObject {
         
         // Update total completed count
         totalWorkoutsCompleted = WorkoutCompletionManager.getCompletions().count
+    }
+    
+    // Public method to refresh workout completion status
+    func refreshWorkoutCompletionStatus() {
+        // This will trigger UI updates for workout completion status
+        objectWillChange.send()
     }
     
     private func calculateStreaks() {

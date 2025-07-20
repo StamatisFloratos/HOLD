@@ -21,6 +21,14 @@ enum WorkoutDifficulty: String, Codable, CaseIterable {
         }
     }
     
+    var descriptionSimple: String {
+        switch self {
+        case .easy: return "Easy"
+        case .medium: return "Medium"
+        case .hard: return "Hard"
+        }
+    }
+    
     var color: [Color] {
         switch self {
         case .easy: return [
@@ -40,7 +48,7 @@ enum WorkoutDifficulty: String, Codable, CaseIterable {
 }
 
 struct Workout: Identifiable, Codable, Hashable {
-    let id: UUID
+    let id: String
     let name: String
     let difficulty: WorkoutDifficulty
     let durationMinutes: Int
@@ -69,7 +77,7 @@ struct Workout: Identifiable, Codable, Hashable {
         return exerciseTime + restTime
     }
     
-    init(id: UUID = UUID(), 
+    init(id: String, 
          name: String, 
          difficulty: WorkoutDifficulty, 
          durationMinutes: Int, 
@@ -162,6 +170,7 @@ class WorkoutCompletionManager {
 extension Workout {
     static let sampleWorkouts: [Workout] = [
         Workout(
+            id: "Beginner's Routine",
             name: "Beginner's Routine",
             difficulty: .easy,
             durationMinutes: 5,
@@ -173,6 +182,7 @@ extension Workout {
             ]
         ),
         Workout(
+            id: "Daily Maintenance",
             name: "Daily Maintenance",
             difficulty: .medium,
             durationMinutes: 10,
@@ -185,6 +195,7 @@ extension Workout {
             ]
         ),
         Workout(
+            id: "Advanced Strengthening",
             name: "Advanced Strengthening",
             difficulty: .hard,
             durationMinutes: 15,

@@ -1,0 +1,2897 @@
+[
+  {
+    "id": "kegel_forge",
+    "name": "Kegel Forge",
+    "difficulty": "easy",
+    "durationMinutes": 5,
+    "restSeconds": 30,
+    "description": "Lay the foundation for a stronger core with slow, steady movements.",
+    "exercises": [
+      {
+        "name": "Flash",
+        "reps": 14,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 7
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 14,
+        "seconds": null
+      },
+      {
+        "name": "Clamp",
+        "reps": 11,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 7
+      },
+      {
+        "name": "Clamp",
+        "reps": 11,
+        "seconds": null
+      },
+      {
+        "name": "Flash",
+        "reps": 14,
+        "seconds": null
+      }
+    ]
+  },
+  {
+    "id": "core_pulse",
+    "name": "Core Pulse",
+    "difficulty": "easy",
+    "durationMinutes": 5,
+    "restSeconds": 30,
+    "description": "Build rhythm and consistency with gentle core activations.",
+    "exercises": [
+      {
+        "name": "Clamp",
+        "reps": 12,
+        "seconds": null
+      },
+      {
+        "name": "Flash",
+        "reps": 15,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 8
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 15,
+        "seconds": null
+      },
+      {
+        "name": "Clamp",
+        "reps": 12,
+        "seconds": null
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 15,
+        "seconds": null
+      }
+    ]
+  },
+  {
+    "id": "pelvic_power",
+    "name": "Pelvic Power",
+    "difficulty": "easy",
+    "durationMinutes": 5,
+    "restSeconds": 28,
+    "description": "Tap into your natural strength with focused, mindful contractions.",
+    "exercises": [
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 9
+      },
+      {
+        "name": "Clamp",
+        "reps": 13,
+        "seconds": null
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 17,
+        "seconds": null
+      },
+      {
+        "name": "Flash",
+        "reps": 17,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 9
+      },
+      {
+        "name": "Clamp",
+        "reps": 13,
+        "seconds": null
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 17,
+        "seconds": null
+      }
+    ]
+  },
+  {
+    "id": "inner_strength",
+    "name": "Inner Strength",
+    "difficulty": "easy",
+    "durationMinutes": 5,
+    "restSeconds": 28,
+    "description": "Grow your endurance through soft but persistent holds.",
+    "exercises": [
+      {
+        "name": "Clamp",
+        "reps": 14,
+        "seconds": null
+      },
+      {
+        "name": "Flash",
+        "reps": 19,
+        "seconds": null
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 19,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 9
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 19,
+        "seconds": null
+      },
+      {
+        "name": "Clamp",
+        "reps": 14,
+        "seconds": null
+      }
+    ]
+  },
+  {
+    "id": "grip_mastery",
+    "name": "Grip Mastery",
+    "difficulty": "easy",
+    "durationMinutes": 5,
+    "restSeconds": 27,
+    "description": "Master the art of perfect form with every rep.",
+    "exercises": [
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 10
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 20,
+        "seconds": null
+      },
+      {
+        "name": "Clamp",
+        "reps": 15,
+        "seconds": null
+      },
+      {
+        "name": "Flash",
+        "reps": 20,
+        "seconds": null
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 20,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 10
+      },
+      {
+        "name": "Flash",
+        "reps": 20,
+        "seconds": null
+      }
+    ]
+  },
+  {
+    "id": "anchor_flow",
+    "name": "Anchor Flow",
+    "difficulty": "medium",
+    "durationMinutes": 5,
+    "restSeconds": 25,
+    "description": "Smooth, flowing sequences designed to deepen your control.",
+    "exercises": [
+      {
+        "name": "Clamp",
+        "reps": 14,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 11
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 21,
+        "seconds": null
+      },
+      {
+        "name": "Flash",
+        "reps": 21,
+        "seconds": null
+      },
+      {
+        "name": "Clamp",
+        "reps": 14,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 11
+      },
+      {
+        "name": "Flash",
+        "reps": 21,
+        "seconds": null
+      }
+    ]
+  },
+  {
+    "id": "core_lock",
+    "name": "Core Lock",
+    "difficulty": "medium",
+    "durationMinutes": 5,
+    "restSeconds": 25,
+    "description": "Build powerful holds that anchor your core strength.",
+    "exercises": [
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 11
+      },
+      {
+        "name": "Clamp",
+        "reps": 15,
+        "seconds": null
+      },
+      {
+        "name": "Flash",
+        "reps": 23,
+        "seconds": null
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 23,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 11
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 23,
+        "seconds": null
+      },
+      {
+        "name": "Clamp",
+        "reps": 15,
+        "seconds": null
+      }
+    ]
+  },
+  {
+    "id": "silent_strength",
+    "name": "Silent Strength",
+    "difficulty": "medium",
+    "durationMinutes": 5,
+    "restSeconds": 24,
+    "description": "Challenge yourself with longer holds and less rest.",
+    "exercises": [
+      {
+        "name": "Clamp",
+        "reps": 16,
+        "seconds": null
+      },
+      {
+        "name": "Flash",
+        "reps": 25,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 12
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 25,
+        "seconds": null
+      },
+      {
+        "name": "Flash",
+        "reps": 25,
+        "seconds": null
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 25,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 12
+      }
+    ]
+  },
+  {
+    "id": "clench_quest",
+    "name": "Clench Quest",
+    "difficulty": "medium",
+    "durationMinutes": 5,
+    "restSeconds": 24,
+    "description": "A dynamic journey of rhythmic clenching and releasing.",
+    "exercises": [
+      {
+        "name": "Flash",
+        "reps": 26,
+        "seconds": null
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 26,
+        "seconds": null
+      },
+      {
+        "name": "Clamp",
+        "reps": 18,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 13
+      },
+      {
+        "name": "Clamp",
+        "reps": 18,
+        "seconds": null
+      },
+      {
+        "name": "Flash",
+        "reps": 26,
+        "seconds": null
+      }
+    ]
+  },
+  {
+    "id": "hold_horizon",
+    "name": "Hold Horizon",
+    "difficulty": "medium",
+    "durationMinutes": 5,
+    "restSeconds": 23,
+    "description": "Push your stamina and discover new levels of strength.",
+    "exercises": [
+      {
+        "name": "Clamp",
+        "reps": 19,
+        "seconds": null
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 28,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 14
+      },
+      {
+        "name": "Flash",
+        "reps": 28,
+        "seconds": null
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 28,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 14
+      }
+    ]
+  },
+  {
+    "id": "muscle_bloom",
+    "name": "Muscle Bloom",
+    "difficulty": "medium",
+    "durationMinutes": 5,
+    "restSeconds": 22,
+    "description": "Let your strength blossom with deep, deliberate practice.",
+    "exercises": [
+      {
+        "name": "Flash",
+        "reps": 30,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 15
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 30,
+        "seconds": null
+      },
+      {
+        "name": "Clamp",
+        "reps": 20,
+        "seconds": null
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 30,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 15
+      }
+    ]
+  },
+  {
+    "id": "steady_surge",
+    "name": "Steady Surge",
+    "difficulty": "hard",
+    "durationMinutes": 5,
+    "restSeconds": 20,
+    "description": "Surge through powerful sets with minimal recovery time.",
+    "exercises": [
+      {
+        "name": "Flash",
+        "reps": 28,
+        "seconds": null
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 28,
+        "seconds": null
+      },
+      {
+        "name": "Clamp",
+        "reps": 21,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 14
+      },
+      {
+        "name": "Flash",
+        "reps": 28,
+        "seconds": null
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 28,
+        "seconds": null
+      },
+      {
+        "name": "Clamp",
+        "reps": 21,
+        "seconds": null
+      }
+    ]
+  },
+  {
+    "id": "anchor_burst",
+    "name": "Anchor Burst",
+    "difficulty": "hard",
+    "durationMinutes": 5,
+    "restSeconds": 20,
+    "description": "Quick bursts of intensity anchored by precision and strength.",
+    "exercises": [
+      {
+        "name": "Flash",
+        "reps": 29,
+        "seconds": null
+      },
+      {
+        "name": "Clamp",
+        "reps": 22,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 15
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 29,
+        "seconds": null
+      },
+      {
+        "name": "Flash",
+        "reps": 29,
+        "seconds": null
+      },
+      {
+        "name": "Clamp",
+        "reps": 22,
+        "seconds": null
+      }
+    ]
+  },
+  {
+    "id": "pulse_craft",
+    "name": "Pulse Craft",
+    "difficulty": "hard",
+    "durationMinutes": 5,
+    "restSeconds": 18,
+    "description": "Sharpen your contractions and boost your stamina to the limit.",
+    "exercises": [
+      {
+        "name": "Rapid Fire",
+        "reps": 31,
+        "seconds": null
+      },
+      {
+        "name": "Flash",
+        "reps": 31,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 15
+      },
+      {
+        "name": "Clamp",
+        "reps": 23,
+        "seconds": null
+      },
+      {
+        "name": "Flash",
+        "reps": 31,
+        "seconds": null
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 31,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 15
+      }
+    ]
+  },
+  {
+    "id": "grip_shift",
+    "name": "Grip Shift",
+    "difficulty": "hard",
+    "durationMinutes": 5,
+    "restSeconds": 18,
+    "description": "Rapid transitions between holds to test your core's agility.",
+    "exercises": [
+      {
+        "name": "Clamp",
+        "reps": 24,
+        "seconds": null
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 33,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 16
+      },
+      {
+        "name": "Flash",
+        "reps": 33,
+        "seconds": null
+      },
+      {
+        "name": "Clamp",
+        "reps": 24,
+        "seconds": null
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 33,
+        "seconds": null
+      }
+    ]
+  },
+  {
+    "id": "inner_ignite",
+    "name": "Inner Ignite",
+    "difficulty": "hard",
+    "durationMinutes": 5,
+    "restSeconds": 16,
+    "description": "Ignite a deep, burning strength from within.",
+    "exercises": [
+      {
+        "name": "Rapid Fire",
+        "reps": 34,
+        "seconds": null
+      },
+      {
+        "name": "Flash",
+        "reps": 34,
+        "seconds": null
+      },
+      {
+        "name": "Clamp",
+        "reps": 26,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 17
+      },
+      {
+        "name": "Flash",
+        "reps": 34,
+        "seconds": null
+      },
+      {
+        "name": "Clamp",
+        "reps": 26,
+        "seconds": null
+      }
+    ]
+  },
+  {
+    "id": "foundation_flex",
+    "name": "Foundation Flex",
+    "difficulty": "hard",
+    "durationMinutes": 5,
+    "restSeconds": 15,
+    "description": "Endure and overcome with rock-solid foundational strength.",
+    "exercises": [
+      {
+        "name": "Rapid Fire",
+        "reps": 36,
+        "seconds": null
+      },
+      {
+        "name": "Clamp",
+        "reps": 27,
+        "seconds": null
+      },
+      {
+        "name": "Flash",
+        "reps": 36,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 18
+      },
+      {
+        "name": "Flash",
+        "reps": 36,
+        "seconds": null
+      },
+      {
+        "name": "Clamp",
+        "reps": 27,
+        "seconds": null
+      }
+    ]
+  },
+  {
+    "id": "clench_spark",
+    "name": "Clench Spark",
+    "difficulty": "hard",
+    "durationMinutes": 5,
+    "restSeconds": 14,
+    "description": "Explosive clenching drills for maximum endurance and control.",
+    "exercises": [
+      {
+        "name": "Flash",
+        "reps": 37,
+        "seconds": null
+      },
+      {
+        "name": "Clamp",
+        "reps": 28,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 19
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 37,
+        "seconds": null
+      },
+      {
+        "name": "Clamp",
+        "reps": 28,
+        "seconds": null
+      },
+      {
+        "name": "Flash",
+        "reps": 37,
+        "seconds": null
+      }
+    ]
+  },
+  {
+    "id": "endure_edge",
+    "name": "Endure Edge",
+    "difficulty": "hard",
+    "durationMinutes": 5,
+    "restSeconds": 12,
+    "description": "Edge closer to mastery through relentless endurance challenges.",
+    "exercises": [
+      {
+        "name": "Flash",
+        "reps": 39,
+        "seconds": null
+      },
+      {
+        "name": "Clamp",
+        "reps": 29,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 19
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 39,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 19
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 39,
+        "seconds": null
+      },
+      {
+        "name": "Flash",
+        "reps": 39,
+        "seconds": null
+      }
+    ]
+  },
+  {
+    "id": "silent_forge",
+    "name": "Silent Forge",
+    "difficulty": "hard",
+    "durationMinutes": 5,
+    "restSeconds": 10,
+    "description": "Silent, fierce, and unbreakable.",
+    "exercises": [
+      {
+        "name": "Rapid Fire",
+        "reps": 40,
+        "seconds": null
+      },
+      {
+        "name": "Clamp",
+        "reps": 30,
+        "seconds": null
+      },
+      {
+        "name": "Flash",
+        "reps": 40,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 20
+      },
+      {
+        "name": "Flash",
+        "reps": 40,
+        "seconds": null
+      },
+      {
+        "name": "Rapid Fire",
+        "reps": 40,
+        "seconds": null
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 20
+      }
+    ]
+  },
+  {
+    "id": "power_core",
+    "name": "Power Core",
+    "difficulty": "easy",
+    "durationMinutes": 5,
+    "restSeconds": 28,
+    "description": "Focus on form and breathing while building strength.",
+    "exercises": [
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 17
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 13
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 11
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 15
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 19
+      }
+    ]
+  },
+  {
+    "id": "swift_grip",
+    "name": "Swift Grip",
+    "difficulty": "easy",
+    "durationMinutes": 5,
+    "restSeconds": 28,
+    "description": "Perfect for beginners looking to establish good form.",
+    "exercises": [
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 21
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 11
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 15
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 15
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 14
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 17
+      }
+    ]
+  },
+  {
+    "id": "spex_circuit",
+    "name": "Apex Circuit",
+    "difficulty": "easy",
+    "durationMinutes": 5,
+    "restSeconds": 31,
+    "description": "Build your foundation with mindful, controlled movements.",
+    "exercises": [
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 14
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 8
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 14
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 21
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 10
+      }
+    ]
+  },
+  {
+    "id": "titan_burst",
+    "name": "Titan Burst",
+    "difficulty": "easy",
+    "durationMinutes": 5,
+    "restSeconds": 31,
+    "description": "A gentle introduction to building core strength.",
+    "exercises": [
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 17
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 11
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 14
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 13
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 16
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 15
+      }
+    ]
+  },
+  {
+    "id": "peak_circuit",
+    "name": "Peak Circuit",
+    "difficulty": "easy",
+    "durationMinutes": 5,
+    "restSeconds": 31,
+    "description": "Perfect for beginners looking to establish good form.",
+    "exercises": [
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 20
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 16
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 11
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 20
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 14
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 10
+      }
+    ]
+  },
+  {
+    "id": "max_forge",
+    "name": "Max Forge",
+    "difficulty": "easy",
+    "durationMinutes": 5,
+    "restSeconds": 29,
+    "description": "Perfect for beginners looking to establish good form.",
+    "exercises": [
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 11
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 11
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 15
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 11
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 13
+      }
+    ]
+  },
+  {
+    "id": "lightening_blast",
+    "name": "Lightning Blast",
+    "difficulty": "easy",
+    "durationMinutes": 5,
+    "restSeconds": 28,
+    "description": "Build your foundation with mindful, controlled movements.",
+    "exercises": [
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 14
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 21
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 8
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 17
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 19
+      }
+    ]
+  },
+  {
+    "id": "power_fire",
+    "name": "Power Fire",
+    "difficulty": "easy",
+    "durationMinutes": 5,
+    "restSeconds": 28,
+    "description": "A gentle introduction to building core strength.",
+    "exercises": [
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 9
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 14
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 14
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 14
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 16
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 19
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 12
+      }
+    ]
+  },
+  {
+    "id": "bold_storm",
+    "name": "Bold Storm",
+    "difficulty": "easy",
+    "durationMinutes": 5,
+    "restSeconds": 31,
+    "description": "Build your foundation with mindful, controlled movements.",
+    "exercises": [
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 9
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 8
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 8
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 11
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 17
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 12
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 12
+      }
+    ]
+  },
+  {
+    "id": "steel_wave",
+    "name": "Steel Wave",
+    "difficulty": "easy",
+    "durationMinutes": 5,
+    "restSeconds": 32,
+    "description": "A gentle introduction to building core strength.",
+    "exercises": [
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 13
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 9
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 15
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 18
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 20
+      }
+    ]
+  },
+  {
+    "id": "max_hold",
+    "name": "Max Hold",
+    "difficulty": "easy",
+    "durationMinutes": 5,
+    "restSeconds": 31,
+    "description": "A gentle introduction to building core strength.",
+    "exercises": [
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 15
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 16
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 9
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 20
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 20
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 9
+      }
+    ]
+  },
+  {
+    "id": "raw_impact",
+    "name": "Raw Impact",
+    "difficulty": "easy",
+    "durationMinutes": 5,
+    "restSeconds": 30,
+    "description": "A gentle introduction to building core strength.",
+    "exercises": [
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 18
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 20
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 11
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 14
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 10
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 16
+      }
+    ]
+  },
+  {
+    "id": "power_strength",
+    "name": "Power Strength",
+    "difficulty": "easy",
+    "durationMinutes": 5,
+    "restSeconds": 31,
+    "description": "A gentle introduction to building core strength.",
+    "exercises": [
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 10
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 11
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 18
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 17
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 9
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 8
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 12
+      }
+    ]
+  },
+  {
+    "id": "steel_edge",
+    "name": "Steel Edge",
+    "difficulty": "easy",
+    "durationMinutes": 5,
+    "restSeconds": 32,
+    "description": "Build your foundation with mindful, controlled movements.",
+    "exercises": [
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 15
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 15
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 18
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 8
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 17
+      }
+    ]
+  },
+  {
+    "id": "prime_strength",
+    "name": "Prime Strength",
+    "difficulty": "easy",
+    "durationMinutes": 5,
+    "restSeconds": 29,
+    "description": "Build your foundation with mindful, controlled movements.",
+    "exercises": [
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 8
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 14
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 14
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 12
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 14
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 21
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 12
+      }
+    ]
+  },
+  {
+    "id": "vortex_system",
+    "name": "Vortex System",
+    "difficulty": "medium",
+    "durationMinutes": 5,
+    "restSeconds": 23,
+    "description": "Build endurance while maintaining perfect form. Marathon session to test your dedication.",
+    "exercises": [
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 12
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 20
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 14
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 22
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 21
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 28
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 29
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 25
+      }
+    ]
+  },
+  {
+    "id": "swift_zone",
+    "name": "Swift Zone",
+    "difficulty": "medium",
+    "durationMinutes": 5,
+    "restSeconds": 22,
+    "description": "Progressive movements designed to push your limits.",
+    "exercises": [
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 24
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 16
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 16
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 30
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 30
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 30
+      }
+    ]
+  },
+  {
+    "id": "diamond_wave",
+    "name": "Diamond Wave",
+    "difficulty": "medium",
+    "durationMinutes": 5,
+    "restSeconds": 22,
+    "description": "A balanced workout that tests both strength and stamina. Extended session for comprehensive development.",
+    "exercises": [
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 19
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 31
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 31
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 27
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 15
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 30
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 20
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 24
+      }
+    ]
+  },
+  {
+    "id": "steel_grip",
+    "name": "Steel Grip",
+    "difficulty": "medium",
+    "durationMinutes": 5,
+    "restSeconds": 26,
+    "description": "Build endurance while maintaining perfect form.",
+    "exercises": [
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 15
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 12
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 28
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 21
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 20
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 15
+      }
+    ]
+  },
+  {
+    "id": "thunder_strength",
+    "name": "Thunder Strength",
+    "difficulty": "medium",
+    "durationMinutes": 5,
+    "restSeconds": 22,
+    "description": "A balanced workout that tests both strength and stamina.",
+    "exercises": [
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 18
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 20
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 15
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 17
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 14
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 11
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 15
+      }
+    ]
+  },
+  {
+    "id": "granite_burn",
+    "name": "Granite Burn",
+    "difficulty": "medium",
+    "durationMinutes": 5,
+    "restSeconds": 26,
+    "description": "Challenge yourself with increased intensity and focus.",
+    "exercises": [
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 11
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 18
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 24
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 28
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 15
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 21
+      }
+    ]
+  },
+  {
+    "id": "solid_strike",
+    "name": "Solid Strike",
+    "difficulty": "medium",
+    "durationMinutes": 5,
+    "restSeconds": 20,
+    "description": "Challenge yourself with increased intensity and focus.",
+    "exercises": [
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 24
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 11
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 24
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 18
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 26
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 26
+      }
+    ]
+  },
+  {
+    "id": "ultra_power",
+    "name": "Ultra Power",
+    "difficulty": "medium",
+    "durationMinutes": 5,
+    "restSeconds": 23,
+    "description": "Take your strength to the next level with varied exercises.",
+    "exercises": [
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 17
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 22
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 15
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 14
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 27
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 28
+      }
+    ]
+  },
+  {
+    "id": "apex_burn",
+    "name": "Apex Burn",
+    "difficulty": "medium",
+    "durationMinutes": 5,
+    "restSeconds": 21,
+    "description": "A balanced workout that tests both strength and stamina.",
+    "exercises": [
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 20
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 13
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 12
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 11
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 11
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 14
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 23
+      }
+    ]
+  },
+  {
+    "id": "supreme_strike",
+    "name": "Supreme Strike",
+    "difficulty": "medium",
+    "durationMinutes": 5,
+    "restSeconds": 23,
+    "description": "Challenge yourself with increased intensity and focus. Full spectrum workout covering all movement patterns.",
+    "exercises": [
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 32
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 22
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 23
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 11
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 27
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 28
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 24
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 28
+      }
+    ]
+  },
+  {
+    "id": "steel_edge_medium",
+    "name": "Steel Edge",
+    "difficulty": "medium",
+    "durationMinutes": 5,
+    "restSeconds": 22,
+    "description": "Progressive movements designed to push your limits. Long-form training for serious practitioners.",
+    "exercises": [
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 22
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 20
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 15
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 25
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 27
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 18
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 20
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 19
+      }
+    ]
+  },
+  {
+    "id": "iron_hold",
+    "name": "Iron Hold",
+    "difficulty": "medium",
+    "durationMinutes": 5,
+    "restSeconds": 21,
+    "description": "Challenge yourself with increased intensity and focus.",
+    "exercises": [
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 31
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 20
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 11
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 17
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 20
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 29
+      }
+    ]
+  },
+  {
+    "id": "vortex_hold",
+    "name": "Vortex Hold",
+    "difficulty": "medium",
+    "durationMinutes": 5,
+    "restSeconds": 22,
+    "description": "Challenge yourself with increased intensity and focus.",
+    "exercises": [
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 25
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 20
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 26
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 32
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 27
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 21
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 20
+      }
+    ]
+  },
+  {
+    "id": "storm_drive",
+    "name": "Storm Drive",
+    "difficulty": "medium",
+    "durationMinutes": 5,
+    "restSeconds": 24,
+    "description": "Build endurance while maintaining perfect form.",
+    "exercises": [
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 29
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 13
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 30
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 19
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 32
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 15
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 24
+      }
+    ]
+  },
+  {
+    "id": "strong_pulse",
+    "name": "Strong Pulse",
+    "difficulty": "medium",
+    "durationMinutes": 5,
+    "restSeconds": 21,
+    "description": "Take your strength to the next level with varied exercises. Marathon session to test your dedication.",
+    "exercises": [
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 26
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 14
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 28
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 31
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 24
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 17
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 22
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 21
+      }
+    ]
+  },
+  {
+    "id": "vital_method",
+    "name": "Vital Method",
+    "difficulty": "hard",
+    "durationMinutes": 5,
+    "restSeconds": 18,
+    "description": "Elite-level workout for peak performance. Long-form training for serious practitioners.",
+    "exercises": [
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 32
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 18
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 38
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 16
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 36
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 22
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 36
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 40
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 42
+      }
+    ]
+  },
+  {
+    "id": "prime_pulse",
+    "name": "Prime Pulse",
+    "difficulty": "hard",
+    "durationMinutes": 5,
+    "restSeconds": 17,
+    "description": "Intense training for serious strength development. Full spectrum workout covering all movement patterns.",
+    "exercises": [
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 29
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 43
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 38
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 36
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 18
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 40
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 35
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 19
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 39
+      }
+    ]
+  },
+  {
+    "id": "thunder_power",
+    "name": "Thunder Power",
+    "difficulty": "hard",
+    "durationMinutes": 5,
+    "restSeconds": 15,
+    "description": "Elite-level workout for peak performance. Extended session for comprehensive development.",
+    "exercises": [
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 40
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 26
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 17
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 33
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 23
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 32
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 44
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 21
+      }
+    ]
+  },
+  {
+    "id": "pure_challenge",
+    "name": "Pure Challenge",
+    "difficulty": "hard",
+    "durationMinutes": 5,
+    "restSeconds": 13,
+    "description": "Advanced exercises for maximum strength gains.",
+    "exercises": [
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 28
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 38
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 20
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 20
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 18
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 44
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 28
+      }
+    ]
+  },
+  {
+    "id": "blaze_flex",
+    "name": "Blaze Flex",
+    "difficulty": "hard",
+    "durationMinutes": 5,
+    "restSeconds": 17,
+    "description": "Advanced exercises for maximum strength gains. Extended session for comprehensive development.",
+    "exercises": [
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 39
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 34
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 42
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 45
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 34
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 30
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 30
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 44
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 16
+      }
+    ]
+  },
+  {
+    "id": "apex_forge",
+    "name": "Apex Forge",
+    "difficulty": "hard",
+    "durationMinutes": 5,
+    "restSeconds": 17,
+    "description": "Extreme endurance and power training.",
+    "exercises": [
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 26
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 20
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 17
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 43
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 40
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 19
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 32
+      }
+    ]
+  },
+  {
+    "id": "iron_impact",
+    "name": "Iron Impact",
+    "difficulty": "hard",
+    "durationMinutes": 5,
+    "restSeconds": 18,
+    "description": "Elite-level workout for peak performance. Extended session for comprehensive development.",
+    "exercises": [
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 28
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 37
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 45
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 18
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 28
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 44
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 31
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 44
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 22
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 34
+      }
+    ]
+  },
+  {
+    "id": "lightning_core",
+    "name": "Lightning Core",
+    "difficulty": "hard",
+    "durationMinutes": 5,
+    "restSeconds": 9,
+    "description": "Elite-level workout for peak performance. Long-form training for serious practitioners.",
+    "exercises": [
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 23
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 35
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 21
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 37
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 40
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 22
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 21
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 40
+      }
+    ]
+  },
+  {
+    "id": "vortex_zone",
+    "name": "Vortex Zone",
+    "difficulty": "hard",
+    "durationMinutes": 5,
+    "restSeconds": 13,
+    "description": "Extreme endurance and power training. Full spectrum workout covering all movement patterns.",
+    "exercises": [
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 40
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 45
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 34
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 25
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 33
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 40
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 22
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 36
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 16
+      }
+    ]
+  },
+  {
+    "id": "vortex_wave",
+    "name": "Vortex Wave",
+    "difficulty": "hard",
+    "durationMinutes": 5,
+    "restSeconds": 17,
+    "description": "Extreme endurance and power training. Full spectrum workout covering all movement patterns.",
+    "exercises": [
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 28
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 34
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 32
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 30
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 16
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 22
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 37
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 20
+      }
+    ]
+  },
+  {
+    "id": "strong_impact",
+    "name": "Strong Impact",
+    "difficulty": "hard",
+    "durationMinutes": 5,
+    "restSeconds": 9,
+    "description": "Extreme endurance and power training.",
+    "exercises": [
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 44
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 16
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 42
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 42
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 38
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 17
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 37
+      }
+    ]
+  },
+  {
+    "id": "power_grip",
+    "name": "Power Grip",
+    "difficulty": "hard",
+    "durationMinutes": 5,
+    "restSeconds": 9,
+    "description": "Push your limits with high-intensity combinations.",
+    "exercises": [
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 40
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 35
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 34
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 23
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 44
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 20
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 42
+      }
+    ]
+  },
+  {
+    "id": "storm_force",
+    "name": "Storm Force",
+    "difficulty": "hard",
+    "durationMinutes": 5,
+    "restSeconds": 9,
+    "description": "Push your limits with high-intensity combinations. Long-form training for serious practitioners.",
+    "exercises": [
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 40
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 33
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 30
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 37
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 26
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 34
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 23
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 32
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 34
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 32
+      }
+    ]
+  },
+  {
+    "id": "fierce_flex",
+    "name": "Fierce Flex",
+    "difficulty": "hard",
+    "durationMinutes": 5,
+    "restSeconds": 18,
+    "description": "Intense training for serious strength development. Long-form training for serious practitioners.",
+    "exercises": [
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 40
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 44
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 34
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 19
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 34
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 19
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 41
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 39
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 32
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 20
+      }
+    ]
+  },
+  {
+    "id": "bold_fire",
+    "name": "Bold Fire",
+    "difficulty": "hard",
+    "durationMinutes": 5,
+    "restSeconds": 10,
+    "description": "Intense training for serious strength development. Extended session for comprehensive development.",
+    "exercises": [
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 39
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 36
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 20
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 32
+      },
+      {
+        "name": "Flash",
+        "seconds": null,
+        "reps": 38
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 22
+      },
+      {
+        "name": "Hold",
+        "reps": null,
+        "seconds": 17
+      },
+      {
+        "name": "Clamp",
+        "seconds": null,
+        "reps": 31
+      },
+      {
+        "name": "Rapid Fire",
+        "seconds": null,
+        "reps": 36
+      }
+    ]
+  }
+]

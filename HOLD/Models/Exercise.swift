@@ -27,6 +27,23 @@ struct Exercise: Identifiable, Codable, Hashable {
     // Parameter for hold (duration in seconds)
     let seconds: Int?
     
+    // Custom decoder to generate UUID if missing
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = (try? container.decode(UUID.self, forKey: .id)) ?? UUID()
+        name = try container.decode(String.self, forKey: .name)
+        // Infer type from name if not present in JSON
+        if let type = try? container.decode(ExerciseType.self, forKey: .type) {
+            self.type = type
+        } else {
+            let nameValue = try container.decode(String.self, forKey: .name)
+            self.type = ExerciseType(rawValue: nameValue.camelCased) ?? .hold
+        }
+        description = (try? container.decode(String.self, forKey: .description)) ?? ""
+        reps = try? container.decode(Int.self, forKey: .reps)
+        seconds = try? container.decode(Int.self, forKey: .seconds)
+    }
+    
     var isValid: Bool {
         switch type {
         case .clamp, .rapidFire, .flash:

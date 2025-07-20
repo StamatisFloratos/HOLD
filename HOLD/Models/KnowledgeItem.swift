@@ -8,19 +8,25 @@
 import Foundation
 import SwiftUI
 
-import Foundation
+typealias KnowledgeHubData = [KnowledgeCategory]
 
-struct KnowledgeItem: Identifiable, Codable, Hashable {
-    let id: String
-    let title: String
-    let imageName: String
-    let article: String
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case title
-        case imageName
-        case article
-    }
+struct KnowledgeDetail: Codable, Identifiable {
+    let id = UUID()
+    let image: String
+    let content: String
+    let header: String
 }
 
+struct KnowledgeCategoryItem: Codable, Identifiable {
+    let id = UUID()
+    let title: String
+    let subtitle: String
+    let coverImage: String
+    let slides: [KnowledgeDetail]
+}
+
+struct KnowledgeCategory: Codable, Identifiable {
+    var id: String { categoryName }
+    let categoryName: String
+    let categoryItems: [KnowledgeCategoryItem]
+}

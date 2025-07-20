@@ -9,6 +9,7 @@ import SwiftUI
 
 class TabManager: ObservableObject {
     @Published var selectedTab: Int = 1
+    @Published var isTabBarHidden: Bool = false
 }
 
 struct MainTabView: View {
@@ -44,37 +45,34 @@ struct MainTabView: View {
                     .tag(3)
             }
             .edgesIgnoringSafeArea(.top)
-            // Custom tab bar
-            if !keyboardResponder.isKeyboardVisible {
-                HStack(spacing: 0) {
-                    TabBarButton(imageName: "progressIcon", isSelected: tabManager.selectedTab == 0, selectedTab: 0)
-                        .onTapGesture {
-                            triggerHaptic()
-                            tabManager.selectedTab = 0 }
-                    
-                    Spacer()
-                    
-                    TabBarButton(imageName: "workoutIcon", isSelected: tabManager.selectedTab == 1, selectedTab: 1)
-                        .onTapGesture {
-                            triggerHaptic()
-                            tabManager.selectedTab = 1 }
-                    
-                    Spacer()
-                    
-                    TabBarButton(imageName: "knowledgeIcon", isSelected: tabManager.selectedTab == 2, selectedTab: 2)
-                        .onTapGesture {
-                            triggerHaptic()
-                            tabManager.selectedTab = 2 }
-                    
-                    Spacer()
-                    
-                    TabBarButton(imageName: "profileIcon", isSelected: tabManager.selectedTab == 3, selectedTab: 3)
-                        .onTapGesture {
-                            triggerHaptic()
-                            tabManager.selectedTab = 3 }
+            
+            if !keyboardResponder.isKeyboardVisible && !tabManager.isTabBarHidden {
+                ZStack {
+                    HStack(spacing: 0) {
+                        TabBarButton(imageName: "progressIcon", isSelected: tabManager.selectedTab == 0, selectedTab: 0)
+                            .onTapGesture {
+                                triggerHaptic()
+                                tabManager.selectedTab = 0 }
+                        Spacer()
+                        TabBarButton(imageName: "workoutIcon", isSelected: tabManager.selectedTab == 1, selectedTab: 1)
+                            .onTapGesture {
+                                triggerHaptic()
+                                tabManager.selectedTab = 1 }
+                        Spacer()
+                        TabBarButton(imageName: "knowledgeIcon", isSelected: tabManager.selectedTab == 2, selectedTab: 2)
+                            .onTapGesture {
+                                triggerHaptic()
+                                tabManager.selectedTab = 2 }
+                        Spacer()
+                        TabBarButton(imageName: "profileIcon", isSelected: tabManager.selectedTab == 3, selectedTab: 3)
+                            .onTapGesture {
+                                triggerHaptic()
+                                tabManager.selectedTab = 3 }
+                    }
+                    .padding(.horizontal,5)
                 }
-                .padding(.horizontal,5)
                 .background(Color(hex: "#111720"))
+                .animation(.easeInOut(duration: 0.5), value: tabManager.isTabBarHidden)
             }
         }
         .blur(radius: blurAmount)
@@ -160,7 +158,7 @@ struct TabBarButton: View {
             }
             
             Text(
-                selectedTab == 0 ? "Progress" : (selectedTab == 1 ? "Workout" : (selectedTab == 2 ? "Knowledge" : "Profile") )
+                selectedTab == 0 ? "Progress" : (selectedTab == 1 ? "Workout" : (selectedTab == 2 ? "Explore" : "Profile") )
             )
             .font(.system(size: 12))
             .foregroundColor(isSelected ? .white : .gray)

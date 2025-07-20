@@ -8,7 +8,7 @@ struct MeasurementView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     @State private var showMeasurementSheet: Bool = true
     
-    var onBack: () -> Void
+    var onBack: (Double) -> Void
     
     var body: some View {
         ZStack {
@@ -34,7 +34,7 @@ struct MeasurementView: View {
                     withAnimation {
                         progressViewModel.measurementDidFinish(duration: elapsedTime)
                         showMeasurementActivity = false
-                        onBack()
+                        onBack(elapsedTime)
                     }
                 })
                 .transition(.asymmetric(
@@ -50,6 +50,6 @@ struct MeasurementView: View {
 }
 
 #Preview {
-    MeasurementView(onBack: {})
+    MeasurementView(onBack: { _ in })
         .environmentObject(ProgressViewModel())
 } 

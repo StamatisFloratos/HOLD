@@ -6,6 +6,7 @@ struct WorkoutView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     @EnvironmentObject var workoutViewModel: WorkoutViewModel
     @State private var showWorkoutSheet: Bool = true
+    var selectedWorkout: Workout
     
     var onBack: () -> Void
     
@@ -47,6 +48,7 @@ struct WorkoutView: View {
 }
 
 #Preview {
-    WorkoutView(onBack: {})
+    let workout = Workout(id: "workout_detail", name: "Workout Detail", difficulty: .easy, durationMinutes: 5, description: "", exercises: [], restSeconds: 30)
+    WorkoutView(selectedWorkout: workout, onBack: {})
         .environmentObject(ProgressViewModel())
 } 

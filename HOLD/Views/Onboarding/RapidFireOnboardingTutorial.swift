@@ -69,10 +69,11 @@ struct RapidFireOnboardingTutorial: View {
                     
                 } else {
                     TutorialWorkoutDetailView(selectedWorkout: Workout(
-                        name: "Daily Maintenance",
-                        difficulty: .medium,
-                        durationMinutes: 10,
-                        description: "Regular practice to maintain pelvic floor strength",
+                        id: "rapid_fire_tutorial",
+                        name: "Rapid Fire Tutorial",
+                        difficulty: .easy,
+                        durationMinutes: 5,
+                        description: "Rapid Fire Tutorial",
                         exercises: [
                             Exercise.hold(seconds: 5),
                             Exercise.rapidFire(reps: 10),

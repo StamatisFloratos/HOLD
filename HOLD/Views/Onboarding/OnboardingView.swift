@@ -265,7 +265,7 @@ struct OnboardingView: View {
                     }) {
                         HStack {
                             Text(option)
-                                .font(.system(size: 17, weight: .semibold))
+                                .font(.system(size: 16, weight: .semibold))
                                 .foregroundColor(.white)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .frame(height: 58)
@@ -282,13 +282,25 @@ struct OnboardingView: View {
                                     ) :
                                     LinearGradient(
                                         gradient: Gradient(colors: [
-                                            Color(hex: "#393939")
+                                            Color(hex: "#1A1A1A")
                                         ]),
                                         startPoint: .leading,
                                         endPoint: .trailing
                                     )
                                 )
                                 .cornerRadius(16)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 16)
+                                        .inset(by: 0.25)
+                                        .stroke(
+                                            LinearGradient(
+                                                colors: [Color(hex: "#FFFFFF"), Color(hex: "#999999")],
+                                                startPoint: .leading,
+                                                endPoint: .trailing
+                                            )
+                                            , lineWidth: 0.5)
+                                )
+                            
                         }
                     }
                 }
@@ -375,15 +387,21 @@ struct CustomTextFieldStyle: TextFieldStyle {
         configuration
             .padding(.horizontal, 16)
             .frame(height: 58, alignment: .leading)
-            .background(Color(hex: "#393939"))
+            .background(Color(hex: "#1A1A1A"))
             .cornerRadius(16)
             .foregroundColor(.white)
             .font(.system(size: 16, weight: .semibold))
             .multilineTextAlignment(.leading)
             .overlay(
                 RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color(hex:"#FFF6F6").opacity(0.5), lineWidth: 1)
-                    .cornerRadius(16)
+                    .inset(by: 0.25)
+                    .stroke(
+                        LinearGradient(
+                            colors: [Color(hex: "#FFFFFF"), Color(hex: "#999999")],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                        , lineWidth: 0.5)
             )
     }
 }

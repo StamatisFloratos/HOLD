@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AudioToolbox
+import UIKit
 
 // Enum to track rep phase
 enum RepPhase {
@@ -99,9 +100,13 @@ struct WorkoutDetailView: View {
         }
         .navigationBarHidden(true)
         .onAppear {
+            UIApplication.shared.isIdleTimerDisabled = true
             initializeExercise()
             startTimer()
             startCurrentExerciseAnimation()
+        }
+        .onDisappear {
+            UIApplication.shared.isIdleTimerDisabled = false
         }
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .background {
@@ -741,23 +746,7 @@ struct WorkoutDetailView: View {
 }
 
 #Preview {
-    let workout = Workout(
-        name: "Daily Maintenance",
-        difficulty: .medium,
-        durationMinutes: 10,
-        description: "Regular practice to maintain pelvic floor strength",
-        exercises: [
-            Exercise.rapidFire(reps: 10),
-            Exercise.clamp(reps: 10),
-            Exercise.rapidFire(reps: 10),
-            Exercise.flash(reps: 10),
-            Exercise.hold(seconds: 10),
-            
-            Exercise.rapidFire(reps: 2),
-            Exercise.hold(seconds: 10),
-            Exercise.flash(reps: 2)
-        ]
-    )
+    let workout = Workout(id: "workout_detail", name: "Workout Detail", difficulty: .easy, durationMinutes: 5, description: "", exercises: [], restSeconds: 30)
     WorkoutDetailView(selectedWorkout: workout, onBack: {})
         .environmentObject(NavigationManager())
         .environmentObject(WorkoutViewModel())

@@ -660,19 +660,7 @@ struct TutorialWorkoutDetailView: View {
 }
 
 #Preview {
-    let workout = Workout(
-        name: "Daily Maintenance",
-        difficulty: .medium,
-        durationMinutes: 10,
-        description: "Regular practice to maintain pelvic floor strength",
-        exercises: [
-            Exercise.rapidFire(reps: 10),
-            Exercise.rapidFire(reps: 10),
-            Exercise.hold(seconds: 5),
-            Exercise.rapidFire(reps: 10),
-            Exercise.hold(seconds: 5)
-        ]
-    )
+    let workout = Workout(id: "tutorial_workout", name: "Tutorial Workout", difficulty: .easy, durationMinutes: 5, description: "", exercises: [], restSeconds: 30)
     TutorialWorkoutDetailView(selectedWorkout: workout)
         .environmentObject(NavigationManager())
         .environmentObject(WorkoutViewModel())

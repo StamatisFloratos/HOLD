@@ -7,46 +7,37 @@
 
 import Foundation
 import SwiftUI
+import FirebaseDatabase
+
 
 class KnowledgeViewModel: ObservableObject {
 
-    @Published var groupedKnowledgeData: [String: [KnowledgeItem]] = [:]
-    @Published var sortedCategories: [String] = []
-
+    @Published var categories: [KnowledgeCategory] = []
+    
+    private var databaseRef = Database.database(url: "https://holdknowledgehub2025-90a4a-76812.firebaseio.com").reference()
+    
     init() {
-        loadAndGroupData()
+        fetchKnowledgeHubData()
     }
+    
+    func fetchKnowledgeHubData() {
+        databaseRef.child("KnowledgeHub").observeSingleEvent(of: .value) { snapshot in
+            guard snapshot.exists(),
+                  let value = snapshot.value as? [[String: Any]] else {
+                print("❌ No data found at 'KnowledgeHub'")
+                return
+            }
 
-    private func loadAndGroupData() {
-        // Directly load [String: [KnowledgeItem]] from JSON
-        let loadedData: [String: [KnowledgeItem]]? = load("knowledge_sample.json")
+            do {
+                let data = try JSONSerialization.data(withJSONObject: value)
+                let decoded = try JSONDecoder().decode(KnowledgeHubData.self, from: data)
 
-        guard let loadedData else {
-            print("Warning: Failed to load or parse knowledge data.")
-            return
+                DispatchQueue.main.async {
+                    self.categories = decoded
+                }
+            } catch {
+                print("❌ Decoding error: \(error.localizedDescription)")
+            }
         }
-
-        DispatchQueue.main.async {
-            self.groupedKnowledgeData = loadedData
-            self.sortedCategories = loadedData.keys.sorted() // You can customize sorting if needed
-        }
-    }
-}
-
-// --- JSON Loading Helper ---
-
-func load<T: Decodable>(_ filename: String) -> T? {
-    guard let file = Bundle.main.url(forResource: filename, withExtension: nil) else {
-        print("Error: Couldn't find \(filename) in main bundle.")
-        return nil
-    }
-
-    do {
-        let data = try Data(contentsOf: file)
-        let decoder = JSONDecoder()
-        return try decoder.decode(T.self, from: data)
-    } catch {
-        print("Error: Couldn't load and decode \(filename):\n\(error)")
-        return nil
     }
 }

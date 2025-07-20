@@ -76,6 +76,7 @@ struct HOLDApp: App {
     @StateObject private var challengeViewModel = ChallengeViewModel()
     @StateObject private var knowledgeViewModel = KnowledgeViewModel()
     @StateObject private var keyboardResponder = KeyboardResponder()
+    @StateObject private var trainingPlansViewModel = TrainingPlansViewModel()
     
     @StateObject private var notificationsManager = NotificationsManager.shared
     @StateObject private var subscriptionManager = SubscriptionManager.shared
@@ -96,6 +97,7 @@ struct HOLDApp: App {
                 .environmentObject(keyboardResponder)
                 .environmentObject(notificationsManager)
                 .environmentObject(subscriptionManager)
+                .environmentObject(trainingPlansViewModel)
                 .onOpenURL { url in
                     AppsFlyerLib.shared().handleOpen(url)
                 }

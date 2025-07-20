@@ -1,0 +1,27 @@
+{
+  "id": "kegel_basics",
+  "name": "Kegel Basics",
+  "duration": 35,
+  "description": "Beginner program to build pelvic floor strength.",
+  "unlockRequirement": null,
+  "days": [
+    {
+      "dayIndex": 1,
+      "workoutId": "kegel_forge",
+      "showPracticeMeasurement": false,
+      "showPracticeChallenge": false
+    },
+    {
+      "dayIndex": 2,
+      "workoutId": "kegel_forge",
+      "showPracticeMeasurement": true,
+      "showPracticeChallenge": false
+    },
+    {
+      "dayIndex": 3,
+      "workoutId": "kegel_forge",
+      "showPracticeMeasurement": false,
+      "showPracticeChallenge": true
+    }
+  ]
+} 

@@ -15,7 +15,7 @@ struct ChallengeView: View {
     @EnvironmentObject var navigationManager: NavigationManager
     @State private var showChallengeOnboardingSheet: Bool = true
 
-    var onBack: () -> Void
+    var onBack: (Double) -> Void
 
     
     var body: some View {
@@ -67,7 +67,7 @@ struct ChallengeView: View {
                 ChallengeRankView(onBack: {
                     withAnimation {
                         showChallengeRank = false
-                        onBack()
+                        onBack(elapsedTime)
                     }
                 })
                 .transition(.asymmetric(

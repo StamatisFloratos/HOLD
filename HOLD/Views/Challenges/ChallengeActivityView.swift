@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 // Helper extension for safe array access (Place outside struct or in an Extensions file)
 extension Collection {
@@ -157,6 +158,12 @@ struct ChallengeActivityView: View {
         .navigationBarHidden(true)
         .onAppear(perform: startChallenge) // Start the sequence on appear
         .onDisappear(perform: stopChallenge) // Clean up timers on disappear
+        .onAppear {
+            UIApplication.shared.isIdleTimerDisabled = true
+        }
+        .onDisappear {
+            UIApplication.shared.isIdleTimerDisabled = false
+        }
     }
     
     // --- Animation Functions from RhythmicBallView ---

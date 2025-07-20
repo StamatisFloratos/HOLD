@@ -47,12 +47,12 @@ struct ProgressTabView: View {
         }
         .navigationBarHidden(true)
         .fullScreenCover(isPresented: $showChallengeView) {
-            ChallengeView(onBack: {
+            ChallengeView(onBack: { _ in 
                 showChallengeView = false
             })
         }
         .fullScreenCover(isPresented: $showMeasurementView) {
-            MeasurementView(onBack: {
+            MeasurementView(onBack: { _ in
                 showMeasurementView = false
             })
             .environmentObject(progressViewModel)
@@ -427,7 +427,7 @@ struct ProgressTabView: View {
     }
     
     private func formatDuration(_ duration: Double?) -> String {
-        guard let duration = duration, duration > 0 else { return "- sec" }
+        guard let duration = duration, duration > 0 else { return "0 sec" }
         return String(format: "%.0f sec", duration)
     }
     

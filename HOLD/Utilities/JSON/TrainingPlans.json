@@ -1,0 +1,1030 @@
+{
+  "workoutPrograms": [
+    {
+      "id": "kegel_basics",
+      "name": "Kegel Basics",
+      "image": "kegel_basics",
+      "duration": 35,
+      "difficulty": "This is a beginner program and is relatively easy for most users.",
+      "summary": "Over 35 days, you’ll train your pelvic floor to hold a strong, focused Kegel for up to 2 minutes, with full awareness and no tension in the rest of your body. This should help you maintain control before ejaculation and should significantly increase your endurance in bed at the end of this program.",
+      "description": "Why This Program Matters and Why You’ll Be Glad You Started\n\n  You’re not just doing a 35-day challenge. You’re building a skill that rewires how your body performs from the inside out. Most people never train their pelvic floor. But the ones who do know: it changes everything.\n\n  This beginner program is designed to help you develop full control over your pelvic floor muscles, starting with simple activations and building up to holding strong, focused Kegels for up to 2 minutes. But the real transformation happens in how you feel, move, and perform.\n\n  Here’s what’s waiting for you on the other side:\n\n  Better control before ejaculation. You’ll learn to pause, reset, and stay in the moment longer, leading to more satisfying, confident experiences in bed.\n\n  More stamina. Your endurance will noticeably increase. You’ll last longer, feel stronger, and recover faster.\n\n  Harder erections. Improved blood flow and muscle tone means firmer erections with less effort.\n\n  Better core strength and posture. Your pelvic floor is the hidden base of your core. Strengthening it improves stability and posture, especially during workouts or long hours at a desk.\n\n  Increased sensation. Kegels heighten your mind-muscle connection. More awareness, more sensitivity, more pleasure for you and your partner.\n\n  Confidence. Quiet, calm confidence that comes from knowing you’re in control of your body.\n\n  And here’s the best part: you don’t need to carve out hours a day or do anything embarrassing. Just 5 to 10 minutes a day, privately, on your terms, with powerful, long-term results.\n\n  This is your first step toward lasting control, endurance, and performance. 35 days from now, you won’t just feel the difference. You’ll be living it.",
+      "unlockRequirement": null,
+      "days": [
+        {
+          "dayIndex": 1,
+          "workoutId": "kegel_forge",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 2,
+          "workoutId": "core_pulse",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 3,
+          "workoutId": "pelvic_power",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 4,
+          "workoutId": "inner_strength",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 5,
+          "workoutId": "grip_mastery",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 6,
+          "workoutId": "power_core",
+          "showPracticeMeasurement": true,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 7,
+          "workoutId": "swift_grip",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": true
+        },
+        {
+          "dayIndex": 8,
+          "workoutId": "apex_circuit",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 9,
+          "workoutId": "titan_burst",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 10,
+          "workoutId": "peak_circuit",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 11,
+          "workoutId": "max_forge",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 12,
+          "workoutId": "lightning_blast",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 13,
+          "workoutId": "anchor_flow",
+          "showPracticeMeasurement": true,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 14,
+          "workoutId": "core_lock",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": true
+        },
+        {
+          "dayIndex": 15,
+          "workoutId": "power_fire",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 16,
+          "workoutId": "bold_storm",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 17,
+          "workoutId": "steel_wave",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 18,
+          "workoutId": "max_hold",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 19,
+          "workoutId": "silent_strength",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 20,
+          "workoutId": "clench_quest",
+          "showPracticeMeasurement": true,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 21,
+          "workoutId": "hold_horizon",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": true
+        },
+        {
+          "dayIndex": 22,
+          "workoutId": "muscle_bloom",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 23,
+          "workoutId": "vortex_system",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 24,
+          "workoutId": "swift_zone",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 25,
+          "workoutId": "diamond_wave",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 26,
+          "workoutId": "steel_grip",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 27,
+          "workoutId": "raw_impact",
+          "showPracticeMeasurement": true,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 28,
+          "workoutId": "power_strength",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": true
+        },
+        {
+          "dayIndex": 29,
+          "workoutId": "thunder_strength",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 30,
+          "workoutId": "granite_burn",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 31,
+          "workoutId": "solid_strike",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 32,
+          "workoutId": "ultra_power",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 33,
+          "workoutId": "apex_burn",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 34,
+          "workoutId": "steady_surge",
+          "showPracticeMeasurement": true,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 35,
+          "workoutId": "anchor_burst",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": true
+        }
+      ]
+    },
+    {
+      "id": "stronger_holds",
+      "name": "Stronger Holds",
+      "image": "stronger_holds",
+      "duration": 35,
+      "difficulty": "This is an intermediate program designed for users who have already built a basic foundation. It introduces more challenging holds and breathing techniques.",
+      "summary": "Over 35 days, you’ll go beyond the basics to master stronger, longer Kegel holds under tension. This program builds the strength and endurance needed to delay ejaculation even during high arousal, giving you real control in the heat of the moment.",
+      "description": "Take Control When It Matters Most\n\nYou’ve started to feel the difference. Now it’s time to level up. Stronger Holds is a 35-day intermediate program designed for men who have laid the groundwork with Kegel Basics and are now ready to go further. This is where your endurance begins to solidify, your control sharpens, and your performance starts reflecting the work you’ve put in. These sessions will challenge you—not with complexity, but with duration, consistency, and presence. You’ll learn how to stay focused through longer holds, more demanding breath control, and real-world arousal simulations.\n\n  As the program progresses, you’ll find yourself less reactive and more intentional. You won’t just stop yourself from finishing early—you’ll feel yourself in control of every moment. These workouts are designed to build a sense of internal strength and steadiness. You’ll begin to notice you can pause during intimacy, refocus, and continue with a calm, grounded intensity. That kind of power isn’t just physical—it reshapes how you approach sex, how you breathe under pressure, and how confidently you show up with your partner.\n\n  You’ll also begin to feel these benefits beyond the bedroom. Better breath control, increased stamina, and stronger postural support will follow you into your workouts, your daily routine, and your state of mind. That’s the quiet benefit of training your pelvic floor with this kind of intention. Just 5 to 10 minutes a day—no equipment, no awkwardness, no one watching. But the results? Noticeable, powerful, and absolutely worth it.\n\n  By the end of Stronger Holds, you won’t just feel like you’re improving. You’ll feel like you’re transforming.",
+      "unlockRequirement": null,
+      "days": [
+        {
+          "dayIndex": 1,
+          "workoutId": "steel_edge",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 2,
+          "workoutId": "prime_strength",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 3,
+          "workoutId": "anchor_flow",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 4,
+          "workoutId": "core_lock",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 5,
+          "workoutId": "silent_strength",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 6,
+          "workoutId": "clench_quest",
+          "showPracticeMeasurement": true,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 7,
+          "workoutId": "hold_horizon",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": true
+        },
+        {
+          "dayIndex": 8,
+          "workoutId": "muscle_bloom",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 9,
+          "workoutId": "vortex_system",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 10,
+          "workoutId": "swift_zone",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 11,
+          "workoutId": "diamond_wave",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 12,
+          "workoutId": "steel_grip",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 13,
+          "workoutId": "thunder_strength",
+          "showPracticeMeasurement": true,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 14,
+          "workoutId": "max_hold",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": true
+        },
+        {
+          "dayIndex": 15,
+          "workoutId": "granite_burn",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 16,
+          "workoutId": "solid_strike",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 17,
+          "workoutId": "ultra_power",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 18,
+          "workoutId": "apex_burn",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 19,
+          "workoutId": "supreme_strike",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 20,
+          "workoutId": "iron_hold",
+          "showPracticeMeasurement": true,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 21,
+          "workoutId": "vortex_hold",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": true
+        },
+        {
+          "dayIndex": 22,
+          "workoutId": "supreme_strike",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 23,
+          "workoutId": "iron_hold",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 24,
+          "workoutId": "vortex_hold",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 25,
+          "workoutId": "storm_drive",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 26,
+          "workoutId": "steady_surge",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 27,
+          "workoutId": "anchor_burst",
+          "showPracticeMeasurement": true,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 28,
+          "workoutId": "pulse_craft",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": true
+        },
+        {
+          "dayIndex": 29,
+          "workoutId": "storm_drive",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 30,
+          "workoutId": "strong_pulse",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 31,
+          "workoutId": "grip_shift",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 32,
+          "workoutId": "inner_ignite",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 33,
+          "workoutId": "foundation_flex",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 34,
+          "workoutId": "clench_spark",
+          "showPracticeMeasurement": true,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 35,
+          "workoutId": "endure_edge",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": true
+        }
+      ]
+    },
+    {
+      "id": "full_control",
+      "name": "Full Control",
+      "image": "full_control",
+      "duration": 35,
+      "difficulty": "This is an advanced program that requires focus and consistency. Ideal for users who already have solid Kegel strength and want to master complete control over their arousal response.",
+      "summary": "In this 35-day program, you’ll develop full mastery over your pelvic floor, combining long static holds with advanced breathwork and arousal training. By the end, you’ll be able to control the exact moment you reach climax if you choose to at all.",
+      "description": "Master Your Arousal. Own the Moment.\n\nFull Control is the turning point. This advanced 35-day program isn’t about learning the basics or building strength—it’s about mastery. By now, you’ve trained your pelvic floor, built endurance, and developed a solid connection with your breath. Now, you’re ready to become the one who decides. The one who doesn’t just resist arousal, but commands it. This program focuses on long static holds, reverse Kegels, peak stimulation training, and calm state recovery. It’s mental and physical. It’s difficult. And it works.\n\n  Each day, you’ll train to maintain deep awareness during longer contractions while staying completely relaxed everywhere else. You’ll learn to disassociate arousal from climax, and you’ll become familiar with edging in a way that enhances control instead of draining energy. You’re not just training to last longer—you’re training to regulate your entire arousal system. That means being able to slow things down or bring them back up, all while staying fully present with your partner.\n\n  This kind of training builds something rare: confidence that doesn’t come from ego, but from proof. You’ll feel a deeper sense of sexual self-mastery. You’ll start to see sex not as something you need to control, but as something you now understand. You’ll know how to pause, how to reset, and how to continue with complete presence. These aren’t tricks. This is a new way of being.\n\n  If you show up each day with focus, you’ll come out on the other side with the kind of control most men only hope for. This is your moment to master your body—and change your sex life forever.",
+      "unlockRequirement": null,
+      "days": [
+        {
+          "dayIndex": 1,
+          "workoutId": "solid_strike",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 2,
+          "workoutId": "ultra_power",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 3,
+          "workoutId": "apex_burn",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 4,
+          "workoutId": "supreme_strike",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 5,
+          "workoutId": "iron_hold",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 6,
+          "workoutId": "vortex_hold",
+          "showPracticeMeasurement": true,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 7,
+          "workoutId": "storm_drive",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": true
+        },
+        {
+          "dayIndex": 8,
+          "workoutId": "iron_hold",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 9,
+          "workoutId": "vortex_hold",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 10,
+          "workoutId": "storm_drive",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 11,
+          "workoutId": "steady_surge",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 12,
+          "workoutId": "anchor_burst",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 13,
+          "workoutId": "pulse_craft",
+          "showPracticeMeasurement": true,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 14,
+          "workoutId": "grip_shift",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": true
+        },
+        {
+          "dayIndex": 15,
+          "workoutId": "inner_ignite",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 16,
+          "workoutId": "foundation_flex",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 17,
+          "workoutId": "clench_spark",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 18,
+          "workoutId": "endure_edge",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 19,
+          "workoutId": "silent_forge",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 20,
+          "workoutId": "vital_method",
+          "showPracticeMeasurement": true,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 21,
+          "workoutId": "strong_pulse",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": true
+        },
+        {
+          "dayIndex": 22,
+          "workoutId": "prime_pulse",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 23,
+          "workoutId": "thunder_power",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 24,
+          "workoutId": "pure_challenge",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 25,
+          "workoutId": "blaze_flex",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 26,
+          "workoutId": "apex_forge",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 27,
+          "workoutId": "iron_impact",
+          "showPracticeMeasurement": true,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 28,
+          "workoutId": "lightning_core",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": true
+        },
+        {
+          "dayIndex": 29,
+          "workoutId": "vortex_zone",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 30,
+          "workoutId": "vortex_wave",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 31,
+          "workoutId": "strong_impact",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 32,
+          "workoutId": "power_grip",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 33,
+          "workoutId": "storm_force",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 34,
+          "workoutId": "fierce_flex",
+          "showPracticeMeasurement": true,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 35,
+          "workoutId": "bold_fire",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": true
+        }
+      ]
+    },
+    {
+      "id": "outlast",
+      "name": "Outlast",
+      "image": "outlast",
+      "duration": 40,
+      "difficulty": "This is the most intense program in the app, designed for users who want to reach elite performance levels. It demands high mental and physical focus, with the hardest routines and longest holds yet.",
+      "summary": "Over 40 days, you’ll transform your control, stamina, and sexual performance with the most demanding pelvic floor training available. This is for men who want to become unshakeable under pressure and redefine what lasting truly means.",
+      "description": "Become the Man Who Never Breaks\n\nOutlast is the final test. This 40-day elite training protocol is for men who want nothing less than complete command over their performance. It’s for those who have felt what control tastes like and now want to own it completely. The workouts are longer. The holds are deeper. The focus required is absolute. But if you’re ready to push through, what’s waiting for you is something extraordinary.\n\n  This program introduces new levels of difficulty: rapid transitions between hold types, unexpected breath shifts, distraction simulations, and arousal peak training. You’ll be pushed past comfort, into a place where your mind has to meet your body and work together. You’ll reach points where every second feels like a choice—and with each choice to continue, you build mental and physical resilience that will follow you everywhere. This isn’t just about sex anymore. It’s about discipline, presence, and pushing your body to new thresholds.\n\n  You’ll train to remain calm and powerful under pressure. You’ll learn how to reset mid-session without losing connection. You’ll feel the difference in the intensity of your orgasms, in your ability to bounce back quickly, and in the way your partner responds to your presence. Most importantly, you’ll carry yourself with a quiet confidence that only comes from doing hard things consistently—and winning.\n\n  There’s no shortcut here. But if you’re willing to give this program your full effort, Outlast will give you back a version of yourself that’s stronger, more controlled, and more capable than ever before. Your future self is waiting. Outlast him.",
+      "unlockRequirement": null,
+      "days": [
+        {
+          "dayIndex": 1,
+          "workoutId": "steady_surge",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 2,
+          "workoutId": "anchor_burst",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 3,
+          "workoutId": "pulse_craft",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 4,
+          "workoutId": "grip_shift",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 5,
+          "workoutId": "inner_ignite",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 6,
+          "workoutId": "foundation_flex",
+          "showPracticeMeasurement": true,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 7,
+          "workoutId": "clench_spark",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": true
+        },
+        {
+          "dayIndex": 8,
+          "workoutId": "endure_edge",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 9,
+          "workoutId": "silent_forge",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 10,
+          "workoutId": "vital_method",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 11,
+          "workoutId": "prime_pulse",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 12,
+          "workoutId": "thunder_power",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 13,
+          "workoutId": "pure_challenge",
+          "showPracticeMeasurement": true,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 14,
+          "workoutId": "blaze_flex",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": true
+        },
+        {
+          "dayIndex": 15,
+          "workoutId": "apex_forge",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 16,
+          "workoutId": "iron_impact",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 17,
+          "workoutId": "lightning_core",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 18,
+          "workoutId": "vortex_zone",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 19,
+          "workoutId": "vortex_wave",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 20,
+          "workoutId": "strong_impact",
+          "showPracticeMeasurement": true,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 21,
+          "workoutId": "power_grip",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": true
+        },
+        {
+          "dayIndex": 22,
+          "workoutId": "storm_force",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 23,
+          "workoutId": "fierce_flex",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 24,
+          "workoutId": "bold_fire",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 25,
+          "workoutId": "steady_surge",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 26,
+          "workoutId": "anchor_burst",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 27,
+          "workoutId": "pulse_craft",
+          "showPracticeMeasurement": true,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 28,
+          "workoutId": "grip_shift",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": true
+        },
+        {
+          "dayIndex": 29,
+          "workoutId": "inner_ignite",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 30,
+          "workoutId": "foundation_flex",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 31,
+          "workoutId": "clench_spark",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 32,
+          "workoutId": "endure_edge",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 33,
+          "workoutId": "silent_forge",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 34,
+          "workoutId": "vital_method",
+          "showPracticeMeasurement": true,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 35,
+          "workoutId": "prime_pulse",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": true
+        },
+        {
+          "dayIndex": 36,
+          "workoutId": "thunder_power",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 37,
+          "workoutId": "pure_challenge",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 38,
+          "workoutId": "blaze_flex",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 39,
+          "workoutId": "apex_forge",
+          "showPracticeMeasurement": true,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 40,
+          "workoutId": "iron_impact",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": true
+        }
+      ]
+    },
+    {
+      "id": "multi_orgasm_protocol",
+      "name": "Multi-Orgasm Protocol",
+      "image": "multi_orgasm_protocol",
+      "duration": 15,
+      "difficulty": "This is an advanced program and may be challenging for most users. It requires a strong mind-muscle connection, precise control, and patience. Recommended only after completing the foundational plans.",
+      "summary": "Over 15 days, you’ll train your body to separate orgasm from ejaculation by mastering both tension and relaxation in your pelvic floor. Through advanced Kegel control, breath work, and edging techniques, you’ll learn to ride multiple waves of pleasure without releasing. By the end of this program, you should be able to experience full-body orgasms, stay in control for as long as you choose, and finish only when you decide to.",
+      "description": "Unlock a New Kind of Pleasure\n\n  This isn’t about lasting longer. This is about going beyond what most men will ever experience.\n\n  The Multi-Orgasm Protocol is your path to unlocking powerful, full-body orgasms again and again without ejaculation. We’re talking about waves of pleasure that build on top of each other, intensify with each round, and leave you feeling energized instead of drained.\n\n  These orgasms don’t just happen in your groin. You’ll feel them in your spine, your chest, your face. You’ll shake, breathe deeper, and feel alive in a way that’s hard to describe until you’ve done it.\n\n  Once you learn how to separate orgasm from ejaculation, everything changes. You’re no longer at the mercy of your reflexes. You decide when it ends or if it ever has to.\n\n  If you’ve ever wondered what your body is truly capable of, this is the program that shows you. It’s intense, it’s advanced, and it’s worth every second.",
+      "unlockRequirement": "outlast",
+      "days": [
+        {
+          "dayIndex": 1,
+          "workoutId": "storm_force",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 2,
+          "workoutId": "fierce_flex",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 3,
+          "workoutId": "bold_fire",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 4,
+          "workoutId": "iron_impact",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 5,
+          "workoutId": "vortex_zone",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 6,
+          "workoutId": "vital_method",
+          "showPracticeMeasurement": true,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 7,
+          "workoutId": "prime_pulse",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": true
+        },
+        {
+          "dayIndex": 8,
+          "workoutId": "thunder_power",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 9,
+          "workoutId": "blaze_flex",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 10,
+          "workoutId": "lightning_core",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 11,
+          "workoutId": "vortex_wave",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 12,
+          "workoutId": "strong_impact",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 13,
+          "workoutId": "power_grip",
+          "showPracticeMeasurement": true,
+          "showPracticeChallenge": false
+        },
+        {
+          "dayIndex": 14,
+          "workoutId": "endure_edge",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": true
+        },
+        {
+          "dayIndex": 15,
+          "workoutId": "silent_forge",
+          "showPracticeMeasurement": false,
+          "showPracticeChallenge": true
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "totalPrograms": 5,
+    "generatedBy": "create_workout_programs.py",
+    "description": "Workout programs for Hold app - Kegel exercises for men"
+  }
+}
+
