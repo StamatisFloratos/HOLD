@@ -35,7 +35,10 @@ struct TrainingPlanLearnMoreView: View {
                     VStack(spacing: 0) {
                         HStack {
                             Spacer()
-                            Button(action: { onClose?() }) {
+                            Button(action: {
+                                triggerHaptic()
+                                onClose?()
+                            }) {
                                 Image(systemName: "xmark")
                                     .font(.system(size: 20, weight: .bold))
                                     .foregroundColor(.white.opacity(0.7))
@@ -84,6 +87,7 @@ struct TrainingPlanLearnMoreView: View {
                             .disabled(true)
                         } else {
                             Button(action: {
+                                triggerHaptic()
                                 if hasUnlockRequirement {
                                     withAnimation {
                                         showUnlockRequirement = true
@@ -158,6 +162,7 @@ struct TrainingPlanLearnMoreView: View {
                             .background(Color.white.opacity(0.4))
                         HStack(spacing: 0) {
                             Button(action: {
+                                triggerHaptic()
                                 withAnimation {
                                     showConfirmation = false
                                 }
@@ -171,6 +176,7 @@ struct TrainingPlanLearnMoreView: View {
                                 .background(Color.white.opacity(0.4))
                                 .frame(height: 48)
                             Button(action: {
+                                triggerHaptic()
                                 trainingPlansViewModel.switchToPlan(plan.id)
                                 withAnimation {
                                     showConfirmation = false
@@ -214,6 +220,7 @@ struct TrainingPlanLearnMoreView: View {
                         Divider()
                             .background(Color.white.opacity(0.4))
                         Button(action: {
+                            triggerHaptic()
                             withAnimation {
                                 showUnlockRequirement = false
                             }
@@ -235,6 +242,12 @@ struct TrainingPlanLearnMoreView: View {
         .animation(.easeInOut, value: showConfirmation)
         .animation(.easeInOut, value: showUnlockRequirement)
     }
+    
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.prepare()
+        generator.impactOccurred()
+    }
 }
 
 struct CardView: View {
@@ -245,7 +258,7 @@ struct CardView: View {
             Text(label)
                 .font(.system(size: 20, weight: .semibold))
                 .foregroundStyle(LinearGradient(
-                    colors: [Color(hex: "#FFFFFF"), Color(hex: "#B8B8B8")],
+                    colors: [Color(hex: "#FFFFFF"), Color(hex: "#FFFFFF"), Color(hex: "#B8B8B8")],
                     startPoint: .leading,
                     endPoint: .trailing
                 ))

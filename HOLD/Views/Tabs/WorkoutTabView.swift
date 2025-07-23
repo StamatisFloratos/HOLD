@@ -138,12 +138,17 @@ struct WorkoutTabView: View {
                             
                             TrainingPlanCard(
                                 planName: currentPlan.name,
-                                daysLeft: max(0, currentPlan.duration - (trainingPlansViewModel.planProgress[currentPlan.id]?.count ?? 0)),
+                                daysLeft: max(0, trainingPlansViewModel.daysLeft(planStartDate: trainingPlansViewModel.planStartDate ?? Date(), currentDate: Date(), planDurationDays: currentPlan.duration)),
                                 percentComplete: currentPlan.days.count > 0 ? Int((Double(trainingPlansViewModel.planProgress[currentPlan.id]?.count ?? 0) / Double(currentPlan.days.count)) * 100) : 0,
                                 progress: currentPlan.days.count > 0 ? Double(trainingPlansViewModel.planProgress[currentPlan.id]?.count ?? 0) / Double(currentPlan.days.count) : 0.0,
                                 image: currentPlan.image,
                                 height: 180,
-                                onTap: { }
+                                onTap: {
+                                    withAnimation {
+                                        tabManager.isTabBarHidden = true
+                                        showPlanDetail = true
+                                    }
+                                }
                             )
                             .padding(.bottom, 24)
                         }

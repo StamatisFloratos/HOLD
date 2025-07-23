@@ -10,6 +10,7 @@ import SwiftUI
 struct ProfileTabView: View {
     @Environment(\.scenePhase) var scenePhase
     @EnvironmentObject private var notificationsManager: NotificationsManager
+    @EnvironmentObject var trainingPlansViewModel: TrainingPlansViewModel
     
     @State private var userProfile: UserProfile = UserProfile.load()
     @State private var isEditing: Bool = false
@@ -52,6 +53,23 @@ struct ProfileTabView: View {
                                 profileInfoView
                             }
                             
+                            if let currentPlanId = trainingPlansViewModel.currentPlanId,
+                               let currentPlan = trainingPlansViewModel.plans.first(where: { $0.id == currentPlanId }) {
+                                
+                                
+                                TrainingPlanCard(
+                                    planName: currentPlan.name,
+                                    daysLeft: max(0, trainingPlansViewModel.daysLeft(planStartDate: trainingPlansViewModel.planStartDate ?? Date(), currentDate: Date(), planDurationDays: currentPlan.duration)),
+                                    percentComplete: currentPlan.days.count > 0 ? Int((Double(trainingPlansViewModel.planProgress[currentPlan.id]?.count ?? 0) / Double(currentPlan.days.count)) * 100) : 0,
+                                    progress: currentPlan.days.count > 0 ? Double(trainingPlansViewModel.planProgress[currentPlan.id]?.count ?? 0) / Double(currentPlan.days.count) : 0.0,
+                                    image: currentPlan.image,
+                                    height: 180,
+                                    onTap: {}
+                                )
+                                .padding(.vertical, 25)
+                                .padding(.horizontal, 20)
+                            }
+                            
                             // Subscription Section
                             SectionView(title: "Subscription") {
                                 Button(action: {
@@ -67,11 +85,12 @@ struct ProfileTabView: View {
                                             .foregroundColor(.gray)
                                     }
                                     .padding()
-                                    .background(Color.clear)
+                                    .background(Color(hex: "#242E3A"))
                                     .cornerRadius(8)
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 8)
-                                            .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                                            .inset(by: 0.5)
+                                            .stroke(Color.white.opacity(0.3), lineWidth: 1)
                                     )
                                 }
                             }
@@ -84,11 +103,12 @@ struct ProfileTabView: View {
                                             .foregroundColor(.white)
                                     }
                                     .padding()
-                                    .background(Color.clear)
+                                    .background(Color(hex: "#242E3A"))
                                     .cornerRadius(8)
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 8)
-                                            .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                                            .inset(by: 0.5)
+                                            .stroke(Color.white.opacity(0.3), lineWidth: 1)
                                     )
                                     .toggleStyle(SwitchToggleStyle(tint: Color.green))
                                     .onChange(of: notificationsManager.notificationsEnabled) { oldValue, newValue in
@@ -148,11 +168,12 @@ struct ProfileTabView: View {
                                         .padding()
                                     }
                                 }
-                                .background(Color.clear)
+                                .background(Color(hex: "#242E3A"))
                                 .cornerRadius(8)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 8)
-                                        .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                                        .inset(by: 0.5)
+                                        .stroke(Color.white.opacity(0.3), lineWidth: 1)
                                 )
                             }
                         }
@@ -202,12 +223,12 @@ struct ProfileTabView: View {
                 HStack {
                     VStack(alignment: .leading, spacing: 5) {
                         Text(userProfile.name)
-                            .font(.title2)
+                            .font(.system(size: 24))
                             .foregroundColor(.white)
                         
                         Text("Age: \(userProfile.age)")
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
+                            .font(.system(size: 16))
+                            .foregroundColor(.white.opacity(0.9))
                     }
                     
                     Spacer()
@@ -227,24 +248,27 @@ struct ProfileTabView: View {
                 HStack {
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Name")
-                            .font(.caption)
-                            .foregroundColor(.gray)
+                            .font(.system(size: 12))
+                            .foregroundColor(.white.opacity(0.9))
                             .padding(.leading, 5)
                         
                         TextField("Name", text: $userProfile.name)
                             .padding(10)
                             .background(Color.clear)
+                            .cornerRadius(12)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 12)
-                                    .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                                    .inset(by: 0.5)
+                                    .stroke(.white.opacity(0.5), lineWidth: 1)
+                                
                             )
                             .foregroundColor(.white)
                     }
                     
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Age")
-                            .font(.caption)
-                            .foregroundColor(.gray)
+                            .font(.system(size: 12))
+                            .foregroundColor(.white.opacity(0.9))
                             .padding(.leading, 5)
                         
                         TextField("Age", text: Binding<String>(
@@ -257,9 +281,12 @@ struct ProfileTabView: View {
                         ))
                         .padding(10)
                         .background(Color.clear)
+                        .cornerRadius(12)
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                                .inset(by: 0.5)
+                                .stroke(.white.opacity(0.5), lineWidth: 1)
+                            
                         )
                         .foregroundColor(.white)
                         .keyboardType(.numberPad)
@@ -283,11 +310,22 @@ struct ProfileTabView: View {
             }
         }
         .padding()
-        .background(Color.clear)
+        .background(
+            LinearGradient(
+                stops: [
+                    Gradient.Stop(color: Color(red: 0.6, green: 0, blue: 0), location: 0.00),
+                    Gradient.Stop(color: Color(red: 1, green: 0, blue: 0), location: 1.00),
+                ],
+                startPoint: UnitPoint(x: 0.5, y: 0),
+                endPoint: UnitPoint(x: 0.5, y: 1)
+            )
+        )
         .cornerRadius(12)
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                .inset(by: 0.25)
+                .stroke(.white, lineWidth: 0.5)
+            
         )
     }
     
@@ -330,10 +368,10 @@ struct SectionView<Content: View>: View {
             Text(title)
                 .font(.headline)
                 .foregroundColor(.white)
-                .padding(.horizontal)
+                .padding(.horizontal, 20)
             
             content
-                .padding(.horizontal)
+                .padding(.horizontal, 20)
         }
     }
 }
@@ -411,4 +449,5 @@ struct SubscriptionManagementView: View {
 #Preview {
     ProfileTabView()
         .environmentObject(NotificationsManager.shared)
+        .environmentObject(TrainingPlansViewModel.preview)
 }

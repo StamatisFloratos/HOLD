@@ -2,29 +2,53 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>CFBundleURLTypes</key>
-    <array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>holdapp.onelink</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>https</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>holdapp.custom</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>holdapp</string>
+			</array>
+		</dict>
         <dict>
-            <key>CFBundleURLName</key>
-            <string>holdapp.onelink</string>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>https</string>
-            </array>
-        </dict>
-        <dict>
-            <key>CFBundleURLName</key>
-            <string>holdapp.custom</string>
             <key>CFBundleURLSchemes</key>
             <array>
                 <string>holdapp</string>
             </array>
+            <key>CFBundleURLName</key>
+            <string>holdapp</string>
         </dict>
-    </array>
-    <key>com.apple.developer.associated-domains</key>
-    <array>
-        <string>applinks:holdapp.onelink.me</string>
-    </array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb517770038086471</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAdvertiserIDCollectionEnabled</key>
+	<true/>
+	<key>FacebookAppID</key>
+	<string>517770038086471</string>
+	<key>FacebookAutoLogAppEventsEnabled</key>
+	<true/>
+	<key>FacebookClientToken</key>
+	<string>77a737be760894d4466a280b2b281494</string>
+	<key>FacebookDisplayName</key>
+	<string>HOLD Last Longer Kegels</string>
+	<key>com.apple.developer.associated-domains</key>
+	<array>
+		<string>applinks:holdapp.onelink.me</string>
+	</array>
 	<key>NSAdvertisingAttributionReportEndpoint</key>
 	<string>https://appsflyer-skadnetwork.com/</string>
 	<key>NSUserNotificationsUsageDescription</key>

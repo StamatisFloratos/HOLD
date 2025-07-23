@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct KnowledgeTabView: View {
     @EnvironmentObject var navigationManager: NavigationManager
@@ -35,7 +36,7 @@ struct KnowledgeTabView: View {
                         Text("Explore")
                             .font(.system(size: 24, weight: .bold))
                             .foregroundStyle(LinearGradient(
-                                colors: [Color(hex: "#FFFFFF"), Color(hex: "#999999")],
+                                colors: [Color(hex: "#FFFFFF"), Color(hex: "#FFFFFF"), Color(hex: "#999999")],
                                 startPoint: .leading,
                                 endPoint: .trailing
                             ))
@@ -47,7 +48,7 @@ struct KnowledgeTabView: View {
                         Text("Knowledge")
                             .font(.system(size: 20, weight: .bold))
                             .foregroundStyle(LinearGradient(
-                                colors: [Color(hex: "#FFFFFF"), Color(hex: "#999999")],
+                                colors: [Color(hex: "#FFFFFF"), Color(hex: "#FFFFFF"), Color(hex: "#999999")],
                                 startPoint: .leading,
                                 endPoint: .trailing
                             ))
@@ -170,37 +171,26 @@ struct KnowledgeCardView: View {
 
     var body: some View {
         ZStack(alignment: .center) {
-            AsyncImage(url: URL(string: imageName)) { phase in
-                switch phase {
-                case .empty:
-                    Rectangle()
-                        .fill(Color.black)
-                        .frame(width: width, height: height)
-                        .overlay(
-                            ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                        )
-                case .success(let image):
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: width, height: height)
-                        .clipped()
-                case .failure(_):
-                    Rectangle()
-                        .fill(Color.gray.opacity(0.3))
-                        .frame(width: width, height: height)
-                        .overlay(
-                            Image(systemName: "photo")
-                                .font(.system(size: 30))
-                                .foregroundColor(.white.opacity(0.7))
-                        )
-                @unknown default:
-                    Rectangle()
-                        .fill(Color.gray.opacity(0.3))
-                        .frame(width: width, height: height)
-                }
+            WebImage(url: URL(string: imageName)) { image in
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            } placeholder: {
+                Rectangle()
+                    .fill(Color.black)
+                    .overlay(
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    )
             }
+            .onSuccess { _, _, _ in }
+            .onFailure { error in
+                print("Failed to load image: \(error)")
+            }
+            .indicator(Indicator.activity)
+            .transition(AnyTransition.fade(duration: 0.3))
+            .frame(width: width, height: height)
+            .clipped()
 
             LinearGradient(
                 gradient: Gradient(colors: [Color(hex: "#666666").opacity(0.1), Color.black]),

@@ -29,18 +29,16 @@ struct WorkoutView: View {
             }
             
             if showWorkoutDetail {
-                if let selectedWorkout = workoutViewModel.todaysWorkout {
-                    WorkoutDetailView(selectedWorkout: selectedWorkout, onBack: {
-                        withAnimation {
-                            onBack()
-                        }
-                    })
-                    .transition(.asymmetric(
-                        insertion: .move(edge: .trailing),
-                        removal: .move(edge: .leading)
-                    ))
-                    .zIndex(1)
-                }
+                WorkoutDetailView(selectedWorkout: selectedWorkout, onBack: {
+                    withAnimation {
+                        onBack()
+                    }
+                })
+                .transition(.asymmetric(
+                    insertion: .move(edge: .trailing),
+                    removal: .move(edge: .leading)
+                ))
+                .zIndex(1)
             }
         }
         .navigationBarHidden(true)

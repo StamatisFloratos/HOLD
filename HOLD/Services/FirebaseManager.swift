@@ -28,11 +28,7 @@ class FirebaseManager: ObservableObject {
                         return
                     }
                     
-                    if UserStorage.isFromMetaAd {
-                        UserStorage.onboarding = OnboardingType.onboardingThree.rawValue
-                    } else {
-                        UserStorage.onboarding = remoteConfig.configValue(forKey: "Onboarding").stringValue
-                    }
+                    UserStorage.onboarding = remoteConfig.configValue(forKey: "Onboarding").stringValue
                     
                     print("Onboarding is: \(UserStorage.onboarding)")
                     completion()

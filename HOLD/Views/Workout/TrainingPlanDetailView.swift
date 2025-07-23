@@ -47,10 +47,10 @@ struct TrainingPlanDetailView: View {
     // New state for plan completion/failure modals
     @State private var shouldShowFailureModalAfterSwitch = false
 
-    // Weekly update modal state
-    @State private var showWeeklyUpdate = false
-    @State private var lastWeeklyUpdateWeek: Int? = nil
-
+    @State private var weeklyUpdateContentOpacity: Double = 0
+    @State private var completionModalContentOpacity: Double = 0
+    @State private var failureModalContentOpacity: Double = 0
+    
     var todayIndex: Int? {
         let completed = viewModel.planProgress[plan.id] ?? []
         return plan.days.firstIndex(where: { !completed.contains($0.dayIndex) }) ?? (plan.days.count - 1)
@@ -70,6 +70,7 @@ struct TrainingPlanDetailView: View {
                 
                 HStack {
                     Button(action: {
+                        triggerHaptic()
                         if let onClose = onClose {
                             onClose()
                         } else {
@@ -161,7 +162,10 @@ struct TrainingPlanDetailView: View {
                             .padding(.bottom, 18)
                             
                             HStack(spacing: 12) {
-                                Button(action: { showSwitchSheet = true }) {
+                                Button(action: {
+                                    triggerHaptic()
+                                    showSwitchSheet = true
+                                }) {
                                     HStack(spacing: 8) {
                                         Text("Switch Program")
                                         Image("switchIcon")
@@ -174,7 +178,10 @@ struct TrainingPlanDetailView: View {
                                     .cornerRadius(30)
                                     .contentShape(Rectangle())
                                 }
-                                Button(action: { showLearnMoreSheet = true }) {
+                                Button(action: {
+                                    triggerHaptic()
+                                    showLearnMoreSheet = true
+                                }) {
                                     HStack(spacing: 8) {
                                         Text("Learn More")
                                         Image(systemName: "info.circle")
@@ -200,15 +207,18 @@ struct TrainingPlanDetailView: View {
                                         planId: plan.id,
                                         viewModel: viewModel,
                                         onStart: {
+                                            triggerHaptic()
                                             if let workout = viewModel.workouts[day.workoutId] {
                                                 self.workoutLaunchContext = WorkoutLaunchContext(workout: workout, dayIndex: day.dayIndex)
                                             }
                                         },
                                         onMeasure: { dayIndex in
+                                            triggerHaptic()
                                             self.measurementDayIndex = dayIndex
                                             self.showMeasurementSheet = true
                                         },
                                         onChallenge: { dayIndex in
+                                            triggerHaptic()
                                             self.challengeDayIndex = dayIndex
                                             self.showChallengeSheet = true
                                         }
@@ -234,7 +244,6 @@ struct TrainingPlanDetailView: View {
                         if isPlanFailed() {
                             viewModel.triggerPlanFailureModal(failedPlan: plan, percentComplete: getPlanPercentComplete())
                         }
-                        checkAndShowWeeklyUpdate()
                     }
                 }
                 Spacer(minLength: 0)
@@ -242,85 +251,176 @@ struct TrainingPlanDetailView: View {
             .padding(.horizontal, 28)
             .blur(radius: blurAmount)
             .animation(.easeInOut(duration: 0.5), value: blurAmount)
-            .animation(.easeInOut(duration: 0.5), value: showWeeklyUpdate)
 
             if viewModel.showPlanCompletionModal, let completedPlan = viewModel.completedPlanForModal {
-                Color.black.opacity(0.001)
+                Color.black.opacity(0.5)
                     .ignoresSafeArea()
                     .allowsHitTesting(true)
                 PlanCompletionModalView(
                     completedPlan: completedPlan,
                     nextPlan: viewModel.nextPlanForModal,
                     onDone: {
-                        withAnimation { blurAmount = 0 }
-                        viewModel.showPlanCompletionModal = false
-                        viewModel.completedPlanForModal = nil
-                        viewModel.nextPlanForModal = nil
+                        withAnimation {
+                            completionModalContentOpacity = 0
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            withAnimation(.easeInOut(duration: 0.4)) {
+                                blurAmount = 0
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                                if let nextPlan = viewModel.nextPlanForModal {
+                                    viewModel.switchToPlan(nextPlan.id)
+                                }
+                                viewModel.showPlanCompletionModal = false
+                                viewModel.completedPlanForModal = nil
+                                viewModel.nextPlanForModal = nil
+                            }
+                        }
                     },
                     onSwitchProgram: {
-                        withAnimation { blurAmount = 0 }
-                        viewModel.showPlanCompletionModal = false
-                        viewModel.completedPlanForModal = nil
-                        viewModel.nextPlanForModal = nil
-                        showSwitchSheet = true
+                        withAnimation {
+                            completionModalContentOpacity = 0
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            withAnimation(.easeInOut(duration: 0.4)) {
+                                blurAmount = 0
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                                viewModel.showPlanCompletionModal = false
+                                viewModel.completedPlanForModal = nil
+                                viewModel.nextPlanForModal = nil
+                                showSwitchSheet = true
+                            }
+                        }
                     }
                 )
-                .transition(.opacity)
+                .transition(.asymmetric(
+                    insertion: .opacity,
+                    removal: .opacity)
+                )
                 .zIndex(100)
-                .onAppear { withAnimation { blurAmount = 30 } }
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 0.4)) {
+                        blurAmount = 30
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                        withAnimation {
+                            completionModalContentOpacity = 1.0
+                        }
+                    }
+                }
             }
 
             if viewModel.showPlanFailureModal, let failedPlan = viewModel.failedPlanForModal {
-                Color.black.opacity(0.001)
+                Color.black.opacity(0.5)
                     .ignoresSafeArea()
                     .allowsHitTesting(true)
                 PlanFailureModalView(
                     failedPlan: failedPlan,
                     percentComplete: viewModel.failedPlanPercentComplete,
                     onRetry: {
-                        withAnimation { blurAmount = 0 }
-                        // Re-enroll current program from start
-                        viewModel.reenrollPlanFromStart(plan: failedPlan)
-                        viewModel.clearPlanFailureModal()
+                        withAnimation {
+                            failureModalContentOpacity = 0
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            withAnimation(.easeInOut(duration: 0.4)) {
+                                blurAmount = 0
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                                viewModel.reenrollPlanFromStart(plan: failedPlan)
+                                viewModel.clearPlanFailureModal()
+                            }
+                        }
                     },
                     onSwitchProgram: {
-                        withAnimation { blurAmount = 0 }
-                        viewModel.clearPlanFailureModal()
-                        shouldShowFailureModalAfterSwitch = true
-                        showSwitchSheet = true
+                        withAnimation {
+                            failureModalContentOpacity = 0
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            withAnimation(.easeInOut(duration: 0.4)) {
+                                blurAmount = 0
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                                viewModel.showPlanFailureModal = false
+                                shouldShowFailureModalAfterSwitch = true
+                                showSwitchSheet = true
+                            }
+                        }
                     }
                 )
-                .transition(.opacity)
+                .transition(.asymmetric(
+                    insertion: .opacity,
+                    removal: .opacity)
+                )
                 .zIndex(100)
-                .onAppear { withAnimation { blurAmount = 30 } }
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 0.4)) {
+                        blurAmount = 30
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                        withAnimation {
+                            failureModalContentOpacity = 1.0
+                        }
+                    }
+                }
             }
 
-            if showWeeklyUpdate, let statsTuple = viewModel.weeklyStats(for: viewModel.workouts.values.map { $0 }) {
-                let stats = WeeklyUpdateStats(
-                    workoutsCompletedThisWeek: statsTuple.workoutsCompleted,
-                    currentStreak: workoutViewModel.currentStreak,
-                    workoutMinutesThisWeek: statsTuple.workoutMinutes
-                )
-                let challengeProgress = viewModel.challengeProgressBarPercentagesForCurrentWeek()
-                let muscleProgress = viewModel.muscleProgressBarPercentagesForCurrentWeek()
-
-                Color.black.opacity(0.001)
+            if viewModel.showWeeklyUpdate, let weeklyStats = viewModel.weeklyUpdateData, !viewModel.showPlanCompletionModal, !viewModel.showPlanFailureModal, !shouldShowFailureModalAfterSwitch {
+                Color.black.opacity(0.5)
                     .ignoresSafeArea()
                     .allowsHitTesting(true)
                 WeeklyUpdateView(
-                    stats: stats,
-                    challengeProgress: challengeProgress,
-                    muscleProgress: muscleProgress,
+                    stats: weeklyStats,
+                    challengeProgress: weeklyStats.challengeProgress ?? (0,0),
+                    muscleProgress: weeklyStats.muscleProgress ?? (0,0),
                     onBack: {
-                        showWeeklyUpdate = false
-                        withAnimation { blurAmount = 0 }
+                        withAnimation {
+                            weeklyUpdateContentOpacity = 0
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            withAnimation(.easeInOut(duration: 0.4)) {
+                                blurAmount = 0
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                                viewModel.dismissWeeklyUpdate()
+                            }
+                        }
                     }
                 )
-                .transition(.move(edge: .bottom).combined(with: .opacity))
+                .transition(.asymmetric(
+                    insertion: .opacity,
+                    removal: .opacity)
+                )
+                .opacity(weeklyUpdateContentOpacity)
                 .zIndex(200)
-                .onAppear { withAnimation { blurAmount = 30 } }
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 0.4)) {
+                        blurAmount = 30
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                        withAnimation {
+                            weeklyUpdateContentOpacity = 1.0
+                        }
+                    }
+                }
             }
         }
+        .animation(.easeInOut(duration: 0.3), value: weeklyUpdateContentOpacity)
+        .animation(.easeInOut(duration: 0.3), value: completionModalContentOpacity)
+        .animation(.easeInOut(duration: 0.3), value: failureModalContentOpacity)
         .navigationBarHidden(true)
         .fullScreenCover(item: $workoutLaunchContext, onDismiss: {}) { context in
             WorkoutView(selectedWorkout: context.workout, onBack: {
@@ -363,8 +463,18 @@ struct TrainingPlanDetailView: View {
             if shouldShowFailureModalAfterSwitch {
                 shouldShowFailureModalAfterSwitch = false
                 if viewModel.failedPlanForModal != nil {
-                    withAnimation { blurAmount = 30 }
-                    viewModel.showPlanFailureModal = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        withAnimation(.easeInOut(duration: 0.4)) {
+                            blurAmount = 30
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                            viewModel.showPlanFailureModal = true
+                            withAnimation {
+                                failureModalContentOpacity = 1.0
+                            }
+                        }
+                    }
                 }
             }
         }) {
@@ -374,6 +484,9 @@ struct TrainingPlanDetailView: View {
                 shouldShowFailureModalAfterSwitch = false
             })
         }
+        .onAppear {
+            viewModel.checkAndTriggerWeeklyUpdate()
+        }
     }
 
     // Helpers
@@ -382,8 +495,7 @@ struct TrainingPlanDetailView: View {
         return plan.days.isEmpty ? 0 : Double(completed) / Double(plan.days.count)
     }
     var daysLeft: Int {
-        let completed = viewModel.planProgress[plan.id]?.count ?? 0
-        return max(0, plan.duration - completed)
+        return max(0, viewModel.daysLeft(planStartDate: viewModel.planStartDate ?? Date(), currentDate: Date(), planDurationDays: plan.duration))
     }
     var todayDayId: Int? {
         guard let startDate = viewModel.planStartDate else { return nil }
@@ -462,55 +574,11 @@ struct TrainingPlanDetailView: View {
         let completedCount = viewModel.planProgress[plan.id]?.count ?? 0
         return plan.days.count > 0 ? Int((Double(completedCount) / Double(plan.days.count)) * 100) : 0
     }
-
-    // Helper: Get the current week number since plan start
-    var currentPlanWeekNumber: Int? {
-        guard let startDate = viewModel.planStartDate else { return nil }
-        let calendar = Calendar.current
-        let today = calendar.startOfDay(for: Date())
-        let daysSinceStart = calendar.dateComponents([.day], from: startDate, to: today).day ?? 0
-        return daysSinceStart / 7
-    }
-
-    // Helper: Is the last day of the week completed?
-    func isLastDayOfWeekCompleted() -> Bool {
-        guard let weekRange = viewModel.currentWeekRange else { return false }
-        let calendar = Calendar.current
-        let startDate = viewModel.planStartDate ?? Date()
-        // Find the last day in the current week
-        let weekDayIndices = plan.days.compactMap { day in
-            let scheduledDate = calendar.date(byAdding: .day, value: day.dayIndex - 1, to: startDate)!
-            return (scheduledDate >= weekRange.start && scheduledDate <= weekRange.end) ? day.dayIndex : nil
-        }
-        guard let lastDayIndex = weekDayIndices.max() else { return false }
-        return viewModel.planProgress[plan.id]?.contains(lastDayIndex) ?? false
-    }
-
-    // Helper: Did the user miss the last day of the week?
-    func didMissLastDayOfWeek() -> Bool {
-        guard let weekRange = viewModel.currentWeekRange else { return false }
-        let calendar = Calendar.current
-        let startDate = viewModel.planStartDate ?? Date()
-        let weekDayIndices = plan.days.compactMap { day in
-            let scheduledDate = calendar.date(byAdding: .day, value: day.dayIndex - 1, to: startDate)!
-            return (scheduledDate >= weekRange.start && scheduledDate <= weekRange.end) ? day.dayIndex : nil
-        }
-        guard let lastDayIndex = weekDayIndices.max() else { return false }
-        // If today is after the last day of the week and not completed
-        let lastDayDate = calendar.date(byAdding: .day, value: lastDayIndex - 1, to: startDate)!
-        let today = calendar.startOfDay(for: Date())
-        let missed = today > lastDayDate && !(viewModel.planProgress[plan.id]?.contains(lastDayIndex) ?? false)
-        return missed
-    }
-
-    // Logic to check and show the weekly update modal
-    func checkAndShowWeeklyUpdate() {
-        guard let weekNum = currentPlanWeekNumber else { return }
-        // Only show if not already shown for this week
-        if lastWeeklyUpdateWeek == weekNum { return }
-        if isLastDayOfWeekCompleted() || didMissLastDayOfWeek() {
-            withAnimation { showWeeklyUpdate = true }
-        }
+    
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.prepare()
+        generator.impactOccurred()
     }
 }
 

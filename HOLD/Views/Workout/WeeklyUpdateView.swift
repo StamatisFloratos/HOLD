@@ -7,7 +7,9 @@ struct WeeklyUpdateStats {
 }
 
 struct WeeklyUpdateView: View {
-    let stats: WeeklyUpdateStats
+    @EnvironmentObject var workoutViewModel: WorkoutViewModel
+    
+    let stats: WeeklyUpdateData
     let challengeProgress: (current: Double, previous: Double)
     let muscleProgress: (current: Double, previous: Double)
     
@@ -20,6 +22,7 @@ struct WeeklyUpdateView: View {
                 HStack {
                     Spacer()
                     Button {
+                        triggerHaptic()
                         onBack()
                     } label: {
                         Image("crossIcon")
@@ -46,9 +49,9 @@ struct WeeklyUpdateView: View {
                     
                     HStack(spacing: 12) {
                         Spacer()
-                        StatCardView(title: "\(stats.workoutsCompletedThisWeek)", subtitle: "Workouts\nCompleted")
-                        StatCardView(title: "\(stats.currentStreak)", subtitle: "Current\nStreak")
-                        StatCardView(title: "\(stats.workoutMinutesThisWeek) mins", subtitle: "Workout\nTime")
+                        StatCardView(title: "\(stats.workoutsCompleted)", subtitle: "Workouts\nCompleted")
+                        StatCardView(title: "\(workoutViewModel.currentStreak)", subtitle: "Current\nStreak")
+                        StatCardView(title: "\(stats.workoutMinutes) mins", subtitle: "Workout\nTime")
                         Spacer()
                     }
                     .padding(.vertical, 18)
@@ -77,11 +80,19 @@ struct WeeklyUpdateView: View {
                         .padding(.top, 12)
                         .padding(.horizontal, 16)
                     
-                    Text("Consistency is key. You are showing clear progress and you seem on track to meet your goal of lasting **\(UserStorage.wantToLastTime)**. Stay focused and keep working. Results speak for themselves.")
-                        .font(.system(size: 16, weight: .regular))
-                        .foregroundColor(.white)
-                        .padding(.bottom, 16)
-                        .padding(.horizontal, 16)
+                    if challengeProgress.current > challengeProgress.previous {
+                        Text("Consistency is key. You are showing clear progress and you seem on track to meet your goal of lasting **\(UserStorage.wantToLastTime)**. Stay focused and keep working. Results speak for themselves.")
+                            .font(.system(size: 16, weight: .regular))
+                            .foregroundColor(.white)
+                            .padding(.bottom, 16)
+                            .padding(.horizontal, 16)
+                    } else {
+                        Text("Measuring your progress is important to know where you stand. Remember your goal is to last **\(UserStorage.wantToLastTime)**. Stay focused and keep working. Results will speak for themselves.")
+                            .font(.system(size: 16, weight: .regular))
+                            .foregroundColor(.white)
+                            .padding(.bottom, 16)
+                            .padding(.horizontal, 16)
+                    }
                 }
                 .background(Color(red: 0.18, green: 0.18, blue: 0.18))
                 .cornerRadius(10)
@@ -90,6 +101,12 @@ struct WeeklyUpdateView: View {
             }
             .padding(.horizontal, 40)
         }
+    }
+    
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.prepare()
+        generator.impactOccurred()
     }
 }
 
@@ -211,8 +228,9 @@ struct WeeklyUpdateProgressBarView: View {
 
 #Preview {
     WeeklyUpdateView(
-        stats: WeeklyUpdateStats(workoutsCompletedThisWeek: 7, currentStreak: 21, workoutMinutesThisWeek: 45),
+        stats: WeeklyUpdateData(weekNumber: 1, weekStartDate: Date().addingDays(-6), weekEndDate: Date(), workoutsCompleted: 5, totalWorkoutsInWeek: 7, workoutMinutes: 30, challengeProgress: (30, 50), muscleProgress: (20, 20)),
         challengeProgress: (current: 32, previous: 25),
         muscleProgress: (current: 60, previous: 40), onBack: {}
     )
-} 
+    .environmentObject(WorkoutViewModel())
+}

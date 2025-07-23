@@ -31,7 +31,9 @@ struct SwitchProgramSheet: View {
                 VStack(spacing: 0) {
                     HStack {
                         Spacer()
-                        Button(action: { presentationMode.wrappedValue.dismiss() }) {
+                        Button(action: {
+                            triggerHaptic()
+                            presentationMode.wrappedValue.dismiss() }) {
                             Image(systemName: "xmark")
                                 .font(.system(size: 20, weight: .bold))
                                 .foregroundColor(.white.opacity(0.7))
@@ -123,6 +125,7 @@ struct SwitchProgramSheet: View {
                                                 
                                                 Spacer()
                                                 Button(action: {
+                                                    triggerHaptic()
                                                     selectedPlan = plan
                                                     withAnimation {
                                                         showLearnMore = true
@@ -167,6 +170,12 @@ struct SwitchProgramSheet: View {
         }
         .animation(.easeInOut, value: showLearnMore)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+    
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.prepare()
+        generator.impactOccurred()
     }
 }
 

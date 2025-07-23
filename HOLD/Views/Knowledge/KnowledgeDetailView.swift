@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct KnowledgeDetailView: View {
     @EnvironmentObject var navigationManager: NavigationManager
@@ -130,25 +131,31 @@ struct KnowledgeDetailView: View {
                 }
         )
         .onAppear {
-            preloadAllImages()
+            preloadAllImagesWithSDWebImage()
         }
     }
     
-    // MARK: - Preload Images
-    private func preloadAllImages() {
+    // MARK: - Preload Images with SDWebImage
+    private func preloadAllImagesWithSDWebImage() {
         let urls = allImageURLs.compactMap { URL(string: $0) }
         let group = DispatchGroup()
         var loaded: [String: UIImage] = [:]
+        
         for url in urls {
             group.enter()
-            let task = URLSession.shared.dataTask(with: url) { data, response, error in
-                if let data = data, let image = UIImage(data: data) {
-                    loaded[url.absoluteString] = image
+            
+            SDWebImageManager.shared.loadImage(
+                with: url,
+                options: [.retryFailed, .continueInBackground],
+                progress: nil
+            ) { image, data, error, cacheType, finished, imageURL in
+                if let image = image, let imageURL = imageURL {
+                    loaded[imageURL.absoluteString] = image
                 }
                 group.leave()
             }
-            task.resume()
         }
+        
         DispatchQueue.global().async {
             group.wait()
             DispatchQueue.main.async {
@@ -218,11 +225,10 @@ struct KnowledgeDetailView: View {
         }
     }
     
-    // MARK: - Dynamic Background
+    // MARK: - Dynamic Background with SDWebImage fallback
     private var backgroundImage: some View {
         Group {
             if currentStep == 1 {
-                // Cover slide - use preloaded image
                 if let uiImage = loadedImages[item.coverImage] {
                     Image(uiImage: uiImage)
                         .resizable()
@@ -230,16 +236,25 @@ struct KnowledgeDetailView: View {
                         .frame(width: UIScreen.main.bounds.width)
                         .clipped()
                 } else {
-                    Rectangle()
-                        .fill(Color.black)
-                        .overlay(
-                            Image(systemName: "photo")
-                                .font(.system(size: 50))
-                                .foregroundColor(.white.opacity(0.7))
-                        )
+                    WebImage(url: URL(string: item.coverImage)) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    } placeholder: {
+                        Rectangle()
+                            .fill(Color.black)
+                            .overlay(
+                                Image(systemName: "photo")
+                                    .font(.system(size: 50))
+                                    .foregroundColor(.white.opacity(0.7))
+                            )
+                    }
+                    .indicator(Indicator.activity)
+                    .transition(AnyTransition.fade(duration: 0.3))
+                    .frame(width: UIScreen.main.bounds.width)
+                    .clipped()
                 }
             } else {
-                // Content slide - use slide image
                 let slideIndex = currentStep - 2
                 if slideIndex < item.slides.count {
                     let url = item.slides[slideIndex].image
@@ -250,13 +265,23 @@ struct KnowledgeDetailView: View {
                             .frame(width: UIScreen.main.bounds.width)
                             .clipped()
                     } else {
-                        Rectangle()
-                            .fill(Color.black)
-                            .overlay(
-                                Image(systemName: "photo")
-                                    .font(.system(size: 50))
-                                    .foregroundColor(.white.opacity(0.7))
-                            )
+                        WebImage(url: URL(string: url)) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                        } placeholder: {
+                            Rectangle()
+                                .fill(Color.black)
+                                .overlay(
+                                    Image(systemName: "photo")
+                                        .font(.system(size: 50))
+                                        .foregroundColor(.white.opacity(0.7))
+                                )
+                        }
+                        .indicator(Indicator.activity)
+                        .transition(AnyTransition.fade(duration: 0.3))
+                        .frame(width: UIScreen.main.bounds.width)
+                        .clipped()
                     }
                 } else {
                     Rectangle()

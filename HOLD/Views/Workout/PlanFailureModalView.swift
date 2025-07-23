@@ -6,8 +6,6 @@ struct PlanFailureModalView: View {
     let onRetry: () -> Void
     let onSwitchProgram: () -> Void
     
-    @State private var contentOpacity: Double = 0.0
-    
     var body: some View {
         VStack(spacing: 0) {
             VStack(spacing: 10) {
@@ -43,12 +41,8 @@ struct PlanFailureModalView: View {
             
             VStack(spacing: 10) {
                 Button(action: {
-                    withAnimation(.easeInOut(duration: 0.5)) {
-                        contentOpacity = 0
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        onSwitchProgram()
-                    }
+                    triggerHaptic()
+                    onSwitchProgram()
                 }) {
                     HStack(spacing: 8) {
                         Text("Switch Program")
@@ -62,12 +56,8 @@ struct PlanFailureModalView: View {
                     .padding(.horizontal, 16)
                 }
                 Button(action: {
-                    withAnimation(.easeInOut(duration: 0.5)) {
-                        contentOpacity = 0
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        onRetry()
-                    }
+                    triggerHaptic()
+                    onRetry()
                 }) {
                     Text("Retry")
                         .font(.system(size: 16, weight: .semibold))
@@ -79,15 +69,14 @@ struct PlanFailureModalView: View {
                 }
             }
         }
-        .opacity(contentOpacity)
-        .animation(.easeInOut(duration: 0.5), value: contentOpacity)
         .padding(.horizontal, 30)
         .padding(.vertical, 40)
-        .onAppear {
-            withAnimation(.easeInOut(duration: 0.5)) {
-                contentOpacity = 1.0
-            }
-        }
+    }
+    
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.prepare()
+        generator.impactOccurred()
     }
 }
 

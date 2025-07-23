@@ -21,11 +21,19 @@ class TrainingPlansViewModel: ObservableObject {
     @Published var failedPlanForModal: TrainingPlan? = nil
     @Published var failedPlanPercentComplete: Int = 0
     
+    @Published var showWeeklyUpdate: Bool = false
+    @Published var weeklyUpdateData: WeeklyUpdateData? = nil
+    @Published var weeklyUpdateSchedule: [Int] = []
+    
     init() {
         loadPlans()
         loadWorkouts()
         loadUserState()
         restorePlanFailureModalIfNeeded()
+        
+        if let planID = currentPlanId {
+            loadWeeklyUpdateSchedule(for: planID)
+        }
     }
     
     private func loadPlans() {
@@ -65,10 +73,12 @@ class TrainingPlansViewModel: ObservableObject {
         if let startDate = defaults.object(forKey: "planStartDate") as? Date {
             self.planStartDate = startDate
         }
-        // Auto-start the default plan for all users if not started
+        
         if self.planStartDate == nil, let firstPlan = plans.first {
             self.planStartDate = Date()
             self.currentPlanId = firstPlan.id
+            dismissWeeklyUpdate()
+            setupWeeklyUpdateSchedule(for: firstPlan.id)
             saveUserState()
         }
     }
@@ -106,9 +116,13 @@ class TrainingPlansViewModel: ObservableObject {
         challengeProgress[planId] = []
         challengeData[planId] = [:]
         planStartDate = Date()
+        
+        clearPlanFailureModal()
         saveUserState()
         
-        // Force UI update
+        dismissWeeklyUpdate()
+        setupWeeklyUpdateSchedule(for: planId)
+        
         objectWillChange.send()
     }
     
@@ -116,11 +130,11 @@ class TrainingPlansViewModel: ObservableObject {
         var progress = planProgress[planId] ?? Set<Int>()
         progress.insert(dayIndex)
         planProgress[planId] = progress
-        // If all days completed, mark plan as completed
+        
         if let plan = plans.first(where: { $0.id == planId }),
            progress.count == plan.days.count {
             completedPlanIds.insert(planId)
-            // Find the next plan: first, try next in list; if not, pick first not completed; if all completed, pick first plan
+            
             let currentIndex = plans.firstIndex(where: { $0.id == planId })
             var nextPlan: TrainingPlan? = nil
             if let currentIndex = currentIndex, currentIndex + 1 < plans.count {
@@ -131,21 +145,12 @@ class TrainingPlansViewModel: ObservableObject {
                 nextPlan = plans.first
             }
             triggerPlanCompletionModal(completedPlan: plan, nextPlan: nextPlan)
-        }
-        
-        // Also save the workout completion to the main workout system
-        if let plan = plans.first(where: { $0.id == planId }),
-           let day = plan.days.first(where: { $0.dayIndex == dayIndex }),
-           let workout = workouts[day.workoutId] {
-            WorkoutCompletionManager.saveCompletion(WorkoutCompletion(workoutName: workout.name))
-            
-            // Update streak data as well
-            updateStreakData()
+        } else {
+            checkWeeklyUpdateAfterWorkout()
         }
         
         saveUserState()
         
-        // Force UI update
         objectWillChange.send()
     }
     
@@ -154,7 +159,6 @@ class TrainingPlansViewModel: ObservableObject {
         progress.insert(dayIndex)
         measurementProgress[planId] = progress
         
-        // Save the measurement data
         var planMeasurements = measurementData[planId] ?? [:]
         let measurement = Measurement(id: UUID(), date: Date(), durationSeconds: duration)
         planMeasurements[dayIndex] = measurement
@@ -162,7 +166,6 @@ class TrainingPlansViewModel: ObservableObject {
         
         saveUserState()
         
-        // Force UI update
         objectWillChange.send()
     }
     
@@ -171,7 +174,6 @@ class TrainingPlansViewModel: ObservableObject {
         progress.insert(dayIndex)
         challengeProgress[planId] = progress
         
-        // Save the challenge data
         var planChallenges = challengeData[planId] ?? [:]
         let challengeResult = ChallengeResult(duration: duration)
         planChallenges[dayIndex] = challengeResult
@@ -179,7 +181,6 @@ class TrainingPlansViewModel: ObservableObject {
         
         saveUserState()
         
-        // Force UI update
         objectWillChange.send()
     }
     
@@ -200,7 +201,7 @@ class TrainingPlansViewModel: ObservableObject {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
         let scheduledDate = calendar.date(byAdding: .day, value: dayIndex - 1, to: startDate)!
-        return calendar.isDate(scheduledDate, inSameDayAs: today)
+        return calendar.isDate(scheduledDate, inSameDayAs: today) || scheduledDate <= today
     }
     
     func isChallengeScheduledForToday(dayIndex: Int) -> Bool {
@@ -208,7 +209,7 @@ class TrainingPlansViewModel: ObservableObject {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: Date())
         let scheduledDate = calendar.date(byAdding: .day, value: dayIndex - 1, to: startDate)!
-        return calendar.isDate(scheduledDate, inSameDayAs: today)
+        return calendar.isDate(scheduledDate, inSameDayAs: today) || scheduledDate <= today
     }
     
     // MARK: - Progress Calculation Methods for Weekly Updates
@@ -348,59 +349,6 @@ class TrainingPlansViewModel: ObservableObject {
         return false
     }
     
-    // MARK: - Streak Data Management
-    
-    private func updateStreakData() {
-        // This method updates streak data similar to WorkoutViewModel
-        let today = Calendar.current.startOfDay(for: Date())
-        
-        // Load existing streak dates
-        var streakDates = loadStreakDatesFromFile()
-        
-        // Check if we already recorded today
-        if !streakDates.contains(where: { Calendar.current.isDate($0, inSameDayAs: today) }) {
-            // Add today to streak dates
-            streakDates.append(today)
-            
-            // Save updated streak data
-            saveStreakDatesToFile(streakDates)
-        }
-    }
-    
-    private var streakDatesFileURL: URL {
-        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        return documentsDirectory.appendingPathComponent("workout_streak_dates.json")
-    }
-    
-    private func saveStreakDatesToFile(_ dates: [Date]) {
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = .prettyPrinted
-        encoder.dateEncodingStrategy = .iso8601
-        
-        do {
-            let data = try encoder.encode(dates)
-            try data.write(to: streakDatesFileURL, options: [.atomicWrite])
-        } catch {
-            // Error saving streak dates
-        }
-    }
-    
-    private func loadStreakDatesFromFile() -> [Date] {
-        guard FileManager.default.fileExists(atPath: streakDatesFileURL.path) else {
-            return []
-        }
-        
-        do {
-            let data = try Data(contentsOf: streakDatesFileURL)
-            let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .iso8601
-            let dates = try decoder.decode([Date].self, from: data)
-            return dates
-        } catch {
-            return []
-        }
-    }
-    
     // Call this when a plan is completed
     func triggerPlanCompletionModal(completedPlan: TrainingPlan, nextPlan: TrainingPlan?) {
         self.completedPlanForModal = completedPlan
@@ -447,6 +395,10 @@ class TrainingPlansViewModel: ObservableObject {
         planStartDate = Date()
         currentPlanId = planId
         completedPlanIds.remove(planId)
+        
+        dismissWeeklyUpdate()
+        setupWeeklyUpdateSchedule(for: planId)
+        
         saveUserState()
         objectWillChange.send()
     }
@@ -468,25 +420,6 @@ class TrainingPlansViewModel: ObservableObject {
         // End of the current week (inclusive)
         let weekEnd = calendar.date(byAdding: .day, value: (weekNumber + 1) * 7 - 1, to: planStart)!
         return (start: calendar.startOfDay(for: weekStart), end: calendar.startOfDay(for: weekEnd))
-    }
-
-    /// Computes the weekly stats for the current plan and week (excluding streak).
-    func weeklyStats(for workouts: [Workout]) -> (workoutsCompleted: Int, workoutMinutes: Int)? {
-        guard let planId = currentPlanId, let weekRange = currentWeekRange else { return nil }
-        // Get all completions for this week
-        let completions = WorkoutCompletionManager.getCompletions().filter { completion in
-            completion.completed &&
-            completion.date >= weekRange.start &&
-            completion.date <= weekRange.end &&
-            workouts.contains(where: { $0.name == completion.workoutName })
-        }
-        // Workouts completed this week
-        let workoutsCompleted = completions.count
-        // Total workout minutes this week
-        let workoutMinutes = completions.compactMap { completion in
-            workouts.first(where: { $0.name == completion.workoutName })?.durationMinutes
-        }.reduce(0, +)
-        return (workoutsCompleted, workoutMinutes)
     }
     
     /// Computes the progress bar percentages for 'The Challenge' for the current and previous week.
@@ -613,9 +546,243 @@ class TrainingPlansViewModel: ObservableObject {
         // Fallback
         return (0, 0)
     }
+    
+    func daysLeft(planStartDate: Date, currentDate: Date, planDurationDays: Int) -> Int {
+        let planEndDate = Calendar.current.date(byAdding: .day, value: planDurationDays, to: planStartDate) ?? planStartDate
+        
+        let components = Calendar.current.dateComponents([.day], from: currentDate, to: planEndDate)
+        return ((components.day ?? 0) + 1)
+    }
+    
+    // MARK: - Weekly Update New Logic
+    
+    func setupWeeklyUpdateSchedule(for planId: String) {
+        guard let plan = plans.first(where: { $0.id == planId }) else { return }
+        
+        let planDuration = plan.days.count
+        let totalWeeks = (planDuration + 6) / 7
+        let weeklyUpdateCount = totalWeeks - 1
+        
+        weeklyUpdateSchedule = Array(1...weeklyUpdateCount)
+        
+        clearWeeklyUpdateTracking(for: planId)
+        
+        saveWeeklyUpdateSchedule(for: planId)
+    }
+    
+    func checkAndTriggerWeeklyUpdate() {
+        guard let planId = currentPlanId,
+              let startDate = planStartDate else { return }
+        
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        
+        // Calculate current week number (1-based)
+        let daysSinceStart = (calendar.dateComponents([.day], from: startDate, to: today).day ?? 0) + 1
+        let currentWeekNumber = (daysSinceStart / 7) + 1
+        
+        // Check if current week is the last day of a week that should show update
+        if isLastDayOfWeek(currentDate: today, startDate: startDate) {
+            let weekToCheck = currentWeekNumber
+            if weeklyUpdateSchedule.contains(weekToCheck) &&
+                !hasShownWeeklyUpdate(planId: planId, weekNumber: weekToCheck) {
+                // Don't show immediately - will be triggered after workout completion
+                return
+            }
+        }
+        
+        // Check if we should show update for any previous week
+        for weekNumber in weeklyUpdateSchedule {
+            if weekNumber + 1 == currentWeekNumber &&
+                !hasShownWeeklyUpdate(planId: planId, weekNumber: weekNumber) {
+                // Show the weekly update for this missed week
+                generateWeeklyUpdateData(for: planId, weekNumber: weekNumber)
+                return // Show only one update at a time
+            }
+        }
+    }
+    
+    /// Call this after every workout completion to check if we should show weekly update
+    func checkWeeklyUpdateAfterWorkout() {
+        guard let planId = currentPlanId,
+              let startDate = planStartDate else { return }
+        
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        
+        // Calculate current week number (1-based)
+        let daysSinceStart = (calendar.dateComponents([.day], from: startDate, to: today).day ?? 0) + 1
+        let currentWeekNumber = (daysSinceStart / 7) + 1
+        
+        // Check if today is the last day of a week that should show update
+        if isLastDayOfWeek(currentDate: today, startDate: startDate) {
+            if weeklyUpdateSchedule.contains(currentWeekNumber) &&
+                !hasShownWeeklyUpdate(planId: planId, weekNumber: currentWeekNumber) &&
+                hasCompletedTodaysWorkout(planId: planId, date: today) {
+                // Show weekly update immediately
+                generateWeeklyUpdateData(for: planId, weekNumber: currentWeekNumber)
+            }
+        }
+    }
+    
+    /// Generates the weekly update data for display
+    private func generateWeeklyUpdateData(for planId: String, weekNumber: Int) {
+        guard let plan = plans.first(where: { $0.id == planId }),
+              let startDate = planStartDate else { return }
+        
+        let calendar = Calendar.current
+        
+        // Calculate week boundaries (weekNumber is 1-based)
+        let weekStart = calendar.date(byAdding: .day, value: (weekNumber - 1) * 7, to: startDate)!
+        let weekEnd = calendar.date(byAdding: .day, value: weekNumber * 7 - 1, to: startDate)!
+        
+        // Get workouts for this week
+        let weekDays = plan.days.filter { day in
+            let dayDate = calendar.date(byAdding: .day, value: day.dayIndex - 1, to: startDate)!
+            return dayDate >= weekStart && dayDate <= weekEnd
+        }
+        
+        // Calculate completed workouts in this week
+        let completedWorkouts = weekDays.filter { day in
+            isDayCompleted(planId: planId, dayIndex: day.dayIndex)
+        }.count
+        
+        // Calculate total workout minutes
+        let workoutMinutes = calculateWorkoutMinutes(for: weekDays, planId: planId)
+        
+        // Get challenge and muscle progress for this specific week
+        let challengeProgress = getChallengeProgressForWeek(planId: planId, weekNumber: weekNumber)
+        let muscleProgress = getMuscleProgressForWeek(planId: planId, weekNumber: weekNumber)
+        
+        // Create weekly update data
+        let updateData = WeeklyUpdateData(
+            weekNumber: weekNumber,
+            weekStartDate: weekStart,
+            weekEndDate: weekEnd,
+            workoutsCompleted: completedWorkouts,
+            totalWorkoutsInWeek: weekDays.count,
+            workoutMinutes: workoutMinutes,
+            challengeProgress: challengeProgress,
+            muscleProgress: muscleProgress
+        )
+        
+        // Trigger the weekly update modal
+        self.weeklyUpdateData = updateData
+        self.showWeeklyUpdate = true
+        
+        // Mark this week's update as shown
+        markWeeklyUpdateShown(planId: planId, weekNumber: weekNumber)
+    }
+    
+    private func isLastDayOfWeek(currentDate: Date, startDate: Date) -> Bool {
+        let calendar = Calendar.current
+        let daysSinceStart = (calendar.dateComponents([.day], from: startDate, to: currentDate).day ?? 0) + 1
+        return (daysSinceStart + 1) % 7 == 0 // daysSinceStart is 0-based, so add 1
+    }
+    
+    /// Checks if today's workout has been completed
+    private func hasCompletedTodaysWorkout(planId: String, date: Date) -> Bool {
+        guard let startDate = planStartDate else { return false }
+        
+        let calendar = Calendar.current
+        let daysSinceStart = (calendar.dateComponents([.day], from: startDate, to: date).day ?? 0) + 1
+        let dayIndex = daysSinceStart + 1 // dayIndex is 1-based
+        
+        return isDayCompleted(planId: planId, dayIndex: dayIndex)
+    }
+    
+    /// Calculates workout minutes for given days
+    private func calculateWorkoutMinutes(for days: [TrainingDay], planId: String) -> Int {
+        var totalMinutes = 0
+        for day in days {
+            if isDayCompleted(planId: planId, dayIndex: day.dayIndex) {
+                if let workout = workouts[day.workoutId] {
+                    totalMinutes += workout.durationMinutes
+                } else {
+                    totalMinutes += 30
+                }
+            }
+        }
+        return totalMinutes
+    }
+    
+    /// Gets challenge progress for a specific week
+    private func getChallengeProgressForWeek(planId: String, weekNumber: Int) -> (current: Double, previous: Double)? {
+        // You can adapt your existing challenge progress methods for specific weeks
+        // For now, using the existing method as placeholder
+        return challengeProgressBarPercentagesForCurrentWeek()
+    }
+    
+    /// Gets muscle progress for a specific week
+    private func getMuscleProgressForWeek(planId: String, weekNumber: Int) -> (current: Double, previous: Double)? {
+        // You can adapt your existing muscle progress methods for specific weeks
+        // For now, using the existing method as placeholder
+        return muscleProgressBarPercentagesForCurrentWeek()
+    }
+    
+    // MARK: - UserDefaults Management for Weekly Updates
+    
+    /// Saves the weekly update schedule for a plan
+    private func saveWeeklyUpdateSchedule(for planId: String) {
+        UserDefaults.standard.set(weeklyUpdateSchedule, forKey: "weeklyUpdateSchedule_\(planId)")
+    }
+    
+    /// Loads the weekly update schedule for a plan
+    private func loadWeeklyUpdateSchedule(for planId: String) {
+        weeklyUpdateSchedule = UserDefaults.standard.array(forKey: "weeklyUpdateSchedule_\(planId)") as? [Int] ?? []
+    }
+    
+    /// Marks a weekly update as shown for a specific plan and week
+    private func markWeeklyUpdateShown(planId: String, weekNumber: Int) {
+        var shownUpdates = getShownWeeklyUpdates()
+        let key = "\(planId)_week_\(weekNumber)"
+        shownUpdates.insert(key)
+        
+        UserDefaults.standard.set(Array(shownUpdates), forKey: "shownWeeklyUpdates")
+    }
+    
+    /// Checks if a weekly update has been shown for a specific plan and week
+    private func hasShownWeeklyUpdate(planId: String, weekNumber: Int) -> Bool {
+        let shownUpdates = getShownWeeklyUpdates()
+        let key = "\(planId)_week_\(weekNumber)"
+        return shownUpdates.contains(key)
+    }
+    
+    /// Gets all shown weekly updates from UserDefaults
+    private func getShownWeeklyUpdates() -> Set<String> {
+        let updates = UserDefaults.standard.array(forKey: "shownWeeklyUpdates") as? [String] ?? []
+        return Set(updates)
+    }
+    
+    /// Clears weekly update tracking for a plan (call when switching plans)
+    func clearWeeklyUpdateTracking(for planId: String) {
+        var shownUpdates = getShownWeeklyUpdates()
+        shownUpdates = shownUpdates.filter { !$0.hasPrefix("\(planId)_week_") }
+        UserDefaults.standard.set(Array(shownUpdates), forKey: "shownWeeklyUpdates")
+        
+        // Also clear the schedule
+        UserDefaults.standard.removeObject(forKey: "weeklyUpdateSchedule_\(planId)")
+    }
+    
+    /// Call this when user dismisses the weekly update modal
+    func dismissWeeklyUpdate() {
+        self.showWeeklyUpdate = false
+        self.weeklyUpdateData = nil
+    }
 }
 
-// MARK: - Measurement Progress Data Structure
+// MARK: - Weekly Update and Measurement Progress Data Structure
+
+struct WeeklyUpdateData {
+    let weekNumber: Int
+    let weekStartDate: Date
+    let weekEndDate: Date
+    let workoutsCompleted: Int
+    let totalWorkoutsInWeek: Int
+    let workoutMinutes: Int
+    let challengeProgress: (current: Double, previous: Double)?
+    let muscleProgress: (current: Double, previous: Double)?
+}
 
 struct MeasurementProgress {
     let firstMeasurement: Double

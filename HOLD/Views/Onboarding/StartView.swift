@@ -143,7 +143,7 @@ struct StartView: View {
                 .font(.system(size: 16))
             Text(text)
                 .foregroundStyle(LinearGradient(
-                    colors: [Color(hex: "#FFFFFF"), Color(hex: "#999999")],
+                    colors: [Color(hex: "#FFFFFF"), Color(hex: "#FFFFFF"), Color(hex: "#999999")],
                     startPoint: .leading,
                     endPoint: .trailing
                 ))

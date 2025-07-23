@@ -38,8 +38,9 @@ struct UserStorage {
     @AppStorage("wantToLastTime", store: UserDefaults()) static var wantToLastTime: String = ""
     @AppStorage("onboarding", store: UserDefaults()) static var onboarding: String = ""
     
-    @AppStorage("isValidAttributionSource", store: UserDefaults()) static var isValidAttributionSource: Bool = false
     @AppStorage("questionnaireSentToFirebase", store: UserDefaults()) static var questionnaireSentToFirebase: Bool = false
     @AppStorage("isNewAgeTriggerLogged", store: UserDefaults()) static var isNewAgeTriggerLogged: Bool = false
-    @AppStorage("isFromMetaAd", store: UserDefaults()) static var isFromMetaAd: Bool = false
+    
+    @AppStorage("showTrainingPlanOnboarding", store: UserDefaults()) static var showTrainingPlanOnboarding: Bool = false
+    @AppStorage("isOpeningTrainingUpdateFirstTime", store: UserDefaults()) static var isOpeningTrainingUpdateFirstTime: Bool = true
 }

@@ -10,15 +10,28 @@ import AppsFlyerLib
 import AdSupport
 import AppTrackingTransparency
 import UIKit
+import FacebookCore
+import FirebaseAnalytics
 
 class AppsFlyerManager {
     static func launchSDK() {
         if #available(iOS 14, *) {
             ATTrackingManager.requestTrackingAuthorization { status in
                 AppsFlyerLib.shared().start()
+                AppEvents.shared.activateApp()
             }
         } else {
             AppsFlyerLib.shared().start()
+            AppEvents.shared.activateApp()
+        }
+    }
+    
+    static func checkForFirebaseDeepLink() {
+        AppLinkUtility.fetchDeferredAppLink { (url, error) in
+            if let error = error {
+                print("Received error while fetching deferred app link: \(error)")
+            }
+            if let _ = url {}
         }
     }
     

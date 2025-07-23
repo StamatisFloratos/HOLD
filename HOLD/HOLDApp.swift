@@ -11,8 +11,10 @@ import SwiftData
 import SuperwallKit
 import FirebaseCore
 import AppsFlyerLib
+import FacebookCore
+import FirebaseAnalytics
 
-class AppDelegate: UIResponder, UIApplicationDelegate, DeepLinkDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
@@ -24,43 +26,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate, DeepLinkDelegate {
         AppsFlyerLib.shared().isDebug = true
         #endif
         
-        AppsFlyerLib.shared().deepLinkDelegate = self
-        
         FirebaseApp.configure()
+        
+        ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
+        
+        Settings.shared.enableLoggingBehavior(.appEvents)
+        Settings.shared.isAutoLogAppEventsEnabled = true
+        Settings.shared.isAdvertiserIDCollectionEnabled = true
+        
+        SubscriptionManager.shared.checkSubscriptionStatus()
+        
+        if UserStorage.isOpeningTrainingUpdateFirstTime {
+            UserStorage.isOpeningTrainingUpdateFirstTime = false
+            if !UserStorage.showWelcomeOnboarding {
+                UserStorage.showTrainingPlanOnboarding = true
+            } else {
+                UserStorage.showTrainingPlanOnboarding = false
+            }
+        }
         
         return true
     }
     
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-      AppsFlyerLib.shared().continue(userActivity, restorationHandler: nil)
-      return true
+        let _ = ApplicationDelegate.shared.application(application, continue: userActivity)
+        
+        return true
     }
 
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-      AppsFlyerLib.shared().handleOpen(url, options: options)
+      let _ = ApplicationDelegate.shared.application(app, open: url, options: options)
+      
       return true
-    }
-    
-    func didResolveDeepLink(_ result: DeepLinkResult) {
-        switch result.status {
-        case .found:
-            let deepLink = result.deepLink
-            
-            if let mediaSource = deepLink?.mediaSource,
-               mediaSource == "Social_facebook" || mediaSource == "Social_instagram" {
-                UserStorage.isFromMetaAd = true
-                UserStorage.onboarding = OnboardingType.onboardingThree.rawValue
-            }
-            
-            if let deepLinkValue = deepLink?.deeplinkValue {
-                CreatorAttributionSystem.shared.attributeUser(
-                    creatorIdentifier: deepLinkValue,
-                    source: .link
-                )
-            }
-        default:
-            print("No deep link found or error occurred.")
-        }
     }
 }
 
@@ -99,10 +96,10 @@ struct HOLDApp: App {
                 .environmentObject(subscriptionManager)
                 .environmentObject(trainingPlansViewModel)
                 .onOpenURL { url in
-                    AppsFlyerLib.shared().handleOpen(url)
+                    _ = ApplicationDelegate.shared.application(UIApplication.shared, open: url, options: [:])
                 }
                 .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { userActivity in
-                    AppsFlyerLib.shared().continue(userActivity, restorationHandler: nil)
+                    _ = ApplicationDelegate.shared.application(UIApplication.shared, continue: userActivity)
                 }
                 .onAppear {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
@@ -110,8 +107,6 @@ struct HOLDApp: App {
                             AppsFlyerManager.launchSDK()
                         }
                     }
-                    
-                    subscriptionManager.checkSubscriptionStatus()
                     
                     if !UserStorage.isOnboardingDone {
                         FirebaseManager.shared.fetchRemoteConfig {}

@@ -925,7 +925,7 @@
     ]
   },
   {
-    "id": "spex_circuit",
+    "id": "apex_circuit",
     "name": "Apex Circuit",
     "difficulty": "easy",
     "durationMinutes": 5,
@@ -1075,7 +1075,7 @@
     ]
   },
   {
-    "id": "lightening_blast",
+    "id": "lightning_blast",
     "name": "Lightning Blast",
     "difficulty": "easy",
     "durationMinutes": 5,

@@ -23,8 +23,10 @@ struct MainTabView: View {
     @EnvironmentObject var keyboardResponder: KeyboardResponder
     
     @State private var showWelcomeOnboarding = UserStorage.showWelcomeOnboarding
+    @State private var showTrainingPlanOnboarding = UserStorage.showTrainingPlanOnboarding
     @State private var blurAmount: CGFloat = 0
     @State private var welcomeContentOpacity: Double = 0
+    @State private var trainingPlanContentOpacity: Double = 0
     
     init() {
         UITabBar.appearance().isHidden = true // Hide the default tab bar
@@ -79,6 +81,8 @@ struct MainTabView: View {
         .onAppear() {
             if showWelcomeOnboarding {
                 startWelcomeAnimation()
+            } else if showTrainingPlanOnboarding {
+                startTrainingPlanAnimation()
             }
             
             FirebaseManager.shared.logAgeEvent()
@@ -93,6 +97,39 @@ struct MainTabView: View {
                     removal: .move(edge: .leading)
                 ))
                 .opacity(welcomeContentOpacity)
+            } else if showTrainingPlanOnboarding {
+                TrainingPlanOnboarding(onCompletion: {
+                    dismissTrainingPlanAnimation()
+                })
+            }
+        }
+    }
+    
+    private func startTrainingPlanAnimation() {
+        withAnimation(.easeInOut(duration: 0.4)) {
+            blurAmount = 20
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+            withAnimation(.easeInOut(duration: 0.3)) {
+                trainingPlanContentOpacity = 1.0
+            }
+        }
+    }
+    
+    private func dismissTrainingPlanAnimation() {
+        withAnimation(.easeInOut(duration: 0.3)) {
+            trainingPlanContentOpacity = 0
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            withAnimation(.easeInOut(duration: 0.4)) {
+                blurAmount = 0
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                showTrainingPlanOnboarding = false
+                UserStorage.showTrainingPlanOnboarding = false
             }
         }
     }
@@ -193,4 +230,5 @@ struct RoundedCorner: Shape {
         .environmentObject(WorkoutViewModel())
         .environmentObject(KnowledgeViewModel())
         .environmentObject(KeyboardResponder())
+        .environmentObject(TrainingPlansViewModel.preview)
 }

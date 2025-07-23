@@ -44,7 +44,7 @@ struct KnowledgeView: View {
                         Text(categoryTitle)
                             .font(.system(size: 24, weight: .medium))
                             .foregroundStyle(LinearGradient(
-                                colors: [Color(hex: "#FFFFFF"), Color(hex: "#999999")],
+                                colors: [Color(hex: "#FFFFFF"), Color(hex: "#FFFFFF"), Color(hex: "#999999")],
                                 startPoint: .leading,
                                 endPoint: .trailing
                             ))

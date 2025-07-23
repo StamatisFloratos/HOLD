@@ -116,6 +116,8 @@ extension Notification.Name {
 
 extension SubscriptionManager: SuperwallDelegate {
     func handleSuperwallPlacement(withInfo eventInfo: SuperwallEventInfo) {
+        let userProfile = UserProfile.load()
+        
         switch eventInfo.event {
         case .subscriptionStart(let product, _):
             AppsFlyerLib.shared().logEvent(AFEventSubscribe, withValues: [
@@ -124,7 +126,16 @@ extension SubscriptionManager: SuperwallDelegate {
                 AFEventParamContentId: product.productIdentifier,
                 AFEventParamContentType: "Subscription"
             ])
-            PurchaseTracker.shared.trackPurchase(purchaseAttribution: PurchaseAttribution(productID: product.productIdentifier, productName: product.sk2Product?.displayName ?? "", purchaseAmount: product.price, currency: product.currencyCode ?? "", isFreeTrial: false))
+            UserAttributionSystem.shared.attributeUser(userAttribution: UserAttribution(
+                userId: DeviceIdManager.getUniqueDeviceId(),
+                userName: userProfile.name,
+                userAge: userProfile.age,
+                onboarding: UserStorage.onboarding,
+                productID: product.productIdentifier,
+                productName: product.sk2Product?.displayName ?? "",
+                purchaseAmount: product.price,
+                currency: product.currencyCode ?? "",
+                isFreeTrial: false))
             UserQuestionnaireManager.shared.logSubscriptionEvent()
             break
         case .freeTrialStart(let product, _):
@@ -132,7 +143,16 @@ extension SubscriptionManager: SuperwallDelegate {
                 AFEventParamContentId: product.productIdentifier,
                 AFEventParamContentType: "Trial"
             ])
-            PurchaseTracker.shared.trackPurchase(purchaseAttribution: PurchaseAttribution(productID: product.productIdentifier, productName: product.sk2Product?.displayName ?? "", purchaseAmount: product.price, currency: product.currencyCode ?? "", isFreeTrial: true))
+            UserAttributionSystem.shared.attributeUser(userAttribution: UserAttribution(
+                userId: DeviceIdManager.getUniqueDeviceId(),
+                userName: userProfile.name,
+                userAge: userProfile.age,
+                onboarding: UserStorage.onboarding,
+                productID: product.productIdentifier,
+                productName: product.sk2Product?.displayName ?? "",
+                purchaseAmount: product.price,
+                currency: product.currencyCode ?? "",
+                isFreeTrial: true))
             UserQuestionnaireManager.shared.logSubscriptionEvent()
             break
         default:
