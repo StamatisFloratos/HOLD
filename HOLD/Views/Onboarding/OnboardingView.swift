@@ -267,22 +267,26 @@ struct OnboardingView: View {
                                 .frame(height: 58)
                                 .padding(.horizontal, 16)
                                 .background(
-                                    selected(for: question, option: option) ?
-                                    LinearGradient(
-                                        gradient: Gradient(colors: [
-                                            Color(hex: "#FF1919"),
-                                            Color(hex: "#990F0F")
-                                        ]),
-                                        startPoint: .leading,
-                                        endPoint: .trailing
-                                    ) :
-                                    LinearGradient(
-                                        gradient: Gradient(colors: [
-                                            Color(hex: "#1A1A1A")
-                                        ]),
-                                        startPoint: .leading,
-                                        endPoint: .trailing
-                                    )
+                                    ZStack {
+                                        LinearGradient(
+                                            gradient: Gradient(colors: [
+                                                Color(hex: "#1A1A1A")
+                                            ]),
+                                            startPoint: .leading,
+                                            endPoint: .trailing
+                                        )
+                                        
+                                        LinearGradient(
+                                            gradient: Gradient(colors: [
+                                                Color(hex: "#FF1919"),
+                                                Color(hex: "#990F0F")
+                                            ]),
+                                            startPoint: .leading,
+                                            endPoint: .trailing
+                                        )
+                                        .opacity(selected(for: question, option: option) ? 1.0 : 0.0)
+                                        .animation(.easeInOut(duration: 0.3), value: selected(for: question, option: option))
+                                    }
                                 )
                                 .cornerRadius(16)
                                 .overlay(
