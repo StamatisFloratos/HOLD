@@ -168,7 +168,6 @@ struct KnowledgeCardView: View {
     let description: String
     let width: CGFloat
     let height: CGFloat
-
     var body: some View {
         ZStack(alignment: .center) {
             WebImage(url: URL(string: imageName)) { image in

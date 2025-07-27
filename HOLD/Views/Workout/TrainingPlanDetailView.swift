@@ -38,19 +38,11 @@ struct TrainingPlanDetailView: View {
     @State private var showChallengeSheet = false
     @State private var challengeDayIndex: Int? = nil
 
+    @State private var showBadgesView = false
+    
     // Use a single context for launching workouts
     @State private var workoutLaunchContext: WorkoutLaunchContext? = nil
 
-    // New state for plan completion/failure modals
-    @State private var blurAmount: CGFloat = 0
-
-    // New state for plan completion/failure modals
-    @State private var shouldShowFailureModalAfterSwitch = false
-
-    @State private var weeklyUpdateContentOpacity: Double = 0
-    @State private var completionModalContentOpacity: Double = 0
-    @State private var failureModalContentOpacity: Double = 0
-    
     var todayIndex: Int? {
         let completed = viewModel.planProgress[plan.id] ?? []
         return plan.days.firstIndex(where: { !completed.contains($0.dayIndex) }) ?? (plan.days.count - 1)
@@ -240,192 +232,18 @@ struct TrainingPlanDetailView: View {
                             }
                             scrollToToday = false
                         }
-                        
-                        if isPlanFailed() {
-                            viewModel.triggerPlanFailureModal(failedPlan: plan, percentComplete: getPlanPercentComplete())
-                        }
                     }
                 }
                 Spacer(minLength: 0)
             }
             .padding(.horizontal, 28)
-            .blur(radius: blurAmount)
-            .animation(.easeInOut(duration: 0.5), value: blurAmount)
-
-            if viewModel.showPlanCompletionModal, let completedPlan = viewModel.completedPlanForModal {
-                Color.black.opacity(0.5)
-                    .ignoresSafeArea()
-                    .allowsHitTesting(true)
-                PlanCompletionModalView(
-                    completedPlan: completedPlan,
-                    nextPlan: viewModel.nextPlanForModal,
-                    onDone: {
-                        withAnimation {
-                            completionModalContentOpacity = 0
-                        }
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                            withAnimation(.easeInOut(duration: 0.4)) {
-                                blurAmount = 0
-                            }
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                                if let nextPlan = viewModel.nextPlanForModal {
-                                    viewModel.switchToPlan(nextPlan.id)
-                                }
-                                viewModel.showPlanCompletionModal = false
-                                viewModel.completedPlanForModal = nil
-                                viewModel.nextPlanForModal = nil
-                            }
-                        }
-                    },
-                    onSwitchProgram: {
-                        withAnimation {
-                            completionModalContentOpacity = 0
-                        }
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                            withAnimation(.easeInOut(duration: 0.4)) {
-                                blurAmount = 0
-                            }
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                                viewModel.showPlanCompletionModal = false
-                                viewModel.completedPlanForModal = nil
-                                viewModel.nextPlanForModal = nil
-                                showSwitchSheet = true
-                            }
-                        }
-                    }
-                )
-                .transition(.asymmetric(
-                    insertion: .opacity,
-                    removal: .opacity)
-                )
-                .zIndex(100)
-                .onAppear {
-                    withAnimation(.easeInOut(duration: 0.4)) {
-                        blurAmount = 30
-                    }
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                        withAnimation {
-                            completionModalContentOpacity = 1.0
-                        }
-                    }
-                }
-            }
-
-            if viewModel.showPlanFailureModal, let failedPlan = viewModel.failedPlanForModal {
-                Color.black.opacity(0.5)
-                    .ignoresSafeArea()
-                    .allowsHitTesting(true)
-                PlanFailureModalView(
-                    failedPlan: failedPlan,
-                    percentComplete: viewModel.failedPlanPercentComplete,
-                    onRetry: {
-                        withAnimation {
-                            failureModalContentOpacity = 0
-                        }
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                            withAnimation(.easeInOut(duration: 0.4)) {
-                                blurAmount = 0
-                            }
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                                viewModel.reenrollPlanFromStart(plan: failedPlan)
-                                viewModel.clearPlanFailureModal()
-                            }
-                        }
-                    },
-                    onSwitchProgram: {
-                        withAnimation {
-                            failureModalContentOpacity = 0
-                        }
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                            withAnimation(.easeInOut(duration: 0.4)) {
-                                blurAmount = 0
-                            }
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                                viewModel.showPlanFailureModal = false
-                                shouldShowFailureModalAfterSwitch = true
-                                showSwitchSheet = true
-                            }
-                        }
-                    }
-                )
-                .transition(.asymmetric(
-                    insertion: .opacity,
-                    removal: .opacity)
-                )
-                .zIndex(100)
-                .onAppear {
-                    withAnimation(.easeInOut(duration: 0.4)) {
-                        blurAmount = 30
-                    }
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                        withAnimation {
-                            failureModalContentOpacity = 1.0
-                        }
-                    }
-                }
-            }
-
-            if viewModel.showWeeklyUpdate, let weeklyStats = viewModel.weeklyUpdateData, !viewModel.showPlanCompletionModal, !viewModel.showPlanFailureModal, !shouldShowFailureModalAfterSwitch {
-                Color.black.opacity(0.5)
-                    .ignoresSafeArea()
-                    .allowsHitTesting(true)
-                WeeklyUpdateView(
-                    stats: weeklyStats,
-                    challengeProgress: weeklyStats.challengeProgress ?? (0,0),
-                    muscleProgress: weeklyStats.muscleProgress ?? (0,0),
-                    onBack: {
-                        withAnimation {
-                            weeklyUpdateContentOpacity = 0
-                        }
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                            withAnimation(.easeInOut(duration: 0.4)) {
-                                blurAmount = 0
-                            }
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                                viewModel.dismissWeeklyUpdate()
-                            }
-                        }
-                    }
-                )
-                .transition(.asymmetric(
-                    insertion: .opacity,
-                    removal: .opacity)
-                )
-                .opacity(weeklyUpdateContentOpacity)
-                .zIndex(200)
-                .onAppear {
-                    withAnimation(.easeInOut(duration: 0.4)) {
-                        blurAmount = 30
-                    }
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                        withAnimation {
-                            weeklyUpdateContentOpacity = 1.0
-                        }
-                    }
-                }
-            }
         }
-        .animation(.easeInOut(duration: 0.3), value: weeklyUpdateContentOpacity)
-        .animation(.easeInOut(duration: 0.3), value: completionModalContentOpacity)
-        .animation(.easeInOut(duration: 0.3), value: failureModalContentOpacity)
         .navigationBarHidden(true)
         .fullScreenCover(item: $workoutLaunchContext, onDismiss: {}) { context in
             WorkoutView(selectedWorkout: context.workout, onBack: {
-                viewModel.markDayCompleted(planId: plan.id, dayIndex: context.dayIndex)
+                viewModel.markDayCompleted(dayIndex: context.dayIndex)
                 workoutLaunchContext = nil
+                showBadgesView = true
             })
         }
         .fullScreenCover(isPresented: $showMeasurementSheet) {
@@ -459,30 +277,26 @@ struct TrainingPlanDetailView: View {
                 }
             )
         }
-        .sheet(isPresented: $showSwitchSheet, onDismiss: {
-            if shouldShowFailureModalAfterSwitch {
-                shouldShowFailureModalAfterSwitch = false
-                if viewModel.failedPlanForModal != nil {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                        withAnimation(.easeInOut(duration: 0.4)) {
-                            blurAmount = 30
-                        }
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
-                            viewModel.showPlanFailureModal = true
-                            withAnimation {
-                                failureModalContentOpacity = 1.0
-                            }
-                        }
-                    }
-                }
-            }
-        }) {
+        .sheet(isPresented: $showSwitchSheet, onDismiss: {}) {
             SwitchProgramSheet(viewModel: viewModel, onSelect: { plan in
                 viewModel.switchToPlan(plan.id)
                 showSwitchSheet = false
-                shouldShowFailureModalAfterSwitch = false
             })
+        }
+        .sheet(isPresented: $showBadgesView) {
+            let badge = workoutViewModel.newBadges.last
+            StreakBadgeView(
+                unlockedBadge: badge,
+                nextBadge: workoutViewModel.getNextBatchToUnlock(),
+                showUnlockedBadge: badge != nil ? true : false,
+                onBack: {
+                    showBadgesView = false
+                    workoutViewModel.newBadges = []
+                    viewModel.checkForTrainingPlansUpdate()
+                }
+            )
+            .presentationDetents([.large])
+            .presentationDragIndicator(.hidden)
         }
         .onAppear {
             viewModel.checkAndTriggerWeeklyUpdate()
@@ -557,22 +371,6 @@ struct TrainingPlanDetailView: View {
         } else {
             return (.future, dayDate)
         }
-    }
-
-    // Helper to check if plan has ended and is not completed
-    private func isPlanFailed() -> Bool {
-        guard let startDate = viewModel.planStartDate else { return false }
-        let calendar = Calendar.current
-        let lastDay = plan.days.map { $0.dayIndex }.max() ?? 0
-        let lastDayDate = calendar.date(byAdding: .day, value: lastDay - 1, to: startDate)!
-        let today = calendar.startOfDay(for: Date())
-        let completedCount = viewModel.planProgress[plan.id]?.count ?? 0
-        return today > lastDayDate && completedCount < plan.days.count
-    }
-    // Helper to get percent complete
-    private func getPlanPercentComplete() -> Int {
-        let completedCount = viewModel.planProgress[plan.id]?.count ?? 0
-        return plan.days.count > 0 ? Int((Double(completedCount) / Double(plan.days.count)) * 100) : 0
     }
     
     func triggerHaptic() {

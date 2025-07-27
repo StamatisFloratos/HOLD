@@ -20,6 +20,7 @@ struct MainTabView: View {
     @EnvironmentObject var challengeViewModel: ChallengeViewModel
     @EnvironmentObject var workoutViewModel: WorkoutViewModel
     @EnvironmentObject var knowledgeViewModel: KnowledgeViewModel
+    @EnvironmentObject var trainingPlanViewModel: TrainingPlansViewModel
     @EnvironmentObject var keyboardResponder: KeyboardResponder
     
     @State private var showWelcomeOnboarding = UserStorage.showWelcomeOnboarding
@@ -27,6 +28,13 @@ struct MainTabView: View {
     @State private var blurAmount: CGFloat = 0
     @State private var welcomeContentOpacity: Double = 0
     @State private var trainingPlanContentOpacity: Double = 0
+    
+    @State private var showSwitchSheet = false
+    @State private var shouldShowFailureModalAfterSwitch = false
+
+    @State private var weeklyUpdateContentOpacity: Double = 0
+    @State private var completionModalContentOpacity: Double = 0
+    @State private var failureModalContentOpacity: Double = 0
     
     init() {
         UITabBar.appearance().isHidden = true // Hide the default tab bar
@@ -86,6 +94,11 @@ struct MainTabView: View {
             }
             
             FirebaseManager.shared.logAgeEvent()
+            trainingPlanViewModel.checkAndTriggerWeeklyUpdate()
+            
+            if let currentPlan = trainingPlanViewModel.plans.first(where: { $0.id == trainingPlanViewModel.currentPlanId }), isPlanFailed(plan: currentPlan) {
+                trainingPlanViewModel.triggerPlanFailureModal(failedPlan: currentPlan, percentComplete: getPlanPercentComplete(plan: currentPlan))
+            }
         }
         .overlay {
             if showWelcomeOnboarding {
@@ -101,7 +114,200 @@ struct MainTabView: View {
                 TrainingPlanOnboarding(onCompletion: {
                     dismissTrainingPlanAnimation()
                 })
+                .transition(.asymmetric(
+                    insertion: .opacity,
+                    removal: .move(edge: .leading)
+                ))
+                .opacity(trainingPlanContentOpacity)
+            } else if trainingPlanViewModel.showPlanCompletionModal, let completedPlan = trainingPlanViewModel.completedPlanForModal {
+                
+                PlanCompletionModalView(
+                    completedPlan: completedPlan,
+                    nextPlan: trainingPlanViewModel.nextPlanForModal,
+                    onDone: {
+                        withAnimation {
+                            completionModalContentOpacity = 0
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            withAnimation(.easeInOut(duration: 0.4)) {
+                                blurAmount = 0
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                                if let nextPlan = trainingPlanViewModel.nextPlanForModal {
+                                    trainingPlanViewModel.switchToPlan(nextPlan.id)
+                                }
+                                trainingPlanViewModel.showPlanCompletionModal = false
+                                trainingPlanViewModel.completedPlanForModal = nil
+                                trainingPlanViewModel.nextPlanForModal = nil
+                            }
+                        }
+                    },
+                    onSwitchProgram: {
+                        withAnimation {
+                            completionModalContentOpacity = 0
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            withAnimation(.easeInOut(duration: 0.4)) {
+                                blurAmount = 0
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                                if let nextPlan = trainingPlanViewModel.nextPlanForModal {
+                                    trainingPlanViewModel.switchToPlan(nextPlan.id)
+                                }
+                                trainingPlanViewModel.showPlanCompletionModal = false
+                                trainingPlanViewModel.completedPlanForModal = nil
+                                trainingPlanViewModel.nextPlanForModal = nil
+                                showSwitchSheet = true
+                            }
+                        }
+                    }
+                )
+                .transition(.asymmetric(
+                    insertion: .opacity,
+                    removal: .move(edge: .leading)
+                ))
+                .opacity(completionModalContentOpacity)
+                .zIndex(100)
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 0.4)) {
+                        blurAmount = 20
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                        withAnimation {
+                            completionModalContentOpacity = 1.0
+                        }
+                    }
+                }
+            } else if trainingPlanViewModel.showPlanFailureModal, let failedPlan = trainingPlanViewModel.failedPlanForModal {
+                Color.black.opacity(0.5)
+                    .ignoresSafeArea()
+                    .allowsHitTesting(true)
+                PlanFailureModalView(
+                    failedPlan: failedPlan,
+                    percentComplete: trainingPlanViewModel.failedPlanPercentComplete,
+                    onRetry: {
+                        withAnimation {
+                            failureModalContentOpacity = 0
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            withAnimation(.easeInOut(duration: 0.4)) {
+                                blurAmount = 0
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                                trainingPlanViewModel.reenrollPlanFromStart(plan: failedPlan)
+                                trainingPlanViewModel.clearPlanFailureModal()
+                            }
+                        }
+                    },
+                    onSwitchProgram: {
+                        withAnimation {
+                            failureModalContentOpacity = 0
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            withAnimation(.easeInOut(duration: 0.4)) {
+                                blurAmount = 0
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                                trainingPlanViewModel.showPlanFailureModal = false
+                                shouldShowFailureModalAfterSwitch = true
+                                showSwitchSheet = true
+                            }
+                        }
+                    }
+                )
+                .transition(.asymmetric(
+                    insertion: .opacity,
+                    removal: .move(edge: .leading)
+                ))
+                .opacity(failureModalContentOpacity)
+                .zIndex(100)
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 0.4)) {
+                        blurAmount = 20
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                        withAnimation {
+                            failureModalContentOpacity = 1.0
+                        }
+                    }
+                }
+            } else if trainingPlanViewModel.showWeeklyUpdate, let weeklyStats = trainingPlanViewModel.weeklyUpdateData, !trainingPlanViewModel.showPlanCompletionModal, !trainingPlanViewModel.showPlanFailureModal, !shouldShowFailureModalAfterSwitch {
+                Color.black.opacity(0.5)
+                    .ignoresSafeArea()
+                    .allowsHitTesting(true)
+                WeeklyUpdateView(
+                    stats: weeklyStats,
+                    challengeProgress: weeklyStats.challengeProgress ?? (0,0),
+                    muscleProgress: weeklyStats.muscleProgress ?? (0,0),
+                    onBack: {
+                        withAnimation {
+                            weeklyUpdateContentOpacity = 0
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            withAnimation(.easeInOut(duration: 0.4)) {
+                                blurAmount = 0
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                                trainingPlanViewModel.dismissWeeklyUpdate()
+                            }
+                        }
+                    }
+                )
+                .transition(.asymmetric(
+                    insertion: .opacity,
+                    removal: .move(edge: .leading)
+                ))
+                .opacity(weeklyUpdateContentOpacity)
+                .zIndex(200)
+                .onAppear {
+                    withAnimation(.easeInOut(duration: 0.4)) {
+                        blurAmount = 20
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                        withAnimation {
+                            weeklyUpdateContentOpacity = 1.0
+                        }
+                    }
+                }
             }
+        }
+        .sheet(isPresented: $showSwitchSheet, onDismiss: {
+            if shouldShowFailureModalAfterSwitch {
+                shouldShowFailureModalAfterSwitch = false
+                if trainingPlanViewModel.failedPlanForModal != nil {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        withAnimation(.easeInOut(duration: 0.4)) {
+                            blurAmount = 20
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                            trainingPlanViewModel.showPlanFailureModal = true
+                            withAnimation {
+                                failureModalContentOpacity = 1.0
+                            }
+                        }
+                    }
+                }
+            }
+        }) {
+            SwitchProgramSheet(viewModel: trainingPlanViewModel, onSelect: { plan in
+                trainingPlanViewModel.switchToPlan(plan.id)
+                showSwitchSheet = false
+                shouldShowFailureModalAfterSwitch = false
+            })
         }
     }
     
@@ -161,6 +367,21 @@ struct MainTabView: View {
                 UserStorage.showWelcomeOnboarding = false
             }
         }
+    }
+    
+    private func isPlanFailed(plan: TrainingPlan) -> Bool {
+        guard let startDate = trainingPlanViewModel.planStartDate else { return false }
+        let calendar = Calendar.current
+        let lastDay = plan.days.map { $0.dayIndex }.max() ?? 0
+        let lastDayDate = calendar.date(byAdding: .day, value: lastDay - 1, to: startDate)!
+        let today = calendar.startOfDay(for: Date())
+        let completedCount = trainingPlanViewModel.planProgress[plan.id]?.count ?? 0
+        return today > lastDayDate && completedCount < plan.days.count
+    }
+    
+    private func getPlanPercentComplete(plan: TrainingPlan) -> Int {
+        let completedCount = trainingPlanViewModel.planProgress[plan.id]?.count ?? 0
+        return plan.days.count > 0 ? Int((Double(completedCount) / Double(plan.days.count)) * 100) : 0
     }
     
     func triggerHaptic() {

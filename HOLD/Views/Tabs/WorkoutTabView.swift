@@ -45,8 +45,8 @@ struct WorkoutTabView: View {
                             .padding(.top,39)
                             .padding(.leading,10)
                         
-                        if let todaysWorkout = workoutViewModel.todaysWorkout {
-                            workoutCard(workout: todaysWorkout)
+                        if let selectedDay = trainingPlansViewModel.getTodaysDay(), let workout = trainingPlansViewModel.workouts[selectedDay.workoutId] {
+                            workoutCard(workout: workout)
                                 .padding(.top,17)
                         } else {
                             Text("No workouts available")
@@ -176,8 +176,9 @@ struct WorkoutTabView: View {
             }
             .fullScreenCover(isPresented: $showWorkoutView) {
                 Group {
-                    if let selectedWorkout = workoutViewModel.todaysWorkout {
-                        WorkoutView(selectedWorkout: selectedWorkout, onBack: {
+                    if let selectedDay = trainingPlansViewModel.getTodaysDay(), let workout = trainingPlansViewModel.workouts[selectedDay.workoutId] {
+                        WorkoutView(selectedWorkout: workout, onBack: {
+                            trainingPlansViewModel.markDayCompleted(dayIndex: selectedDay.dayIndex)
                             showWorkoutView = false
                             showBadgesView = true
                         })
@@ -222,6 +223,7 @@ struct WorkoutTabView: View {
                     onBack: {
                         showBadgesView = false
                         workoutViewModel.newBadges = []
+                        trainingPlansViewModel.checkForTrainingPlansUpdate()
                     }
                 )
                 .presentationDetents([.large])

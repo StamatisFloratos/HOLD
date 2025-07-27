@@ -9,112 +9,118 @@ struct PlanCompletionModalView: View {
     @State private var showNextPlan = false
     
     var body: some View {
-        VStack(spacing: 0) {
-            VStack(spacing: 10) {
-                Text("Program Completed")
-                    .font(.system(size: 24, weight: .semibold))
-                    .foregroundColor(.white)
-                Image(systemName: "checkmark.circle")
-                    .font(.system(size: 32, weight: .semibold))
-                    .foregroundColor(Color(hex: "#06A800"))
-            }
-            .padding(.top, 40)
-            .padding(.bottom, 80)
-            .animation(.easeInOut(duration: 0.5), value: showNextPlan)
+        ZStack {
+            Color.black.opacity(0.5)
+                .ignoresSafeArea()
+                .allowsHitTesting(true)
             
-            ZStack {
-                VStack(spacing: 24) {
-                    Text("You just successfully completed:")
-                        .font(.system(size: 20, weight: .medium))
+            VStack(spacing: 0) {
+                VStack(spacing: 10) {
+                    Text("Program Completed")
+                        .font(.system(size: 24, weight: .semibold))
                         .foregroundColor(.white)
-                    TrainingPlanCardModal(
-                        planName: completedPlan.name,
-                        daysLeft: 0,
-                        percentComplete: 100,
-                        progress: 1.0,
-                        image: completedPlan.image,
-                        height: 250,
-                        completed: true,
-                        onTap: {}
-                    )
-                    
-                    Spacer()
-                    
-                    Button(action: {
-                        triggerHaptic()
-                        withAnimation(.easeInOut(duration: 0.5)) {
-                            showNextPlan = true
-                        }
-                    }) {
-                        Text("Next")
-                            .font(.system(size: 16, weight: .semibold))
-                            .frame(maxWidth: .infinity, maxHeight: 47)
-                            .background(Color(hex: "#FF1919"))
-                            .foregroundColor(.white)
-                            .cornerRadius(30)
-                            .padding(.horizontal, 16)
-                    }
-                    .opacity(showNextPlan ? 0 : 1)
-                    .animation(.easeInOut(duration: 0.5), value: showNextPlan)
+                    Image(systemName: "checkmark.circle")
+                        .font(.system(size: 32, weight: .semibold))
+                        .foregroundColor(Color(hex: "#06A800"))
                 }
-                .opacity(showNextPlan ? 0 : 1)
+                .padding(.top, 40)
+                .padding(.bottom, 80)
                 .animation(.easeInOut(duration: 0.5), value: showNextPlan)
-
-                VStack(spacing: 24) {
-                    if let nextPlan = nextPlan {
-                        Text("Your next program is:")
+                
+                ZStack {
+                    VStack(spacing: 24) {
+                        Text("You just successfully completed:")
                             .font(.system(size: 20, weight: .medium))
                             .foregroundColor(.white)
                         TrainingPlanCardModal(
-                            planName: nextPlan.name,
-                            daysLeft: nextPlan.duration,
-                            percentComplete: 0,
-                            progress: 0.0,
-                            image: nextPlan.image,
+                            planName: completedPlan.name,
+                            daysLeft: 0,
+                            percentComplete: 100,
+                            progress: 1.0,
+                            image: completedPlan.image,
                             height: 250,
-                            completed: false,
+                            completed: true,
                             onTap: {}
                         )
                         
                         Spacer()
                         
-                        VStack(spacing: 10) {
-                            Button(action: {
-                                triggerHaptic()
-                                onSwitchProgram()
-                            }) {
-                                HStack(spacing: 8) {
-                                    Text("Switch Program")
-                                    Image("switchIcon")
-                                }
+                        Button(action: {
+                            triggerHaptic()
+                            withAnimation(.easeInOut(duration: 0.5)) {
+                                showNextPlan = true
+                            }
+                        }) {
+                            Text("Next")
                                 .font(.system(size: 16, weight: .semibold))
                                 .frame(maxWidth: .infinity, maxHeight: 47)
-                                .background(.clear)
+                                .background(Color(hex: "#FF1919"))
                                 .foregroundColor(.white)
                                 .cornerRadius(30)
                                 .padding(.horizontal, 16)
-                            }
-                            Button(action: {
-                                triggerHaptic()
-                                onDone()
-                            }) {
-                                Text("Done")
+                        }
+                        .opacity(showNextPlan ? 0 : 1)
+                        .animation(.easeInOut(duration: 0.5), value: showNextPlan)
+                    }
+                    .opacity(showNextPlan ? 0 : 1)
+                    .animation(.easeInOut(duration: 0.5), value: showNextPlan)
+                    
+                    VStack(spacing: 24) {
+                        if let nextPlan = nextPlan {
+                            Text("Your next program is:")
+                                .font(.system(size: 20, weight: .medium))
+                                .foregroundColor(.white)
+                            TrainingPlanCardModal(
+                                planName: nextPlan.name,
+                                daysLeft: nextPlan.duration,
+                                percentComplete: 0,
+                                progress: 0.0,
+                                image: nextPlan.image,
+                                height: 250,
+                                completed: false,
+                                onTap: {}
+                            )
+                            
+                            Spacer()
+                            
+                            VStack(spacing: 10) {
+                                Button(action: {
+                                    triggerHaptic()
+                                    onSwitchProgram()
+                                }) {
+                                    HStack(spacing: 8) {
+                                        Text("Switch Program")
+                                        Image("switchIcon")
+                                    }
                                     .font(.system(size: 16, weight: .semibold))
                                     .frame(maxWidth: .infinity, maxHeight: 47)
-                                    .background(Color(hex: "#FF1919"))
+                                    .background(.clear)
                                     .foregroundColor(.white)
                                     .cornerRadius(30)
                                     .padding(.horizontal, 16)
+                                }
+                                Button(action: {
+                                    triggerHaptic()
+                                    onDone()
+                                }) {
+                                    Text("Done")
+                                        .font(.system(size: 16, weight: .semibold))
+                                        .frame(maxWidth: .infinity, maxHeight: 47)
+                                        .background(Color(hex: "#FF1919"))
+                                        .foregroundColor(.white)
+                                        .cornerRadius(30)
+                                        .padding(.horizontal, 16)
+                                }
                             }
                         }
                     }
+                    .opacity(showNextPlan ? 1 : 0)
+                    .animation(.easeInOut(duration: 0.5), value: showNextPlan)
                 }
-                .opacity(showNextPlan ? 1 : 0)
-                .animation(.easeInOut(duration: 0.5), value: showNextPlan)
             }
+            .padding(.horizontal, 30)
+            .padding(.vertical, 40)
         }
-        .padding(.horizontal, 30)
-        .padding(.vertical, 40)
     }
     
     func triggerHaptic() {

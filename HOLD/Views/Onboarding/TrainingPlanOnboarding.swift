@@ -25,42 +25,35 @@ struct TrainingPlanOnboarding: View {
             
             switch currentView {
             case 1:
-                stepOne
-                    .opacity(contentOpacity)
+                stepOneAndTwoLayout
             case 2:
-                stepTwo
-                    .opacity(contentOpacity)
+                stepOneAndTwoLayout
             case 3:
                 stepThree
                     .opacity(contentOpacity)
             default:
-                stepOne
+                stepOneAndTwoLayout
                     .opacity(contentOpacity)
             }
         }
         .animation(.easeInOut, value: showNextView)
     }
     
-    var stepOne: some View {
+    var stepOneAndTwoLayout: some View {
         VStack(spacing: 0) {
             Spacer()
             
             Image("trainingPlanBanner")
                 .frame(width: 247, height: 230)
             
-            Text("We’re Introducing Programs")
-                .font(.system(size: 24, weight: .semibold))
-                .multilineTextAlignment(.center)
-                .foregroundColor(.white)
-                .padding(.horizontal, 30)
-                .padding(.top, 26)
-                .padding(.bottom, 40)
-            
-            Text("Now each user gets a series of personalized programs with different difficulties.")
-                .font(.system(size: 16, weight: .medium))
-                .multilineTextAlignment(.center)
-                .foregroundColor(.white)
-                .padding(.horizontal, 30)
+            VStack(spacing: 0) {
+                if currentView == 1 {
+                    stepOneContent
+                } else {
+                    stepTwoContent
+                }
+            }
+            .opacity(contentOpacity)
             
             Spacer()
             
@@ -80,13 +73,26 @@ struct TrainingPlanOnboarding: View {
         }
     }
     
-    var stepTwo: some View {
+    var stepOneContent: some View {
         VStack(spacing: 0) {
-            Spacer()
+            Text("We're Introducing Programs")
+                .font(.system(size: 24, weight: .semibold))
+                .multilineTextAlignment(.center)
+                .foregroundColor(.white)
+                .padding(.horizontal, 30)
+                .padding(.top, 26)
+                .padding(.bottom, 40)
             
-            Image("trainingPlanBanner")
-                .frame(width: 247, height: 230)
-            
+            Text("Now each user gets a series of personalized programs with different difficulties.")
+                .font(.system(size: 16, weight: .medium))
+                .multilineTextAlignment(.center)
+                .foregroundColor(.white)
+                .padding(.horizontal, 30)
+        }
+    }
+    
+    var stepTwoContent: some View {
+        VStack(spacing: 0) {
             Text("Switch Anytime, Stay on Track")
                 .font(.system(size: 24, weight: .semibold))
                 .multilineTextAlignment(.center)
@@ -100,28 +106,12 @@ struct TrainingPlanOnboarding: View {
                 .multilineTextAlignment(.center)
                 .foregroundColor(.white)
                 .padding(.horizontal, 30)
-            
-            Spacer()
-            
-            Button(action: {
-                triggerHaptic()
-                animateToNextView()
-            }) {
-                Text("Next")
-                    .font(.system(size: 16, weight: .semibold))
-                    .frame(maxWidth: .infinity, maxHeight: 47)
-                    .background(Color(hex: "#FF1919"))
-                    .foregroundColor(.white)
-                    .cornerRadius(30)
-                    .padding(.horizontal, 56)
-            }
-            .padding(.bottom, 24)
         }
     }
     
     var stepThree: some View {
         VStack(spacing: 0) {
-            Text("Here’s your first program")
+            Text("Here's your first program")
                 .font(.system(size: 24, weight: .semibold))
                 .foregroundColor(.white)
                 .padding(.top, 40)
@@ -194,14 +184,16 @@ struct TrainingPlanOnboarding: View {
     }
     
     func animateToNextView() {
-        withAnimation(.easeInOut(duration: 0.3)) {
-            contentOpacity = 0
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            currentView += 1
+        if currentView < 3 {
             withAnimation(.easeInOut(duration: 0.3)) {
-                contentOpacity = 1
+                contentOpacity = 0
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                currentView += 1
+                withAnimation(.easeInOut(duration: 0.3)) {
+                    contentOpacity = 1
+                }
             }
         }
     }
