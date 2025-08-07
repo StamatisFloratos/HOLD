@@ -13,6 +13,7 @@ import FirebaseDatabase
 class KnowledgeViewModel: ObservableObject {
 
     @Published var categories: [KnowledgeCategory] = []
+    @Published var showOnboardingTutorial = false
     
     private var databaseRef = Database.database(url: "https://holdknowledgehub2025-90a4a-76812.firebaseio.com").reference()
     

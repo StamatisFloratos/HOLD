@@ -10,8 +10,8 @@ struct WeeklyUpdateView: View {
     @EnvironmentObject var workoutViewModel: WorkoutViewModel
     
     let stats: WeeklyUpdateData
-    let challengeProgress: (current: Double, previous: Double)
-    let muscleProgress: (current: Double, previous: Double)
+    let challengeProgress: ProgressBarModel
+    let muscleProgress: ProgressBarModel
     
     var onBack: () -> Void
     
@@ -65,8 +65,8 @@ struct WeeklyUpdateView: View {
                         .foregroundColor(.white)
                     
                     VStack(spacing: 20) {
-                        ProgressBarCardView(title: "The Challenge", currentPercent: challengeProgress.current, previousPercent: challengeProgress.previous)
-                        ProgressBarCardView(title: "Muscle Progress", currentPercent: muscleProgress.current, previousPercent: muscleProgress.previous)
+                        ProgressBarCardView(title: "The Challenge", progressBarModel: challengeProgress)
+                        ProgressBarCardView(title: "Muscle Progress", progressBarModel: muscleProgress)
                     }
                     .padding(.top, 20)
                 }
@@ -80,7 +80,7 @@ struct WeeklyUpdateView: View {
                         .padding(.top, 12)
                         .padding(.horizontal, 16)
                     
-                    if challengeProgress.current > challengeProgress.previous {
+                    if challengeProgress.hasProgress && muscleProgress.hasProgress {
                         Text("Consistency is key. You are showing clear progress and you seem on track to meet your goal of lasting **\(UserStorage.wantToLastTime)**. Stay focused and keep working. Results speak for themselves.")
                             .font(.system(size: 16, weight: .regular))
                             .foregroundColor(.white)
@@ -152,8 +152,8 @@ struct StatCardView: View {
 
 struct ProgressBarCardView: View {
     let title: String
-    let currentPercent: Double
-    let previousPercent: Double
+    let progressBarModel: ProgressBarModel
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             HStack {
@@ -162,11 +162,11 @@ struct ProgressBarCardView: View {
                     .foregroundColor(.white)
                 Spacer()
                 Text("\(progressLabel)")
-                    .font(.system(size: 15, weight: .semibold))
+                    .font(progressLabelFont)
                     .foregroundColor(progressLabelColor)
             }
             
-            WeeklyUpdateProgressBarView(currentPercent: currentPercent, previousPercent: previousPercent)
+            WeeklyUpdateProgressBarView(currentPercent: calculateCurrentPercentage(), previousPercent: calculatePreviousPercentage(), isMax: progressBarModel.isMax)
                 .frame(height: 10)
                 .cornerRadius(5)
         }
@@ -183,21 +183,54 @@ struct ProgressBarCardView: View {
     }
     
     private var progressLabel: String {
-        if currentPercent == 0 {
-            return "no measurement"
-        } else if currentPercent == previousPercent {
-            return "no progress"
+        return progressBarModel.displayText
+    }
+    
+    private var progressLabelColor: Color {
+        if progressBarModel.isMax {
+            return Color(hex: "#0CFF00")
         } else {
-            let diff = currentPercent - previousPercent
-            let sign = diff > 0 ? "+" : ""
-            return "\(sign)\(Int(diff))%"
+            if progressBarModel.hasProgress {
+                return Color(hex: "#0CFF00")
+            } else {
+                return Color.white.opacity(0.7)
+            }
         }
     }
-    private var progressLabelColor: Color {
-        if currentPercent == 0 || currentPercent == previousPercent {
-            return Color.white.opacity(0.7)
+    
+    private var progressLabelFont: Font {
+        if progressBarModel.isMax {
+            return Font.system(size: 20, weight: .medium)
         } else {
-            return Color(hex: "#0CFF00")
+            if progressBarModel.hasProgress {
+                return Font.system(size: 20, weight: .medium)
+            } else {
+                return Font.system(size: 12, weight: .medium)
+            }
+        }
+    }
+    
+    func calculateCurrentPercentage() -> Double {
+        if progressBarModel.isMax {
+            return 0
+        } else {
+            if progressBarModel.hasProgress {
+                return progressBarModel.currentPercentage
+            } else {
+                return progressBarModel.previousPercentage
+            }
+        }
+    }
+    
+    func calculatePreviousPercentage() -> Double {
+        if progressBarModel.isMax {
+            return 100
+        } else {
+            if progressBarModel.hasProgress {
+                return progressBarModel.previousPercentage
+            } else {
+                return progressBarModel.previousPercentage
+            }
         }
     }
 }
@@ -205,12 +238,19 @@ struct ProgressBarCardView: View {
 struct WeeklyUpdateProgressBarView: View {
     let currentPercent: Double
     let previousPercent: Double
+    let isMax: Bool
+    
     var body: some View {
         GeometryReader { geo in
             ZStack(alignment: .leading) {
                 RoundedRectangle(cornerRadius: 5)
                     .fill(Color(hex: "#AFAFAF"))
-                if currentPercent > 0 {
+                
+                if isMax {
+                    RoundedRectangle(cornerRadius: 5)
+                        .fill(Color(hex: "#079700"))
+                        .frame(width: geo.size.width * 100)
+                } else {
                     if currentPercent > previousPercent {
                         RoundedRectangle(cornerRadius: 5)
                             .fill(Color(hex: "#0CFF00"))
@@ -228,9 +268,9 @@ struct WeeklyUpdateProgressBarView: View {
 
 #Preview {
     WeeklyUpdateView(
-        stats: WeeklyUpdateData(weekNumber: 1, weekStartDate: Date().addingDays(-6), weekEndDate: Date(), workoutsCompleted: 5, totalWorkoutsInWeek: 7, workoutMinutes: 30, challengeProgress: (30, 50), muscleProgress: (20, 20)),
-        challengeProgress: (current: 32, previous: 25),
-        muscleProgress: (current: 60, previous: 40), onBack: {}
+        stats: WeeklyUpdateData(weekNumber: 1, weekStartDate: Date().addingDays(-6), weekEndDate: Date(), workoutsCompleted: 5, totalWorkoutsInWeek: 7, workoutMinutes: 30, challengeProgress: ProgressBarModel(currentPercentage: 50, previousPercentage: 50, hasProgress: false, isMax: false, displayText: "No Progress"), muscleProgress: ProgressBarModel(currentPercentage: 20, previousPercentage: 10, hasProgress: true, isMax: false, displayText: "+2min 30sec")),
+        challengeProgress: ProgressBarModel(currentPercentage: 50, previousPercentage: 50, hasProgress: false, isMax: false, displayText: "No Progress"),
+        muscleProgress: ProgressBarModel(currentPercentage: 20, previousPercentage: 10, hasProgress: true, isMax: false, displayText: "+2min 30sec"), onBack: {}
     )
     .environmentObject(WorkoutViewModel())
 }

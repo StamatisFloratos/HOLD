@@ -100,6 +100,11 @@ struct MainTabView: View {
                 trainingPlanViewModel.triggerPlanFailureModal(failedPlan: currentPlan, percentComplete: getPlanPercentComplete(plan: currentPlan))
             }
         }
+        .onChange(of: knowledgeViewModel.showOnboardingTutorial) { _, newValue in
+            if newValue {
+                startWelcomeAnimation()
+            }
+        }
         .overlay {
             if showWelcomeOnboarding {
                 DashboardWelcomeView(onCompletion: {
@@ -119,6 +124,15 @@ struct MainTabView: View {
                     removal: .move(edge: .leading)
                 ))
                 .opacity(trainingPlanContentOpacity)
+            } else if knowledgeViewModel.showOnboardingTutorial {
+                DashboardWelcomeView(onCompletion: {
+                    dismissWelcomeAnimation()
+                }, startFromOnboardingTutorial: true)
+                .transition(.asymmetric(
+                    insertion: .opacity,
+                    removal: .move(edge: .leading)
+                ))
+                .opacity(welcomeContentOpacity)
             } else if trainingPlanViewModel.showPlanCompletionModal, let completedPlan = trainingPlanViewModel.completedPlanForModal {
                 
                 PlanCompletionModalView(
@@ -247,8 +261,8 @@ struct MainTabView: View {
                     .allowsHitTesting(true)
                 WeeklyUpdateView(
                     stats: weeklyStats,
-                    challengeProgress: weeklyStats.challengeProgress ?? (0,0),
-                    muscleProgress: weeklyStats.muscleProgress ?? (0,0),
+                    challengeProgress: weeklyStats.challengeProgress,
+                    muscleProgress: weeklyStats.muscleProgress,
                     onBack: {
                         withAnimation {
                             weeklyUpdateContentOpacity = 0

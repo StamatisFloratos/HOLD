@@ -15,6 +15,7 @@ struct DashboardWelcomeView: View {
     @State private var contentOpacity: Double = 1.0
     
     var onCompletion: (() -> Void)?
+    var startFromOnboardingTutorial = false
     
     var body: some View {
         ZStack {
@@ -66,6 +67,13 @@ struct DashboardWelcomeView: View {
             }
         }
         .animation(.easeInOut, value: showNextView)
+        .onAppear {
+            if startFromOnboardingTutorial {
+                showNextView = true
+                UserStorage.isWelcomeOnboardingInProgress = true
+                currentView = 4
+            }
+        }
     }
     
     var stepOne: some View {

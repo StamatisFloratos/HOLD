@@ -6,11 +6,6 @@ class TrainingPlansViewModel: ObservableObject {
     @Published var completedPlanIds: Set<String> = []
     
     @Published var planProgress: [String: Set<Int>] = [:]
-    @Published var measurementProgress: [String: Set<Int>] = [:] // Track completed measurements
-    @Published var measurementData: [String: [Int: Measurement]] = [:] // Store measurement data by planId -> dayIndex -> Measurement
-    @Published var challengeProgress: [String: Set<Int>] = [:] // Track completed challenges
-    @Published var challengeData: [String: [Int: ChallengeResult]] = [:] // Store challenge data by planId -> dayIndex -> ChallengeResult
-    
     @Published var planStartDate: Date? = nil
     @Published var workouts: [String: Workout] = [:]
     
@@ -24,6 +19,18 @@ class TrainingPlansViewModel: ObservableObject {
     @Published var showWeeklyUpdate: Bool = false
     @Published var weeklyUpdateData: WeeklyUpdateData? = nil
     @Published var weeklyUpdateSchedule: [Int] = []
+    
+    @Published var globalMeasurements: [GlobalMeasurement] = []
+    @Published var globalChallenges: [GlobalChallenge] = []
+    
+    // MARK: - Plan Configuration Constants
+    private let planTargets: [String: (challengeMinutes: Double, muscleSeconds: Double)] = [
+        "kegel_basics": (challengeMinutes: 5, muscleSeconds: 60),
+        "stronger_holds": (challengeMinutes: 15, muscleSeconds: 120),
+        "full_control": (challengeMinutes: 20, muscleSeconds: 200),
+        "outlast": (challengeMinutes: 30, muscleSeconds: 300),
+        "multi_orgasm_protocol": (challengeMinutes: 40, muscleSeconds: 400)
+    ]
     
     init() {
         loadPlans()
@@ -54,22 +61,18 @@ class TrainingPlansViewModel: ObservableObject {
            let progress = try? JSONDecoder().decode([String: Set<Int>].self, from: progressData) {
             self.planProgress = progress
         }
-        if let measurementData = defaults.data(forKey: "measurementProgress"),
-           let measurement = try? JSONDecoder().decode([String: Set<Int>].self, from: measurementData) {
-            self.measurementProgress = measurement
+        
+        // Load global measurements and challenges
+        if let measurementsData = defaults.data(forKey: "globalMeasurements"),
+           let measurements = try? JSONDecoder().decode([GlobalMeasurement].self, from: measurementsData) {
+            self.globalMeasurements = measurements
         }
-        if let measurementDataData = defaults.data(forKey: "measurementData"),
-           let measurementData = try? JSONDecoder().decode([String: [Int: Measurement]].self, from: measurementDataData) {
-            self.measurementData = measurementData
+        
+        if let challengesData = defaults.data(forKey: "globalChallenges"),
+           let challenges = try? JSONDecoder().decode([GlobalChallenge].self, from: challengesData) {
+            self.globalChallenges = challenges
         }
-        if let challengeData = defaults.data(forKey: "challengeProgress"),
-           let challenge = try? JSONDecoder().decode([String: Set<Int>].self, from: challengeData) {
-            self.challengeProgress = challenge
-        }
-        if let challengeDataData = defaults.data(forKey: "challengeData"),
-           let challengeData = try? JSONDecoder().decode([String: [Int: ChallengeResult]].self, from: challengeDataData) {
-            self.challengeData = challengeData
-        }
+        
         if let startDate = defaults.object(forKey: "planStartDate") as? Date {
             self.planStartDate = startDate
         }
@@ -101,21 +104,20 @@ class TrainingPlansViewModel: ObservableObject {
         let defaults = UserDefaults.standard
         defaults.set(currentPlanId, forKey: "currentPlanId")
         defaults.set(Array(completedPlanIds), forKey: "completedPlanIds")
+        
         if let data = try? JSONEncoder().encode(planProgress) {
             defaults.set(data, forKey: "planProgress")
         }
-        if let measurementData = try? JSONEncoder().encode(measurementProgress) {
-            defaults.set(measurementData, forKey: "measurementProgress")
+        
+        // Save global measurements and challenges
+        if let measurementsData = try? JSONEncoder().encode(globalMeasurements) {
+            defaults.set(measurementsData, forKey: "globalMeasurements")
         }
-        if let measurementDataData = try? JSONEncoder().encode(self.measurementData) {
-            defaults.set(measurementDataData, forKey: "measurementData")
+        
+        if let challengesData = try? JSONEncoder().encode(globalChallenges) {
+            defaults.set(challengesData, forKey: "globalChallenges")
         }
-        if let challengeData = try? JSONEncoder().encode(challengeProgress) {
-            defaults.set(challengeData, forKey: "challengeProgress")
-        }
-        if let challengeDataData = try? JSONEncoder().encode(self.challengeData) {
-            defaults.set(challengeDataData, forKey: "challengeData")
-        }
+        
         if let startDate = planStartDate {
             defaults.set(startDate, forKey: "planStartDate")
         }
@@ -125,10 +127,6 @@ class TrainingPlansViewModel: ObservableObject {
         currentPlanId = planId
         
         planProgress[planId] = []
-        measurementProgress[planId] = []
-        measurementData[planId] = [:]
-        challengeProgress[planId] = []
-        challengeData[planId] = [:]
         planStartDate = Date()
         
         clearPlanFailureModal()
@@ -177,33 +175,21 @@ class TrainingPlansViewModel: ObservableObject {
     }
     
     func markMeasurementCompleted(planId: String, dayIndex: Int, duration: Double) {
-        var progress = measurementProgress[planId] ?? Set<Int>()
-        progress.insert(dayIndex)
-        measurementProgress[planId] = progress
-        
-        var planMeasurements = measurementData[planId] ?? [:]
-        let measurement = Measurement(id: UUID(), date: Date(), durationSeconds: duration)
-        planMeasurements[dayIndex] = measurement
-        measurementData[planId] = planMeasurements
+        let newMeasurement = GlobalMeasurement(duration: duration, planId: planId, dayIndex: dayIndex)
+        globalMeasurements.append(newMeasurement)
         
         saveUserState()
-        
         objectWillChange.send()
     }
     
     func markChallengeCompleted(planId: String, dayIndex: Int, duration: Double) {
-        var progress = challengeProgress[planId] ?? Set<Int>()
-        progress.insert(dayIndex)
-        challengeProgress[planId] = progress
-        
-        var planChallenges = challengeData[planId] ?? [:]
-        let challengeResult = ChallengeResult(duration: duration)
-        planChallenges[dayIndex] = challengeResult
-        challengeData[planId] = planChallenges
+        let newChallenge = GlobalChallenge(duration: duration, planId: planId, dayIndex: dayIndex)
+        globalChallenges.append(newChallenge)
         
         saveUserState()
-        
         objectWillChange.send()
+        
+        checkWeeklyUpdateAfterWorkout()
     }
     
     func isDayCompleted(planId: String, dayIndex: Int) -> Bool {
@@ -211,11 +197,11 @@ class TrainingPlansViewModel: ObservableObject {
     }
     
     func isMeasurementCompleted(planId: String, dayIndex: Int) -> Bool {
-        return measurementProgress[planId]?.contains(dayIndex) ?? false
+        return globalMeasurements.contains { $0.planId == planId && $0.dayIndex == dayIndex }
     }
     
     func isChallengeCompleted(planId: String, dayIndex: Int) -> Bool {
-        return challengeProgress[planId]?.contains(dayIndex) ?? false
+        return globalChallenges.contains { $0.planId == planId && $0.dayIndex == dayIndex }
     }
     
     func isMeasurementScheduledForToday(dayIndex: Int) -> Bool {
@@ -286,10 +272,6 @@ class TrainingPlansViewModel: ObservableObject {
     func reenrollPlanFromStart(plan: TrainingPlan) {
         let planId = plan.id
         planProgress[planId] = []
-        measurementProgress[planId] = []
-        measurementData[planId] = [:]
-        challengeProgress[planId] = []
-        challengeData[planId] = [:]
         planStartDate = Date()
         currentPlanId = planId
         completedPlanIds.remove(planId)
@@ -326,169 +308,94 @@ class TrainingPlansViewModel: ObservableObject {
         return (start: calendar.startOfDay(for: weekStart), end: weekEnd)
     }
     
-    /// Computes the progress bar percentages for 'The Challenge' for the current and previous week.
-    /// - Returns: (currentPercent, previousPercent)
-    func challengeProgressBarPercentagesForCurrentWeek() -> (current: Double, previous: Double) {
+    /// Calculate challenge progress comparing this week's challenge to the last challenge taken (completely global)
+    /// Returns: (hasProgress: Bool, currentPercent: Double, previousPercent: Double, timeIncrease: String)
+    func calculateWeeklyChallengeProgress() -> ProgressBarModel {
         guard let planId = currentPlanId,
-              let plan = plans.first(where: { $0.id == planId }),
-              let weekRange = currentWeekRange,
-              let startDate = planStartDate else {
-            return (0, 0)
+              let planTarget = planTargets[planId] else {
+            return ProgressBarModel(currentPercentage: 0, previousPercentage: 0, hasProgress: false, isMax: false, displayText: "No Measurement")
         }
         
         let calendar = Calendar.current
+        let currentWeekRange = getCurrentWeekDateRange()
         
-        // Get all challenge days in the plan
-        let challengeDays = plan.days.filter { $0.showPracticeChallenge }
+        let thisWeekChallenges = globalChallenges.filter { challenge in
+            let challengeDate = calendar.startOfDay(for: challenge.date)
+            return challengeDate >= currentWeekRange.start && challengeDate <= currentWeekRange.end
+        }.sorted { $0.date > $1.date }
         
-        // Get all challenge results for this plan
-        let allChallenges = (challengeData[planId] ?? [:]).map { (dayIndex, result) in (dayIndex, result) }
+        let previousChallenges = globalChallenges.filter { challenge in
+            let challengeDate = calendar.startOfDay(for: challenge.date)
+            return challengeDate < currentWeekRange.start
+        }.sorted { $0.date > $1.date }
         
-        // Find challenge days in the current week - Fixed logic for 1-based indexing
-        let weekDayIndices: [Int] = plan.days.compactMap { day in
-            // Since day.dayIndex is 1-based, we subtract 1 to get the correct offset from planStart
-            let scheduledDate = calendar.startOfDay(for: calendar.date(byAdding: .day, value: day.dayIndex - 1, to: startDate)!)
-            let weekStart = calendar.startOfDay(for: weekRange.start)
-            let weekEnd = calendar.startOfDay(for: weekRange.end)
+        let targetSeconds = planTarget.challengeMinutes * 60
+        let previousChallengeDuration = previousChallenges.first?.duration ?? 0
+        let previousPercent = min((previousChallengeDuration / targetSeconds) * 100, 100)
+        
+        guard let thisWeekChallenge = thisWeekChallenges.first else {
+            return ProgressBarModel(currentPercentage: 0, previousPercentage: previousPercent, hasProgress: false, isMax: false, displayText: "No Measurement")
+        }
+        
+        let currentPercent = min((thisWeekChallenge.duration / targetSeconds) * 100, 100)
+        
+        guard thisWeekChallenge.duration > previousChallengeDuration else {
+            return ProgressBarModel(currentPercentage: 0, previousPercentage: currentPercent, hasProgress: false, isMax: false, displayText: "No Progress")
             
-            // Use start of day comparison to avoid time precision issues
-            return (scheduledDate >= weekStart && scheduledDate <= weekEnd) ? day.dayIndex : nil
         }
         
-        let weekChallengeDays = challengeDays.filter { weekDayIndices.contains($0.dayIndex) }
-        
-        // Find the challenge result for this week (if any)
-        let weekChallengeResults = weekChallengeDays.compactMap { day in
-            challengeData[planId]?[day.dayIndex]
+        if thisWeekChallenge.duration >= targetSeconds {
+            return ProgressBarModel(currentPercentage: 100, previousPercentage: previousPercent, hasProgress: true, isMax: true, displayText: "MAX")
         }
         
-        // Find the latest challenge result in the plan before this week (if any)
-        let previousChallengeResults = allChallenges.filter { (dayIndex, result) in
-            // Since dayIndex is 1-based, we subtract 1 to get the correct offset from planStart
-            let scheduledDate = calendar.startOfDay(for: calendar.date(byAdding: .day, value: dayIndex - 1, to: startDate)!)
-            let weekStart = calendar.startOfDay(for: weekRange.start)
-            return scheduledDate < weekStart
-        }.map { $0.1 }
+        let timeIncrease = thisWeekChallenge.duration - previousChallengeDuration
+        let timeIncreaseText = formatTimeIncrease(timeIncrease)
         
-        // Helper to map duration to percent (non-linear)
-        func durationToPercent(_ duration: TimeInterval) -> Double {
-            let minutes = duration / 60.0
-            if minutes <= 0 { return 0 }
-            if minutes < 15 {
-                return (minutes / 15.0) * 50.0
-            } else if minutes < 40 {
-                return 50.0 + ((minutes - 15.0) / 25.0) * 50.0
-            } else {
-                return 100.0
-            }
-        }
-        
-        // --- Logic per user rules ---
-        // 1. No challenge this week and no previous: both 0
-        if weekChallengeDays.isEmpty && previousChallengeResults.isEmpty {
-            return (0, 0)
-        }
-        
-        // 2. No challenge this week, but previous exists: both = previous percent
-        if weekChallengeDays.isEmpty, let lastPrev = previousChallengeResults.last {
-            let prevPercent = durationToPercent(lastPrev.duration)
-            return (prevPercent, prevPercent)
-        }
-        
-        // 3. Challenge this week, but not completed: both = previous percent (if any)
-        if !weekChallengeDays.isEmpty && weekChallengeResults.isEmpty {
-            let prevPercent = previousChallengeResults.last.map { durationToPercent($0.duration) } ?? 0
-            return (prevPercent, prevPercent)
-        }
-        
-        // 4. Challenge this week, completed: current = this week, previous = previous (if any)
-        if let thisWeek = weekChallengeResults.last {
-            let prevPercent = previousChallengeResults.last.map { durationToPercent($0.duration) } ?? 0
-            let currPercent = durationToPercent(thisWeek.duration)
-            return (currPercent, prevPercent)
-        }
-        
-        // Fallback
-        return (0, 0)
+        return ProgressBarModel(currentPercentage: currentPercent, previousPercentage: previousPercent, hasProgress: true, isMax: false, displayText: timeIncreaseText)
     }
     
-    /// Computes the progress bar percentages for 'Muscle Progress' (measurement) for the current and previous week.
-    /// - Returns: (currentPercent, previousPercent)
-    func muscleProgressBarPercentagesForCurrentWeek() -> (current: Double, previous: Double) {
+    /// Calculate muscle progress comparing this week's measurement to the last measurement taken (completely global)
+    func calculateWeeklyMuscleProgress() -> ProgressBarModel {
         guard let planId = currentPlanId,
-              let plan = plans.first(where: { $0.id == planId }),
-              let weekRange = currentWeekRange,
-              let startDate = planStartDate else {
-            return (0, 0)
+              let planTarget = planTargets[planId] else {
+            return ProgressBarModel(currentPercentage: 0, previousPercentage: 0, hasProgress: false, isMax: false, displayText: "No Measurement")
         }
         
         let calendar = Calendar.current
+        let currentWeekRange = getCurrentWeekDateRange()
         
-        // Get all measurement days in the plan
-        let measurementDays = plan.days.filter { $0.showPracticeMeasurement }
+        let thisWeekMeasurements = globalMeasurements.filter { measurement in
+            let measurementDate = calendar.startOfDay(for: measurement.date)
+            return measurementDate >= currentWeekRange.start && measurementDate <= currentWeekRange.end
+        }.sorted { $0.date > $1.date }
         
-        // Get all measurement results for this plan
-        let allMeasurements = (measurementData[planId] ?? [:]).map { (dayIndex, result) in (dayIndex, result) }
+        let previousMeasurements = globalMeasurements.filter { measurement in
+            let measurementDate = calendar.startOfDay(for: measurement.date)
+            return measurementDate < currentWeekRange.start
+        }.sorted { $0.date > $1.date }
+
+        let targetSeconds = planTarget.muscleSeconds
+        let previousMeasurementDuration = previousMeasurements.first?.duration ?? 0
+        let previousPercent = min((previousMeasurementDuration / targetSeconds) * 100, 100)
         
-        // Find measurement days in the current week - Fixed logic for 1-based indexing
-        let weekDayIndices: [Int] = plan.days.compactMap { day in
-            // Since day.dayIndex is 1-based, we subtract 1 to get the correct offset from planStart
-            let scheduledDate = calendar.startOfDay(for: calendar.date(byAdding: .day, value: day.dayIndex - 1, to: startDate)!)
-            let weekStart = calendar.startOfDay(for: weekRange.start)
-            let weekEnd = calendar.startOfDay(for: weekRange.end)
-            
-            // Use start of day comparison to avoid time precision issues
-            return (scheduledDate >= weekStart && scheduledDate <= weekEnd) ? day.dayIndex : nil
+        guard let thisWeekMeasurement = thisWeekMeasurements.first else {
+            return ProgressBarModel(currentPercentage: 0, previousPercentage: previousPercent, hasProgress: false, isMax: false, displayText: "No Measurement")
         }
         
-        let weekMeasurementDays = measurementDays.filter { weekDayIndices.contains($0.dayIndex) }
+        let currentPercent = min((thisWeekMeasurement.duration / targetSeconds) * 100, 100)
         
-        // Find the measurement result for this week (if any)
-        let weekMeasurementResults = weekMeasurementDays.compactMap { day in
-            measurementData[planId]?[day.dayIndex]
+        guard thisWeekMeasurement.duration > previousMeasurementDuration else {
+            return ProgressBarModel(currentPercentage: 0, previousPercentage: currentPercent, hasProgress: false, isMax: false, displayText: "No Progress")
         }
         
-        // Find the latest measurement result in the plan before this week (if any)
-        let previousMeasurementResults = allMeasurements.filter { (dayIndex, result) in
-            // Since dayIndex is 1-based, we subtract 1 to get the correct offset from planStart
-            let scheduledDate = calendar.startOfDay(for: calendar.date(byAdding: .day, value: dayIndex - 1, to: startDate)!)
-            let weekStart = calendar.startOfDay(for: weekRange.start)
-            return scheduledDate < weekStart
-        }.map { $0.1 }
-        
-        // Helper to map duration to percent (linear, 0–300s = 0–100%)
-        func durationToPercent(_ duration: Double) -> Double {
-            let percent = (duration / 300.0) * 100.0
-            return min(max(percent, 0), 100)
+        if thisWeekMeasurement.duration >= targetSeconds {
+            return ProgressBarModel(currentPercentage: 100, previousPercentage: previousPercent, hasProgress: true, isMax: true, displayText: "MAX")
         }
         
-        // --- Logic per user rules ---
-        // 1. No measurement this week and no previous: both 0
-        if weekMeasurementDays.isEmpty && previousMeasurementResults.isEmpty {
-            return (0, 0)
-        }
+        let timeIncrease = thisWeekMeasurement.duration - previousMeasurementDuration
+        let timeIncreaseText = formatTimeIncrease(timeIncrease)
         
-        // 2. No measurement this week, but previous exists: both = previous percent
-        if weekMeasurementDays.isEmpty, let lastPrev = previousMeasurementResults.last {
-            let prevPercent = durationToPercent(lastPrev.durationSeconds)
-            return (prevPercent, prevPercent)
-        }
-        
-        // 3. Measurement this week, but not completed: both = previous percent (if any)
-        if !weekMeasurementDays.isEmpty && weekMeasurementResults.isEmpty {
-            let prevPercent = previousMeasurementResults.last.map { durationToPercent($0.durationSeconds) } ?? 0
-            return (prevPercent, prevPercent)
-        }
-        
-        // 4. Measurement this week, completed: current = this week, previous = previous (if any)
-        if let thisWeek = weekMeasurementResults.last {
-            let prevPercent = previousMeasurementResults.last.map { durationToPercent($0.durationSeconds) } ?? 0
-            let currPercent = durationToPercent(thisWeek.durationSeconds)
-            return (currPercent, prevPercent)
-        }
-        
-        // Fallback
-        return (0, 0)
+        return ProgressBarModel(currentPercentage: currentPercent, previousPercentage: previousPercent, hasProgress: true, isMax: false, displayText: timeIncreaseText)
     }
     
     func daysLeft(planStartDate: Date, currentDate: Date, planDurationDays: Int) -> Int {
@@ -563,20 +470,25 @@ class TrainingPlansViewModel: ObservableObject {
             if weeklyUpdateSchedule.contains(currentWeekNumber) &&
                 !hasShownWeeklyUpdate(planId: planId, weekNumber: currentWeekNumber) &&
                 hasCompletedTodaysWorkout(planId: planId, date: today) {
-                // Show weekly update immediately
-                generateWeeklyUpdateData(for: planId, weekNumber: currentWeekNumber)
+                if let day = getTodaysDay(), isChallengeScheduledForToday(dayIndex: day.dayIndex) {
+                    if isChallengeCompleted(planId: planId, dayIndex: day.dayIndex) {
+                        generateWeeklyUpdateData(for: planId, weekNumber: currentWeekNumber)
+                    }
+                } else {
+                    generateWeeklyUpdateData(for: planId, weekNumber: currentWeekNumber)
+                }
             }
         }
     }
     
-    /// Generates the weekly update data for display
+    /// Generates the weekly update data for display using new logic
     private func generateWeeklyUpdateData(for planId: String, weekNumber: Int) {
         guard let plan = plans.first(where: { $0.id == planId }),
               let startDate = planStartDate else { return }
         
         let calendar = Calendar.current
         
-        // Calculate week boundaries (weekNumber is 1-based)
+        // Calculate week boundaries
         let weekStart = calendar.date(byAdding: .day, value: (weekNumber - 1) * 7, to: startDate)!
         let weekEnd = calendar.date(byAdding: .day, value: (weekNumber * 7) - 1, to: startDate)!
         
@@ -594,11 +506,11 @@ class TrainingPlansViewModel: ObservableObject {
         // Calculate total workout minutes
         let workoutMinutes = calculateWorkoutMinutes(for: weekDays, planId: planId)
         
-        // Get challenge and muscle progress for this specific week
-        let challengeProgress = getChallengeProgressForWeek(planId: planId, weekNumber: weekNumber)
-        let muscleProgress = getMuscleProgressForWeek(planId: planId, weekNumber: weekNumber)
+        // Get challenge and muscle progress using new methods
+        let challengeProgress = calculateWeeklyChallengeProgress()
+        let muscleProgress = calculateWeeklyMuscleProgress()
         
-        // Create weekly update data
+        // Create weekly update data with new progress structure
         let updateData = WeeklyUpdateData(
             weekNumber: weekNumber,
             weekStartDate: weekStart,
@@ -606,8 +518,8 @@ class TrainingPlansViewModel: ObservableObject {
             workoutsCompleted: completedWorkouts,
             totalWorkoutsInWeek: weekDays.count,
             workoutMinutes: workoutMinutes,
-            challengeProgress: challengeProgress,
-            muscleProgress: muscleProgress
+            challengeProgress: calculateWeeklyChallengeProgress(),
+            muscleProgress: calculateWeeklyMuscleProgress()
         )
         
         // Trigger the weekly update modal
@@ -650,18 +562,35 @@ class TrainingPlansViewModel: ObservableObject {
         return totalMinutes
     }
     
-    /// Gets challenge progress for a specific week
-    private func getChallengeProgressForWeek(planId: String, weekNumber: Int) -> (current: Double, previous: Double)? {
-        // You can adapt your existing challenge progress methods for specific weeks
-        // For now, using the existing method as placeholder
-        return challengeProgressBarPercentagesForCurrentWeek()
+    // MARK: - Helper Methods
+    
+    private func getCurrentWeekDateRange() -> (start: Date, end: Date) {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        
+        // Get the start of the current week (Monday)
+        let weekday = calendar.component(.weekday, from: today)
+        let daysFromMonday = (weekday + 5) % 7  // Convert Sunday=1 to Monday=0 system
+        let weekStart = calendar.date(byAdding: .day, value: -daysFromMonday, to: today) ?? today
+        
+        // Get the end of the current week (Sunday)
+        let weekEnd = calendar.date(byAdding: .day, value: 6, to: weekStart) ?? today
+        let weekEndWithTime = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: weekEnd) ?? weekEnd
+        
+        return (start: weekStart, end: weekEndWithTime)
     }
     
-    /// Gets muscle progress for a specific week
-    private func getMuscleProgressForWeek(planId: String, weekNumber: Int) -> (current: Double, previous: Double)? {
-        // You can adapt your existing muscle progress methods for specific weeks
-        // For now, using the existing method as placeholder
-        return muscleProgressBarPercentagesForCurrentWeek()
+    private func formatTimeIncrease(_ seconds: Double) -> String {
+        if seconds < 60 {
+            return "+\(String(format: "%.0f", seconds))s"
+        } else {
+            let minutes = seconds / 60
+            if minutes.truncatingRemainder(dividingBy: 1) == 0 {
+                return "+\(String(format: "%.0f", minutes))min"
+            } else {
+                return "+\(String(format: "%.1f", minutes))min"
+            }
+        }
     }
     
     // MARK: - UserDefaults Management for Weekly Updates
@@ -724,8 +653,8 @@ struct WeeklyUpdateData {
     let workoutsCompleted: Int
     let totalWorkoutsInWeek: Int
     let workoutMinutes: Int
-    let challengeProgress: (current: Double, previous: Double)?
-    let muscleProgress: (current: Double, previous: Double)?
+    let challengeProgress: ProgressBarModel
+    let muscleProgress: ProgressBarModel
 }
 
 struct MeasurementProgress {
@@ -794,3 +723,43 @@ extension TrainingPlansViewModel {
         return vm
     }
 } 
+
+struct GlobalMeasurement: Codable {
+    let id: UUID
+    let duration: Double
+    let date: Date
+    let planId: String
+    let dayIndex: Int
+    
+    init(duration: Double, planId: String, dayIndex: Int) {
+        self.id = UUID()
+        self.duration = duration
+        self.date = Date()
+        self.planId = planId
+        self.dayIndex = dayIndex
+    }
+}
+
+struct GlobalChallenge: Codable {
+    let id: UUID
+    let duration: Double
+    let date: Date
+    let planId: String
+    let dayIndex: Int
+    
+    init(duration: Double, planId: String, dayIndex: Int) {
+        self.id = UUID()
+        self.duration = duration
+        self.date = Date()
+        self.planId = planId
+        self.dayIndex = dayIndex
+    }
+}
+
+struct ProgressBarModel: Codable {
+    let currentPercentage: Double
+    let previousPercentage: Double
+    let hasProgress: Bool
+    let isMax: Bool
+    let displayText: String
+}

@@ -42,7 +42,69 @@ struct KnowledgeTabView: View {
                             ))
                         Spacer()
                     }
-                    .padding(.vertical, 30)
+                    .padding(.vertical, 35)
+                    
+                    ZStack(alignment: .center) {
+                        Image("KegelTutorialBanner")
+                            .resizable()
+                            .frame(height: 245)
+                            .cornerRadius(20)
+                            .clipped()
+                        
+                        VStack(alignment: .leading, spacing: 0) {
+                            Spacer()
+                            ZStack(alignment: .bottom) {
+                                VisualEffectBlur(blurStyle: .systemUltraThinMaterialDark, alpha: 0.9)
+                                    .frame(height: 100)
+                                HStack {
+                                    VStack(alignment: .leading) {
+                                        Spacer()
+                                        
+                                        Text("Learn How to Do Kegels")
+                                            .font(.system(size: 16, weight: .medium))
+                                            .foregroundStyle(LinearGradient(
+                                                colors: [Color(hex: "#FFFFFF"), Color(hex: "#FFFFFF"), Color(hex: "#FFFFFF"), Color(hex: "#999999")],
+                                                startPoint: .leading,
+                                                endPoint: .trailing
+                                            ))
+                                        
+                                        Spacer().frame(height: 8)
+                                        
+                                        Text("Retry the tutorial that helps you understand how to use your pelvic floor muscles")
+                                            .font(.system(size: 12, weight: .regular))
+                                            .foregroundColor(.white)
+                                        
+                                        Spacer()
+                                    }
+                                    Spacer()
+                                    
+                                    Button(action: {
+                                        triggerHaptic()
+                                        knowledgeViewModel.showOnboardingTutorial = true
+                                        
+                                    }) {
+                                        Text("Start")
+                                            .font(.system(size: 16, weight: .semibold))
+                                            .frame(width: 82, height: 40, alignment: .center)
+                                            .background(Color(hex: "#FF1919"))
+                                            .foregroundColor(.white)
+                                            .cornerRadius(30)
+                                    }
+                                }
+                                .padding(.leading, 15)
+                                .padding(.trailing, 20)
+                            }
+                            .frame(height: 100)
+                        }
+                    }
+                    .frame(height: 245)
+                    .cornerRadius(20)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 20)
+                            .stroke(Color.white, lineWidth: 0.5)
+                    )
+                    .padding(.bottom, 45)
+                    .padding(.horizontal,28)
                     
                     HStack {
                         Text("Knowledge")
@@ -87,6 +149,12 @@ struct KnowledgeTabView: View {
         }
         .navigationBarHidden(true)
         .animation(.easeInOut(duration: 0.3), value: showKnowledgeCategory)
+    }
+    
+    func triggerHaptic() {
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.prepare()
+        generator.impactOccurred()
     }
 }
 
