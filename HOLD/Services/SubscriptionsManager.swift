@@ -16,7 +16,7 @@ class SubscriptionManager: ObservableObject {
     
     private var updateListenerTask: Task<Void, Error>? = nil
     
-    @AppStorage("isPremium") private var isPremium: Bool = false
+    @AppStorage("isPremium") var isPremium: Bool = false
     
     private init() {
         // Start a transaction listener as close to app launch as possible

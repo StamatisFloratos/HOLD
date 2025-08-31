@@ -45,6 +45,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         
+        AppDelegate.configureShortcutItem()
+        
         return true
     }
     
@@ -58,6 +60,71 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       let _ = ApplicationDelegate.shared.application(app, open: url, options: options)
       
       return true
+    }
+    
+    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        let sceneConfiguration = UISceneConfiguration(name: "Quick Actions Configuration", sessionRole: connectingSceneSession.role)
+        sceneConfiguration.delegateClass = QuickActionsSceneDelegate.self
+        
+        if let shortcutItem = options.shortcutItem {
+            handleShortcutItem(shortcutItem)
+        }
+        
+        return sceneConfiguration
+    }
+
+    func handleShortcutItem(_ shortcutItem: UIApplicationShortcutItem) {
+        let userProfile = UserProfile.load()
+        
+        if userProfile.age < 18 {
+            Superwall.shared.register(placement: "hold_gift_offer_meta_under_18", feature: {
+                SubscriptionManager.shared.checkSubscriptionStatus()
+            })
+        } else if userProfile.age <= 24 && userProfile.age >= 18 {
+            Superwall.shared.register(placement: "hold_gift_offer_meta_18_24", feature: {
+                SubscriptionManager.shared.checkSubscriptionStatus()
+            })
+        } else {
+            Superwall.shared.register(placement: "hold_gift_offer_meta_25_plus", feature: {
+                SubscriptionManager.shared.checkSubscriptionStatus()
+            })
+        }
+    }
+    
+    static func configureShortcutItem() {
+        if SubscriptionManager.shared.isPremium {
+            UIApplication.shared.shortcutItems = []
+        } else {
+            let type = Bundle.main.bundleIdentifier! + ".Dynamic"
+            let item = UIApplicationShortcutItem.init(type: type, localizedTitle: "Secret Offer 🤫", localizedSubtitle: "", icon: UIApplicationShortcutIcon(type: .love))
+            
+            UIApplication.shared.shortcutItems = [item]
+        }
+    }
+}
+
+class QuickActionsSceneDelegate: UIResponder, UIWindowSceneDelegate {
+    
+    func windowScene(_ windowScene: UIWindowScene, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+        handleShortcutItem(shortcutItem)
+    }
+    
+    func handleShortcutItem(_ shortcutItem: UIApplicationShortcutItem) {
+        let userProfile = UserProfile.load()
+        
+        if userProfile.age < 18 {
+            Superwall.shared.register(placement: "hold_gift_offer_meta_under_18", feature: {
+                SubscriptionManager.shared.checkSubscriptionStatus()
+            })
+        } else if userProfile.age <= 24 && userProfile.age >= 18 {
+            Superwall.shared.register(placement: "hold_gift_offer_meta_18_24", feature: {
+                SubscriptionManager.shared.checkSubscriptionStatus()
+            })
+        } else {
+            Superwall.shared.register(placement: "hold_gift_offer_meta_25_plus", feature: {
+                SubscriptionManager.shared.checkSubscriptionStatus()
+            })
+        }
     }
 }
 
