@@ -10,6 +10,9 @@ import StoreKit
 import SuperwallKit
 import SwiftUI
 import AppsFlyerLib
+import os
+
+private let holdLogger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "com.chronos.holdapp", category: "HOLDapp")
 
 class SubscriptionManager: ObservableObject {
     static let shared = SubscriptionManager()
@@ -17,6 +20,8 @@ class SubscriptionManager: ObservableObject {
     private var updateListenerTask: Task<Void, Error>? = nil
     
     @AppStorage("isPremium") var isPremium: Bool = false
+    
+    @Published private var isRedeeming: Bool = false
     
     private init() {
         // Start a transaction listener as close to app launch as possible
@@ -100,6 +105,20 @@ class SubscriptionManager: ObservableObject {
     func checkSubscriptionStatus() {
         Task {
             await updateCustomerProductStatus()
+            if self.isPremium {
+                print("Active subscription found via StoreKit")
+                return
+            }
+            
+            // check Superwall backend (for web / Stripe purchases)
+            await MainActor.run { [weak self] in
+                guard let self = self else { return }
+                if Superwall.shared.subscriptionStatus.isActive {
+                    self.isPremium = true
+                } else {
+                    self.isPremium = false
+                }
+            }
         }
     }
 }
@@ -158,5 +177,55 @@ extension SubscriptionManager: SuperwallDelegate {
         default:
             break
         }
+    }
+    
+        func willRedeemLink() {
+            isRedeeming = true
+        }
+    
+    func didRedeemLink(result: RedemptionResult) {
+        switch result {
+        case .success(_, let info):
+            let msg = "Redemption successful for \(info.purchaserInfo.email ?? "unknown")"
+            print(msg)
+            DispatchQueue.main.async {
+                self.isPremium = true
+            }
+        case .invalidCode(let code):
+            let msg = "Invalid redemption code: \(code)"
+            print(msg)
+        case .expiredCode(let code, _):
+            let msg = "Expired redemption code: \(code)"
+            print(msg)
+        case .expiredSubscription(let code, _):
+            let msg = "Expired subscription for code: \(code)"
+            print(msg)
+            DispatchQueue.main.async {
+                self.isPremium = false
+            }
+        case .error(let code, let error):
+            let msg = "Error redeeming code \(code): \(error)"
+            print(msg)
+        }
+    }
+    
+    func subscriptionStatusDidChange(
+        from oldValue: SuperwallKit.SubscriptionStatus,
+        to newValue: SuperwallKit.SubscriptionStatus
+    ) {
+        let msg = "Subscription status changed from \(oldValue) to \(newValue)"
+        print(msg)
+        holdLogger.debug("\(msg, privacy: .public) - isPremium: \(self.isPremium, privacy: .public)")
+        
+        if newValue.isActive {
+            if isRedeeming {
+                self.isPremium = true
+                isRedeeming = false
+            }
+        } else {
+            self.isPremium = false
+        }
+        
+        NotificationCenter.default.post(name: .subscriptionStatusChanged, object: nil)
     }
 }

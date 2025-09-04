@@ -5,6 +5,7 @@
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>applinks:holdapp.onelink.me</string>
+		<string>applinks:hold.superwall.app</string>
 	</array>
 </dict>
 </plist>
