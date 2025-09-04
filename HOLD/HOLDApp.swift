@@ -22,9 +22,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         AppsFlyerLib.shared().appleAppID = "6745149501"
         AppsFlyerLib.shared().customerUserID = DeviceIdManager.getUniqueDeviceId()
         
-        #if DEBUG
+#if DEBUG
         AppsFlyerLib.shared().isDebug = true
-        #endif
+#endif
         
         FirebaseApp.configure()
         
@@ -51,15 +51,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        let _ = ApplicationDelegate.shared.application(application, continue: userActivity)
-        
-        return true
+        if userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+           let url = userActivity.webpageURL {
+            return Superwall.handleDeepLink(url)
+        }
+        return ApplicationDelegate.shared.application(application, continue: userActivity)
     }
-
+    
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-      let _ = ApplicationDelegate.shared.application(app, open: url, options: options)
-      
-      return true
+        let _ = ApplicationDelegate.shared.application(app, open: url, options: options)
+        return Superwall.handleDeepLink(url)
     }
     
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
@@ -72,7 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return sceneConfiguration
     }
-
+    
     func handleShortcutItem(_ shortcutItem: UIApplicationShortcutItem) {
         let userProfile = UserProfile.load()
         
@@ -126,6 +127,39 @@ class QuickActionsSceneDelegate: UIResponder, UIWindowSceneDelegate {
             })
         }
     }
+    
+    // for cold launches
+    func scene(
+        _ scene: UIScene,
+        willConnectTo session: UISceneSession,
+        options connectionOptions: UIScene.ConnectionOptions
+    ) {
+        if let url = connectionOptions.urlContexts.first?.url {
+            Superwall.handleDeepLink(url)
+        }
+        else if let userActivity = connectionOptions.userActivities.first(where: { $0.activityType == NSUserActivityTypeBrowsingWeb }),
+                let url = userActivity.webpageURL {
+            Superwall.handleDeepLink(url)
+        }
+    }
+    // for when your app is already running
+    func scene(
+        _ scene: UIScene,
+        openURLContexts URLContexts: Set<UIOpenURLContext>
+    ) {
+        if let url = URLContexts.first?.url {
+            Superwall.handleDeepLink(url)
+        }
+    }
+    func scene(
+        _ scene: UIScene,
+        continue userActivity: NSUserActivity
+    ) {
+        if userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+           let url = userActivity.webpageURL {
+            Superwall.handleDeepLink(url)
+        }
+    }
 }
 
 @main
@@ -162,11 +196,11 @@ struct HOLDApp: App {
                 .environmentObject(notificationsManager)
                 .environmentObject(subscriptionManager)
                 .environmentObject(trainingPlansViewModel)
-                .onOpenURL { url in
-                    _ = ApplicationDelegate.shared.application(UIApplication.shared, open: url, options: [:])
-                }
                 .onContinueUserActivity(NSUserActivityTypeBrowsingWeb) { userActivity in
-                    _ = ApplicationDelegate.shared.application(UIApplication.shared, continue: userActivity)
+                    
+                }
+                .onOpenURL { url in
+                    Superwall.handleDeepLink(url)
                 }
                 .onAppear {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {

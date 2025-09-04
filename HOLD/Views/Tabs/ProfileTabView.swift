@@ -236,13 +236,13 @@ struct ProfileTabView: View {
                     Button(action: {
                         triggerHaptic()
                         isEditing = true }) {
-                        Text("Edit")
-                            .foregroundColor(.black)
-                            .padding(.vertical, 8)
-                            .padding(.horizontal, 20)
-                            .background(Color.white)
-                            .cornerRadius(12)
-                    }
+                            Text("Edit")
+                                .foregroundColor(.black)
+                                .padding(.vertical, 8)
+                                .padding(.horizontal, 20)
+                                .background(Color.white)
+                                .cornerRadius(12)
+                        }
                 }
             } else {
                 HStack {
@@ -347,7 +347,7 @@ struct ProfileTabView: View {
             showValidationAlert = true
             return
         }
-
+        
         userProfile.save()
         isEditing = false
     }
@@ -391,34 +391,13 @@ struct SubscriptionManagementView: View {
                     Spacer()
                 }
                 .padding(.top, 24)
-                .padding(.bottom, 14)
                 
-                // Add top padding to push content below the safe area protective layer
-                Spacer().frame(height: 120)
-                
-                Image(systemName: "creditcard")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 60, height: 60)
-                    .foregroundColor(.white)
-                
-                Text("Manage Your Subscriptions")
-                    .font(.title2)
-                    .foregroundColor(.white)
-                
-                Text("To manage you subscriptions, go to Settings > Name > Subscriptions")
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(.gray)
-                    .padding(.horizontal)
-                
-                // White back button - moved directly below the text
                 Button(action: {
                     // Trigger the onBack action
                     triggerHaptic()
                     onBack()
                 }) {
                     HStack{
-                        Spacer()
                         Image(systemName: "chevron.left")
                             .foregroundStyle(.white)
                         Text("Back")
@@ -431,12 +410,94 @@ struct SubscriptionManagementView: View {
                     }
                     
                 }
-                .padding(.top, 30) // Add padding between text and button
+                .padding(.leading)
                 
-                Spacer() // This spacer will push content up rather than pushing the button down
+                Text("Manage Your Subscription")
+                    .font(.title2)
+                    .foregroundColor(.white)
+                    .padding(.bottom, 20)
+                
+                VStack(spacing: 35) {
+                    HStack(spacing: 15) {
+                        Image(systemName: "gear")
+                            .font(.system(size: 40))
+                            .foregroundStyle(.white)
+                        
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Purchased via iOS App?")
+                                .font(.system(size: 16, weight: .medium))
+                                .foregroundColor(.white)
+                                .padding(.bottom, 10)
+                            Text("To manage it go to:")
+                                .font(.system(size: 14))
+                                .foregroundColor(.gray)
+                            Text("Settings → Apple ID → Subscriptions")
+                                .font(.system(size: 14))
+                                .foregroundColor(.white)
+                        }
+                        Spacer()
+                    }
+                    .padding(.vertical, 10)
+                    .padding(.leading, 20)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color(hex: "#242E3A"))
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.white.opacity(0.4), lineWidth: 1)
+                    )
+                    
+                    Button(action: {
+                        if let url = URL(string: "https://www.holdapp.pro/account") {
+                            UIApplication.shared.open(url)
+                        }
+                    }) {
+                        HStack(spacing: 15) {
+                            Image(systemName: "globe")
+                                .font(.system(size: 40))
+                                .foregroundStyle(.white)
+                            
+                            VStack(alignment: .leading, spacing: 4) {
+                                HStack(alignment: .center) {
+                                    Text("Purchased via Web?")
+                                        .font(.system(size: 16, weight: .medium))
+                                        .foregroundColor(.white)
+                                    Spacer()
+                                    Image(systemName: "arrow.up.forward.app")
+                                        .font(.system(size: 16))
+                                        .foregroundStyle(.gray)
+                                        .padding(.trailing, 10)
+                                    
+                                }
+                                .padding(.bottom, 10)
+                                Text("Go to:")
+                                    .font(.system(size: 14))
+                                    .foregroundColor(.gray)
+                                Text(AttributedString("www.holdapp.pro/account"))
+                                    .font(.system(size: 14))
+                                    .foregroundColor(.white)
+                            }
+                        }
+                        .padding(.vertical, 10)
+                        .padding(.leading, 20)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(Color(hex: "#242E3A"))
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.white.opacity(0.4), lineWidth: 1)
+                        )
+                    }
+                    .buttonStyle(.plain)
+                }
+                .padding(.horizontal, 20)
+                
+                Spacer()
             }
         }
-        .navigationBarHidden(true) // Hide navigation bar since we're using a custom back button
+        .navigationBarHidden(true)
     }
     
     func triggerHaptic() {
