@@ -105,6 +105,20 @@ class SubscriptionManager: ObservableObject {
     func checkSubscriptionStatus() {
         Task {
             await updateCustomerProductStatus()
+            if self.isPremium {
+                print("Active subscription found via StoreKit")
+                return
+            }
+            
+            // check Superwall backend (for web / Stripe purchases)
+            await MainActor.run { [weak self] in
+                guard let self = self else { return }
+                if Superwall.shared.subscriptionStatus.isActive {
+                    self.isPremium = true
+                } else {
+                    self.isPremium = false
+                }
+            }
         }
     }
 }
@@ -165,9 +179,9 @@ extension SubscriptionManager: SuperwallDelegate {
         }
     }
     
-    func willRedeemLink() {
-        isRedeeming = true
-    }
+        func willRedeemLink() {
+            isRedeeming = true
+        }
     
     func didRedeemLink(result: RedemptionResult) {
         switch result {
@@ -211,5 +225,7 @@ extension SubscriptionManager: SuperwallDelegate {
         } else {
             self.isPremium = false
         }
+        
+        NotificationCenter.default.post(name: .subscriptionStatusChanged, object: nil)
     }
 }
