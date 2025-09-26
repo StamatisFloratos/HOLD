@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import StoreKit
 
 struct WorkoutTabView: View {
     @EnvironmentObject var navigationManager: NavigationManager
@@ -181,6 +182,7 @@ struct WorkoutTabView: View {
                             trainingPlansViewModel.markDayCompleted(dayIndex: selectedDay.dayIndex)
                             showWorkoutView = false
                             showBadgesView = true
+                            requestReview()
                         })
                     } else {
                         EmptyView()
@@ -437,6 +439,13 @@ struct WorkoutTabView: View {
             let dayDate = calendar.date(byAdding: .day, value: day.dayIndex - 1, to: startDate)!
             return calendar.isDate(dayDate, inSameDayAs: today)
         })
+    }
+    
+    func requestReview() {
+        if let scene = UIApplication.shared.connectedScenes
+            .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+            SKStoreReviewController.requestReview(in: scene)
+        }
     }
 }
 

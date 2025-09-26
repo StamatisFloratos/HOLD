@@ -1,4 +1,5 @@
 import SwiftUI
+import StoreKit
 
 enum TrainingPlanDayCellType: Equatable {
     case today(completed: Bool)
@@ -244,6 +245,7 @@ struct TrainingPlanDetailView: View {
                 viewModel.markDayCompleted(dayIndex: context.dayIndex)
                 workoutLaunchContext = nil
                 showBadgesView = true
+                requestReview()
             })
         }
         .fullScreenCover(isPresented: $showMeasurementSheet) {
@@ -377,6 +379,13 @@ struct TrainingPlanDetailView: View {
         let generator = UIImpactFeedbackGenerator(style: .light)
         generator.prepare()
         generator.impactOccurred()
+    }
+    
+    func requestReview() {
+        if let scene = UIApplication.shared.connectedScenes
+            .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+            SKStoreReviewController.requestReview(in: scene)
+        }
     }
 }
 
